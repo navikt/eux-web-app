@@ -11,13 +11,12 @@ import {
   SvarYtelseTilForeldreloese_V43
 } from "../../../../declarations/sed";
 import _ from "lodash";
-import {BodyLong, Box, Button, Heading, VStack, HGrid, Select, Label} from "@navikt/ds-react";
-import {RepeatableBox, TextAreaDiv} from "../../../../components/StyledComponents";
+import {BodyLong, Box, Button, Heading, VStack, HGrid, Select, Label, HStack, Radio, RadioGroup, Spacer} from "@navikt/ds-react";
+import {RepeatableBox} from "../../../../components/StyledComponents";
 import TextArea from "../../../../components/Forms/TextArea";
 import {PlusCircleIcon} from "@navikt/aksel-icons";
 import {getIdx} from "../../../../utils/namespace";
 import {Validation} from "../../../../declarations/types";
-import {AlignEndColumn, RadioPanel, RadioPanelGroup, AlignStartRow} from "@navikt/hoykontrast";
 import AddRemovePanel from "../../../../components/AddRemovePanel/AddRemovePanel";
 import classNames from "classnames";
 import {hasNamespaceWithErrors} from "../../../../utils/validation";
@@ -32,6 +31,7 @@ import Input from "../../../../components/Forms/Input";
 import DateField, {toDateFormat} from "../../../../components/DateField/DateField";
 import PeriodeText from "../../../../components/Forms/PeriodeText";
 import {ValidationYtelseTilForeldreloeseProps} from "../validation";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -186,7 +186,8 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
     const _relasjon = index < 0 ? _newRelasjon : (inEditMode ? _editRelasjon : relasjon)
 
     const addremovepanel = (
-      <AlignEndColumn>
+      <HStack>
+        <Spacer />
         <AddRemovePanel<RelasjonAnnenPerson>
           item={relasjon}
           marginTop={false}
@@ -199,7 +200,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
           onConfirmEdit={onSaveEdit}
           onCancelEdit={() => onCloseEdit(_namespace)}
         />
-      </AlignEndColumn>
+      </HStack>
     )
     return (
       <RepeatableBox
@@ -240,7 +241,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
                       value={_relasjon?.annenRelasjon}
                     />
                   }
-                  <AlignStartRow>
+                  <HGrid columns={2} gap="4" align="start">
                     <PeriodeInput
                       namespace={_namespace + '-periode'}
                       error={{
@@ -252,7 +253,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
                       setPeriode={(p: Periode) => setPeriode(p, index)}
                       value={_relasjon?.periode}
                     />
-                  </AlignStartRow>
+                  </HGrid>
                   <Input
                     error={_v[_namespace + '-annen-person']?.feilmelding}
                     namespace={_namespace}
@@ -277,25 +278,23 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
                     onChanged={(value: string) => setRelasjonProperty("relasjonsstartdato", value, "relasjonsstartdato", index)}
                     dateValue={_relasjon?.relasjonsstartdato}
                   />
-                  <RadioPanelGroup
+                  <RadioGroup
                     value={_relasjon?.varKravstillerISammeHushold ?? ''}
-                    data-no-border
                     data-testid={namespace + '-var-kravstiller-i-samme-hushold'}
                     error={_v[namespace + '-var-kravstiller-i-samme-hushold']?.feilmelding}
                     id={namespace + '-var-kravstiller-i-samme-hushold'}
                     legend={t('label:var-kravstiller-i-samme-hushold')}
-                    name={namespace + '-var-kravstiller-i-samme-hushold'}
                     onChange={(e:string) => setRelasjonProperty("varKravstillerISammeHushold",  e as JaNei,"var-kravstiller-i-samme-hushold", index)}
                   >
-                    <HGrid gap="1" columns={2}>
-                      <RadioPanel value='ja'>
+                    <HStack gap="4">
+                      <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
-                      </RadioPanel>
-                      <RadioPanel value='nei'>
+                      </Radio>
+                      <Radio className={commonStyles.radioPanel} value='nei'>
                         Nei
-                      </RadioPanel>
-                    </HGrid>
-                  </RadioPanelGroup>
+                      </Radio>
+                    </HStack>
+                  </RadioGroup>
 
                   {addremovepanel}
                 </VStack>
@@ -339,17 +338,15 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
         </Heading>
         {CDM_VERSJON === "4.2" &&
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-annen-person-relasjoner']?.feilmelding}
-                namespace={namespace}
-                id='annen-person-relasjoner'
-                label={t('label:relasjon-mellom-annen-person-og-avdoede')}
-                hideLabel={true}
-                onChanged={(v) => setYtelseTilForeldreloeseProperty('relasjontilavdoedefritekst', v)}
-                value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.annenPerson?.relasjontilavdoedefritekst ?? ''}
-              />
-            </TextAreaDiv>
+            <TextArea
+              error={validation[namespace + '-annen-person-relasjoner']?.feilmelding}
+              namespace={namespace}
+              id='annen-person-relasjoner'
+              label={t('label:relasjon-mellom-annen-person-og-avdoede')}
+              hideLabel={true}
+              onChanged={(v) => setYtelseTilForeldreloeseProperty('relasjontilavdoedefritekst', v)}
+              value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.annenPerson?.relasjontilavdoedefritekst ?? ''}
+            />
           </Box>
         }
         {(parseFloat(CDM_VERSJON) >= 4.3) &&

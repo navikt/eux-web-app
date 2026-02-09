@@ -11,13 +11,12 @@ import {
   SvarYtelseTilForeldreloese_V43
 } from "../../../../declarations/sed";
 import _ from "lodash";
-import {BodyLong, Box, Button, Heading, VStack, HGrid, Select, Label} from "@navikt/ds-react";
-import {RepeatableBox, TextAreaDiv} from "../../../../components/StyledComponents";
+import {BodyLong, Box, Button, Heading, VStack, HGrid, Select, Label, HStack, Radio, RadioGroup, Spacer} from "@navikt/ds-react";
+import {RepeatableBox} from "../../../../components/StyledComponents";
 import TextArea from "../../../../components/Forms/TextArea";
 import {PlusCircleIcon} from "@navikt/aksel-icons";
 import {getIdx} from "../../../../utils/namespace";
 import {Validation} from "../../../../declarations/types";
-import {AlignEndColumn, RadioPanel, RadioPanelGroup, AlignStartRow} from "@navikt/hoykontrast";
 import AddRemovePanel from "../../../../components/AddRemovePanel/AddRemovePanel";
 import classNames from "classnames";
 import {hasNamespaceWithErrors} from "../../../../utils/validation";
@@ -29,6 +28,7 @@ import {resetValidation, setValidation} from "../../../../actions/validation";
 import PeriodeInput from "../../../../components/Forms/PeriodeInput";
 import PeriodeText from "../../../../components/Forms/PeriodeText";
 import {ValidationYtelseTilForeldreloeseProps} from "../validation";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -174,7 +174,8 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
     const _relasjon = index < 0 ? _newRelasjon : (inEditMode ? _editRelasjon : relasjon)
 
     const addremovepanel = (
-      <AlignEndColumn>
+      <HStack>
+        <Spacer />
         <AddRemovePanel<RelasjonBarn>
           item={relasjon}
           marginTop={false}
@@ -187,7 +188,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
           onConfirmEdit={onSaveEdit}
           onCancelEdit={() => onCloseEdit(_namespace)}
         />
-      </AlignEndColumn>
+      </HStack>
     )
     return (
       <RepeatableBox
@@ -206,35 +207,33 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
           ? (
 
                 <VStack gap="4">
-                  <RadioPanelGroup
+                  <RadioGroup
                     value={_relasjon?.relasjonTilPerson ?? ''}
-                    data-no-border
                     data-testid={namespace + '-relasjon-til-person'}
                     error={_v[namespace + '-relasjon-til-person']?.feilmelding}
                     id={namespace + '-relasjon-til-person'}
                     legend={t('label:relasjon-med') + ' *'}
-                    name={namespace + '-relasjon-til-person'}
                     onChange={(e:string) => setRelasjonProperty("relasjonTilPerson",  e,"relasjon-til-person", index)}
                   >
                     <VStack gap="2">
-                      <HGrid gap="1" columns={2}>
-                        <RadioPanel value='soeker'>
+                      <HStack gap="4">
+                        <Radio className={commonStyles.radioPanel} value='soeker'>
                           {t('el:option-relasjonbarn-relasjontilperson-soeker')}
-                        </RadioPanel>
-                        <RadioPanel value='ektefelle_partner'>
+                        </Radio>
+                        <Radio className={commonStyles.radioPanel} value='ektefelle_partner'>
                           {t('el:option-relasjonbarn-relasjontilperson-ektefelle_partner')}
-                        </RadioPanel>
-                      </HGrid>
-                      <HGrid gap="1" columns={2}>
-                        <RadioPanel value='avdoed'>
+                        </Radio>
+                      </HStack>
+                      <HStack gap="4">
+                        <Radio className={commonStyles.radioPanel} value='avdoed'>
                           {t('el:option-relasjonbarn-relasjontilperson-avdoed')}
-                        </RadioPanel>
-                        <RadioPanel value='annen_person'>
+                        </Radio>
+                        <Radio className={commonStyles.radioPanel} value='annen_person'>
                           {t('el:option-relasjonbarn-relasjontilperson-annen_person')}
-                        </RadioPanel>
-                      </HGrid>
+                        </Radio>
+                      </HStack>
                     </VStack>
-                  </RadioPanelGroup>
+                  </RadioGroup>
                   <Select
                     value={_relasjon?.typeRelasjon ?? ''}
                     id={namespace + '-type-relasjon'}
@@ -252,7 +251,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     <option value="barnebarn_bror_søster_nevø_niese" key="barnebarn_bror_søster_nevø_niese">{t('el:option-relasjonbarn-type-barnebarn_bror_søster_nevø_niese')}</option>
                     <option value="fosterbarn" key="fosterbarn">{t('el:option-relasjonbarn-type-fosterbarn')}</option>
                   </Select>
-                  <AlignStartRow>
+                  <HGrid columns={2} gap="4" align="start">
                     <PeriodeInput
                       namespace={_namespace + '-periode'}
                       error={{
@@ -264,102 +263,92 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                       setPeriode={(p: Periode) => setPeriode(p, index)}
                       value={_relasjon?.periode}
                     />
-                  </AlignStartRow>
-                  <RadioPanelGroup
+                  </HGrid>
+                  <RadioGroup
                     value={_relasjon?.fellesOmsorg ?? ''}
-                    data-no-border
                     data-testid={namespace + '-felles-omsorg'}
                     error={_v[namespace + '-felles-omsorg']?.feilmelding}
                     id={namespace + '-felles-omsorg'}
                     legend={t('label:delt-foreldreansvar')}
-                    name={namespace + '-felles-omsorg'}
                     onChange={(e:string) => setRelasjonProperty("fellesOmsorg",  e as JaNei,"felles-omsorg", index)}
                   >
-                    <HGrid gap="1" columns={2}>
-                      <RadioPanel value='ja'>
+                    <HStack gap="4">
+                      <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
-                      </RadioPanel>
-                      <RadioPanel value='nei'>
+                      </Radio>
+                      <Radio className={commonStyles.radioPanel} value='nei'>
                         Nei
-                      </RadioPanel>
-                    </HGrid>
-                  </RadioPanelGroup>
-                  <RadioPanelGroup
+                      </Radio>
+                    </HStack>
+                  </RadioGroup>
+                  <RadioGroup
                     value={_relasjon?.borISammeHusstandSomKravstiller ?? ''}
-                    data-no-border
                     data-testid={namespace + '-bor-i-samme-hustand-som-kravstiller'}
                     error={_v[namespace + '-bor-i-samme-hustand-som-kravstiller']?.feilmelding}
                     id={namespace + '-bor-i-samme-hustand-som-kravstiller'}
                     legend={t('label:bor-i-samme-hustand-som-søkeren')}
-                    name={namespace + '-bor-i-samme-hustand-som-kravstiller'}
                     onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomKravstiller",  e as JaNei,"bor-i-samme-hustand-som-kravstiller", index)}
                   >
-                    <HGrid gap="1" columns={2}>
-                      <RadioPanel value='ja'>
+                    <HStack gap="4">
+                      <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
-                      </RadioPanel>
-                      <RadioPanel value='nei'>
+                      </Radio>
+                      <Radio className={commonStyles.radioPanel} value='nei'>
                         Nei
-                      </RadioPanel>
-                    </HGrid>
-                  </RadioPanelGroup>
-                  <RadioPanelGroup
+                      </Radio>
+                    </HStack>
+                  </RadioGroup>
+                  <RadioGroup
                     value={_relasjon?.borISammeHusstandSomEktefelle ?? ''}
-                    data-no-border
                     data-testid={namespace + '-bor-i-samme-hustand-som-ektefelle'}
                     error={_v[namespace + '-bor-i-samme-hustand-som-ektefelle']?.feilmelding}
                     id={namespace + '-bor-i-samme-hustand-som-ektefelle'}
                     legend={t('label:bor-i-samme-hustand-som-ektefelle-partneren')}
-                    name={namespace + '-bor-i-samme-hustand-som-ektefelle'}
                     onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomEktefelle",  e as JaNei,"bor-i-samme-hustand-som-ektefelle", index)}
                   >
-                    <HGrid gap="1" columns={2}>
-                      <RadioPanel value='ja'>
+                    <HStack gap="4">
+                      <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
-                      </RadioPanel>
-                      <RadioPanel value='nei'>
+                      </Radio>
+                      <Radio className={commonStyles.radioPanel} value='nei'>
                         Nei
-                      </RadioPanel>
-                    </HGrid>
-                  </RadioPanelGroup>
-                  <RadioPanelGroup
+                      </Radio>
+                    </HStack>
+                  </RadioGroup>
+                  <RadioGroup
                     value={_relasjon?.borISammeHusstandSomAnnenPerson ?? ''}
-                    data-no-border
                     data-testid={namespace + '-bor-i-samme-hustand-som-annen-person'}
                     error={_v[namespace + '-bor-i-samme-hustand-som-annen-person']?.feilmelding}
                     id={namespace + '-bor-i-samme-hustand-som-annen-person'}
                     legend={t('label:bor-i-samme-hustand-som-den-andre-aktuelle-personen')}
-                    name={namespace + '-bor-i-samme-hustand-som-annen-person'}
                     onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomAnnenPerson",  e as JaNei,"bor-i-samme-hustand-som-annen-person", index)}
                   >
-                    <HGrid gap="1" columns={2}>
-                      <RadioPanel value='ja'>
+                    <HStack gap="4">
+                      <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
-                      </RadioPanel>
-                      <RadioPanel value='nei'>
+                      </Radio>
+                      <Radio className={commonStyles.radioPanel} value='nei'>
                         Nei
-                      </RadioPanel>
-                    </HGrid>
-                  </RadioPanelGroup>
-                  <RadioPanelGroup
+                      </Radio>
+                    </HStack>
+                  </RadioGroup>
+                  <RadioGroup
                     value={_relasjon?.borPaaInstitusjon ?? ''}
-                    data-no-border
                     data-testid={namespace + '-bor-paa-institusjon'}
                     error={_v[namespace + '-bor-paa-institusjon']?.feilmelding}
                     id={namespace + '-bor-paa-institusjon'}
                     legend={t('label:bor-barnet-paa-institusjon')}
-                    name={namespace + '-bor-paa-institusjon'}
                     onChange={(e:string) => setRelasjonProperty("borPaaInstitusjon",  e as JaNei,"bor-paa-institusjon", index)}
                   >
-                    <HGrid gap="1" columns={2}>
-                      <RadioPanel value='ja'>
+                    <HStack gap="4">
+                      <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
-                      </RadioPanel>
-                      <RadioPanel value='nei'>
+                      </Radio>
+                      <Radio className={commonStyles.radioPanel} value='nei'>
                         Nei
-                      </RadioPanel>
-                    </HGrid>
-                  </RadioPanelGroup>
+                      </Radio>
+                    </HStack>
+                  </RadioGroup>
                   {addremovepanel}
                 </VStack>
 
@@ -403,17 +392,15 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
         </Heading>
         {CDM_VERSJON === "4.2" &&
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-barnet-relasjoner']?.feilmelding}
-                namespace={namespace}
-                id='barnet-relasjoner'
-                label={t('label:relasjon-mellom-den-foreldreloese-barnet-og-avdoede')}
-                hideLabel={true}
-                onChanged={(v) => setYtelseTilForeldreloeseProperty('relasjontilavdoedefritekst', v)}
-                value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.barnet?.relasjontilavdoedefritekst ?? ''}
-              />
-            </TextAreaDiv>
+            <TextArea
+              error={validation[namespace + '-barnet-relasjoner']?.feilmelding}
+              namespace={namespace}
+              id='barnet-relasjoner'
+              label={t('label:relasjon-mellom-den-foreldreloese-barnet-og-avdoede')}
+              hideLabel={true}
+              onChanged={(v) => setYtelseTilForeldreloeseProperty('relasjontilavdoedefritekst', v)}
+              value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.barnet?.relasjontilavdoedefritekst ?? ''}
+            />
           </Box>
         }
         {(parseFloat(CDM_VERSJON) >= 4.3) &&
