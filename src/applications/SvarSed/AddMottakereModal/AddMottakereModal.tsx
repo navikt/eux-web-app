@@ -1,17 +1,7 @@
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, Button, Loader, Select } from '@navikt/ds-react'
-import {
-  Column,
-  FlexCenterDiv, FlexCenterSpacedDiv,
-  HorizontalSeparatorDiv,
-  PileCenterDiv,
-  PileDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Alert, Button, Loader, Select, Box, HGrid, VStack, HStack} from '@navikt/ds-react'
 import { Country } from '@navikt/land-verktoy'
 import { addMottakere, resetMottakere } from 'actions/svarsed'
-import { AlertstripeDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { ErrorElement } from 'declarations/app'
 import { State } from 'declarations/reducers'
@@ -20,25 +10,9 @@ import _ from 'lodash'
 import React, {useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import {getInstitusjoner} from "actions/sak";
 import CountryDropdown from "../../../components/CountryDropdown/CountryDropdown";
-
-const MinimalModalDiv = styled.div`
-  min-height: 250px;
-  min-width: 600px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-`
-const SectionDiv = styled.div`
-  flex: 1;
-  align-items: stretch;
-  flex-direction: row;
-  display: flex;
-  justify-content: center;
-`
+import styles from "./AddMottakereModal.module.css"
 
 interface AddDeltakereModalProps {
   bucType: string
@@ -146,31 +120,27 @@ const AddMottakereModal = ({
   }
 
   return (
-    <MinimalModalDiv>
+    <Box className={styles.minimalModal}>
       {alertMessage && alertType && [types.SVARSED_MOTTAKERE_ADD_FAILURE].indexOf(alertType) >= 0 && (
-        <PileCenterDiv>
-          <AlertstripeDiv>
+        <VStack gap="4" align="center">
+          <Box>
             <Alert variant='error'>{alertMessage}</Alert>
-          </AlertstripeDiv>
-          <VerticalSeparatorDiv />
-          <FlexCenterSpacedDiv>
-            <div />
+          </Box>
+          <HStack gap="4" justify="center">
             <Button
               variant='secondary'
               onClick={onClose}
             >
               {t('label:damn-really')}
             </Button>
-            <div />
-          </FlexCenterSpacedDiv>
-        </PileCenterDiv>
+          </HStack>
+        </VStack>
       )}
       {_.isEmpty(mottakere)
         ? (
-          <SectionDiv>
-            <PileDiv style={{ width: '100%', lignItems: 'flex-start' }}>
-              <Row>
-                <Column>
+            <VStack gap="4">
+              <HGrid columns={2} gap="4" align="start">
+                <Box>
                   <CountryDropdown
                     closeMenuOnSelect
                     data-testid={namespace + '-landkode'}
@@ -183,100 +153,87 @@ const AddMottakereModal = ({
                     values={landkode ?? null}
                     menuPortalTarget={null}
                   />
-                  <VerticalSeparatorDiv />
-                </Column>
-                <Column>
-                  <FlexCenterDiv>
-                    <Select
-                      data-testid={namespace + '-institusjon'}
-                      disabled={!!_.isEmpty(landkode) || gettingInstitusjoner}
-                      error={_validation[namespace + '-institusjon']?.feilmelding}
-                      id={namespace + '-institusjon'}
-                      label={t('label:mottaker-institusjon')}
-                      onChange={onInstitusjonChange}
-                      value=''
-                    >
-                      <option value=''>
-                        {t('label:velg')}
-                      </option>)
-                      {institusjoner &&
-                        _.orderBy(institusjoner, 'term')
-                          .filter((i: Institusjon) =>
-                            _.find(newMottakere, nm => nm.id === i.institusjonsID) === undefined
-                          )
-                          .map((i: Institusjon) => (
-                            <option
-                              value={i.institusjonsID}
-                              key={i.institusjonsID}
-                            >
-                              {i.navn}
-                            </option>
-                          ))}
-                    </Select>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    {gettingInstitusjoner && <Loader />}
-                  </FlexCenterDiv>
-                  <VerticalSeparatorDiv />
-                </Column>
-              </Row>
-              <VerticalSeparatorDiv size='1' />
-              {newMottakere.map(mottakere => (
-                <div key={mottakere.id} className='slideInFromLeft'>
-                  <FlexCenterDiv>
+                </Box>
+                <HStack gap="2" align="end">
+                  <Select
+                    data-testid={namespace + '-institusjon'}
+                    disabled={!!_.isEmpty(landkode) || gettingInstitusjoner}
+                    error={_validation[namespace + '-institusjon']?.feilmelding}
+                    id={namespace + '-institusjon'}
+                    label={t('label:mottaker-institusjon')}
+                    onChange={onInstitusjonChange}
+                    value=''
+                  >
+                    <option value=''>
+                      {t('label:velg')}
+                    </option>)
+                    {institusjoner &&
+                      _.orderBy(institusjoner, 'term')
+                        .filter((i: Institusjon) =>
+                          _.find(newMottakere, nm => nm.id === i.institusjonsID) === undefined
+                        )
+                        .map((i: Institusjon) => (
+                          <option
+                            value={i.institusjonsID}
+                            key={i.institusjonsID}
+                          >
+                            {i.navn}
+                          </option>
+                        ))}
+                  </Select>
+                  {gettingInstitusjoner && <Loader />}
+                </HStack>
+              </HGrid>
+              <VStack gap="1">
+                {newMottakere.map(mottakere => (
+                  <HStack gap="2" align="center" key={mottakere.id} className='slideInFromLeft'>
                     {mottakere.name}
-                    <HorizontalSeparatorDiv />
                     <Button onClick={() => deleteMottakere(mottakere.id)} icon={<TrashIcon/>}/>
-                  </FlexCenterDiv>
-                  <VerticalSeparatorDiv size='0.3' />
-                </div>
-              ))}
-              <VerticalSeparatorDiv size='1' />
-            </PileDiv>
-          </SectionDiv>
+                  </HStack>
+                ))}
+              </VStack>
+            </VStack>
           )
         : (
-          <>
+          <Box padding="4">
             <Alert variant='success'>
               {t('message:success-mottakere-saved')}
             </Alert>
-            <VerticalSeparatorDiv />
-          </>
+          </Box>
           )}
-      <SectionDiv>
-        <VerticalSeparatorDiv />
-        {_.isEmpty(mottakere)
-          ? (
-            <div>
-              <Button
-                variant='primary'
-                disabled={addingMottakere}
-                onClick={onSave}
-              >
-                {addingMottakere && <Loader />}
-                {addingMottakere ? t('message:loading-saving') : t('el:button-save')}
-              </Button>
-              <HorizontalSeparatorDiv />
-              <Button
-                variant='tertiary'
-                disabled={addingMottakere}
-                onClick={onClose}
-              >
-                {t('el:button-cancel')}
-              </Button>
-            </div>
-            )
-          : (
-            <div>
+      <HStack justify="center">
+        <Box padding="4">
+          {_.isEmpty(mottakere)
+            ? (
+              <HStack gap="4">
+                <Button
+                  variant='primary'
+                  disabled={addingMottakere}
+                  onClick={onSave}
+                >
+                  {addingMottakere && <Loader />}
+                  {addingMottakere ? t('message:loading-saving') : t('el:button-save')}
+                </Button>
+                <Button
+                  variant='tertiary'
+                  disabled={addingMottakere}
+                  onClick={onClose}
+                >
+                  {t('el:button-cancel')}
+                </Button>
+              </HStack>
+              )
+            : (
               <Button
                 variant='primary'
                 onClick={onSaved}
               >
                 {t('el:button-close')}
               </Button>
-            </div>
-            )}
-      </SectionDiv>
-    </MinimalModalDiv>
+              )}
+        </Box>
+      </HStack>
+    </Box>
   )
 }
 
