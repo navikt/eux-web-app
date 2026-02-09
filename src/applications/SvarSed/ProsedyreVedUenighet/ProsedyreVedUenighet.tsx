@@ -1,15 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { Button, Heading } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { BodyLong, Box, Button, Heading, HGrid, HStack, Spacer, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -17,7 +7,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
-import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
+import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
@@ -228,145 +218,140 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
     }))
 
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(grunn)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow style={{ minHeight: '2.2rem' }}>
           {inEditMode
             ? (
-              <>
-                <Column>
-                  <Select
-                    closeMenuOnSelect
-                    data-testid={_namespace + '-grunn'}
-                    error={_v[_namespace + '-grunn']?.feilmelding}
-                    id={_namespace + '-grunn'}
-                    label={t('label:velg-grunn-til-uenighet')}
-                    menuPortalTarget={document.body}
-                    onChange={(o: unknown) => setGrunn((o as Option).value, _grunn?.grunn, index)}
-                    options={thisGrunnOptions}
-                    value={_.find(grunnOptions, b => b.value === _grunn?.grunn)}
-                    defaultValue={_.find(grunnOptions, b => b.value === _grunn?.grunn)}
+              <HGrid columns={3} align="center" gap="4">
+                <Select
+                  closeMenuOnSelect
+                  data-testid={_namespace + '-grunn'}
+                  error={_v[_namespace + '-grunn']?.feilmelding}
+                  id={_namespace + '-grunn'}
+                  label={t('label:velg-grunn-til-uenighet')}
+                  menuPortalTarget={document.body}
+                  onChange={(o: unknown) => setGrunn((o as Option).value, _grunn?.grunn, index)}
+                  options={thisGrunnOptions}
+                  value={_.find(grunnOptions, b => b.value === _grunn?.grunn)}
+                  defaultValue={_.find(grunnOptions, b => b.value === _grunn?.grunn)}
+                />
+                <Select
+                  closeMenuOnSelect
+                  data-testid={_namespace + '-person'}
+                  error={_v[_namespace + '-person']?.feilmelding}
+                  id={_namespace + '-person'}
+                  label={t('label:personen-det-gjelder')}
+                  menuPortalTarget={document.body}
+                  onChange={(o: unknown) => setPerson((o as Option).value, index)}
+                  options={personOptions}
+                  required
+                  value={_.find(personOptions, b => b.value === _grunn?.person)}
+                  defaultValue={_.find(personOptions, b => b.value === _grunn?.person)}
+                />
+                <HStack align="start">
+                  <Spacer/>
+                  <AddRemovePanel<Grunn>
+                    item={grunn}
+                    marginTop={inEditMode}
+                    index={index}
+                    inEditMode={inEditMode}
+                    onRemove={onRemove}
+                    onAddNew={onAddNew}
+                    onCancelNew={onCloseNew}
+                    onStartEdit={onStartEdit}
+                    onConfirmEdit={onSaveEdit}
+                    onCancelEdit={() => onCloseEdit(_namespace)}
                   />
-                </Column>
-                <Column>
-                  <Select
-                    closeMenuOnSelect
-                    data-testid={_namespace + '-person'}
-                    error={_v[_namespace + '-person']?.feilmelding}
-                    id={_namespace + '-person'}
-                    label={t('label:personen-det-gjelder')}
-                    menuPortalTarget={document.body}
-                    onChange={(o: unknown) => setPerson((o as Option).value, index)}
-                    options={personOptions}
-                    required
-                    value={_.find(personOptions, b => b.value === _grunn?.person)}
-                    defaultValue={_.find(personOptions, b => b.value === _grunn?.person)}
-                  />
-                </Column>
-              </>
+                </HStack>
+              </HGrid>
               )
             : (
-              <Column flex='2'>
-                <FlexDiv>
+              <HStack gap="2" align="start">
+                <HGrid columns={"2fr 1fr"} align="start" gap="4" width="70%">
                   <FormText
                     error={_v[_namespace + '-grunn']?.feilmelding}
                     id={_namespace + '-grunn'}
                   >
-                    {_.find(thisGrunnOptions, g => g.value === _grunn?.grunn)?.label}
+                    {_.find(thisGrunnOptions, g => g.value === _grunn?.grunn)?.label}:
                   </FormText>
-                  :
-                  <HorizontalSeparatorDiv size='0.5' />
                   <FormText
                     error={_v[_namespace + '-person']?.feilmelding}
                     id={_namespace + '-person'}
                   >
                     {_.find(personOptions, p => p.value === _grunn?.person)?.label}
                   </FormText>
-                </FlexDiv>
-              </Column>
-              )}
-          <AlignEndColumn>
-            <AddRemovePanel<Grunn>
-              item={grunn}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={onAddNew}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-      </RepeatableRow>
+                </HGrid>
+                <Spacer/>
+                <AddRemovePanel<Grunn>
+                  item={grunn}
+                  marginTop={inEditMode}
+                  index={index}
+                  inEditMode={inEditMode}
+                  onRemove={onRemove}
+                  onAddNew={onAddNew}
+                  onCancelNew={onCloseNew}
+                  onStartEdit={onStartEdit}
+                  onConfirmEdit={onSaveEdit}
+                  onCancelEdit={() => onCloseEdit(_namespace)}
+                />
+              </HStack>
+            )}
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(_allGrunns)
-        ? (
-          <PaddedHorizontallyDiv>
-            <FormText
-              error={validation[namespace + '-grunner']?.feilmelding}
-              id={namespace + '-grunner'}
-            >
+        {_.isEmpty(_allGrunns)
+          ? (
+            <Box>
               <SpacedHr />
-              {t('message:warning-no-grunn')}
+              <BodyLong>
+                <FormText
+                  error={validation[namespace + '-grunner']?.feilmelding}
+                  id={namespace + '-grunner'}
+                >
+                  {t('message:warning-no-grunn')}
+                </FormText>
+              </BodyLong>
               <SpacedHr />
-            </FormText>
-          </PaddedHorizontallyDiv>
-          )
-        : _allGrunns?.map(renderRow)}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:reason').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-      <VerticalSeparatorDiv />
-      <PaddedDiv>
-        <AlignStartRow>
-          <Column flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-ytterligereGrunner']?.feilmelding}
-                namespace={namespace}
-                id='ytterligereGrunner'
-                label={t('label:ytterligere-grunner-til-uenighet')}
-                onChanged={setYtterligereGrunner}
-                value={prosedyreVedUenighet?.ytterligereGrunner}
-              />
-            </TextAreaDiv>
-          </Column>
-          <Column />
-        </AlignStartRow>
-      </PaddedDiv>
-    </>
+            </Box>
+            )
+          : _allGrunns?.map(renderRow)}
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:reason').toLowerCase() })}
+              </Button>
+            </Box>
+            )}
+        <TextArea
+          error={validation[namespace + '-ytterligereGrunner']?.feilmelding}
+          namespace={namespace}
+          id='ytterligereGrunner'
+          label={t('label:ytterligere-grunner-til-uenighet')}
+          onChanged={setYtterligereGrunner}
+          value={prosedyreVedUenighet?.ytterligereGrunner}
+        />
+      </VStack>
+    </Box>
   )
 }
 
