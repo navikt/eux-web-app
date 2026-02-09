@@ -1,11 +1,9 @@
-import {VStack, Box, Heading, Radio, RadioGroup, Label} from '@navikt/ds-react'
-import {Column, Row} from '@navikt/hoykontrast'
+import {VStack, Box, Heading, Radio, RadioGroup, Label, HGrid} from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from 'store'
-import {TextAreaDiv} from "../../../components/StyledComponents";
 import TextArea from "../../../components/Forms/TextArea";
 import {SvarInntekt} from "../../../declarations/sed";
 import {useTranslation} from "react-i18next";
@@ -85,73 +83,63 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
         <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
           <VStack gap="4">
             <Label>{t('label:periode-det-kreves-opplysninger-om')}</Label>
-            <Row>
-              <Column flex={1}>
-                <DateField
-                  error={validation[namespace + '-periode-startdato']?.feilmelding}
-                  namespace={namespace}
-                  id='periode-startdato'
-                  label={t('label:startdato')}
-                  onChanged={(v) => setInntektProperty('periode.startdato', v)}
-                  dateValue={svarInntekt?.periode?.startdato}
-                />
-              </Column>
-              <Column flex={1}>
-                <DateField
-                  error={validation[namespace + '-periode-sluttdato']?.feilmelding}
-                  namespace={namespace}
-                  id='periode-sluttdato'
-                  label={t('label:sluttdato')}
-                  onChanged={(v) => setInntektProperty('periode.sluttdato', v)}
-                  dateValue={svarInntekt?.periode?.sluttdato}
-                />
-              </Column>
-            </Row>
+            <HGrid columns={2} gap="4" align="start">
+              <DateField
+                error={validation[namespace + '-periode-startdato']?.feilmelding}
+                namespace={namespace}
+                id='periode-startdato'
+                label={t('label:startdato')}
+                onChanged={(v) => setInntektProperty('periode.startdato', v)}
+                dateValue={svarInntekt?.periode?.startdato}
+              />
+              <DateField
+                error={validation[namespace + '-periode-sluttdato']?.feilmelding}
+                namespace={namespace}
+                id='periode-sluttdato'
+                label={t('label:sluttdato')}
+                onChanged={(v) => setInntektProperty('periode.sluttdato', v)}
+                dateValue={svarInntekt?.periode?.sluttdato}
+              />
+            </HGrid>
           </VStack>
         </Box>
         <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
           <VStack gap="4">
             <Label>{t('label:årlig-inntekt')}</Label>
-            <Row>
-              <Column flex={1}>
-                <Input
-                  error={validation[namespace + '-aarlig-beloep']?.feilmelding}
-                  namespace={namespace}
-                  id='aarlig-beloep'
-                  label={t('label:beløp')}
-                  onChanged={(v) => setInntektProperty('aarlig.beloep', v)}
-                  value={svarInntekt?.aarlig?.beloep}
-                />
-              </Column>
-              <Column flex={1}>
-                <CountrySelect
-                  closeMenuOnSelect
-                  ariaLabel={t('label:valuta')}
-                  error={validation[namespace + '-aarlig-valuta']?.feilmelding}
-                  id={namespace + '-aarlig-valuta'}
-                  label={t('label:valuta')}
-                  locale='nb'
-                  menuPortalTarget={document.body}
-                  onOptionSelected={(valuta: Currency) => setInntektProperty('aarlig.valuta', valuta.value)}
-                  type='currency'
-                  sort="noeuFirst"
-                  values={svarInntekt?.aarlig?.valuta}
-                />
-              </Column>
-            </Row>
+            <HGrid columns={2} gap="4" align="start">
+              <Input
+                error={validation[namespace + '-aarlig-beloep']?.feilmelding}
+                namespace={namespace}
+                id='aarlig-beloep'
+                label={t('label:beløp')}
+                onChanged={(v) => setInntektProperty('aarlig.beloep', v)}
+                value={svarInntekt?.aarlig?.beloep}
+              />
+              <CountrySelect
+                closeMenuOnSelect
+                ariaLabel={t('label:valuta')}
+                error={validation[namespace + '-aarlig-valuta']?.feilmelding}
+                id={namespace + '-aarlig-valuta'}
+                label={t('label:valuta')}
+                locale='nb'
+                menuPortalTarget={document.body}
+                onOptionSelected={(valuta: Currency) => setInntektProperty('aarlig.valuta', valuta.value)}
+                type='currency'
+                sort="noeuFirst"
+                values={svarInntekt?.aarlig?.valuta}
+              />
+            </HGrid>
           </VStack>
         </Box>
         <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-          <TextAreaDiv>
-            <TextArea
-              error={validation[namespace + '-ytterligereInfo']?.feilmelding}
-              namespace={namespace}
-              id='ytterligereInfo'
-              label={t('label:extra-information')}
-              onChanged={(v) => setInntektProperty('ytterligereInformasjon', v)}
-              value={svarInntekt?.ytterligereInformasjon}
-            />
-          </TextAreaDiv>
+          <TextArea
+            error={validation[namespace + '-ytterligereInfo']?.feilmelding}
+            namespace={namespace}
+            id='ytterligereInfo'
+            label={t('label:extra-information')}
+            onChanged={(v) => setInntektProperty('ytterligereInformasjon', v)}
+            value={svarInntekt?.ytterligereInformasjon}
+          />
         </Box>
       </VStack>
     </Box>
