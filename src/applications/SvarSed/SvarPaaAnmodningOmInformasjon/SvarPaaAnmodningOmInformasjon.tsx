@@ -5,22 +5,16 @@ import {MainFormProps} from "../MainForm";
 import {useTranslation} from "react-i18next";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {F027Sed} from "../../../declarations/sed";
-import {
-  Row,
-  Column,
-  RadioPanelGroup,
-  FlexRadioPanels,
-  RadioPanel
-} from "@navikt/hoykontrast";
 import DateField from "../../../components/DateField/DateField";
 import {resetValidation, setValidation} from "../../../actions/validation";
 import useUnmount from "../../../hooks/useUnmount";
 import _ from "lodash";
 import performValidation from "../../../utils/performValidation";
 import { validateKrav, ValidationKravProps } from "./validation";
-import {Box, Checkbox, VStack} from "@navikt/ds-react";
+import {Box, Checkbox, HGrid, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
 import {setDeselectedMenu} from "../../../actions/svarsed";
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
+import commonStyles from 'assets/css/common.module.css'
 
 interface KravSelector {
   validation: Validation
@@ -93,79 +87,74 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
       <Box padding="4">
         <VStack gap="4">
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <Row>
-              <Column flex={1}>
-                <DateField
-                  error={validation[namespace + '-kravMottattDato']?.feilmelding}
-                  namespace={namespace}
-                  id='kravMottattDato'
-                  label={t('label:dato-for-krav')}
-                  onChanged={setKravMottattDato}
-                  dateValue={krav?.kravMottattDato}
-                />
-              </Column>
-              <Column flex={1.99}>
-                <RadioPanelGroup
-                  legend={t('label:krav-eller-svar-paa-krav')}
-                  data-testid={namespace + '-krav-eller-svar-paa-krav'}
-                  error={validation[namespace + '-krav-eller-svar-paa-krav']?.feilmelding}
-                  id={namespace + '-krav-eller-svar-paa-krav'}
-                  onChange={(e: string | number | boolean) => setKravEllerSvarPaaKrav(e as string)}
-                  value={erKravEllerSvarPaaKrav}
-                >
-                  <FlexRadioPanels>
-                    <RadioPanel value='krav'>
-                      {t('label:krav-eller-svar-paa-krav-nytt_krav')}
-                    </RadioPanel>
-                    <RadioPanel value='svar_paa_krav'>
-                      {t('label:krav-eller-svar-paa-krav-svar-paa-krav')}
-                    </RadioPanel>
-                  </FlexRadioPanels>
-                </RadioPanelGroup>
-              </Column>
-            </Row>
+            <HGrid columns="1fr 2fr" gap="4" align="start">
+              <DateField
+                error={validation[namespace + '-kravMottattDato']?.feilmelding}
+                namespace={namespace}
+                id='kravMottattDato'
+                label={t('label:dato-for-krav')}
+                onChanged={setKravMottattDato}
+                dateValue={krav?.kravMottattDato}
+              />
+              <RadioGroup
+                legend={t('label:krav-eller-svar-paa-krav')}
+                data-testid={namespace + '-krav-eller-svar-paa-krav'}
+                error={validation[namespace + '-krav-eller-svar-paa-krav']?.feilmelding}
+                id={namespace + '-krav-eller-svar-paa-krav'}
+                onChange={(e: string) => setKravEllerSvarPaaKrav(e)}
+                value={erKravEllerSvarPaaKrav}
+              >
+                <HStack gap="4">
+                  <Radio className={commonStyles.radioPanel} value='krav'>
+                    {t('label:krav-eller-svar-paa-krav-nytt_krav')}
+                  </Radio>
+                  <Radio className={commonStyles.radioPanel} value='svar_paa_krav'>
+                    {t('label:krav-eller-svar-paa-krav-svar-paa-krav')}
+                  </Radio>
+                </HStack>
+              </RadioGroup>
+            </HGrid>
           </Box>
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-
-              <Checkbox
-                value="adopsjon"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("adopsjon", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.adopsjon}
-              >
-                {t('label:svar-på-anmodning-om-adopsjon') }
-                <br/><ErrorLabel error={validation[parentNamespace + '-adopsjon-content']?.feilmelding}/>
-              </Checkbox>
-              <Checkbox
-                value="inntekt"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("inntekt", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.inntekt}
-              >
-                {t('label:svar-på-anmodning-om-inntekt')}
-                <br/><ErrorLabel error={validation[parentNamespace + '-inntekt-content']?.feilmelding}/>
-              </Checkbox>
-              <Checkbox
-                value="ytelseTilForeldreloese"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("ytelseTilForeldreloese", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.ytelseTilForeldreloese}
-              >
-                {t('label:svar-på-anmodning-om-barnepensjon')}
-                <br/><ErrorLabel error={validation[parentNamespace + '-ytelsetilforeldreloese-content']?.feilmelding}/>
-              </Checkbox>
-              <Checkbox
-                value="annenInformasjonBarnet"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("annenInformasjonBarnet", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.annenInformasjonBarnet}
-              >
-                {t('label:svar-på-anmodning-om-annen-informasjon-om-barnet')}
-                <br/><ErrorLabel error={validation[parentNamespace + '-anneninformasjonbarnet-content']?.feilmelding}/>
-              </Checkbox>
-              <Checkbox
-                value="utdanning"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("utdanning", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.utdanning || !!svarPaaAnmodningOmMerInformasjon?.deltakelsePaaUtdanning}>
-                {t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet')}
-                <br/><ErrorLabel error={validation[parentNamespace + '-utdanning-content']?.feilmelding}/>
-              </Checkbox>
+            <Checkbox
+              value="adopsjon"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("adopsjon", e.target.checked)}
+              checked={!!svarPaaAnmodningOmMerInformasjon?.adopsjon}
+            >
+              {t('label:svar-på-anmodning-om-adopsjon') }
+              <br/><ErrorLabel error={validation[parentNamespace + '-adopsjon-content']?.feilmelding}/>
+            </Checkbox>
+            <Checkbox
+              value="inntekt"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("inntekt", e.target.checked)}
+              checked={!!svarPaaAnmodningOmMerInformasjon?.inntekt}
+            >
+              {t('label:svar-på-anmodning-om-inntekt')}
+              <br/><ErrorLabel error={validation[parentNamespace + '-inntekt-content']?.feilmelding}/>
+            </Checkbox>
+            <Checkbox
+              value="ytelseTilForeldreloese"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("ytelseTilForeldreloese", e.target.checked)}
+              checked={!!svarPaaAnmodningOmMerInformasjon?.ytelseTilForeldreloese}
+            >
+              {t('label:svar-på-anmodning-om-barnepensjon')}
+              <br/><ErrorLabel error={validation[parentNamespace + '-ytelsetilforeldreloese-content']?.feilmelding}/>
+            </Checkbox>
+            <Checkbox
+              value="annenInformasjonBarnet"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("annenInformasjonBarnet", e.target.checked)}
+              checked={!!svarPaaAnmodningOmMerInformasjon?.annenInformasjonBarnet}
+            >
+              {t('label:svar-på-anmodning-om-annen-informasjon-om-barnet')}
+              <br/><ErrorLabel error={validation[parentNamespace + '-anneninformasjonbarnet-content']?.feilmelding}/>
+            </Checkbox>
+            <Checkbox
+              value="utdanning"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("utdanning", e.target.checked)}
+              checked={!!svarPaaAnmodningOmMerInformasjon?.utdanning || !!svarPaaAnmodningOmMerInformasjon?.deltakelsePaaUtdanning}>
+              {t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet')}
+              <br/><ErrorLabel error={validation[parentNamespace + '-utdanning-content']?.feilmelding}/>
+            </Checkbox>
           </Box>
         </VStack>
       </Box>
