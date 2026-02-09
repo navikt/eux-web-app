@@ -1,4 +1,4 @@
-import {VStack, Box, Heading, HGrid, TextField, Label, Select} from '@navikt/ds-react'
+import {VStack, Box, Heading, HGrid, TextField, Label, Select, Radio, RadioGroup, HStack} from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
@@ -8,10 +8,8 @@ import {
   AnnenInformasjonBarnet_V43,
   AnnenInformasjonBarnet_V42, JaNei
 } from "declarations/sed";
-import {TextAreaDiv} from "components/StyledComponents";
 import TextArea from "components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
-import {RadioPanel, RadioPanelGroup} from '@navikt/hoykontrast'
 import useUnmount from "../../../hooks/useUnmount";
 import performValidation from "../../../utils/performValidation";
 import {
@@ -19,6 +17,7 @@ import {
   ValidationAnnenInformasjonBarnetProps
 } from "./validation";
 import {setValidation} from "../../../actions/validation";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -63,60 +62,56 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
         </Heading>
         {CDM_VERSJON === "4.2" &&
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-informasjon-om-barnehage']?.feilmelding}
-                namespace={namespace}
-                id='informasjon-om-barnehage'
-                label={t('label:informasjon-om-barnehage')}
-                hideLabel={true}
-                onChanged={(v) => setAnnenInformasjonBarnetProperty('informasjonombarnehagefritekst', v)}
-                value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V42)?.informasjonombarnehagefritekst ?? ''}
-              />
-            </TextAreaDiv>
+            <TextArea
+              error={validation[namespace + '-informasjon-om-barnehage']?.feilmelding}
+              namespace={namespace}
+              id='informasjon-om-barnehage'
+              label={t('label:informasjon-om-barnehage')}
+              hideLabel={true}
+              onChanged={(v) => setAnnenInformasjonBarnetProperty('informasjonombarnehagefritekst', v)}
+              value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V42)?.informasjonombarnehagefritekst ?? ''}
+            />
           </Box>
         }
         {(parseFloat(CDM_VERSJON) >= 4.3) &&
           <>
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <RadioPanelGroup
+            <RadioGroup
               legend={t('label:gaar-barnet-i-barnehage')}
               value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.barnehage?.gaarIBarnehage ?? ''}
               error={validation[namespace + '-informasjon-om-barnehage']?.feilmelding}
               id={namespace + '-informasjon-om-barnehage'}
-              name={namespace + '-informasjon-om-barnehage'}
               onChange={(e:string) => setAnnenInformasjonBarnetProperty('barnehage.gaarIBarnehage', e as JaNei)}
             >
-              <HGrid gap="1" columns={2}>
-                <RadioPanel value='ja'>
+              <HStack gap="4">
+                <Radio className={commonStyles.radioPanel} value='ja'>
                   Ja
-                </RadioPanel>
-                <RadioPanel value='nei'>
+                </Radio>
+                <Radio className={commonStyles.radioPanel} value='nei'>
                   Nei
-                </RadioPanel>
-              </HGrid>
-            </RadioPanelGroup>
+                </Radio>
+              </HStack>
+            </RadioGroup>
           </Box>
           {(annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.barnehage?.gaarIBarnehage && (annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.barnehage?.gaarIBarnehage === 'ja' &&
             <>
               <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-                <RadioPanelGroup
+                <RadioGroup
                   legend={t('label:mottar-barnehagen-offentlig-stoette')}
                   value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.barnehage?.mottarOffentligStoette ?? ''}
                   error={validation[namespace + '-mottar-offentlig-stoette']?.feilmelding}
                   id='mottar-offentlig-stoette'
-                  name={namespace + '-mottar-offentlig-stoette'}
                   onChange={(e:string) => setAnnenInformasjonBarnetProperty('barnehage.mottarOffentligStoette', e as JaNei)}
                 >
-                  <HGrid gap="1" columns={2}>
-                    <RadioPanel value='ja'>
+                  <HStack gap="4">
+                    <Radio className={commonStyles.radioPanel} value='ja'>
                       Ja
-                    </RadioPanel>
-                    <RadioPanel value='nei'>
+                    </Radio>
+                    <Radio className={commonStyles.radioPanel} value='nei'>
                       Nei
-                    </RadioPanel>
-                  </HGrid>
-                </RadioPanelGroup>
+                    </Radio>
+                  </HStack>
+                </RadioGroup>
               </Box>
               <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
                 <Label>
