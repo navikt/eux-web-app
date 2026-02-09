@@ -36,7 +36,7 @@
     "@navikt/hoykontrast": "4.0.1",
     "@navikt/land-verktoy": "9.1.31",
     "@navikt/landvelger": "10.0.14",
-    "@navikt/tabell": "11.0.1",
+    "@navikt/tabell": "11.0.16",
     "@reduxjs/toolkit": "1.9.7",
     "ansi-to-html": "0.7.2",
     "bytes": "3.1.2",
