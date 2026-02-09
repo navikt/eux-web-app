@@ -1,4 +1,4 @@
-import {VStack, Box, Heading, HGrid} from '@navikt/ds-react'
+import {VStack, Box, Heading, Radio, RadioGroup, HStack} from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
@@ -8,16 +8,15 @@ import {
   AnnenInformasjonBarnet_V43,
   AnnenInformasjonBarnet_V42, JaNei
 } from "declarations/sed";
-import {TextAreaDiv} from "components/StyledComponents";
 import TextArea from "components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
-import {RadioPanel, RadioPanelGroup} from "@navikt/hoykontrast";
 import useUnmount from "../../../hooks/useUnmount";
 import performValidation from "../../../utils/performValidation";
 import {
   validateErAdoptert, ValidationAnnenInformasjonBarnetProps
 } from "./validation";
 import {setValidation} from "../../../actions/validation";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -59,39 +58,35 @@ const ErBarnetAdoptert: React.FC<MainFormProps> = ({
         </Heading>
         {CDM_VERSJON === "4.2" &&
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-er-adoptert']?.feilmelding}
-                namespace={namespace}
-                id='er-adoptert'
-                label={t('label:er-barnet-adoptert')}
-                hideLabel={true}
-                onChanged={(v) => setAnnenInformasjonBarnetProperty('eradoptertfritekst', v)}
-                value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V42)?.eradoptertfritekst ?? ''}
-              />
-            </TextAreaDiv>
+            <TextArea
+              error={validation[namespace + '-er-adoptert']?.feilmelding}
+              namespace={namespace}
+              id='er-adoptert'
+              label={t('label:er-barnet-adoptert')}
+              hideLabel={true}
+              onChanged={(v) => setAnnenInformasjonBarnetProperty('eradoptertfritekst', v)}
+              value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V42)?.eradoptertfritekst ?? ''}
+            />
           </Box>
         }
         {(parseFloat(CDM_VERSJON) >= 4.3) &&
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <RadioPanelGroup
+            <RadioGroup
               value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.erAdoptert ?? ''}
-              data-no-border
               data-testid={namespace}
               error={validation[namespace + '-er-adoptert']?.feilmelding}
               id={namespace + '-er-adoptert'}
-              name={namespace + '-er-adoptert'}
               onChange={(e:string) => setAnnenInformasjonBarnetProperty("erAdoptert",  e as JaNei)}
             >
-              <HGrid gap="1" columns={2}>
-                <RadioPanel value='ja'>
+              <HStack gap="4">
+                <Radio className={commonStyles.radioPanel} value='ja'>
                   Ja
-                </RadioPanel>
-                <RadioPanel value='nei'>
+                </Radio>
+                <Radio className={commonStyles.radioPanel} value='nei'>
                   Nei
-                </RadioPanel>
-              </HGrid>
-            </RadioPanelGroup>
+                </Radio>
+              </HStack>
+            </RadioGroup>
           </Box>
         }
       </VStack>
