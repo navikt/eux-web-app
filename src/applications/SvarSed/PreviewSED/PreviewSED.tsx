@@ -1,6 +1,5 @@
 import { EyeWithPupilIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
-import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { getPreviewFile, previewSed, resetPreviewSvarSed } from 'actions/svarsed'
 import Modal from 'components/Modal/Modal'
 import { ModalContent } from 'declarations/components'
@@ -125,7 +124,6 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
       >
         {!short && (
           <>
-            <HorizontalSeparatorDiv size='0.5' />
             {gettingPreviewFile ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'SED' })}
           </>
         )}
