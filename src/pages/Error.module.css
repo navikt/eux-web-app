@@ -1,0 +1,12 @@
+.description{
+  width: 80%;
+  margin: 1rem;
+  text-align: center;
+}
+
+.line{
+  width: 60%;
+  margin: 1rem;
+  min-height: 0.25rem;
+  border-bottom: 1px solid #78706A;
+}
