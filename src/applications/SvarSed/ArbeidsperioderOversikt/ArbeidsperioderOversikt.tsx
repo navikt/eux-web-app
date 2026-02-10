@@ -1,6 +1,5 @@
 import { PlusCircleIcon, Buildings3Icon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Checkbox, Heading, Ingress, Label } from '@navikt/ds-react'
-import { FlexCenterSpacedDiv, PaddedDiv, PaddedHorizontallyDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { BodyLong, Box, Button, Checkbox, Heading, HStack, Label, VStack } from '@navikt/ds-react'
 import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { fetchInntekt } from 'actions/inntekt'
 import { resetValidation, setValidation } from 'actions/validation'
@@ -239,18 +238,14 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
 
   const renderPlan = (item: PlanItem<ForsikringPeriode>, index: number, previousItem: PlanItem<ForsikringPeriode> | undefined) => {
     return (
-      <div key={getId(item, index)}>
+      <VStack gap="4" key={getId(item, index)}>
         {_sort === 'group' && (previousItem === undefined || previousItem.type !== item.type) && (
-          <>
-            <PaddedHorizontallyDiv>
-              <Label>{t('label:' + item.type)}</Label>
-            </PaddedHorizontallyDiv>
-            <VerticalSeparatorDiv />
-          </>
+          <Box paddingInline="4">
+            <Label>{t('label:' + item.type)}</Label>
+          </Box>
         )}
         {renderPlanItem(item, index)}
-        <VerticalSeparatorDiv />
-      </div>
+      </VStack>
     )
   }
 
@@ -309,87 +304,81 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {t('label:oversikt-brukers-arbeidsperioder')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <Ingress>
-        {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
-      </Ingress>
-      <VerticalSeparatorDiv />
-      <ArbeidsperioderSøk
-        fnr={fnr}
-        namespace={namespace}
-        defaultDates={{
-          "startDato": anmodningsperiode?.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
-          "sluttDato": anmodningsperiode?.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
-        }}
-        type={arbeidsperioderSøkType}
-      />
-      <VerticalSeparatorDiv size='2' />
-      {_.isEmpty(_plan)
-        ? (
-          <>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-periods-med-forsikring')}
-            </BodyLong>
-            <SpacedHr />
-          </>
-          )
-        : (
-          <>
-            <FlexCenterSpacedDiv>
-              <Checkbox
-                checked={_sort === 'group'}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {t('label:oversikt-brukers-arbeidsperioder')}
+        </Heading>
+        <BodyLong size="large">
+          {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
+        </BodyLong>
+        <ArbeidsperioderSøk
+          fnr={fnr}
+          namespace={namespace}
+          defaultDates={{
+            "startDato": anmodningsperiode?.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
+            "sluttDato": anmodningsperiode?.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
+          }}
+          type={arbeidsperioderSøkType}
+        />
+        {_.isEmpty(_plan)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-periods-med-forsikring')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
+            )
+          : (
+            <>
+              <HStack gap="4">
+                <Checkbox
+                  checked={_sort === 'group'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+                >
+                  {t('label:group-by-type')}
+                </Checkbox>
+                <Checkbox
+                  checked={_view === 'periods'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setView(e.target.checked ? 'periods' : 'all')}
+                >
+                  {t('label:se-kun-perioder')}
+                </Checkbox>
+              </HStack>
+              {_plan?.map((item, index) => renderPlan(item, index, (index > 0 ? _plan![index - 1] : undefined)))}
+            </>
+            )}
+        {_copiedPeriod && renderPlanItem(_copiedPeriod, -1)}
+        {_newForm
+          ? renderPlanItem(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
               >
-                {t('label:group-by-type')}
-              </Checkbox>
-              <Checkbox
-                checked={_view === 'periods'}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setView(e.target.checked ? 'periods' : 'all')}
-              >
-                {t('label:se-kun-perioder')}
-              </Checkbox>
-            </FlexCenterSpacedDiv>
-
-            <VerticalSeparatorDiv />
-            {_plan?.map((item, index) => renderPlan(item, index, (index > 0 ? _plan![index - 1] : undefined)))}
-          </>
-          )}
-      <VerticalSeparatorDiv />
-      {_copiedPeriod && renderPlanItem(_copiedPeriod, -1)}
-      {_newForm
-        ? renderPlanItem(null, -1)
-        : (
-          <Button
-            variant='tertiary'
-            onClick={() => _setNewForm(true)}
-            icon={<PlusCircleIcon/>}
-          >
-            {t('el:button-add-new-x', { x: t('label:arbeidperioder').toLowerCase() })}
-          </Button>
-          )}
-      <VerticalSeparatorDiv />
-      <Ingress>
-        {t('label:hent-inntekt-i-A-inntekt')}
-      </Ingress>
-      <VerticalSeparatorDiv />
-      <InntektSearch
-        fnr={fnr!}
-        onInntektSearch={onInntektSearch}
-        gettingInntekter={gettingInntekter}
-        defaultDates={{
-          "startDato": anmodningsperiode?.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
-          "sluttDato": anmodningsperiode?.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
-        }}
-      />
-      <VerticalSeparatorDiv />
-      {inntekter && <Inntekt inntekter={inntekter} />}
-    </PaddedDiv>
-
+                {t('el:button-add-new-x', { x: t('label:arbeidperioder').toLowerCase() })}
+              </Button>
+            </Box>
+            )}
+        <BodyLong size="large">
+          {t('label:hent-inntekt-i-A-inntekt')}
+        </BodyLong>
+        <InntektSearch
+          fnr={fnr!}
+          onInntektSearch={onInntektSearch}
+          gettingInntekter={gettingInntekter}
+          defaultDates={{
+            "startDato": anmodningsperiode?.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
+            "sluttDato": anmodningsperiode?.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
+          }}
+        />
+        {inntekter && <Inntekt inntekter={inntekter} />}
+      </VStack>
+    </Box>
   )
 }
 

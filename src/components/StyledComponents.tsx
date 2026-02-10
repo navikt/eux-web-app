@@ -130,6 +130,9 @@ export const RepeatableBox = styled(Box)`
   &.error {
     background-color: rgba(255, 0, 0, 0.2);
   };
+  &.original {
+    background-color: var(--a-blue-100);
+  };
   &.errorBorder {
     border: 1px solid var(--a-border-danger);
   }

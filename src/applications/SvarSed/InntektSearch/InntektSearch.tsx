@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from '@navikt/aksel-icons'
-import { Button, HGrid, Loader } from '@navikt/ds-react'
+import { Button, HGrid, Loader, Box} from '@navikt/ds-react'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
@@ -72,7 +72,7 @@ const InntektSearch = ({
   }
 
   return (
-    <HGrid columns={4} gap="4" align="end">
+    <HGrid columns={4} gap="4" align="start">
       <Input
         namespace={namespace}
         error={_validation[namespace + '-startdato']?.feilmelding}
@@ -100,17 +100,19 @@ const InntektSearch = ({
         value={_.find(filterOptions, b => b.value === _filter)}
         defaultValue={_.find(filterOptions, b => b.value === _filter)}
       />
-      <Button
-        variant='secondary'
-        disabled={gettingInntekter}
-        onClick={onInntektSearchClicked}
-        icon={<MagnifyingGlassIcon/>}
-      >
-        {gettingInntekter
-          ? t('message:loading-searching')
-          : t('el:button-search-i-x', { x: t('label:a-inntekt') })}
-        {gettingInntekter && <Loader />}
-      </Button>
+      <Box marginBlock="8">
+        <Button
+          variant='secondary'
+          disabled={gettingInntekter}
+          onClick={onInntektSearchClicked}
+          icon={<MagnifyingGlassIcon/>}
+        >
+          {gettingInntekter
+            ? t('message:loading-searching')
+            : t('el:button-search-i-x', { x: t('label:a-inntekt') })}
+          {gettingInntekter && <Loader />}
+        </Button>
+      </Box>
     </HGrid>
   )
 }

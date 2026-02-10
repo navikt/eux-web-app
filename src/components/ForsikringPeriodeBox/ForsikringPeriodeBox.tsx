@@ -11,7 +11,7 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { toDateFormat } from 'components/DateField/DateField'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import {HorizontalLineSeparator, RepeatableBox} from 'components/StyledComponents'
 import {
   Adresse,
   ArbeidsgiverIdentifikator,
@@ -29,32 +29,11 @@ import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import React, {useState} from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import InntektOgTimerFC from './InntektOgTimer/InntektOgTimer'
 import { validateForsikringPeriodeBox, ValidationForsikringPeriodeBoxProps } from './validation'
-
-const ForsikringPeriodePanel = styled(Box)`
-  padding: 1rem;
-  &.new {
-    background-color: rgba(236, 243, 153, 0.5);
-  }
-  &.original {
-    background-color: var(--a-blue-100);
-  }
-  &.error {
-    background-color: rgba(255, 0, 0, 0.2);
-  }
-  &:hover:not(.new):not(.error) {
-    background-color: var(--a-gray-100);
-  }
-  &:not(:hover) .control-buttons {
-    position: absolute;
-    margin-left: -10000px;
-  }
-`
 
 export type Editable = 'only_period' | 'full'
 
@@ -416,7 +395,8 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   const _v: Validation = newMode ? _validation : (validation ?? {})
 
   return (
-    <ForsikringPeriodePanel
+    <RepeatableBox
+      padding="4"
       borderWidth="1"
       className={classNames(style, {
         error: hasNamespaceWithErrors(_v, namespace)
@@ -758,7 +738,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
         </BodyLong>
       )}
       </VStack>
-    </ForsikringPeriodePanel>
+    </RepeatableBox>
   )
 }
 

@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Box, Button, Heading, HGrid, HStack, Ingress, Label, Spacer, VStack } from '@navikt/ds-react'
+import { BodyLong, Box, Button, Heading, HGrid, HStack, Label, Spacer, VStack } from '@navikt/ds-react'
 import { fetchInntekt } from 'actions/inntekt'
 import { resetValidation, setValidation } from 'actions/validation'
 import Inntekter from 'applications/SvarSed/Inntekter/Inntekter'
