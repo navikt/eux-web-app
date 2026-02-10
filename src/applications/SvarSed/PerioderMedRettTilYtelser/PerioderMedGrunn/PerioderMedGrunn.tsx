@@ -189,7 +189,7 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
 
     return (
       <RepeatableBox
-        padding="2"
+        padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(periodeMedGrunn)}
         className={classNames({
@@ -197,10 +197,10 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
           errorBorder: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <HStack gap="4" wrap={false} align="start">
+        <HStack gap="4" align="start">
           {inEditMode
             ? (
-                <VStack gap="2">
+                <VStack gap="2" width="100%">
                   <HStack gap="4" wrap={false} align="start">
                     <PeriodeInput
                       namespace={_namespace}
@@ -215,7 +215,6 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
                       requiredSluttDato={requiredSluttDato}
                       periodeType={periodeType}
                     />
-                    <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
                     <Spacer/>
                     <AddRemovePanel<PeriodeMedGrunn>
                       item={periodeMedGrunn}

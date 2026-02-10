@@ -1,23 +1,12 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Checkbox, Label, Tag } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  PaddedDiv,
-  PaddedHorizontallyDiv, PaddedVerticallyDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Checkbox, HGrid, HStack, Label, Radio, RadioGroup, Spacer, Tag, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {RepeatablePeriodeRow} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import {Periode, PeriodeSort, PersonTypeBrukerF026} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -30,17 +19,8 @@ import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateDekkedePeriode, ValidationDekkedePeriodeProps } from './validation'
-import styled from "styled-components";
-
-const GreyBoxWithBorder = styled.div`
-  background-color: var(--a-surface-subtle);
-  border: 1px solid var(--a-border-default);
-  padding: 0 1rem;
-
-  &.error {
-    background-color: rgba(255, 0, 0, 0.2);
-  };
-`
+import commonStyles from 'assets/css/common.module.css'
+import styles from './DekkedePerioder.module.css'
 
 interface DekkedePerioderProps extends MainFormProps {
   validation: Validation
@@ -233,7 +213,8 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
     )
 
     return (
-      <RepeatablePeriodeRow
+      <RepeatableBox
+        padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
         className={classNames({
@@ -243,144 +224,131 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       >
         {inEditMode
           ? (
-              <>
-              <AlignStartRow>
-                <PeriodeInput
-                  namespace={_namespace}
-                  hideLabel={false}
-                  error={{
-                    startdato: _v[_namespace + '-startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                  }}
-                  setPeriode={(p: Periode) => setPeriode(p, index)}
-                  value={_periode}
-                />
-                <Column />
-              </AlignStartRow>
-              <VerticalSeparatorDiv size='0.5' />
-              <AlignStartRow>
-                <Column>
-                  <RadioPanelGroup
+              <VStack gap="4">
+                <HStack gap="4">
+                  <PeriodeInput
+                    namespace={_namespace}
+                    hideLabel={false}
+                    error={{
+                      startdato: _v[_namespace + '-startdato']?.feilmelding,
+                      sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                    }}
+                    setPeriode={(p: Periode) => setPeriode(p, index)}
+                    value={_periode}
+                  />
+                  <Spacer/>
+                  {addremovepanel}
+                </HStack>
+                <HGrid columns={"2fr 1fr"}>
+                  <RadioGroup
                     value={_periode?.__type}
                     data-no-border
                     data-testid={_namespace + '-type'}
                     error={_v[_namespace + '-type']?.feilmelding}
                     id={_namespace + '-type'}
                     legend=''
-                    hideLabel
+                    hideLegend={true}
                     name={_namespace + '-type'}
                     onChange={(newType: string) => setType(newType, index)}
                   >
-                    <FlexRadioPanels>
-                      <RadioPanel value='dekkedePerioder'>
+                    <HStack gap="4" width="100%">
+                      <Radio className={commonStyles.radioPanel} value='dekkedePerioder'>
                         {t('label:dekkede')}
-                      </RadioPanel>
-                      <RadioPanel value='udekkedePerioder'>
+                      </Radio>
+                      <Radio className={commonStyles.radioPanel} value='udekkedePerioder'>
                         {t('label:udekkede')}
-                      </RadioPanel>
-                    </FlexRadioPanels>
-                  </RadioPanelGroup>
-                </Column>
-                <AlignEndColumn>
-                  {addremovepanel}
-                </AlignEndColumn>
-              </AlignStartRow>
-            </>
+                      </Radio>
+                    </HStack>
+                  </RadioGroup>
+                </HGrid>
+              </VStack>
             )
           : (
-            <AlignStartRow>
-              <Column>
-                <PeriodeText
-                  periode={periode}
-                  namespace={_namespace}
-                  error={{
-                    startdato: _v[_namespace + '-startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                  }}
-                />
-              </Column>
+            <HStack gap="4" align="center">
+              <PeriodeText
+                periode={periode}
+                namespace={_namespace}
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+              />
               {_sort === 'time' && getTag(periode?.__type!)}
-              <AlignEndColumn>
-                {addremovepanel}
-              </AlignEndColumn>
-            </AlignStartRow>
+              <Spacer/>
+              {addremovepanel}
+            </HStack>
             )}
-      </RepeatablePeriodeRow>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
-        <GreyBoxWithBorder
-          id={namespace + '-dekkedePerioder'}
-          className={classNames({
-            error: hasNamespaceWithErrors(validation, namespace)
-          })}
-        >
-          {!_.isEmpty(_allPeriods) && (
-            <>
-              <PaddedHorizontallyDiv>
-                <Checkbox
-                  checked={_sort === 'group'}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
-                >
-                  {t('label:group-by-dekkede')}
-                </Checkbox>
-              </PaddedHorizontallyDiv>
-              <VerticalSeparatorDiv />
-            </>
-          )}
-          {_.isEmpty(_allPeriods)
-            ? (
-              <PaddedVerticallyDiv>
-                <BodyLong>
-                  {t('message:warning-no-periods')}
-                </BodyLong>
-              </PaddedVerticallyDiv>
-              )
-            : (_sort === 'time'
-                ? _allPeriods?.map(renderRow)
-                : (
-                  <>
-                    {!_.isEmpty(person?.dekkedePerioder) && (
-                      <PaddedDiv>
-                        <Label>
-                          {t('label:dekkede')}
-                        </Label>
-                      </PaddedDiv>
-                    )}
-                    {person?.dekkedePerioder?.map((p: Periode, i: number) =>
-                      ({ ...p, __type: 'dekkedePerioder', __index: i }))
-                      .sort(periodeSort).map(renderRow)}
-                    {!_.isEmpty(person?.udekkedePerioder) && (
-                      <PaddedDiv>
-                        <Label>
-                          {t('label:udekkede')}
-                        </Label>
-                      </PaddedDiv>
-                    )}
-                    {person?.udekkedePerioder?.map((p: Periode, i: number) =>
-                      ({ ...p, __type: 'udekkedePerioder', __index: i }))
-                      .sort(periodeSort).map(renderRow)}
-                  </>
-                  ))}
-          {_newForm
-            ? renderRow(null, -1)
-            : (
+    <Box padding="4">
+      <Box
+        background="surface-subtle"
+        borderWidth="1"
+        borderColor="border-subtle"
+        id={namespace + '-dekkedePerioder'}
+        className={classNames({
+          [styles.errorBox]: hasNamespaceWithErrors(validation, namespace)
+        })}
+        padding="4"
+      >
+        <VStack gap="4">
+        {!_.isEmpty(_allPeriods) && (
+          <Checkbox
+            checked={_sort === 'group'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+          >
+            {t('label:group-by-dekkede')}
+          </Checkbox>
+        )}
+        {_.isEmpty(_allPeriods)
+          ? (
+            <BodyLong>
+              {t('message:warning-no-periods')}
+            </BodyLong>
+            )
+          : (_sort === 'time'
+              ? _allPeriods?.map(renderRow)
+              : (
+                <>
+                  {!_.isEmpty(person?.dekkedePerioder) && (
+                    <Label>
+                      {t('label:dekkede')}
+                    </Label>
+                  )}
+                  {person?.dekkedePerioder?.map((p: Periode, i: number) =>
+                    ({ ...p, __type: 'dekkedePerioder', __index: i }))
+                    .sort(periodeSort).map(renderRow)}
+                  {!_.isEmpty(person?.udekkedePerioder) && (
+                    <Label>
+                      {t('label:udekkede')}
+                    </Label>
+                  )}
+                  {person?.udekkedePerioder?.map((p: Periode, i: number) =>
+                    ({ ...p, __type: 'udekkedePerioder', __index: i }))
+                    .sort(periodeSort).map(renderRow)}
+                </>
+                ))}
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+              <Box>
                 <Button
                   variant='tertiary'
+                  size="small"
                   onClick={() => _setNewForm(true)}
                   icon={<PlusCircleIcon/>}
                 >
                   {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
                 </Button>
-              )
-          }
-          <VerticalSeparatorDiv />
-        </GreyBoxWithBorder>
-      </PaddedDiv>
-    </>
+              </Box>
+          )
+        }
+        </VStack>
+      </Box>
+    </Box>
   )
 }
 

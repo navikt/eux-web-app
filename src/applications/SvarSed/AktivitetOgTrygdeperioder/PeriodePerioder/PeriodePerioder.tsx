@@ -140,7 +140,7 @@ const PeriodePerioder: React.FC<PerioderProps> = ({
 
     return (
       <RepeatableBox
-        padding="2"
+        padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(periodePeriode)}
         className={classNames({
@@ -148,7 +148,7 @@ const PeriodePerioder: React.FC<PerioderProps> = ({
           errorBorder: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <HStack gap="4" wrap={false} align="start">
+        <HStack gap="4" align="start">
         {inEditMode
           ? (
               <PeriodeInput
@@ -177,7 +177,6 @@ const PeriodePerioder: React.FC<PerioderProps> = ({
           )
         }
           <Spacer/>
-          <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
           <AddRemovePanel<PeriodePeriode>
             item={periodePeriode}
             marginTop={inEditMode}

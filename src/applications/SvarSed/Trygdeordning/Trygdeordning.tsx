@@ -1,5 +1,4 @@
-import {Box, Heading, VStack} from '@navikt/ds-react'
-import { PaddedDiv } from '@navikt/hoykontrast'
+import {Box, Heading} from '@navikt/ds-react'
 import { setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import DekkedePerioder from 'applications/SvarSed/Trygdeordning/DekkedePerioder'
@@ -49,11 +48,11 @@ const Trygdeordning: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <PaddedDiv>
+      <Box padding="4">
         <Heading size='small'>
           {t('label:periode-trygdeordning-avsenderlandet')}
         </Heading>
-      </PaddedDiv>
+      </Box>
       <DekkedePerioder
         parentNamespace={namespace}
         personID={personID}

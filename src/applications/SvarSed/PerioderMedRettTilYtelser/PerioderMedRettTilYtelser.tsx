@@ -111,7 +111,7 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
       <Heading size='small'>
         {t('label:rett-til-ytelser')}
       </Heading>
-      <Box borderWidth="1" borderColor="border-subtle" background="surface-subtle" padding="4">
+      <Box borderWidth="1" borderColor="border-subtle" background="bg-subtle" padding="4">
         <HStack gap="4">
           <Checkbox
             checked={_rettTilFamilieytelser}
