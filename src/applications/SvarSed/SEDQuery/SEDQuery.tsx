@@ -1,21 +1,10 @@
-import {Alert, BodyLong,  Label, Loader, Search} from '@navikt/ds-react'
-import { AlignStartRow, Column, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Alert, BodyLong, Loader, Search, HGrid, VStack, BodyShort} from '@navikt/ds-react'
 import classNames from 'classnames'
-import { AlertstripeDiv } from 'components/StyledComponents'
 import useLocalValidation from 'hooks/useLocalValidation'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { validateSEDQuery } from './validation'
-import styled from 'styled-components'
 import {validateFnrDnrNpid} from "../../../utils/fnrValidator";
-
-const StyledSpan = styled.span`
-  display: inline-block;
-`
-
-const StyledLabel = styled(Label)`
-  font-weight: normal;
-`
 
 const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit, frontpage=false}: any) => {
   const { t } = useTranslation()
@@ -76,16 +65,18 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
   }
 
   return (
-    <>
-      <AlignStartRow
+    <VStack gap="4">
+      <HGrid
+        columns="2"
+        gap="4"
         className={classNames({ error: _validation.saksnummerOrFnr })}
+        width="100%"
       >
-        <HorizontalSeparatorDiv size='0.1' />
-        <Column flex='2'>
-          <PileDiv>
-            <StyledLabel htmlFor={namespace + '-saksnummerOrFnr'}>
+        <VStack gap="2">
+          <VStack gap="1">
+            <BodyShort>
               {t('label:søk-rina-sak-for-å-sende-svarsed')}
-            </StyledLabel>
+            </BodyShort>
             <Search
               label={t('label:søk-rina-sak-for-å-sende-svarsed')}
               data-testid={namespace + '-saksnummerOrFnr'}
@@ -107,32 +98,22 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
             </Search>
 
             {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (
-              <>
-                <VerticalSeparatorDiv size='0.5' />
-                <span className='navds-error-message navds-error-message--medium'>
-                  {_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
-                </span>
-              </>
+              <span className='navds-error-message navds-error-message--medium'>
+                {_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
+              </span>
             )}
-          </PileDiv>
-          <PileDiv>
-            <BodyLong>
-              <StyledSpan>{_validMessage}</StyledSpan>
-            </BodyLong>
-          </PileDiv>
-        </Column>
-      </AlignStartRow>
+          </VStack>
+          <BodyLong>
+            {_validMessage}
+          </BodyLong>
+        </VStack>
+      </HGrid>
       {error && (
-        <>
-          <AlertstripeDiv>
-            <Alert variant='warning'>
-              {error}
-            </Alert>
-          </AlertstripeDiv>
-          <VerticalSeparatorDiv />
-        </>
+        <Alert variant='warning'>
+          {error}
+        </Alert>
       )}
-    </>
+    </VStack>
   )
 }
 
