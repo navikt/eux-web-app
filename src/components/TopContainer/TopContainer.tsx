@@ -8,17 +8,17 @@ import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import {
   fadeIn,
-  PileDiv, slideInFromBottom,
+  slideInFromBottom,
   slideInFromLeft,
   slideInFromRight,
   slideInFromTop,
-  VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import Error from 'pages/Error'
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled, { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
+import styles from "./TopContainer.module.css"
 
 
 const GlobalStyle = createGlobalStyle`
@@ -83,19 +83,7 @@ body {
   cursor: default !important;
 }
 `
-const Main = styled(PileDiv)`
-  padding: 0px;
-`
-const Debug = styled.div`
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  color: #3e3832;
-  overflow: hidden;
-  margin: 0.5rem;
-  padding: 0em 0.5em;
-  z-index: 99999;
-`
+
 export interface TopContainerProps {
   className?: string
   children?: JSX.Element | Array<JSX.Element | null>
@@ -173,21 +161,20 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           error={error}
           onClose={onClear}
         />
-        <Main
+        <main
           id='main'
           role='main'
           className={className}
         >
           {children}
-        </Main>
-        <VerticalSeparatorDiv size='3' />
-        <Debug>
+        </main>
+        <div className={styles.debugContainer}>
           <SessionMonitor
             expirationTime={expirationTime!}
             sessionEndsAt={sessionEndsAt!}
           />
           <Version />
-        </Debug>
+        </div>
       </ErrorBoundary>
     </div>
   )
