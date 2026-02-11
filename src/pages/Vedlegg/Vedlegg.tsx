@@ -1,12 +1,4 @@
-import {Alert, Button, Link, TextField} from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  Container,
-  Content,
-  Margin,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Alert, Box, Button, HGrid, HStack, Link, Page, Spacer, TextField, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
@@ -20,7 +12,6 @@ import performValidation from 'utils/performValidation'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import { validateVedlegg, ValidationVedleggProps } from './validation'
 import SEDAttachmentModal from "applications/Vedlegg/SEDAttachmentModal/SEDAttachmentModal";
 import SendAttachmentModal from "applications/Vedlegg/SendAttachmentModal/SendAttachmentModal";
@@ -46,14 +37,6 @@ const mapState = (state: State): VedleggSelector => ({
   vedleggResponse: state.vedlegg.vedleggResponse,
   validation: state.validation.status
 })
-
-export const MyContent = styled(Content)`
-  @media (min-width: 768px) {
-   min-width: 600px;
-   maxWidth: 800px;
- }
-  align-items: center;
-`
 
 const Vedlegg: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -140,6 +123,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
   }, [_items])
 
   return (
+    <Page>
     <TopContainer title={t('app:page-title-vedlegg')}>
       <SendAttachmentModal
         fnr={_fnr!}
@@ -154,11 +138,11 @@ const Vedlegg: React.FC = (): JSX.Element => {
         sedAttachments={_items}
         tableId='vedlegg-modal'
       />
-      <Container>
-        <Margin />
-        <MyContent>
-          <AlignStartRow>
-            <Column>
+      <Page.Block width="2xl" as="main">
+        <HStack>
+          <Spacer/>
+          <VStack paddingBlock="12" width="50%" gap="4">
+            <HGrid columns={2} gap="4" align="start">
               <TextField
                 id="fnr"
                 error={validation[namespace + '-fnr']?.feilmelding}
@@ -166,8 +150,6 @@ const Vedlegg: React.FC = (): JSX.Element => {
                 onChange={(e) => setFnr(e.target.value)}
                 value={_fnr}
               />
-            </Column>
-            <Column>
               <div className='nolabel'>
                 <Button
                   variant='secondary'
@@ -179,64 +161,57 @@ const Vedlegg: React.FC = (): JSX.Element => {
                   {t('label:vis-vedlegg-tabell')}
                 </Button>
               </div>
-            </Column>
-          </AlignStartRow>
-          <JoarkBrowser
-            existingItems={_items}
-            fnr={_fnr}
-            mode='view'
-            tableId='vedlegg-view'
-            onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
-            onRemoveAttachment={onRemoveAttachment}
-          />
-          <AlignStartRow>
-            <DocumentSearch
-              parentNamespace={namespace}
-              validation={validation}
-              resetValidation={resetValidation}
+            </HGrid>
+            <JoarkBrowser
+              existingItems={_items}
+              fnr={_fnr}
+              mode='view'
+              tableId='vedlegg-view'
+              onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
+              onRemoveAttachment={onRemoveAttachment}
             />
-          </AlignStartRow>
-          <VerticalSeparatorDiv size='2' />
-          <AlignStartRow>
-            <Column>
+            <HStack align="start">
+              <DocumentSearch
+                parentNamespace={namespace}
+                validation={validation}
+                resetValidation={resetValidation}
+              />
+            </HStack>
+            <Box>
               <Button
                 variant='primary'
                 onClick={sendSkjema}
               >
                 {t('label:send-vedlegg')}
               </Button>
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv size='2' />
-          {alertMessage && alertType && [types.ATTACHMENT_SEND_FAILURE].indexOf(alertType) >= 0 && (
-            <>
+            </Box>
+            {alertMessage && alertType && [types.ATTACHMENT_SEND_FAILURE].indexOf(alertType) >= 0 && (
               <Alert variant='warning'>
                 {alertMessage}
               </Alert>
-              <VerticalSeparatorDiv size='2' />
-            </>
-          )}
-          <ValidationBox
-            heading={t('validation:feiloppsummering')}
-            validation={validation}
-          />
-          <VerticalSeparatorDiv size='2' />
-          {vedleggResponse && (
-            <Alert variant='success'>
-              <div>
-                <div>{t('label:vedlagte')}: {vedleggResponse.filnavn || vedleggResponse.vedleggID}</div>
-                {vedleggResponse.url && (
-                  <Link href={vedleggResponse.url} rel='noreferrer' target='_blank'>
-                    {t('label:gå-til-rina')}
-                  </Link>
-                )}
-              </div>
-            </Alert>
-          )}
-        </MyContent>
-        <Margin />
-      </Container>
+            )}
+            <ValidationBox
+              heading={t('validation:feiloppsummering')}
+              validation={validation}
+            />
+            {vedleggResponse && (
+              <Alert variant='success'>
+                <div>
+                  <div>{t('label:vedlagte')}: {vedleggResponse.filnavn || vedleggResponse.vedleggID}</div>
+                  {vedleggResponse.url && (
+                    <Link href={vedleggResponse.url} rel='noreferrer' target='_blank'>
+                      {t('label:gå-til-rina')}
+                    </Link>
+                  )}
+                </div>
+              </Alert>
+            )}
+          </VStack>
+          <Spacer/>
+        </HStack>
+      </Page.Block>
     </TopContainer>
+    </Page>
   )
 }
 
