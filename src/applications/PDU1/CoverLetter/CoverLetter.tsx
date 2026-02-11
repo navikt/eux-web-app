@@ -1,5 +1,4 @@
-import {Heading} from '@navikt/ds-react'
-import {AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv} from '@navikt/hoykontrast'
+import {Box, Heading, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateCoverLetter, ValidationCoverLetterProps } from 'applications/PDU1/CoverLetter/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -12,13 +11,6 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import styled from "styled-components";
-
-export const TextAreaNoWidth = styled(TextArea)`
-  .navds-textarea__wrapper {
-    width: auto !important;
-  }
-`
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -54,27 +46,24 @@ const CoverLetter: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv key={namespace + '-div'}>
+    <Box padding="4" key={namespace + '-div'}>
+      <VStack gap="4">
       <Heading size='medium'>
         {t('label:cover-letter')}
       </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <TextAreaNoWidth
-            style={{ minHeight: '140px'}}
-            cols={80}
-            maxLength={0}
-            error={validation[namespace + '-info']?.feilmelding}
-            id='info'
-            label={t('label:informasjon')}
-            namespace={namespace}
-            onChanged={setInfo}
-            value={info}
-          />
-        </Column>
-      </AlignStartRow>
-    </PaddedDiv>
+      <TextArea
+        style={{ minHeight: '140px', width: '100%' }}
+        cols={80}
+        maxLength={0}
+        error={validation[namespace + '-info']?.feilmelding}
+        id='info'
+        label={t('label:informasjon')}
+        namespace={namespace}
+        onChanged={setInfo}
+        value={info}
+      />
+      </VStack>
+    </Box>
   )
 }
 
