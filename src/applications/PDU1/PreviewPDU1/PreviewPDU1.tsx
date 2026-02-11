@@ -1,5 +1,5 @@
 import { DownloadIcon, XMarkOctagonFillIcon, EyeWithPupilIcon } from '@navikt/aksel-icons'
-import { Button, Loader } from '@navikt/ds-react'
+import { Button, HStack, Loader } from '@navikt/ds-react'
 import { previewPdu1, resetPreviewPdu1 } from 'actions/pdu1'
 import { setValidation } from 'actions/validation'
 import Modal from 'components/Modal/Modal'
@@ -11,7 +11,6 @@ import { saveAs } from 'file-saver'
 import performValidation from 'utils/performValidation'
 import _ from 'lodash'
 import dayjs from 'dayjs'
-import { FlexDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { validatePDU1Edit, ValidationPDU1EditProps } from 'pages/PDU1/mainValidation'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -106,7 +105,7 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
         modal={previewModal}
         onModalClose={() => setPreviewModal(undefined)}
       />
-      <FlexDiv>
+      <HStack gap="4">
         {pdu1 && (
           <Button
             variant='tertiary'
@@ -124,7 +123,6 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
         )}
         {pdu1 && previewPdu1file && (
           <>
-            <HorizontalSeparatorDiv />
             <Button
               variant='tertiary'
               disabled={gettingPreviewDraftPdu1}
@@ -133,7 +131,6 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
             >
               {t('label:last-ned-pdu1')}
             </Button>
-            <HorizontalSeparatorDiv />
             <Button
               variant='tertiary'
               disabled={gettingPreviewDraftPdu1}
@@ -144,7 +141,7 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
             </Button>
           </>
         )}
-      </FlexDiv>
+      </HStack>
     </>
   )
 }
