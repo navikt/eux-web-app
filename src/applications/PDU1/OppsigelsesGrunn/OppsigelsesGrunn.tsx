@@ -1,6 +1,5 @@
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Button, Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Box, Button, Heading, HGrid, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import {
   validateOppsigelsesGrunn,
@@ -95,15 +94,13 @@ const OppsigelsesGrunnFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv key={namespace + '-div'}>
-      <Heading size='medium'>
-        {t('label:årsak-til-avsluttet-arbeidsforhold')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column flex='2'>
+    <Box padding="4" key={namespace + '-div'}>
+      <VStack gap="4">
+        <Heading size='medium'>
+          {t('label:årsak-til-avsluttet-arbeidsforhold')}
+        </Heading>
+        <HGrid columns="2fr 1fr" gap="4" align="start">
           <Select
-            style={{ width: '100%' }}
             data-testid={namespace + '-typeGrunnAnsatt'}
             error={validation[namespace + '-typeGrunnAnsatt']?.feilmelding}
             id={namespace + '-typeGrunnAnsatt'}
@@ -115,45 +112,34 @@ const OppsigelsesGrunnFC: React.FC<MainFormProps> = ({
             value={_.find(årsakOptions, b => b.value === oppsigelsesGrunn?.typeGrunnAnsatt) ?? null}
             defaultValue={_.find(årsakOptions, b => b.value === oppsigelsesGrunn?.typeGrunnAnsatt)}
           />
-        </Column>
-        <Column>
-          <div style={{ marginTop: '2rem' }}>
+          <Box paddingBlock="8 0">
             <Button variant='secondary' onClick={() => setTypeGrunnAnsatt(undefined)} icon={<TrashIcon/>}>
               {t('el:button-remove')}
             </Button>
-          </div>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      {_typeGrunnAnsatt === 'annet-ansettelsesforhold' && (
-        <AlignStartRow>
-          <Column>
-            <Input
-              error={validation[namespace + '-annenGrunnAnsatt']?.feilmelding}
-              namespace={namespace}
-              id='annenGrunnAnsatt'
-              label={t('label:annen-grunn')}
-              onChanged={setAnnenGrunnAnsatt}
-              value={oppsigelsesGrunn?.annenGrunnAnsatt ?? ''}
-            />
-          </Column>
-        </AlignStartRow>
-      )}
-      {_typeGrunnAnsatt === 'annet-selvstendig' && (
-        <AlignStartRow>
-          <Column>
-            <Input
-              error={validation[namespace + '-årsakselvstendig']?.feilmelding}
-              namespace={namespace}
-              id='grunnOpphoerSelvstendig'
-              label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}
-              onChanged={setGrunnSelvstendig}
-              value={oppsigelsesGrunn?.grunnSelvstendig ?? ''}
-            />
-          </Column>
-        </AlignStartRow>
-      )}
-    </PaddedDiv>
+          </Box>
+        </HGrid>
+        {_typeGrunnAnsatt === 'annet-ansettelsesforhold' && (
+          <Input
+            error={validation[namespace + '-annenGrunnAnsatt']?.feilmelding}
+            namespace={namespace}
+            id='annenGrunnAnsatt'
+            label={t('label:annen-grunn')}
+            onChanged={setAnnenGrunnAnsatt}
+            value={oppsigelsesGrunn?.annenGrunnAnsatt ?? ''}
+          />
+        )}
+        {_typeGrunnAnsatt === 'annet-selvstendig' && (
+          <Input
+            error={validation[namespace + '-årsakselvstendig']?.feilmelding}
+            namespace={namespace}
+            id='grunnOpphoerSelvstendig'
+            label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}
+            onChanged={setGrunnSelvstendig}
+            value={oppsigelsesGrunn?.grunnSelvstendig ?? ''}
+          />
+        )}
+      </VStack>
+    </Box>
   )
 }
 
