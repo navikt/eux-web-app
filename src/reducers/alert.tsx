@@ -3,8 +3,7 @@ import * as types from 'constants/actionTypes'
 import i18n from 'i18n'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
-import { FlexDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
-import { Link } from '@navikt/ds-react'
+import {HStack, Link} from '@navikt/ds-react'
 import React from 'react'
 import { Action } from 'redux'
 
@@ -128,17 +127,17 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         if ((action as ActionWithPayload).status === 409) {
           const url = (action as ActionWithPayload).context.sakUrl
           stripeMessage = (
-            <FlexDiv>
+            <HStack gap="2">
               <span>{i18n.t('message:error-svarsed-failure-duplicate') as string}</span>
-              <HorizontalSeparatorDiv size='0.5' />
               <Link target='_blank' href={url} rel='noreferrer'>
-                <span>
-                  {i18n.t('message:error-svarsed-failure-duplicate-2') as string}
-                </span>
-                <HorizontalSeparatorDiv size='0.35' />
-                <ExternalLinkIcon />
+                <HStack gap="2">
+                  <span>
+                    {i18n.t('message:error-svarsed-failure-duplicate-2') as string}
+                  </span>
+                  <ExternalLinkIcon />
+                </HStack>
               </Link>
-            </FlexDiv>
+            </HStack>
           )
         } else {
           stripeMessage = i18n.t('message:error-svarsed-failure') + ((action as ActionWithPayload).payload.message ?? '')
