@@ -13,33 +13,10 @@ import {IS_TEST} from "../../../constants/environment";
 import {createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed} from "../../../actions/attachments";
 import {useTranslation} from "react-i18next";
 import {alertReset} from "../../../actions/alert";
-import {FlexCenterSpacedDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv} from "@navikt/hoykontrast";
 import SEDAttachmentSender from "../SEDAttachmentSender/SEDAttachmentSender";
-import {Alert, Button} from "@navikt/ds-react";
-import styled from "styled-components";
+import {Alert, Box, Button, HStack, VStack} from "@navikt/ds-react";
 import * as types from "../../../constants/actionTypes";
 import {CheckmarkCircleFillIcon} from "@navikt/aksel-icons";
-
-const MinimalModalDiv = styled.div`
-  min-height: 200px;
-  min-width: 600px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-`
-
-const SectionDiv = styled.div`
-  flex: 1;
-  align-items: stretch;
-  flex-direction: row;
-  display: flex;
-  justify-content: center;
-`
-const WrapperDiv = styled.div`
-  padding: 1rem;
-  background-color: whitesmoke;
-`
 
 interface SendAttachmentModalProps {
   fnr: string
@@ -163,28 +140,21 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
       modal={{
         modalTitle: "Sender vedlegg",
         modalContent: (
-          <>
+          <VStack gap="4">
             {alertMessage && alertType && [types.ATTACHMENT_SEND_FAILURE].indexOf(alertType) >= 0 && (
-              <>
-                <Alert variant='error'>
-                  {alertMessage}
-                </Alert>
-                <VerticalSeparatorDiv size='2' />
-              </>
+              <Alert variant='error'>
+                {alertMessage}
+              </Alert>
             )}
             {bannerMessage && (
-              <>
-                <Alert variant='error'>
-                  {bannerMessage}
-                </Alert>
-                <VerticalSeparatorDiv size='2' />
-              </>
+              <Alert variant='error'>
+                {bannerMessage}
+              </Alert>
             )}
-            <SectionDiv>
-              <VerticalSeparatorDiv />
+            <HStack gap="2" align="center" justify="center">
               {(_sendingAttachments || _attachmentsSent) && (
-                <MinimalModalDiv>
-                  <WrapperDiv>
+                <VStack gap="4" align="stretch" justify="center" minHeight="200px" minWidth="600px">
+                  <Box padding="4" background="bg-subtle">
                     <SEDAttachmentSender
                       attachmentsError={undefined}
                       payload={{
@@ -197,37 +167,28 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
                       onCancel={_cancelSendAttachmentToSed}
                       sendAttachmentToSed={_sendAttachmentToSed}
                     />
-                    <VerticalSeparatorDiv />
-                  </WrapperDiv>
-                </MinimalModalDiv>
+                  </Box>
+                </VStack>
               )}
-            </SectionDiv>
+            </HStack>
 
             {_finished && (
-              <>
-                <MinimalModalDiv>
-                  <SectionDiv>
-                    <FlexCenterSpacedDiv>
-                      <CheckmarkCircleFillIcon color='green' />
-                      <HorizontalSeparatorDiv size='0.5' />
-                      <span>{_finished}</span>
-                    </FlexCenterSpacedDiv>
-                  </SectionDiv>
-                  <VerticalSeparatorDiv />
-                  <SectionDiv>
-                    <FlexCenterSpacedDiv>
-                      <Button
-                        variant='secondary'
-                        onClick={onModalClose}
-                      >
-                        {t('el:button-close')}
-                      </Button>
-                    </FlexCenterSpacedDiv>
-                  </SectionDiv>
-                </MinimalModalDiv>
-              </>
+              <VStack gap="4" align="stretch" justify="center" minHeight="200px" minWidth="600px">
+                <HStack gap="2" align="center" justify="center">
+                  <CheckmarkCircleFillIcon color='green' />
+                  <span>{_finished}</span>
+                </HStack>
+                <HStack gap="2" align="center" justify="center">
+                  <Button
+                    variant='secondary'
+                    onClick={onModalClose}
+                  >
+                    {t('el:button-close')}
+                  </Button>
+                </HStack>
+              </VStack>
             )}
-          </>
+          </VStack>
         )
       }}
     />

@@ -124,91 +124,91 @@ const Vedlegg: React.FC = (): JSX.Element => {
 
   return (
     <Page>
-    <TopContainer title={t('app:page-title-vedlegg')}>
-      <SendAttachmentModal
-        fnr={_fnr!}
-        open={_viewSendVedleggModal}
-        onModalClose={resetAndClose}
-      />
-      <SEDAttachmentModal
-        open={_attachmentsTableVisible}
-        fnr={_fnr!}
-        onModalClose={() => setAttachmentsTableVisible(false)}
-        onFinishedSelection={onJoarkAttachmentsChanged}
-        sedAttachments={_items}
-        tableId='vedlegg-modal'
-      />
-      <Page.Block width="2xl" as="main">
-        <HStack>
-          <Spacer/>
-          <VStack paddingBlock="12" width="50%" gap="4">
-            <HGrid columns={2} gap="4" align="start">
-              <TextField
-                id="fnr"
-                error={validation[namespace + '-fnr']?.feilmelding}
-                label="Fødselsnummer"
-                onChange={(e) => setFnr(e.target.value)}
-                value={_fnr}
-              />
-              <div className='nolabel'>
-                <Button
-                  variant='secondary'
-                  disabled={_.isNil(_fnr) || _fnr === ''}
-                  onClick={() => {
-                    setAttachmentsTableVisible(!_attachmentsTableVisible)
-                  }}
-                >
-                  {t('label:vis-vedlegg-tabell')}
-                </Button>
-              </div>
-            </HGrid>
-            <JoarkBrowser
-              existingItems={_items}
-              fnr={_fnr}
-              mode='view'
-              tableId='vedlegg-view'
-              onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
-              onRemoveAttachment={onRemoveAttachment}
-            />
-            <DocumentSearch
-              parentNamespace={namespace}
-              validation={validation}
-              resetValidation={resetValidation}
-            />
-            <Box>
-              <Button
-                variant='primary'
-                onClick={sendSkjema}
-              >
-                {t('label:send-vedlegg')}
-              </Button>
-            </Box>
-            {alertMessage && alertType && [types.ATTACHMENT_SEND_FAILURE].indexOf(alertType) >= 0 && (
-              <Alert variant='warning'>
-                {alertMessage}
-              </Alert>
-            )}
-            <ValidationBox
-              heading={t('validation:feiloppsummering')}
-              validation={validation}
-            />
-            {vedleggResponse && (
-              <Alert variant='success'>
-                <div>
-                  <div>{t('label:vedlagte')}: {vedleggResponse.filnavn || vedleggResponse.vedleggID}</div>
-                  {vedleggResponse.url && (
-                    <Link href={vedleggResponse.url} rel='noreferrer' target='_blank'>
-                      {t('label:gå-til-rina')}
-                    </Link>
-                  )}
+      <TopContainer title={t('app:page-title-vedlegg')}>
+        <SendAttachmentModal
+          fnr={_fnr!}
+          open={_viewSendVedleggModal}
+          onModalClose={resetAndClose}
+        />
+        <SEDAttachmentModal
+          open={_attachmentsTableVisible}
+          fnr={_fnr!}
+          onModalClose={() => setAttachmentsTableVisible(false)}
+          onFinishedSelection={onJoarkAttachmentsChanged}
+          sedAttachments={_items}
+          tableId='vedlegg-modal'
+        />
+        <Page.Block width="2xl" as="main">
+          <HStack>
+            <Spacer/>
+            <VStack paddingBlock="12" width="50%" gap="4">
+              <HGrid columns={2} gap="4" align="start">
+                <TextField
+                  id="fnr"
+                  error={validation[namespace + '-fnr']?.feilmelding}
+                  label="Fødselsnummer"
+                  onChange={(e) => setFnr(e.target.value)}
+                  value={_fnr}
+                />
+                <div className='nolabel'>
+                  <Button
+                    variant='secondary'
+                    disabled={_.isNil(_fnr) || _fnr === ''}
+                    onClick={() => {
+                      setAttachmentsTableVisible(!_attachmentsTableVisible)
+                    }}
+                  >
+                    {t('label:vis-vedlegg-tabell')}
+                  </Button>
                 </div>
-              </Alert>
-            )}
-          </VStack>
-          <Spacer/>
-        </HStack>
-      </Page.Block>
-    </TopContainer>
+              </HGrid>
+              <JoarkBrowser
+                existingItems={_items}
+                fnr={_fnr}
+                mode='view'
+                tableId='vedlegg-view'
+                onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
+                onRemoveAttachment={onRemoveAttachment}
+              />
+              <DocumentSearch
+                parentNamespace={namespace}
+                validation={validation}
+                resetValidation={resetValidation}
+              />
+              <Box>
+                <Button
+                  variant='primary'
+                  onClick={sendSkjema}
+                >
+                  {t('label:send-vedlegg')}
+                </Button>
+              </Box>
+              {alertMessage && alertType && [types.ATTACHMENT_SEND_FAILURE].indexOf(alertType) >= 0 && (
+                <Alert variant='warning'>
+                  {alertMessage}
+                </Alert>
+              )}
+              <ValidationBox
+                heading={t('validation:feiloppsummering')}
+                validation={validation}
+              />
+              {vedleggResponse && (
+                <Alert variant='success'>
+                  <div>
+                    <div>{t('label:vedlagte')}: {vedleggResponse.filnavn || vedleggResponse.vedleggID}</div>
+                    {vedleggResponse.url && (
+                      <Link href={vedleggResponse.url} rel='noreferrer' target='_blank'>
+                        {t('label:gå-til-rina')}
+                      </Link>
+                    )}
+                  </div>
+                </Alert>
+              )}
+            </VStack>
+            <Spacer/>
+          </HStack>
+        </Page.Block>
+      </TopContainer>
     </Page>
   )
 }
