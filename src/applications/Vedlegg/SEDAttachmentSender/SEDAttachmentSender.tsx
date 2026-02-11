@@ -9,17 +9,10 @@ import { State } from 'declarations/reducers'
 import ProgressBar, { ProgressBarStatus } from 'components/ProgressBar/ProgressBar'
 import _ from 'lodash'
 import md5 from 'md5'
-import { Button } from '@navikt/ds-react'
-import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
+import {Button, HStack} from '@navikt/ds-react'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'store'
-import styled from 'styled-components'
-
-const SEDAttachmentSenderDiv = styled.div`
-  display: flex;
-  align-items: center;
-`
 
 export interface SEDAttachmentSenderProps {
   attachmentsError ?: boolean
@@ -127,9 +120,12 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
   const percentage: number = (Math.floor((current * 100) / total))
 
   return (
-    <SEDAttachmentSenderDiv
+    <HStack
       data-testid='c-sedAttachmentSender__div-id'
       className={className}
+      gap="4"
+      justify="center"
+      align="center"
     >
       <ProgressBar
         data-testid='c-sedAttachmentSender__progress-bar-id'
@@ -146,22 +142,19 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
         </>
       </ProgressBar>
       {_status === 'inprogress' && _.isFunction(onCancel) && (
-        <>
-          <HorizontalSeparatorDiv data-sise='0.35' />
-          <Button
-            variant='secondary'
-            data-testid='c-sedAttachmentSender__cancel-button-id'
-            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-              e.preventDefault()
-              e.stopPropagation()
-              onCancel()
-            }}
-          >
-            {t('el:button-cancel')}
-          </Button>
-        </>
+        <Button
+          variant='secondary'
+          data-testid='c-sedAttachmentSender__cancel-button-id'
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault()
+            e.stopPropagation()
+            onCancel()
+          }}
+        >
+          {t('el:button-cancel')}
+        </Button>
       )}
-    </SEDAttachmentSenderDiv>
+    </HStack>
   )
 }
 
