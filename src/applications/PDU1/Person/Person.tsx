@@ -1,13 +1,4 @@
-import {Alert, BodyLong, Box, Heading} from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  PaddedDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Alert, BodyLong, Box, Heading, HGrid, HStack, Radio, RadioGroup, VStack} from '@navikt/ds-react'
 import { setReplySed } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validatePerson, ValidationPersonProps } from 'applications/PDU1/Person/validation'
@@ -26,6 +17,7 @@ import performValidation from 'utils/performValidation'
 import Adresse from './Adresse/Adresse'
 import StatsborgerskapFC from './Statsborgerskap/Statsborgerskap'
 import DateField from "../../../components/DateField/DateField";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -95,77 +87,65 @@ const Person: React.FC<MainFormProps> = ({
   }
 
   return (
-    <div>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='medium'>
           {t('label:personopplysninger')}
         </Heading>
-        <VerticalSeparatorDiv size='2' />
-        <AlignStartRow>
-          <Column>
-            <Input
-              error={validation[namespace + '-fornavn']?.feilmelding}
-              id='fornavn'
-              label={t('label:fornavn')}
-              namespace={namespace}
-              onChanged={onFornavnChange}
-              required
-              value={pdu1Person?.fornavn ?? ''}
-            />
-          </Column>
-          <Column>
-            <Input
-              error={validation[namespace + '-etternavn']?.feilmelding}
-              id='etternavn'
-              label={t('label:etternavn')}
-              namespace={namespace}
-              onChanged={onEtternavnChange}
-              required
-              value={pdu1Person?.etternavn ?? ''}
-            />
-          </Column>
-          <Column>
-            <DateField
-              uiFormat='DD.MM.YYYY'
-              finalFormat='DD.MM.YYYY'
-              id='foedselsdato'
-              namespace={namespace}
-              error={validation[namespace + '-foedselsdato']?.feilmelding}
-              label={t('label:fødselsdato')}
-              onChanged={onFodselsdatoChange}
-              dateValue={pdu1Person?.foedselsdato ?? ''}
-              required
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='2' />
-        <AlignStartRow>
-          <Column flex='2'>
-            <RadioPanelGroup
-              value={pdu1Person?.kjoenn}
-              data-no-border
-              data-testid={namespace + '-kjoenn'}
-              error={validation[namespace + '-kjoenn']?.feilmelding}
-              id={namespace + '-kjoenn'}
-              legend={t('label:kjønn') + ' *'}
-              name={namespace + '-kjoenn'}
-              onChange={onKjoennChange}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='K'>
-                  {t('label:kvinne')}
-                </RadioPanel>
-                <RadioPanel value='M'>
-                  {t('label:mann')}
-                </RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='2' />
+        <HGrid columns={3} gap="4" align="start">
+          <Input
+            error={validation[namespace + '-fornavn']?.feilmelding}
+            id='fornavn'
+            label={t('label:fornavn')}
+            namespace={namespace}
+            onChanged={onFornavnChange}
+            required
+            value={pdu1Person?.fornavn ?? ''}
+          />
+          <Input
+            error={validation[namespace + '-etternavn']?.feilmelding}
+            id='etternavn'
+            label={t('label:etternavn')}
+            namespace={namespace}
+            onChanged={onEtternavnChange}
+            required
+            value={pdu1Person?.etternavn ?? ''}
+          />
+          <DateField
+            uiFormat='DD.MM.YYYY'
+            finalFormat='DD.MM.YYYY'
+            id='foedselsdato'
+            namespace={namespace}
+            error={validation[namespace + '-foedselsdato']?.feilmelding}
+            label={t('label:fødselsdato')}
+            onChanged={onFodselsdatoChange}
+            dateValue={pdu1Person?.foedselsdato ?? ''}
+            required
+          />
+        </HGrid>
+        <HGrid columns={"2fr 1fr"} gap="4">
+        <RadioGroup
+          value={pdu1Person?.kjoenn}
+          data-no-border
+          data-testid={namespace + '-kjoenn'}
+          error={validation[namespace + '-kjoenn']?.feilmelding}
+          id={namespace + '-kjoenn'}
+          legend={t('label:kjønn') + ' *'}
+          name={namespace + '-kjoenn'}
+          onChange={onKjoennChange}
+        >
+          <HStack gap="4">
+            <Radio className={commonStyles.radioPanel} value='K'>
+              {t('label:kvinne')}
+            </Radio>
+            <Radio className={commonStyles.radioPanel} value='M'>
+              {t('label:mann')}
+            </Radio>
+          </HStack>
+        </RadioGroup>
+        </HGrid>
         <Heading size='small'>{t('label:statsborgerskap')}</Heading>
-      </PaddedDiv>
+      </VStack>
       <StatsborgerskapFC
         replySed={replySed}
         parentNamespace={namespace}
@@ -173,8 +153,7 @@ const Person: React.FC<MainFormProps> = ({
         setReplySed={setReplySed}
         updateReplySed={updateReplySed}
       />
-      <VerticalSeparatorDiv size='2' />
-      <PaddedDiv>
+      <VStack gap="4">
         <Heading size='small'>{t('label:adresse')}</Heading>
         <Adresse
           replySed={replySed}
@@ -183,11 +162,9 @@ const Person: React.FC<MainFormProps> = ({
           setReplySed={setReplySed}
           updateReplySed={updateReplySed}
         />
-        <VerticalSeparatorDiv size='2' />
         <Heading size='small'>{t('label:pins')}</Heading>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
+        <HGrid columns={2} gap="4" align="start">
+          <VStack gap="2">
             <Input
               error={validation[namespace + '-fnr']?.feilmelding}
               id='fnr'
@@ -198,24 +175,16 @@ const Person: React.FC<MainFormProps> = ({
               value={pdu1Person?.fnr}
             />
             {pdu1Person?.adressebeskyttelse && pdu1Person?.adressebeskyttelse !== "UGRADERT" &&
-              <>
-                <VerticalSeparatorDiv/>
-                <Alert size="small" variant='warning'>
-                  {t('label:sensitivPerson', {gradering: pdu1Person?.adressebeskyttelse})}
-                </Alert>
-              </>
+              <Alert size="small" variant='warning'>
+                {t('label:sensitivPerson', {gradering: pdu1Person?.adressebeskyttelse})}
+              </Alert>
             }
-          </Column>
-          <Column />
-        </AlignStartRow>
-      </PaddedDiv>
-      {(replySed as ReplySed).sedType === 'H001' && (
-        <PaddedDiv>
+          </VStack>
+          <div />
+        </HGrid>
+        {(replySed as ReplySed).sedType === 'H001' && (
           <BodyLong>{t('message:warning-max-1-utenlandsk-pin')}</BodyLong>
-          <VerticalSeparatorDiv />
-        </PaddedDiv>
-      )}
-      <Box paddingBlock="0 4">
+        )}
         <UtenlandskPins
           limit={1}
           loggingNamespace='pdu1.editor.person'
@@ -225,8 +194,8 @@ const Person: React.FC<MainFormProps> = ({
           validation={validation}
           personName={personName}
         />
-      </Box>
-    </div>
+      </VStack>
+    </Box>
   )
 }
 
