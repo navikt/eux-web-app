@@ -1,5 +1,4 @@
-import { Heading, Switch } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Box, Heading, HGrid, Switch, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateAvsender, ValidationAvsenderProps } from 'applications/PDU1/Avsender/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
@@ -88,35 +87,28 @@ const AvsenderFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv key={namespace + '-div'}>
-      <Heading size='medium'>
-        {t('label:avsender')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <Switch
-        checked={allowEdit}
-        onChange={() => setAllowEdit(!allowEdit)}
-      >
-        {t('label:edit')}
-      </Switch>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <Input
-            disabled={!allowEdit}
-            error={validation[namespace + '-enhetNavn']?.feilmelding}
-            namespace={namespace}
-            id='enhetNavn'
-            label={t('label:enhet-navn')}
-            onChanged={setEnhetNavn}
-            required
-            value={avsender?.navEnhetNavn}
-          />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
+    <Box padding="4" key={namespace + '-div'}>
+      <VStack gap="4">
+        <Heading size='medium'>
+          {t('label:avsender')}
+        </Heading>
+        <Switch
+          checked={allowEdit}
+          onChange={() => setAllowEdit(!allowEdit)}
+        >
+          {t('label:edit')}
+        </Switch>
+        <Input
+          disabled={!allowEdit}
+          error={validation[namespace + '-enhetNavn']?.feilmelding}
+          namespace={namespace}
+          id='enhetNavn'
+          label={t('label:enhet-navn')}
+          onChanged={setEnhetNavn}
+          required
+          value={avsender?.navEnhetNavn}
+        />
+        <HGrid columns={2} gap="4" align="start">
           <Input
             disabled={!allowEdit}
             error={validation[namespace + '-orgNr']?.feilmelding}
@@ -127,8 +119,6 @@ const AvsenderFC: React.FC<MainFormProps> = ({
             required
             value={avsender?.navOrgNr}
           />
-        </Column>
-        <Column>
           <Input
             disabled={!allowEdit}
             error={validation[namespace + '-tlf']?.feilmelding}
@@ -139,11 +129,8 @@ const AvsenderFC: React.FC<MainFormProps> = ({
             required
             value={avsender?.navTlf}
           />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
+        </HGrid>
+        <HGrid columns={2} gap="4" align="start">
           <Input
             disabled={!allowEdit}
             error={validation[namespace + '-saksbehandler-navn']?.feilmelding}
@@ -154,8 +141,6 @@ const AvsenderFC: React.FC<MainFormProps> = ({
             required
             value={avsender?.saksbehandler?.navn}
           />
-        </Column>
-        <Column>
           <Input
             disabled={!allowEdit}
             error={validation[namespace + '-saksbehandler-enhet']?.feilmelding}
@@ -166,28 +151,22 @@ const AvsenderFC: React.FC<MainFormProps> = ({
             required
             value={avsender?.saksbehandler?.enhetNavn}
           />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      <Heading size='small'>{t('label:adresse')}</Heading>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <AdresseForm
-            disabled={!allowEdit}
-            type={false}
-            options={{ bygning: false, region: false }}
-            required={['gate', 'postnummer', 'by', 'land']}
-            namespace={namespace + '-adresse'}
-            keyForCity='poststed'
-            keyforZipCode='postnr'
-            validation={validation}
-            adresse={avsender?.adresse}
-            onAdressChanged={setAdresse}
-          />
-        </Column>
-      </AlignStartRow>
-    </PaddedDiv>
+        </HGrid>
+        <Heading size='small'>{t('label:adresse')}</Heading>
+        <AdresseForm
+          disabled={!allowEdit}
+          type={false}
+          options={{ bygning: false, region: false }}
+          required={['gate', 'postnummer', 'by', 'land']}
+          namespace={namespace + '-adresse'}
+          keyForCity='poststed'
+          keyforZipCode='postnr'
+          validation={validation}
+          adresse={avsender?.adresse}
+          onAdressChanged={setAdresse}
+        />
+      </VStack>
+    </Box>
   )
 }
 
