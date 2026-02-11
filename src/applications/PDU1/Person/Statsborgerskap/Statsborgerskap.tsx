@@ -1,23 +1,13 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Label } from '@navikt/ds-react'
+import { BodyLong, Box, Button, HStack, Label, VStack } from '@navikt/ds-react'
 import Flag from '@navikt/flagg-ikoner'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexCenterDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv, PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import CountryData, { Country } from '@navikt/land-verktoy'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -182,17 +172,17 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
 
     if(!inEditMode && !statsborgerskap) return
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={statsborgerskap}
         className={classNames({
           new: index < 0,
           error: _v[_namespace + '-land']
         })}
+        padding="4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          <Column>
+        <HStack gap="4" justify="space-between" align="center">
+          <Box flexGrow="1">
             {inEditMode
               ? (
                   <CountryDropdown
@@ -217,31 +207,27 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
                     id={_namespace + '-statsborgerskap'}
                     error={_v[_namespace + '-statsborgerskap']?.feilmelding}
                   >
-                    <FlexCenterDiv>
+                    <HStack gap="2" align="center">
                       <Flag size='S' country={country ? country.value : "XU"} />
-                      <HorizontalSeparatorDiv />
                       {country ? country.label : countryCodeMap && _statsborgerskap ? countryCodeMap[_statsborgerskap as keyof typeof countryCodeMap] : _statsborgerskap}
-                    </FlexCenterDiv>
+                    </HStack>
                   </FormText>
                 )}
-          </Column>
-          <AlignEndColumn>
-            <AddRemovePanel<string>
-              item={statsborgerskap}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={onAddNew}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-      </RepeatableRow>
+          </Box>
+          <AddRemovePanel<string>
+            item={statsborgerskap}
+            marginTop={inEditMode}
+            index={index}
+            inEditMode={inEditMode}
+            onRemove={onRemove}
+            onAddNew={onAddNew}
+            onCancelNew={onCloseNew}
+            onStartEdit={onStartEdit}
+            onConfirmEdit={onSaveEdit}
+            onCancelEdit={() => onCloseEdit(_namespace)}
+          />
+        </HStack>
+      </RepeatableBox>
     )
   }
 
@@ -252,12 +238,12 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
         modal={{
           modalTitle: t("message:warning-unknown-statsborgerskap"),
           modalContent: (
-            <div style={{ textAlign: 'center', display: 'block', minWidth: '400px', minHeight: '100px' }}>
-              <PileDiv>
+            <Box padding="4" minWidth="400px">
+              <VStack gap="2" align="center">
                 <BodyLong>{t("message:warning-unknown-statsborgerskap-text1")}</BodyLong>
                 <BodyLong>{t("message:warning-unknown-statsborgerskap-text2")}</BodyLong>
-              </PileDiv>
-            </div>
+              </VStack>
+            </Box>
           ),
           modalButtons: [{
             main: true,
@@ -267,47 +253,41 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
         }}
         onModalClose={() => onModalClose()}
       />
-      <VerticalSeparatorDiv />
-      {_.isEmpty(statsborgerskaper)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr>
+      <VStack gap="4">
+        {_.isEmpty(statsborgerskaper)
+          ? (
+            <Box paddingInline="4">
+              <SpacedHr />
               <BodyLong>
                 {t('message:warning-no-satsborgerskap')}
               </BodyLong>
-            </SpacedHr>
-            <VerticalSeparatorDiv />
-          </PaddedHorizontallyDiv>
-          )
-        : (
-          <>
-            <PaddedHorizontallyDiv>
-              <AlignStartRow>
-                <Column>
-                  <Label>
-                    {t('label:land')}
-                  </Label>
-                </Column>
-              </AlignStartRow>
-            </PaddedHorizontallyDiv>
-            <VerticalSeparatorDiv size='0.8' />
-            {statsborgerskaper?.map(renderRow)}
-          </>
-          )}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x2', { x: t('label:statsborgerskap').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
+              <SpacedHr />
+            </Box>
+            )
+          : (
+            <>
+              <Box paddingInline="4">
+                <Label>
+                  {t('label:land')}
+                </Label>
+              </Box>
+              {statsborgerskaper?.map(renderRow)}
+            </>
+            )}
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box padding="4">
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x2', { x: t('label:statsborgerskap').toLowerCase() })}
+              </Button>
+            </Box>
+            )}
+      </VStack>
     </>
   )
 }
