@@ -1,5 +1,4 @@
-import { Checkbox, Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, FlexDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Box, Checkbox, Heading, HStack, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateEtterbetalinger, ValidationUtbetalingProps } from 'applications/PDU1/Etterbetalinger/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -176,151 +175,131 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv key={namespace + '-div'}>
-      <Heading size='medium'>
-        {t('label:andre-mottatte-utbetalinger')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <Checkbox
-            checked={etterbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox}
-            data-testid={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
-            id={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
-            error={!!validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingEtterEndtArbeidsforholdCheckbox(e.target.checked)}
-          >
-            <FlexDiv>
-              {t('el:checkbox-pdu1-4.1')}
-              <Input
-                error={validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
-                namespace={namespace}
-                id='utbetalingEtterEndtArbeidsforhold'
-                label=''
-                hideLabel
-                onChanged={setUtbetalingEtterEndtArbeidsforhold}
-                value={etterbetalinger?.utbetalingEtterEndtArbeidsforhold}
-              />
-            </FlexDiv>
-          </Checkbox>
-        </Column>
-      </AlignStartRow>
+    <Box padding="4" key={namespace + '-div'}>
+      <VStack gap="4">
+        <Heading size='medium'>
+          {t('label:andre-mottatte-utbetalinger')}
+        </Heading>
+        <Checkbox
+          checked={etterbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox}
+          data-testid={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
+          id={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
+          error={!!validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingEtterEndtArbeidsforholdCheckbox(e.target.checked)}
+        >
+          <HStack gap="2" align="start" wrap={false}>
+            {t('el:checkbox-pdu1-4.1')}
+            <Input
+              error={validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
+              namespace={namespace}
+              id='utbetalingEtterEndtArbeidsforhold'
+              label=''
+              hideLabel
+              onChanged={setUtbetalingEtterEndtArbeidsforhold}
+              value={etterbetalinger?.utbetalingEtterEndtArbeidsforhold}
+            />
+          </HStack>
+        </Checkbox>
 
-      <AlignStartRow>
-        <Column>
-          <Checkbox
-            checked={etterbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox}
-            data-testid={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
-            error={!!validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
-            id={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKompensasjonForEndtArbeidsforholdCheckbox(e.target.checked)}
-          >
-            <FlexDiv>
-              {t('el:checkbox-pdu1-4.2')}
-              <Input
-                error={validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
-                namespace={namespace}
-                id='kompensasjonForEndtArbeidsforhold'
-                label=''
-                hideLabel
-                onChanged={setKompensasjonForEndtArbeidsforhold}
-                value={etterbetalinger?.kompensasjonForEndtArbeidsforhold}
-              />
-            </FlexDiv>
-          </Checkbox>
-        </Column>
-      </AlignStartRow>
+        <Checkbox
+          checked={etterbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox}
+          data-testid={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
+          error={!!validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
+          id={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKompensasjonForEndtArbeidsforholdCheckbox(e.target.checked)}
+        >
+          <HStack gap="2" align="start" wrap={false}>
+            {t('el:checkbox-pdu1-4.2')}
+            <Input
+              error={validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
+              namespace={namespace}
+              id='kompensasjonForEndtArbeidsforhold'
+              label=''
+              hideLabel
+              onChanged={setKompensasjonForEndtArbeidsforhold}
+              value={etterbetalinger?.kompensasjonForEndtArbeidsforhold}
+            />
+          </HStack>
+        </Checkbox>
 
-      <AlignStartRow>
-        <Column>
-          <Checkbox
-            checked={etterbetalinger?._kompensasjonForFeriedagerCheckbox}
-            data-testid={namespace + '-kompensasjonForFeriedagerCheckbox'}
-            error={!!validation[namespace + '-kompensasjonForFeriedager']?.feilmelding}
-            id={namespace + '-kompensasjonForFeriedagerCheckbox'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKompensasjonForFeriedagerCheckbox(e.target.checked)}
-          >
-            <FlexDiv>
-              {t('el:checkbox-pdu1-4.3')}
-              <Input
-                error={validation[namespace + '-kompensasjonForFeriedager-beloep']?.feilmelding}
-                namespace={namespace}
-                id='kompensasjonForFeriedager-beloep'
-                label=''
-                hideLabel
-                onChanged={setKompensasjonForFeriedagerBeloep}
-                value={etterbetalinger?.kompensasjonForFeriedager?.beloep}
-              />
-              <PaddedDiv size='0.5'>
-                for
-              </PaddedDiv>
-              <Input
-                error={validation[namespace + '-kompensasjonForFeriedager-antallDager']?.feilmelding}
-                namespace={namespace}
-                id='kompensasjonForFeriedager-antallDager'
-                label=''
-                hideLabel
-                onChanged={setKompensasjonForFeriedagerAntallDager}
-                value={etterbetalinger?.kompensasjonForFeriedager?.antallDager}
-              />
-              <PaddedDiv size='0.5'>
-                dager
-              </PaddedDiv>
-            </FlexDiv>
-          </Checkbox>
-        </Column>
-      </AlignStartRow>
+        <Checkbox
+          checked={etterbetalinger?._kompensasjonForFeriedagerCheckbox}
+          data-testid={namespace + '-kompensasjonForFeriedagerCheckbox'}
+          error={!!validation[namespace + '-kompensasjonForFeriedager']?.feilmelding}
+          id={namespace + '-kompensasjonForFeriedagerCheckbox'}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKompensasjonForFeriedagerCheckbox(e.target.checked)}
+        >
+          <HStack gap="2" align="start" wrap={false}>
+            {t('el:checkbox-pdu1-4.3')}
+            <Input
+              error={validation[namespace + '-kompensasjonForFeriedager-beloep']?.feilmelding}
+              namespace={namespace}
+              id='kompensasjonForFeriedager-beloep'
+              label=''
+              hideLabel
+              onChanged={setKompensasjonForFeriedagerBeloep}
+              value={etterbetalinger?.kompensasjonForFeriedager?.beloep}
+            />
+            <Box paddingInline="2">
+              for
+            </Box>
+            <Input
+              error={validation[namespace + '-kompensasjonForFeriedager-antallDager']?.feilmelding}
+              namespace={namespace}
+              id='kompensasjonForFeriedager-antallDager'
+              label=''
+              hideLabel
+              onChanged={setKompensasjonForFeriedagerAntallDager}
+              value={etterbetalinger?.kompensasjonForFeriedager?.antallDager}
+            />
+            <Box paddingInline="2">
+              dager
+            </Box>
+          </HStack>
+        </Checkbox>
 
-      <AlignStartRow>
-        <Column>
-          <Checkbox
-            checked={etterbetalinger?._avkallKompensasjonBegrunnelseCheckbox}
-            data-testid={namespace + '-avkallKompensasjonBegrunnelseCheckbox'}
-            error={!!validation[namespace + '-avkallKompensasjonBegrunnelseCheckbox']?.feilmelding}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAvkallKompensasjonBegrunnelseCheckbox(e.target.checked)}
-          >
-            <FlexDiv>
-              {t('el:checkbox-pdu1-4.4')}
-              <Input
-                error={validation[namespace + '-avkallKompensasjonBegrunnelse']?.feilmelding}
-                namespace={namespace}
-                id='avkallKompensasjonBegrunnelse'
-                label=''
-                hideLabel
-                onChanged={setAvkallKompensasjonBegrunnelse}
-                value={etterbetalinger?.avkallKompensasjonBegrunnelse}
-              />
-            </FlexDiv>
-          </Checkbox>
-        </Column>
-      </AlignStartRow>
+        <Checkbox
+          checked={etterbetalinger?._avkallKompensasjonBegrunnelseCheckbox}
+          data-testid={namespace + '-avkallKompensasjonBegrunnelseCheckbox'}
+          error={!!validation[namespace + '-avkallKompensasjonBegrunnelseCheckbox']?.feilmelding}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAvkallKompensasjonBegrunnelseCheckbox(e.target.checked)}
+        >
+          <HStack gap="2" align="start" wrap={false}>
+            {t('el:checkbox-pdu1-4.4')}
+            <Input
+              error={validation[namespace + '-avkallKompensasjonBegrunnelse']?.feilmelding}
+              namespace={namespace}
+              id='avkallKompensasjonBegrunnelse'
+              label=''
+              hideLabel
+              onChanged={setAvkallKompensasjonBegrunnelse}
+              value={etterbetalinger?.avkallKompensasjonBegrunnelse}
+            />
+          </HStack>
+        </Checkbox>
 
-      <AlignStartRow>
-        <Column>
-          <Checkbox
-            checked={etterbetalinger?._andreYtelserSomMottasForTidenCheckbox}
-            data-testid={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
-            error={!!validation[namespace + '-andreYtelserSomMottasForTidenCheckbox']?.feilmelding}
-            id={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAndreYtelserSomMottasForTidenCheckbox(e.target.checked)}
-          >
-            <FlexDiv>
-              {t('el:checkbox-pdu1-4.5')}&nbsp;&nbsp;
-              <Input
-                error={validation[namespace + '-andreYtelserSomMottasForTiden']?.feilmelding}
-                namespace={namespace}
-                id='andreYtelserSomMottasForTiden'
-                label=''
-                hideLabel
-                onChanged={setAndreYtelserSomMottasForTiden}
-                value={etterbetalinger?.andreYtelserSomMottasForTiden}
-              />
-            </FlexDiv>
-          </Checkbox>
-        </Column>
-      </AlignStartRow>
-
-    </PaddedDiv>
+        <Checkbox
+          checked={etterbetalinger?._andreYtelserSomMottasForTidenCheckbox}
+          data-testid={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
+          error={!!validation[namespace + '-andreYtelserSomMottasForTidenCheckbox']?.feilmelding}
+          id={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAndreYtelserSomMottasForTidenCheckbox(e.target.checked)}
+        >
+          <HStack gap="2" align="start" wrap={false}>
+            {t('el:checkbox-pdu1-4.5')}
+            <Input
+              error={validation[namespace + '-andreYtelserSomMottasForTiden']?.feilmelding}
+              namespace={namespace}
+              id='andreYtelserSomMottasForTiden'
+              label=''
+              hideLabel
+              onChanged={setAndreYtelserSomMottasForTiden}
+              value={etterbetalinger?.andreYtelserSomMottasForTiden}
+            />
+          </HStack>
+        </Checkbox>
+      </VStack>
+    </Box>
   )
 }
 
