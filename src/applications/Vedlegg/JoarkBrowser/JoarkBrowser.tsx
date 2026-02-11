@@ -1,5 +1,4 @@
 import {BodyLong, Button, Checkbox, Label, Loader} from '@navikt/ds-react'
-import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Table, { RenderOptions } from '@navikt/tabell'
 import { getJoarkItemPreview, listJoarkItems, setJoarkItemPreview } from 'actions/attachments'
 import Modal from 'components/Modal/Modal'
@@ -20,20 +19,10 @@ import moment from 'moment'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import { blobToBase64 } from 'utils/blob'
 import { TrashIcon } from '@navikt/aksel-icons';
 import {removeAttachment} from "../../../actions/svarsed";
 import PDFViewer from "../../../components/PDFViewer/PDFViewer";
-
-const ButtonsDiv = styled.div`
-  display: flex;
-  align-items: flex-start;
-  padding-top: 0.25rem;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: nowrap;
-`
 
 export interface JoarkBrowserSelector {
   list: Array<JoarkPoster> | undefined
@@ -124,7 +113,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     const previewing = context?.gettingJoarkFile
     const spinner = previewing && _.isEqual(item as JoarkBrowserItem, context?.clickedPreviewItem)
     return (
-      <ButtonsDiv>
+        <>
         {item.journalpostId && item.dokumentInfoId && (
           <Button
             variant='tertiary'
@@ -139,21 +128,19 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
             {spinner && <Loader />}
           </Button>
         )}
-      </ButtonsDiv>
+        </>
     )
   }
 
   const renderSensitivt = ({ item }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => {
     return (
-      <ButtonsDiv>
-          <Checkbox
-            id={'tablesorter__sensitivt-checkbox-' + item.key + '-' + item.navn}
-            checked={item.sensitivt}
-            onChange={(e) => onUpdateAttachmentSensitivt ? onUpdateAttachmentSensitivt(item as JoarkBrowserItem, e.target.checked) : undefined}
-          >
-            {"Sensitivt"}
-          </Checkbox>
-      </ButtonsDiv>
+      <Checkbox
+        id={'tablesorter__sensitivt-checkbox-' + item.key + '-' + item.navn}
+        checked={item.sensitivt}
+        onChange={(e) => onUpdateAttachmentSensitivt ? onUpdateAttachmentSensitivt(item as JoarkBrowserItem, e.target.checked) : undefined}
+      >
+        {"Sensitivt"}
+      </Checkbox>
     )
   }
 
@@ -386,7 +373,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 
   return (
     <div data-testid='joarkBrowser' id='joarkBrowser'>
-      <VerticalSeparatorDiv size='0.5' />
       {mode !== "select" &&
         <Modal
           open={!_.isNil(_modal)}
