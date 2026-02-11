@@ -2,7 +2,6 @@ import { createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed } f
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
 import { CheckmarkCircleFillIcon } from '@navikt/aksel-icons'
 import Modal from 'components/Modal/Modal'
-import { AlertstripeDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { IS_TEST } from 'constants/environment'
 import {
@@ -16,46 +15,11 @@ import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
-import { Alert, Button, Loader } from '@navikt/ds-react'
-import {
-  FlexCenterSpacedDiv,
-  HorizontalSeparatorDiv,
-  PileCenterDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Alert, Box, Button, HStack, Loader, Spacer, VStack} from '@navikt/ds-react'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import {alertReset} from "../../../actions/alert";
-
-const MinimalModalDiv = styled.div`
-  min-height: 200px;
-  min-width: 600px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-`
-const MinimalContentDiv = styled.div`
-  flex: 1;
-  width: 100%;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-`
-const SectionDiv = styled.div`
-  flex: 1;
-  align-items: stretch;
-  flex-direction: row;
-  display: flex;
-  justify-content: center;
-`
-const WrapperDiv = styled.div`
-  padding: 1rem;
-  background-color: whitesmoke;
-`
 
 interface SendSEDSelector {
   alertMessage: JSX.Element | string | undefined
@@ -213,31 +177,29 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
       modal={{
         modalTitle: t('label:lagre-sed'),
         modalContent: (
-          <MinimalModalDiv>
+          <VStack gap="4" align="stretch" justify="start" minHeight="200px" minWidth="600px">
             {alertMessage && alertType && [types.SVARSED_SED_CREATE_FAILURE, types.SVARSED_SED_UPDATE_FAILURE].indexOf(alertType) >= 0 && (
-              <PileCenterDiv>
-                <AlertstripeDiv>
-                  <Alert variant='error'>{alertMessage}</Alert>
-                </AlertstripeDiv>
-                <VerticalSeparatorDiv />
-                <FlexCenterSpacedDiv>
-                  <div />
+              <VStack gap="4">
+                <Alert variant='error'>{alertMessage}</Alert>
+                <HStack>
+                  <Spacer/>
                   <Button
                     variant='secondary'
                     onClick={onModalClose}
                   >
                     {t('label:damn-really')}
                   </Button>
-                  <div />
-                </FlexCenterSpacedDiv>
-              </PileCenterDiv>
+                  <Spacer/>
+                </HStack>
+              </VStack>
             )}
             {alertMessage && alertType && _sendButtonClicked && [types.SVARSED_SED_SEND_SUCCESS, types.SVARSED_SED_SEND_FAILURE].indexOf(alertType) >= 0 && (
-              <>
-                <AlertstripeDiv>
-                  <Alert variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'success'}>
-                    {alertMessage}
-                  </Alert>
+              <VStack gap="4">
+                <Alert variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'success'}>
+                  {alertMessage}
+                </Alert>
+                <HStack>
+                  <Spacer/>
                   <Button
                     variant='tertiary'
                     onClick={() => {
@@ -247,86 +209,73 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   >
                     OK
                   </Button>
-                </AlertstripeDiv>
-                <VerticalSeparatorDiv />
-              </>
+                  <Spacer/>
+                </HStack>
+              </VStack>
             )}
             {alertMessage && alertType && [types.ATTACHMENT_SEND_FAILURE].indexOf(alertType) >= 0 && (
-              <>
-                <Alert variant='error'>
-                  {alertMessage}
-                </Alert>
-                <VerticalSeparatorDiv size='2' />
-              </>
+              <Alert variant='error'>
+                {alertMessage}
+              </Alert>
             )}
             {bannerMessage && (
-              <>
-                <Alert variant='error'>
-                  {bannerMessage}
-                </Alert>
-                <VerticalSeparatorDiv size='2' />
-              </>
+
+              <Alert variant='error'>
+                {bannerMessage}
+              </Alert>
+
             )}
-            <MinimalContentDiv>
-              <SectionDiv>
-                <PileDiv style={{ alignItems: 'flex-start' }}>
+            <VStack align="center" width="100%" gap="4">
+              <HStack justify="center" align="stretch">
+                <VStack align="start" gap="2">
                   <div>
                     {(creatingSvarSed || updatingSvarSed) && (
-                      <FlexCenterSpacedDiv>
+                      <HStack gap="2" align="center">
                         <Loader type='xsmall' />
-                        <HorizontalSeparatorDiv size='0.5' />
                         <span>{creatingSvarSed ? t('message:loading-opprette-sed') : t('message:loading-oppdatering-sed')}</span>
-                      </FlexCenterSpacedDiv>
+                      </HStack>
                     )}
                     {!_.isNil(sedCreatedResponse) && (
-                      <FlexCenterSpacedDiv>
+                      <HStack gap="2" align="center">
                         <CheckmarkCircleFillIcon color='green' />
-                        <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sed-lagret')}</span>
-                      </FlexCenterSpacedDiv>
+                      </HStack>
                     )}
                   </div>
-                  <VerticalSeparatorDiv size='0.5' />
                   <div>
                     {_finished && (
-                      <FlexCenterSpacedDiv>
+                      <HStack gap="2" align="center">
                         <CheckmarkCircleFillIcon color='green' />
-                        <HorizontalSeparatorDiv size='0.5' />
                         <span>{_finished}</span>
-                      </FlexCenterSpacedDiv>
+                      </HStack>
                     )}
                     {_sendingAttachments && (
-                      <FlexCenterSpacedDiv>
+                      <HStack gap="2" align="center">
                         <Loader type='xsmall' />
-                        <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sending-vedlegg')}</span>
-                      </FlexCenterSpacedDiv>
+                      </HStack>
                     )}
                   </div>
-                  <VerticalSeparatorDiv size='0.5' />
                   <div>
                     {!_.isNil(sedSendResponse) && _finished && (
-                      <FlexCenterSpacedDiv>
+                      <HStack gap="2" align="center">
                         <CheckmarkCircleFillIcon color='green' />
-                        <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sed-sendt')}</span>
-                      </FlexCenterSpacedDiv>
+                      </HStack>
                     )}
                     {sendingSed && (
-                      <FlexCenterSpacedDiv>
+                      <HStack gap="2" align="center">
                         <Loader type='xsmall' />
-                        <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sending-sed')}</span>
-                      </FlexCenterSpacedDiv>
+                      </HStack>
                     )}
                   </div>
-                </PileDiv>
-              </SectionDiv>
-              <SectionDiv>
-                <VerticalSeparatorDiv />
+                </VStack>
+              </HStack>
+              <HStack justify="center" align="stretch">
                 {(_sendingAttachments || _attachmentsSent) && (
-                  <MinimalModalDiv>
-                    <WrapperDiv>
+                  <VStack gap="4" align="stretch" justify="center" minHeight="200px" minWidth="600px">
+                    <Box padding="4" background="bg-subtle">
                       <SEDAttachmentSender
                         attachmentsError={undefined}
                         payload={{
@@ -339,20 +288,17 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                         onCancel={_cancelSendAttachmentToSed}
                         sendAttachmentToSed={_sendAttachmentToSed}
                       />
-                      <VerticalSeparatorDiv />
-                    </WrapperDiv>
-                  </MinimalModalDiv>
+                    </Box>
+                  </VStack>
                 )}
                 {_finished && (
-                  <FlexCenterSpacedDiv>
+                  <HStack gap="4" align="center">
                     <Button
                       variant='secondary'
                       onClick={closeModal}
                     >
                       {t('el:button-close')}
                     </Button>
-
-                    <HorizontalSeparatorDiv />
                     <Button
                       variant='primary'
                       title={t('message:help-send-sed')}
@@ -361,11 +307,11 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     >
                       {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
                     </Button>
-                  </FlexCenterSpacedDiv>
+                  </HStack>
                 )}
-              </SectionDiv>
-            </MinimalContentDiv>
-          </MinimalModalDiv>
+              </HStack>
+            </VStack>
+          </VStack>
         )
       }}
       onModalClose={onModalClose}
