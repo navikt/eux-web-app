@@ -1,14 +1,14 @@
-import { BodyLong, Loader, Search, Select } from '@navikt/ds-react'
+import {BodyLong, HGrid, Loader, Search, Select, VStack} from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import * as vedleggActions from 'actions/vedlegg'
 import { State } from 'declarations/reducers'
 import { Dokument, Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { Column, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
 
 export interface DocumentSearchSelector {
   dokument: Array<Dokument> | null | undefined
@@ -32,7 +32,7 @@ const mapState = (state: State): DocumentSearchSelector => ({
 })
 
 const DocumentSearch: React.FC<DocumentSearchProps> = ({
-  className, parentNamespace, resetValidation, validation = {}
+  parentNamespace, resetValidation, validation = {}
 }: DocumentSearchProps): JSX.Element => {
   const { dokument, gettingDokument, rinasaksnummer, rinadokumentID }: DocumentSearchSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
@@ -68,8 +68,8 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
   const yyyMMdd = (dato: string): string => moment(dato).format('YYYY-MM-DD')
 
   return (
-    <>
-      <Column className={className}>
+    <HGrid gap="4" columns={2}>
+      <VStack>
         <Search
           label={t('label:rina-saksnummer')}
           /* error={validation[namespace + '-rinasaksnummer']?.feilmelding} */
@@ -85,45 +85,33 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
             {gettingDokument && <Loader />}
           </Search.Button>
         </Search>
-        {validation[namespace + '-rinasaksnummer']?.feilmelding && (
-          <>
-            <VerticalSeparatorDiv size='0.5' />
-            <span className='navds-error-message navds-error-message--medium'>
-              {validation[namespace + '-rinasaksnummer']?.feilmelding}
-            </span>
-          </>
+        <ErrorLabel error={validation[namespace + '-rinasaksnummer']?.feilmelding}/>
+      </VStack>
+      <Select
+        data-testid={namespace + '-rinadokumentID'}
+        id={namespace + '-rinadokumentID'}
+        disabled={_.isNil(dokument)}
+        error={validation[namespace + '-rinadokumentID']?.feilmelding}
+        label={t('label:rina-dokument-id')}
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setRinaDokumentID(e.target.value)}
+        value={rinadokumentID}
+      >
+        <option value=''>
+          {t('el:placeholder-select-default')}
+        </option>
+        {dokument?.map((element: Dokument) => (
+          <option value={element.rinadokumentID} key={element.rinadokumentID}>
+            {element.kode + (element.opprettetdato ? ' (' + yyyMMdd(element.opprettetdato) + ')' : '')}
+          </option>)
         )}
-        <VerticalSeparatorDiv />
-      </Column>
-      <Column>
-        <div data-testid='dokumentsok__card'>
-          <Select
-            data-testid={namespace + '-rinadokumentID'}
-            id={namespace + '-rinadokumentID'}
-            disabled={_.isNil(dokument)}
-            error={validation[namespace + '-rinadokumentID']?.feilmelding}
-            label={t('label:rina-dokument-id')}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setRinaDokumentID(e.target.value)}
-            value={rinadokumentID}
-          >
-            <option value=''>
-              {t('el:placeholder-select-default')}
-            </option>
-            {dokument?.map((element: Dokument) => (
-              <option value={element.rinadokumentID} key={element.rinadokumentID}>
-                {element.kode + (element.opprettetdato ? ' (' + yyyMMdd(element.opprettetdato) + ')' : '')}
-              </option>)
-            )}
-          </Select>
-        </div>
-        <VerticalSeparatorDiv />
-        {(dokument === null || dokument?.length === 0) && (
-          <BodyLong>
-            {t('message:error-noDocumentFound')}
-          </BodyLong>
-        )}
-      </Column>
-    </>
+      </Select>
+      {(dokument === null || dokument?.length === 0) && (
+        <BodyLong>
+          {t('message:error-noDocumentFound')}
+        </BodyLong>
+      )}
+
+    </HGrid>
   )
 }
 

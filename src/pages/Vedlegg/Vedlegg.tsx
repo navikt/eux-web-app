@@ -170,13 +170,11 @@ const Vedlegg: React.FC = (): JSX.Element => {
               onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
               onRemoveAttachment={onRemoveAttachment}
             />
-            <HStack align="start">
-              <DocumentSearch
-                parentNamespace={namespace}
-                validation={validation}
-                resetValidation={resetValidation}
-              />
-            </HStack>
+            <DocumentSearch
+              parentNamespace={namespace}
+              validation={validation}
+              resetValidation={resetValidation}
+            />
             <Box>
               <Button
                 variant='primary'
