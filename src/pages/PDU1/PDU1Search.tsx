@@ -1,14 +1,4 @@
-import {Alert, BodyLong, Button, Heading, Label, Loader, Panel, Select} from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  FlexBaseDiv,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PileCenterDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Alert, BodyLong, Box, Button, Heading, HStack, Label, Loader, Select, VStack} from '@navikt/ds-react'
 import * as appActions from 'actions/app'
 import {
   searchPdu1s,
@@ -32,7 +22,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import { blobToBase64 } from 'utils/blob'
 import { validatePdu1Search, ValidationPdu1SearchProps } from './mainValidation'
 import PersonSearch from "../../applications/OpprettSak/PersonSearch/PersonSearch";
@@ -41,11 +30,7 @@ import * as personActions from "../../actions/person";
 import SakSidebar from "../../applications/PDU1/SakSidebar/SakSidebar";
 import moment from "moment";
 import PDFViewer from "../../components/PDFViewer/PDFViewer";
-
-const ContainerDiv = styled(PileCenterDiv)`
-  width: 780px;
-  align-items: center;
-`
+import styles from "./PDU1.module.css"
 
 export interface PDU1SearchSelector {
   fnrParam: string | undefined
@@ -84,13 +69,6 @@ const mapState = (state: State): PDU1SearchSelector => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type
 })
-
-const FagsakPanel = styled(Panel)`
-  margin-bottom: 1rem;
-  &.new {
-    background-color: rgba(236, 243, 153, 0.5);
-  };
-`
 
 const PDU1Search = (): JSX.Element => {
   const { t } = useTranslation()
@@ -232,22 +210,21 @@ const PDU1Search = (): JSX.Element => {
   }, [])
 
   return (
-    <ContainerDiv>
+    <VStack width="780px" align="center">
       <Modal
         open={!_.isNil(previewModal)}
         modal={previewModal}
         onModalClose={handleModalClose}
       />
-      <Heading size='medium'>
-        {t('app:page-title-pdu1-search')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow
-        style={{ width: '100%' }}
-        className={classNames({ error: validation[namespace + '-search'] })}
-      >
-        <Column>
-          <PileDiv>
+      <VStack gap="4" width="100%">
+        <Heading size='medium'>
+          {t('app:page-title-pdu1-search')}
+        </Heading>
+        <Box
+          width="100%"
+          className={classNames({ error: validation[namespace + '-search'] })}
+        >
+          <VStack gap="4">
             <PersonSearch
               key={namespace + '-fnr-'}
               alertMessage={alertMessage}
@@ -278,157 +255,135 @@ const PDU1Search = (): JSX.Element => {
               }}
               person={person}
             />
-            <VerticalSeparatorDiv/>
             <SakSidebar />
-            <VerticalSeparatorDiv/>
-          </PileDiv>
-        </Column>
-      </AlignStartRow>
-      <AlignStartRow
-        style={{ width: '100%' }}
-        className={classNames({ error: validation[namespace + '-search'] })}
-      >
-        <Column>
-          <FlexBaseDiv style={{ marginTop: '2rem' }}>
-            <Button
-              variant='primary'
-              disabled={!validFnr || searchPdu1Mode}
-              onClick={onSearchPdu1Mode}
-            >
-              {fetchingPdu1 && <Loader />}
-              {fetchingPdu1 ? t('message:loading-searching') : t('el:button-search-for-x', { x: 'PD U1' })}
-            </Button>
-            <HorizontalSeparatorDiv />
-            {t('label:eller')}
-            <HorizontalSeparatorDiv />
-            <Button
-              variant='primary'
-              disabled={!validFnr}
-              onClick={onNewPdu1Mode}
-            >
-              {t('el:button-start-new-x', { x: 'PD U1' })}
-            </Button>
-          </FlexBaseDiv>
-        </Column>
-      </AlignStartRow>
-      {newPdu1Mode && (
-        <>
-          <VerticalSeparatorDiv />
-          <HorizontalLineSeparator />
-          <VerticalSeparatorDiv size='2' />
-          <Heading size='small'>
+          </VStack>
+        </Box>
+        <HStack gap="4" align="center" paddingBlock="4">
+          <Button
+            variant='primary'
+            disabled={!validFnr || searchPdu1Mode}
+            onClick={onSearchPdu1Mode}
+          >
+            {fetchingPdu1 && <Loader />}
+            {fetchingPdu1 ? t('message:loading-searching') : t('el:button-search-for-x', { x: 'PD U1' })}
+          </Button>
+          {t('label:eller')}
+          <Button
+            variant='primary'
+            disabled={!validFnr}
+            onClick={onNewPdu1Mode}
+          >
             {t('el:button-start-new-x', { x: 'PD U1' })}
-          </Heading>
-          <VerticalSeparatorDiv size='2' />
-          {!gettingFagsaker &&
-            <AlignStartRow style={{ width: '50%' }}>
-            <Column>
-              <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakYear(e.currentTarget.value)}>
-                <option value={currentYear}>{currentYear}</option>
-                <option value={currentYear - 1}>{currentYear - 1}</option>
-                <option value={currentYear - 2}>{currentYear - 2}</option>
-                <option value={currentYear - 3}>{currentYear - 3}</option>
-                <option value={currentYear - 4}>{currentYear - 4}</option>
-              </Select>
-            </Column>
-            <Column>
-              <Button
-                variant='primary'
-                disabled={!validFnr}
-                loading={creatingFagsak}
-                onClick={onCreateFagsak}
-              >
-                {t('el:button-create-x', { x: 'fagsak' })}
-              </Button>
-            </Column>
-            </AlignStartRow>
-          }
+          </Button>
+        </HStack>
+        {newPdu1Mode && (
+          <VStack gap="4" align="center">
+            <HorizontalLineSeparator />
+            <Box paddingBlock="4">
+              <VStack gap="4" align="center">
+                <Heading size='small'>
+                  {t('el:button-start-new-x', { x: 'PD U1' })}
+                </Heading>
+                {!gettingFagsaker &&
+                  <HStack gap="4" align="end">
+                    <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakYear(e.currentTarget.value)}>
+                      <option value={currentYear}>{currentYear}</option>
+                      <option value={currentYear - 1}>{currentYear - 1}</option>
+                      <option value={currentYear - 2}>{currentYear - 2}</option>
+                      <option value={currentYear - 3}>{currentYear - 3}</option>
+                      <option value={currentYear - 4}>{currentYear - 4}</option>
+                    </Select>
+                    <Box>
+                      <Button
+                        variant='primary'
+                        disabled={!validFnr}
+                        loading={creatingFagsak}
+                        onClick={onCreateFagsak}
+                      >
+                        {t('el:button-create-x', { x: 'fagsak' })}
+                      </Button>
+                    </Box>
+                  </HStack>
+                }
+              </VStack>
+            </Box>
 
-          <div style={{ width: '100%' }}>
-            {gettingFagsaker && (
-              <WaitingPanel />
-            )}
-            <VerticalSeparatorDiv/>
-            {createdFagsak &&
-              <>
+            <VStack gap="2" width="100%">
+              {gettingFagsaker && (
+                <WaitingPanel />
+              )}
+              {createdFagsak &&
                 <Alert size="small" variant='warning'>
                   OBS: Husk å journalføre i Gosys før du oppretter ny PD U1
                 </Alert>
-                <VerticalSeparatorDiv/>
-              </>
-            }
-            {fagsaker?.filter((f: Fagsak) => f.type === "FAGSAK").map((f: Fagsak) => (
-              <FagsakPanel
-                key={f._id}
-                border
-                className={classNames({
-                  new: createdFagsak === f._id
-                })}
-              >
-                <FlexDiv>
-                  <PileDiv flex='2'>
-                    <FlexBaseDiv>
-                      <Label>{t('label:fagsakNr')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.nr}</BodyLong>
-                    </FlexBaseDiv>
-                    <FlexBaseDiv>
-                      <Label>{t('label:dato-opprettet')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{moment(f.opprettetTidspunkt).format('DD.MM.YYYY HH:mm')}</BodyLong>
-                    </FlexBaseDiv>
-                  </PileDiv>
-                  <PileDiv>
-                    <Button
-                      variant='primary'
-                      disabled={!tema || creatingPdu1}
-                      onClick={() => onCreatingPdu1(f._id!, f.nr)}
-                    >
-                      {creatingPdu1 && <Loader />}
-                      {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}
-                    </Button>
-                  </PileDiv>
-                </FlexDiv>
-              </FagsakPanel>
-
-            ))}
-          </div>
-          <VerticalSeparatorDiv />
-
-        </>
-      )}
+              }
+              {fagsaker?.filter((f: Fagsak) => f.type === "FAGSAK").map((f: Fagsak) => (
+                <Box
+                  key={f._id}
+                  borderWidth="1"
+                  borderColor="border-default"
+                  borderRadius="small"
+                  padding="4"
+                  background="bg-default"
+                  className={classNames({
+                    [styles.new]: createdFagsak === f._id
+                  })}
+                >
+                  <HStack gap="4" justify="space-between" align="center">
+                    <VStack gap="1">
+                      <HStack gap="2">
+                        <Label>{t('label:fagsakNr')}:</Label>
+                        <BodyLong>{f.nr}</BodyLong>
+                      </HStack>
+                      <HStack gap="2">
+                        <Label>{t('label:dato-opprettet')}:</Label>
+                        <BodyLong>{moment(f.opprettetTidspunkt).format('DD.MM.YYYY HH:mm')}</BodyLong>
+                      </HStack>
+                    </VStack>
+                    <Box>
+                      <Button
+                        variant='primary'
+                        disabled={!tema || creatingPdu1}
+                        onClick={() => onCreatingPdu1(f._id!, f.nr)}
+                      >
+                        {creatingPdu1 && <Loader />}
+                        {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}
+                      </Button>
+                    </Box>
+                  </HStack>
+                </Box>
+              ))}
+            </VStack>
+          </VStack>
+        )}
       {searchPdu1Mode && (
-        <>
-          <VerticalSeparatorDiv />
+        <VStack gap="2" align="center">
           <HorizontalLineSeparator />
-          <VerticalSeparatorDiv size='2' />
-          <Heading size='small'>
-            {t('el:button-edit-x', { x: 'PD U1' })}
-          </Heading>
-          <VerticalSeparatorDiv size='2' />
+          <Box paddingBlock="4">
+            <Heading size='small'>
+              {t('el:button-edit-x', { x: 'PD U1' })}
+            </Heading>
+          </Box>
           {fetchingPdu1 && <Loader />}
           {pdu1results?.filter(isPDU1)
             .map((pdu1SearchResult: PDU1SearchResult) => (
-              <Panel border style={{ width: '100%', marginBottom: '1rem' }} key={pdu1SearchResult.journalpostId + '-' + pdu1SearchResult.dokumentInfoId}>
-                <FlexDiv>
-                  <PileDiv flex='2'>
-                    <FlexBaseDiv>
+              <Box borderWidth="1" borderColor="border-default" borderRadius="small" padding="4" background="bg-default" width="100%" key={pdu1SearchResult.journalpostId + '-' + pdu1SearchResult.dokumentInfoId}>
+                <HStack gap="4" justify="space-between" align="start">
+                  <VStack gap="1">
+                    <HStack gap="2">
                       <Label>{t('label:fagsakNr')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
                       <BodyLong>{pdu1SearchResult.fagsakId}</BodyLong>
-                    </FlexBaseDiv>
-                    <FlexBaseDiv>
+                    </HStack>
+                    <HStack gap="2">
                       <Label>{t('label:tittel')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
                       <BodyLong>{pdu1SearchResult.tittel}</BodyLong>
-                    </FlexBaseDiv>
-                    <FlexBaseDiv>
+                    </HStack>
+                    <HStack gap="2">
                       <Label>{t('label:dato-opprettet')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
                       <BodyLong>{moment(pdu1SearchResult.datoOpprettet).format('DD.MM.YYYY HH:mm')}</BodyLong>
-                    </FlexBaseDiv>
-                  </PileDiv>
-                  <PileDiv>
+                    </HStack>
+                  </VStack>
+                  <VStack gap="2">
                     <Button
                       variant='primary'
                       disabled={gettingPdu1 || pdu1SearchResult.dokumentvarianter.indexOf('ORIGINAL') < 0}
@@ -437,7 +392,6 @@ const PDU1Search = (): JSX.Element => {
                       {gettingPdu1 && <Loader />}
                       {gettingPdu1 ? t('label:laster') : t('el:button-edit-x', { x: 'PD U1' })}
                     </Button>
-                    <VerticalSeparatorDiv />
                     <Button
                       variant='secondary'
                       disabled={!pdu1SearchResult || gettingPreviewStoredPdu1 || pdu1SearchResult.dokumentvarianter.indexOf('ARKIV') < 0}
@@ -446,13 +400,14 @@ const PDU1Search = (): JSX.Element => {
                       {gettingPreviewStoredPdu1 && <Loader />}
                       {gettingPreviewStoredPdu1 ? t('label:laster') : t('el:button-preview-x', { x: 'PD U1' })}
                     </Button>
-                  </PileDiv>
-                </FlexDiv>
-              </Panel>
+                  </VStack>
+                </HStack>
+              </Box>
             ))}
-        </>
+        </VStack>
       )}
-    </ContainerDiv>
+      </VStack>
+    </VStack>
   )
 }
 

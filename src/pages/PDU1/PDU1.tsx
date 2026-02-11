@@ -1,5 +1,4 @@
-import { Button } from '@navikt/ds-react'
-import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin } from '@navikt/hoykontrast'
+import {Button, HStack, Page, Spacer} from '@navikt/ds-react'
 import { setStatusParam } from 'actions/app'
 import { cleanUpPDU1, searchPdu1s } from 'actions/pdu1'
 import Modal from 'components/Modal/Modal'
@@ -12,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import PDU1Edit from './PDU1Edit'
 import PDU1Search from './PDU1Search'
+import styles from "./PDU1.module.css"
 
 interface PDU1Selector {
   pdu1: PDU1 | null | undefined
@@ -74,45 +74,47 @@ export const PDU1Page: React.FC<PDU1PageProps> = ({
   }, [])
 
   return (
-    <TopContainer
-      backButton={type === 'edit' || type === 'create'}
-      onGoBackClick={onGoBackClick}
-      unsavedDoc={pdu1Changed}
-      title={t('app:page-title-pdu1')}
-    >
-      <Modal
-        open={_showSaveModal}
-        onModalClose={() => _setShowSaveModal(false)}
-        modal={{
-          modalTitle: t('message:warning-x-not-saved', { x: 'PDU1' }),
-          modalContent: (
-            <>
-              <FlexDiv>
-                <Button
-                  variant='secondary' onClick={() => {
-                    _setShowSaveModal(false)
-                    goToSearchPage()
-                  }}
-                >
-                  {t('el:button-discard-changes')}
-                </Button>
-                <HorizontalSeparatorDiv />
-                <Button variant='tertiary' onClick={() => _setShowSaveModal(false)}>
-                  {t('el:button-cancel')}
-                </Button>
-              </FlexDiv>
-            </>
-          )
-        }}
-      />
-      <Container>
-        <Margin />
-        <Content style={{ flex: 6 }}>
-          {type === 'search' && (<PDU1Search />)}
-          {(type === 'create' || type === 'edit') && (<PDU1Edit type={type} />)}
-        </Content>
-      </Container>
-    </TopContainer>
+    <Page className={styles.page}>
+      <TopContainer
+        backButton={type === 'edit' || type === 'create'}
+        onGoBackClick={onGoBackClick}
+        unsavedDoc={pdu1Changed}
+        title={t('app:page-title-pdu1')}
+      >
+        <Modal
+          open={_showSaveModal}
+          onModalClose={() => _setShowSaveModal(false)}
+          modal={{
+            modalTitle: t('message:warning-x-not-saved', { x: 'PDU1' }),
+            modalContent: (
+              <>
+                <HStack gap="4">
+                  <Button
+                    variant='secondary' onClick={() => {
+                      _setShowSaveModal(false)
+                      goToSearchPage()
+                    }}
+                  >
+                    {t('el:button-discard-changes')}
+                  </Button>
+                  <Button variant='tertiary' onClick={() => _setShowSaveModal(false)}>
+                    {t('el:button-cancel')}
+                  </Button>
+                </HStack>
+              </>
+            )
+          }}
+        />
+        <Page.Block width="2xl" gutters as="main" background="bg-subtle">
+          <HStack padding="12" width="100%">
+            <Spacer/>
+            {type === 'search' && (<PDU1Search />)}
+            {(type === 'create' || type === 'edit') && (<PDU1Edit type={type} />)}
+            <Spacer/>
+          </HStack>
+        </Page.Block>
+      </TopContainer>
+    </Page>
   )
 }
 

@@ -1,5 +1,4 @@
-import { BodyLong, Button, Loader, Panel } from '@navikt/ds-react'
-import { FlexDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Loader, VStack} from '@navikt/ds-react'
 import { getPdu1Template, getStoredPdu1AsJSON, jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { setValidation } from 'actions/validation'
@@ -168,7 +167,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   }
 
   return (
-    <>
+    <VStack gap="4">
       {jornalførePdu1Response && (
         <Modal
           open={completeModal}
@@ -177,10 +176,11 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             modalTitle: t('message:success-complete-pdu1'),
             modalContent: (
               <div style={{ textAlign: 'center', display: 'block', minWidth: '400px', minHeight: '100px' }}>
-                <PileDiv><BodyLong>{jornalførePdu1Response.melding}</BodyLong>
+                <VStack>
+                  <BodyLong>{jornalførePdu1Response.melding}</BodyLong>
                   <BodyLong>journalpostId: {jornalførePdu1Response.journalpostId}</BodyLong>
                   <BodyLong>journalstatus: {jornalførePdu1Response.journalstatus}</BodyLong>
-                </PileDiv>
+                </VStack>
               </div>
             ),
             modalButtons: [{
@@ -221,14 +221,11 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         setReplySed={setPdu1}
         updateReplySed={updatePdu1}
       />
-      <VerticalSeparatorDiv size='2' />
-      <Panel border>
-        <PreviewPDU1 validation={validation} namespace={namespace} />
-        <VerticalSeparatorDiv />
-        <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
-        <VerticalSeparatorDiv />
-        <FlexDiv>
-          <div>
+      <Box borderWidth="1" padding="4" background="bg-default">
+        <VStack gap="4">
+          <PreviewPDU1 validation={validation} namespace={namespace} />
+          <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
+          <Box>
             <Button
               variant='primary'
               onClick={jornalførePdu1Clicked}
@@ -239,11 +236,10 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
                 : t('label:opprett-pdu1')}
               {completingPdu1 && <Loader />}
             </Button>
-            <VerticalSeparatorDiv size='0.5' />
-          </div>
-        </FlexDiv>
-      </Panel>
-    </>
+          </Box>
+        </VStack>
+      </Box>
+    </VStack>
   )
 }
 
