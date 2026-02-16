@@ -9,6 +9,7 @@ import {appReset, setFavouriteEnhet, setSelectedEnhet} from 'actions/app'
 import {NavLink} from "react-router-dom";
 import {FeatureToggles} from "../../declarations/app";
 import styles from './Header.module.css';
+import {IS_PRODUCTION} from "../../constants/environment";
 
 export interface HeaderSelector {
   saksbehandler: Saksbehandler | undefined
@@ -78,7 +79,7 @@ const Header: React.FC<HeaderProps> = ({
               <ActionMenu.Item as="a" target="_blank" href="https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Brukerveiledning-nEESSI.aspx" icon={<ExternalLinkIcon aria-hidden/>}>
                 {t('label:brukerveiledning')}
               </ActionMenu.Item>
-              <ActionMenu.Item as="a" target="_blank" href="https://ec.europa.eu/social/social-security-directory/cai/select-country/language/en" icon={<ExternalLinkIcon aria-hidden/>}>
+              <ActionMenu.Item as="a" target="_blank" href={IS_PRODUCTION ? "https://ec.europa.eu/social/social-security-directory/cai/select-country/language/en" : "https://ec.europa.eu/social/social-security-directory/acceptance/cai/" } icon={<ExternalLinkIcon aria-hidden/>}>
                 {t('label:cai')}
               </ActionMenu.Item>
             </ActionMenu.Group>
