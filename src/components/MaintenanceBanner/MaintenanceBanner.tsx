@@ -20,7 +20,7 @@ const MaintenanceBanner: React.FC = (): JSX.Element | null => {
       variant='warning'
       className={styles.maintenanceBanner}
     >
-      Pga. oppdatering fra CDM versjon 4.3 til versjon 4.4 vil det ikke være mulig å opprette nye SED i NEESSI mellom fredag 13.2 til mandag 16.2.
+      Pga. oppdatering fra CDM versjon 4.3 til versjon 4.4 vil det ikke være mulig å opprette nye SED i nEESSI mellom fredag 13.2 og mandag 16.2.
     </Alert>
   )
 }

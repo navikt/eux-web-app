@@ -969,7 +969,7 @@ const SEDNew = (): JSX.Element => {
       >
         <Modal.Body>
           <Alert variant='warning'>
-            Kan ikke opprette SED pga. oppdatering av RINA, vil være tilgjengelig igjen etter 16.2
+            Kan ikke opprette SED pga. oppdatering overgang fra CDM 4.3 til CDM 4.4, vil være tilgjengelig igjen mandag 16.2
           </Alert>
         </Modal.Body>
         <Modal.Footer>
