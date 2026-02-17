@@ -1,0 +1,50 @@
+.whiteContainer {
+  background-color: #ffffff;
+}
+
+.square {
+  width: 150px;
+  height: 150px;
+  margin: 0 1rem;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 2px solid #0067C5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.bindersIcon {
+  width: 50px;
+  height: 50px;
+}
+
+.dokumentIcon {
+  width: 50px;
+  height: 50px;
+}
+
+.opprettSakIcon {
+  width: 50px;
+  height: 50px;
+}
+
+.styledLink {
+  cursor: pointer;
+  color: #000000;
+  font-weight: bold;
+}
+
+.styledLink:active {
+  color: #000000;
+  background-color: transparent;
+}
+
+.logoDiv {
+  display: flex;
+  margin-top: 3rem;
+  margin-bottom: -3rem;
+  justify-content: center;
+}
+

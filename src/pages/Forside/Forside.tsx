@@ -1,14 +1,12 @@
 /// <reference types="vite-plugin-svgr/client" />
 import { State } from 'declarations/reducers'
-import {Container, Content, Margin, VerticalSeparatorDiv} from '@navikt/hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import {Heading, Link} from '@navikt/ds-react'
+import {Box, Heading, HStack, Link, VStack} from '@navikt/ds-react'
 import { FeatureToggles } from 'declarations/app'
 import {useAppDispatch, useAppSelector} from 'store'
-import styled from 'styled-components'
 import OpprettSak from 'assets/icons/OpprettSak.svg?react'
 import Dokument from 'assets/icons/Dokument.svg?react'
 import Binders from 'assets/icons/Binders.svg?react'
@@ -19,6 +17,7 @@ import * as types from "../../constants/actionTypes";
 import {Sak, Saks, Saksbehandler} from "../../declarations/types";
 import NEESSILogo from 'assets/logos/nEESSI';
 import BrannLogo from "assets/logos/brann.png"
+import styles from './Forside.module.css'
 
 interface ForsideSelector {
   featureToggles: FeatureToggles | null | undefined
@@ -37,64 +36,6 @@ const mapState = (state: State): ForsideSelector => ({
   saks: state.svarsed.saks,
   saksbehandler: state.app.saksbehandler,
 })
-
-const WhiteContainer = styled(Container)`
-  background-color: #ffffff
-`
-
-const ContentArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`
-
-const Squares = styled.div`
-  display: flex;
-  justify-content: center;
-`
-
-const Square = styled.div`
-    width: 150px;
-    height: 150px;
-    margin: 0 1rem 0 1rem;
-    background: #FFFFFF;
-    border-radius: 5px;
-    border: 2px solid #0067C5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-`
-
-const BindersIcon = styled(Binders)`
-  width: 50px;
-  height: 50px;
-`
-
-const DokumentIcon = styled(Dokument)`
-  width: 50px;
-  height: 50px;
-`
-const OpprettSakIcon = styled(OpprettSak)`
-  width: 50px;
-  height: 50px;
-`
-
-const StyledLink = styled(Link)`
-  cursor: pointer;
-  color: #000000;
-  font-weight: bold;
-  &:active{
-      color: #000000;
-      background-color: transparent;
-  };
-`
-
-const LogoDiv = styled.div`
-  display: flex;
-  margin-top: 3rem;
-  margin-bottom: -3rem;
-`
 
 const Forside: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
@@ -154,69 +95,64 @@ const Forside: React.FC = (): JSX.Element => {
 
   return (
     <TopContainer title={t('app:page-title-forside')}>
-      <LogoDiv>
-        <Margin />
-        {getLogo(saksbehandler)}
-        <Margin />
-      </LogoDiv>
-      <Container>
-        <Margin />
-        <Content style={{ minWidth: '800px' }}>
-          <ContentArea>
-            <VerticalSeparatorDiv size="2"/>
-            <Heading size='medium'>
-              {t('app:page-title-svarsed-search')}
-            </Heading>
-            <SEDQuery
-              frontpage={true}
-              parentNamespace="sedsearch"
-              initialQuery=""
-              onQueryChanged={(queryType: string) => {
-                dispatch(appReset())
-                _setQueryType(queryType)
-              }}
-              onQuerySubmit={(q: string) => {
-                _setQuery(q)
-              }}
-              querying={queryingSaks}
-              error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
-            />
-          </ContentArea>
-        </Content>
-        <Margin/>
-      </Container>
-      <WhiteContainer>
-        <Margin/>
-        <Content style={{ minWidth: '800px' }}>
-          <ContentArea>
-            <VerticalSeparatorDiv size="3"/>
-            <Squares>
-              <StyledLink onClick={() => navigate({ pathname: '/svarsed/new', search: window.location.search })}>
-                <Square>
-                  <OpprettSakIcon/>
-                  {t('app:page-title-opprettnysak')}
-                </Square>
-              </StyledLink>
-              <StyledLink onClick={() => navigate({ pathname: '/vedlegg', search: window.location.search })}>
-                <Square>
-                  <BindersIcon/>
-                  {t('app:page-title-vedlegg')}
-                </Square>
-              </StyledLink>
-              {featureToggles?.featurePdu1 && (
-                <StyledLink onClick={() => navigate({ pathname: '/pdu1/search', search: window.location.search })}>
-                  <Square>
-                    <DokumentIcon/>
-                    {t('app:page-title-sed-pdu1')}
-                  </Square>
-                </StyledLink>
-              )}
-            </Squares>
-            <VerticalSeparatorDiv size="3"/>
-          </ContentArea>
-        </Content>
-        <Margin/>
-      </WhiteContainer>
+      <VStack gap="20" paddingBlock={"0 12"}>
+        <div className={styles.logoDiv}>
+          {getLogo(saksbehandler)}
+        </div>
+        <HStack justify="center">
+          <Box minWidth="800px">
+            <VStack gap="0">
+              <Heading size='medium'>
+                {t('app:page-title-svarsed-search')}
+              </Heading>
+              <SEDQuery
+                frontpage={true}
+                parentNamespace="sedsearch"
+                initialQuery=""
+                onQueryChanged={(queryType: string) => {
+                  dispatch(appReset())
+                  _setQueryType(queryType)
+                }}
+                onQuerySubmit={(q: string) => {
+                  _setQuery(q)
+                }}
+                querying={queryingSaks}
+                error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
+              />
+            </VStack>
+          </Box>
+        </HStack>
+      </VStack>
+      <Box className={styles.whiteContainer} padding="12">
+        <HStack justify="center">
+          <Box className={styles.content}>
+            <VStack gap="6" className={styles.contentArea}>
+              <HStack gap="0" justify="center">
+                <Link className={styles.styledLink} onClick={() => navigate({ pathname: '/svarsed/new', search: window.location.search })}>
+                  <div className={styles.square}>
+                    <OpprettSak className={styles.opprettSakIcon}/>
+                    {t('app:page-title-opprettnysak')}
+                  </div>
+                </Link>
+                <Link className={styles.styledLink} onClick={() => navigate({ pathname: '/vedlegg', search: window.location.search })}>
+                  <div className={styles.square}>
+                    <Binders className={styles.bindersIcon}/>
+                    {t('app:page-title-vedlegg')}
+                  </div>
+                </Link>
+                {featureToggles?.featurePdu1 && (
+                  <Link className={styles.styledLink} onClick={() => navigate({ pathname: '/pdu1/search', search: window.location.search })}>
+                    <div className={styles.square}>
+                      <Dokument className={styles.dokumentIcon}/>
+                      {t('app:page-title-sed-pdu1')}
+                    </div>
+                  </Link>
+                )}
+              </HStack>
+            </VStack>
+          </Box>
+        </HStack>
+      </Box>
     </TopContainer>
   )
 }
