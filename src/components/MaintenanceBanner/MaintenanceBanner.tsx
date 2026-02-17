@@ -21,7 +21,7 @@ const MaintenanceBanner: React.FC = (): JSX.Element | null => {
       className={styles.maintenanceBanner}
     >
       I forbindelse med oppdatering fra CDM versjon 4.3 til versjon 4.4 vil det ikke være mulig å
-      opprette nye SED i nEESSI mellom fredag 13.2.2026 og mandag 16.2.2026
+      opprette nye SED i nEESSI mellom fredag 20.2.2026 og mandag 23.2.2026
     </Alert>
   )
 }

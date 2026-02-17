@@ -969,8 +969,8 @@ const SEDNew = (): JSX.Element => {
       >
         <Modal.Body>
           <Alert variant='warning'>
-            Kan ikke opprette SED pga. oppdatering overgang fra CDM 4.3 til CDM 4.4,
-            vil være tilgjengelig igjen mandag 16.2.2026
+            Kan ikke opprette SED pga. oppdatering fra CDM 4.3 til CDM 4.4,
+            vil være tilgjengelig igjen mandag 23.2.2026
           </Alert>
         </Modal.Body>
         <Modal.Footer>
