@@ -1,4 +1,4 @@
-import { Alert, BodyLong, Button, Heading, Loader, Select } from '@navikt/ds-react'
+import { Alert, BodyLong, Button, Heading, Loader, Modal, Select } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -250,6 +250,7 @@ const SEDNew = (): JSX.Element => {
   ]
   const [_showNonEUEftaAddressWarning, setShowNonEUEftaAddressWarning] = useState<boolean>(false)
   const [_notValidNationalityWarning, setNotValidNationalityWarning] = useState<string | undefined>(undefined)
+  const [showMaintenanceWarning, setShowMaintenanceWarning] = useState<boolean>(false)
 
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema].filter((k:Kodeverk) => {
@@ -871,7 +872,13 @@ const SEDNew = (): JSX.Element => {
               <Button
                 variant='primary'
                 disabled={_showNonEUEftaAddressWarning || sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
-                onClick={skjemaSubmit}
+                onClick={() => {
+                  if (featureToggles?.featureMaintenanceBanner) {
+                    setShowMaintenanceWarning(true)
+                  } else {
+                    skjemaSubmit()
+                  }
+                }}
               >
                 {sendingSak && <Loader />}
                 {t('label:opprett-sak-i-rina')}
@@ -955,6 +962,22 @@ const SEDNew = (): JSX.Element => {
         }
       </PersonInfoContent>
       <Margin />
+      <Modal
+        open={showMaintenanceWarning}
+        onClose={() => setShowMaintenanceWarning(false)}
+        header={{ heading: 'Kan ikke opprette SED' }}
+      >
+        <Modal.Body>
+          <Alert variant='warning'>
+            Kan ikke opprette SED pga. oppdatering av RINA, vil være tilgjengelig igjen etter 16.2
+          </Alert>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={() => setShowMaintenanceWarning(false)}>
+            Lukk
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   )
 }
