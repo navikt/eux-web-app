@@ -595,7 +595,6 @@ const MainForm = <T extends StorageTypes>({
         onModalClose={() => setSeeNewPersonModal(false)}
       />
       <WithErrorPanel
-        border
         className={classNames({ error: panelError })}
       >
         <HStack justify="space-between" align="center">
