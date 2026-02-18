@@ -1,0 +1,27 @@
+.myContent {
+
+}
+
+.personInfo {
+  display: block;
+}
+
+@media (min-width: 1280px) {
+  .personInfo {
+    display: none;
+  }
+}
+
+.personInfoContent {
+}
+
+@media (max-width: 1280px) {
+  .personInfoContent {
+    display: none;
+  }
+}
+
+.temaSelect {
+  flex: 3;
+}
+

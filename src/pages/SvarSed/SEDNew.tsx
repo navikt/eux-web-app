@@ -1,17 +1,4 @@
-import { Alert, BodyLong, Button, Heading, Loader, Select } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  Container,
-  Content,
-  FlexCenterDiv,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  Margin,
-  PileDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Alert, BodyLong, Button, Heading, HGrid, Loader, Page, Select, HStack, VStack, Box} from '@navikt/ds-react'
 import { Country } from '@navikt/land-verktoy'
 import * as appActions from 'actions/app'
 import * as personActions from 'actions/person'
@@ -56,8 +43,8 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import performValidation from 'utils/performValidation'
+import styles from './SEDNew.module.css'
 import { validateSEDNew, ValidationSEDNewProps } from './sedNewValidation'
 import {FeatureToggles} from "../../declarations/app";
 import {getAllowed} from "utils/allowedFeatures";
@@ -167,20 +154,6 @@ const mapState = (state: State): SEDNewSelector => ({
   cdmVersjonApp: state.app.cdmVersjon
 })
 
-export const MyContent = styled(Content)`
-  @media (min-width: 1280px) {
-    div.personInfo {
-      display: none;
-    }
-  };
-  align-items: center;
-`
-
-export const PersonInfoContent = styled(Content)`
-  @media (max-width: 1280px) {
-    display: none;
-  };
-`
 
 const SEDNew = (): JSX.Element => {
   const {
@@ -547,337 +520,301 @@ const SEDNew = (): JSX.Element => {
 
 
   return (
-    <Container>
-      <Margin />
-      <MyContent style={{ flex: 6 }}>
-        <Row>
-          <Column>
-            <PersonSearch
-              key={namespace + '-fnr-' + valgtFnr}
-              alertMessage={alertMessage}
-              alertType={alertType}
-              alertTypesWatched={[types.PERSON_MED_FAMILIE_SEARCH_FAILURE]}
-              data-testid={namespace + '-fnr'}
-              error={validation[namespace + '-fnr']?.feilmelding}
-              searchingPerson={searchingPerson}
-              id={namespace + '-fnr'}
-              initialFnr=''
-              value={valgtFnr}
-              parentNamespace={namespace}
-              onFnrChange={() => {
-                setShowNonEUEftaAddressWarning(false)
-                setNotValidNationalityWarning(undefined)
-                if (isFnrValid) {
-                  setIsFnrValid(false)
-                  dispatch(appActions.appReset()) // cleans person and sak reducer
-                }
-              }}
-              onPersonFound={onPersonFound}
-              onSearchPerformed={(fnr: string) => {
-                setShowNonEUEftaAddressWarning(false)
-                setNotValidNationalityWarning(undefined)
-                dispatch(sakActions.sakReset())
-                dispatch(sakActions.setProperty('fnr', fnr))
-                dispatch(personActions.searchPersonMedFamilie(fnr))
-              }}
-              person={personMedFamilie}
-            />
-          </Column>
-          <Column/>
-        </Row>
-        {!!_notValidNationalityWarning &&
-          <>
-            <VerticalSeparatorDiv size='2' />
-            <Alert variant='warning'>
-              {_notValidNationalityWarning}
-            </Alert>
-          </>
-        }
-        <VerticalSeparatorDiv size='2' />
-        <Row className="personInfo">
-          <Column>
-            {personMedFamilie &&
-              <PersonPanel className='neutral' person={personMedFamilie}/>
-            }
-          </Column>
-        </Row>
-        <VerticalSeparatorDiv size='2' />
-        <Row>
-          <Column>
-            <Select
-              data-testid={namespace + '-sektor'}
-              disabled={_.isEmpty(personMedFamilie) || !!opprettetSak}
-              error={validation[namespace + '-sektor']?.feilmelding}
-              id={namespace + '-sektor'}
-              label={t('label:sektor')}
-              onChange={onSektorChange}
-              value={valgtSektor ?? ''}
-            >
-              <option value=''>
-                {t('label:velg')}
-              </option>
-              {sektor &&
+    <Page.Block width="2xl" gutters>
+      <HGrid columns={"2fr 1fr"} gap="8" paddingBlock="12" paddingInline="4">
+        <Box className={styles.myContent}>
+          <VStack gap="4">
+            <HStack gap="4">
+              <Box style={{flex: 1}}>
+                <PersonSearch
+                  key={namespace + '-fnr-' + valgtFnr}
+                  alertMessage={alertMessage}
+                  alertType={alertType}
+                  alertTypesWatched={[types.PERSON_MED_FAMILIE_SEARCH_FAILURE]}
+                  data-testid={namespace + '-fnr'}
+                  error={validation[namespace + '-fnr']?.feilmelding}
+                  searchingPerson={searchingPerson}
+                  id={namespace + '-fnr'}
+                  initialFnr=''
+                  value={valgtFnr}
+                  parentNamespace={namespace}
+                  onFnrChange={() => {
+                    setShowNonEUEftaAddressWarning(false)
+                    setNotValidNationalityWarning(undefined)
+                    if (isFnrValid) {
+                      setIsFnrValid(false)
+                      dispatch(appActions.appReset()) // cleans person and sak reducer
+                    }
+                  }}
+                  onPersonFound={onPersonFound}
+                  onSearchPerformed={(fnr: string) => {
+                    setShowNonEUEftaAddressWarning(false)
+                    setNotValidNationalityWarning(undefined)
+                    dispatch(sakActions.sakReset())
+                    dispatch(sakActions.setProperty('fnr', fnr))
+                    dispatch(personActions.searchPersonMedFamilie(fnr))
+                  }}
+                  person={personMedFamilie}/>
+              </Box>
+              <Box style={{flex: 1}} />
+            </HStack>
+            {!!_notValidNationalityWarning && (
+              <Alert variant='warning'>
+                {_notValidNationalityWarning}
+              </Alert>
+            )}
+            <Box className={styles.personInfo}>
+              {personMedFamilie && (
+                <PersonPanel className='neutral' person={personMedFamilie}/>
+              )}
+            </Box>
+            <HStack gap="4">
+              <Box style={{flex: 1}}>
+                <Select
+                  data-testid={namespace + '-sektor'}
+                  disabled={_.isEmpty(personMedFamilie) || !!opprettetSak}
+                  error={validation[namespace + '-sektor']?.feilmelding}
+                  id={namespace + '-sektor'}
+                  label={t('label:sektor')}
+                  onChange={onSektorChange}
+                  value={valgtSektor ?? ''}
+                >
+                  <option value=''>
+                    {t('label:velg')}
+                  </option>
+                  {sektor &&
                     _.orderBy(sektor, 'term').map((k: Kodeverk) => (
                       <option value={k.kode} key={k.kode}>
                         {k.term}
                       </option>
                     ))}
-            </Select>
-            <VerticalSeparatorDiv />
-          </Column>
-          <Column>
-            {visEnheter && (
-              <Select
-                data-testid={namespace + '-unit'}
-                error={validation[namespace + '-unit']?.feilmelding}
-                id={namespace + '-unit'}
-                label={t('label:enhet')}
-                onChange={onUnitChange}
-                value={valgtUnit?.enhetNr}
-                disabled={!!opprettetSak}
-              >
-                <option value=''>
-                  {t('label:velg')}
-                </option>
-                {sektor &&
-                  _.orderBy(enheter, 'navn').map((e: Enhet) => (
-                    <option value={e.enhetNr} key={e.enhetNr}>
-                      {e.navn}
-                    </option>
-                  ))
-                }
-              </Select>
-            )}
-            <VerticalSeparatorDiv />
-          </Column>
-        </Row>
-        <VerticalSeparatorDiv />
-        <Row>
-          <Column>
-            <Select
-              data-testid={namespace + '-buctype'}
-              disabled={_.isEmpty(valgtSektor) || _.isEmpty(personMedFamilie) || !!opprettetSak}
-              error={validation[namespace + '-buctype']?.feilmelding}
-              id={namespace + '-buctype'}
-              label={t('label:buc')}
-              onChange={onBuctypeChange}
-              value={valgtBucType}
-            >
-              <option value=''>
-                {t('label:velg')}
-              </option>
-              {_buctyper &&
-                    _.orderBy(_buctyper, 'kode').map((k: Kodeverk) => (
-                      <option value={k.kode} key={k.kode}>
-                        {k.kode} - {k.term}
-                      </option>
-                    ))}
-            </Select>
-            <VerticalSeparatorDiv />
-          </Column>
-          <Column>
-            <Select
-              data-testid={namespace + '-sedtype'}
-              disabled={_.isEmpty(valgtBucType) || _.isEmpty(valgtSektor) || _.isEmpty(personMedFamilie) || !!opprettetSak}
-              error={validation[namespace + '-sedtype']?.feilmelding}
-              id={namespace + '-sedtype'}
-              label={t('label:sed')}
-              onChange={onSedtypeChange}
-              value={valgtSedType}
-            >
-              <option value=''>
-                {t('label:velg')}
-              </option>)
-              {_sedtyper && _sedtyper.map((k: Kodeverk) => {
-                // if only one element, select it
-                if (_sedtyper.length === 1 && valgtSedType !== (k as Kodeverk).kode) {
-                  onSedtypeSet((k as Kodeverk).kode)
-                }
-                return (
-                  <option value={(k as Kodeverk).kode} key={(k as Kodeverk).kode}>
-                    {(k as Kodeverk).kode} - {(k as Kodeverk).term}
-                  </option>
-                )
-              })}
-            </Select>
-            <VerticalSeparatorDiv />
-          </Column>
-        </Row>
-        {_showNonEUEftaAddressWarning &&
-          <Alert variant='error'>
-            {t('message:error-non-euefta-address')}
-          </Alert>
-        }
-        <VerticalSeparatorDiv />
-        <Row>
-          <Column>
-            <CountryDropdown
-              closeMenuOnSelect
-              data-testid={namespace + '-landkode'}
-              error={validation[namespace + '-landkode']?.feilmelding}
-              id={namespace + '-landkode'}
-              countryCodeListName="euEftaLand"
-              label={t('label:land')}
-              isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(personMedFamilie) || !!opprettetSak}
-              menuPortalTarget={document.body}
-              onOptionSelected={onLandkodeChange}
-              flagWave
-              values={valgtLandkode}
-            />
-            <VerticalSeparatorDiv />
-          </Column>
-          <Column>
-            <FlexCenterDiv>
-              <Select
-                data-testid={namespace + '-institusjon'}
-                disabled={_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(personMedFamilie) || !!opprettetSak}
-                error={validation[namespace + '-institusjon']?.feilmelding}
-                id={namespace + '-institusjon'}
-                label={t('label:mottaker-institusjon')}
-                onChange={onInstitusjonChange}
-                value={valgtInstitusjon}
-              >
-                <option value=''>
-                  {t('label:velg')}
-                </option>)
-                {institusjoner &&
-                    _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
-                      <option
-                        value={i.institusjonsID}
-                        key={i.institusjonsID}
-                      >
-                        {i.navn}
-                      </option>
-                    ))}
-              </Select>
-              <HorizontalSeparatorDiv size='0.5' />
-              {gettingInstitusjoner && <Loader />}
-            </FlexCenterDiv>
-            <VerticalSeparatorDiv />
-          </Column>
-        </Row>
-        <VerticalSeparatorDiv />
-        {valgtSektor === 'FB' && (
-          <>
-            <VerticalSeparatorDiv />
-            <Heading size='medium'>
-              {t('label:familierelasjon')}
-            </Heading>
-            <VerticalSeparatorDiv />
-            <FamilieRelasjoner
-              validation={validation}
-              namespace={namespace}
-              personMedFamilie={personMedFamilie}
-              valgteFamilieRelasjonerPDL={valgteFamilieRelasjonerPDL}
-              valgteFamilieRelasjonerUtland={valgteFamilieRelasjonerUtland}
-            />
-          </>
-        )}
-        <VerticalSeparatorDiv />
-        {valgtSektor && (
-          <AlignStartRow>
-            <Column>
-              <FlexDiv>
-                <div style={{ flex: 3 }}>
+                </Select>
+              </Box>
+              <Box style={{flex: 1}}>
+                {visEnheter && (
                   <Select
-                    data-testid={namespace + '-tema'}
-                    error={validation[namespace + '-tema']?.feilmelding}
-                    id={namespace + '-tema'}
-                    label={t('label:velg-tema')}
-                    onChange={onTemaChange}
-                    disabled={_.isEmpty(personMedFamilie) || !!opprettetSak}
-                    value={valgtTema}
-                  >
-                    <option value=''>
-                      {t('label:velg')}
-                    </option>)
-                    {temaer && temaer.map((k: Kodeverk) => (
-                      <option value={k.kode} key={k.kode}>
-                        {k.term}
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-                <HorizontalSeparatorDiv />
-                <PileDiv>
-                  <VerticalSeparatorDiv size='2' />
-                  <FlexDiv>
-                    <Button
-                      variant='secondary'
-                      onClick={onViewFagsakerClick}
-                      disabled={gettingFagsaker || _.isEmpty(valgtTema) || _.isEmpty(personMedFamilie) || !!opprettetSak}
-                    >
-                      {gettingFagsaker && <Loader />}
-                      {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
-                    </Button>
-                  </FlexDiv>
-                </PileDiv>
-              </FlexDiv>
-              <VerticalSeparatorDiv />
-            </Column>
-            <Column>
-              {visFagsakerListe && (
-                <>
-                  <Select
-                    data-testid={namespace + '-saksId'}
-                    error={validation[namespace + '-saksId']?.feilmelding}
-                    id={namespace + '-saksId'}
-                    label={t('label:velg-fagsak')}
-                    onChange={onSakIDChange}
-                    value={valgtSaksId}
+                    data-testid={namespace + '-unit'}
+                    error={validation[namespace + '-unit']?.feilmelding}
+                    id={namespace + '-unit'}
+                    label={t('label:enhet')}
+                    onChange={onUnitChange}
+                    value={valgtUnit?.enhetNr}
                     disabled={!!opprettetSak}
                   >
                     <option value=''>
                       {t('label:velg')}
                     </option>
-                    {fagsaker &&
-                      fagsaker.map((f: Fagsak) => (
-                        <option value={f._id} key={f._id}>
-                          {f.nr || "GENERELL SAK"}
+                    {sektor &&
+                      _.orderBy(enheter, 'navn').map((e: Enhet) => (
+                        <option value={e.enhetNr} key={e.enhetNr}>
+                          {e.navn}
                         </option>
-                      ))
+                      ))}
+                  </Select>
+                )}
+              </Box>
+            </HStack>
+            <HStack gap="4">
+              <Box style={{flex: 1}}>
+                <Select
+                  data-testid={namespace + '-buctype'}
+                  disabled={_.isEmpty(valgtSektor) || _.isEmpty(personMedFamilie) || !!opprettetSak}
+                  error={validation[namespace + '-buctype']?.feilmelding}
+                  id={namespace + '-buctype'}
+                  label={t('label:buc')}
+                  onChange={onBuctypeChange}
+                  value={valgtBucType}
+                >
+                  <option value=''>
+                    {t('label:velg')}
+                  </option>
+                  {_buctyper &&
+                    _.orderBy(_buctyper, 'kode').map((k: Kodeverk) => (
+                      <option value={k.kode} key={k.kode}>
+                        {k.kode} - {k.term}
+                      </option>
+                    ))}
+                </Select>
+              </Box>
+              <Box style={{flex: 1}}>
+                <Select
+                  data-testid={namespace + '-sedtype'}
+                  disabled={_.isEmpty(valgtBucType) || _.isEmpty(valgtSektor) || _.isEmpty(personMedFamilie) || !!opprettetSak}
+                  error={validation[namespace + '-sedtype']?.feilmelding}
+                  id={namespace + '-sedtype'}
+                  label={t('label:sed')}
+                  onChange={onSedtypeChange}
+                  value={valgtSedType}
+                >
+                  <option value=''>
+                    {t('label:velg')}
+                  </option>
+                  {_sedtyper && _sedtyper.map((k: Kodeverk) => {
+                    // if only one element, select it
+                    if (_sedtyper.length === 1 && valgtSedType !== (k as Kodeverk).kode) {
+                      onSedtypeSet((k as Kodeverk).kode)
                     }
-                  </Select>
-                </>
-              )}
-              {valgtSektor !== "UB" && fagsaker && fagsaker.length === 0 &&
-                <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel' disabled={!!opprettetSak}>
-                  {t("el:button-create-x", {x: "fagsak"})}
-                </Button>
-              }
-              <VerticalSeparatorDiv />
-              {valgtSektor === "UB" && fagsaker && fagsaker.length >= 0 &&
-                <>
-                  <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak} disabled={!!opprettetSak}>
-                    {t("el:button-create-x", {x: "fagsak"})}
-                  </Button>
-                  <VerticalSeparatorDiv size={0.2}/>
-                  <Select disabled={!!opprettetSak} label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
-                    <option value={currentYear}>{currentYear}</option>
-                    <option value={currentYear - 1}>{currentYear - 1}</option>
-                    <option value={currentYear - 2}>{currentYear - 2}</option>
-                    <option value={currentYear - 3}>{currentYear - 3}</option>
-                    <option value={currentYear - 4}>{currentYear - 4}</option>
-                  </Select>
-                </>
-              }
-            </Column>
-          </AlignStartRow>
-        )}
-        <VerticalSeparatorDiv />
-        <Row>
-          <Column>
-            <FlexDiv>
+                    return (
+                      <option value={(k as Kodeverk).kode} key={(k as Kodeverk).kode}>
+                        {(k as Kodeverk).kode} - {(k as Kodeverk).term}
+                      </option>
+                    )
+                  })}
+                </Select>
+              </Box>
+            </HStack>
+            {_showNonEUEftaAddressWarning && (
+              <Alert variant='error'>
+                {t('message:error-non-euefta-address')}
+              </Alert>
+            )}
+            <HStack gap="4">
+              <Box style={{flex: 1}}>
+                <CountryDropdown
+                  closeMenuOnSelect
+                  data-testid={namespace + '-landkode'}
+                  error={validation[namespace + '-landkode']?.feilmelding}
+                  id={namespace + '-landkode'}
+                  countryCodeListName="euEftaLand"
+                  label={t('label:land')}
+                  isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(personMedFamilie) || !!opprettetSak}
+                  menuPortalTarget={document.body}
+                  onOptionSelected={onLandkodeChange}
+                  flagWave
+                  values={valgtLandkode}/>
+              </Box>
+              <Box style={{flex: 1}}>
+                <HStack gap="2" align="center">
+                  <Box style={{flex: 1}}>
+                    <Select
+                      data-testid={namespace + '-institusjon'}
+                      disabled={_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(personMedFamilie) || !!opprettetSak}
+                      error={validation[namespace + '-institusjon']?.feilmelding}
+                      id={namespace + '-institusjon'}
+                      label={t('label:mottaker-institusjon')}
+                      onChange={onInstitusjonChange}
+                      value={valgtInstitusjon}
+                    >
+                      <option value=''>
+                        {t('label:velg')}
+                      </option>
+                      {institusjoner &&
+                        _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
+                          <option
+                            value={i.institusjonsID}
+                            key={i.institusjonsID}
+                          >
+                            {i.navn}
+                          </option>
+                        ))}
+                    </Select>
+                  </Box>
+                  {gettingInstitusjoner && <Loader/>}
+                </HStack>
+              </Box>
+            </HStack>
+            {valgtSektor === 'FB' && (
+              <VStack gap="4">
+                <Heading size='medium'>
+                  {t('label:familierelasjon')}
+                </Heading>
+                <FamilieRelasjoner
+                  validation={validation}
+                  namespace={namespace}
+                  personMedFamilie={personMedFamilie}
+                  valgteFamilieRelasjonerPDL={valgteFamilieRelasjonerPDL}
+                  valgteFamilieRelasjonerUtland={valgteFamilieRelasjonerUtland}/>
+              </VStack>
+            )}
+            {valgtSektor && (
+              <HStack gap="4" align="start">
+                <Box style={{flex: 1}}>
+                  <HStack gap="2" align="end">
+                    <Box className={styles.temaSelect}>
+                      <Select
+                        data-testid={namespace + '-tema'}
+                        error={validation[namespace + '-tema']?.feilmelding}
+                        id={namespace + '-tema'}
+                        label={t('label:velg-tema')}
+                        onChange={onTemaChange}
+                        disabled={_.isEmpty(personMedFamilie) || !!opprettetSak}
+                        value={valgtTema}
+                      >
+                        <option value=''>
+                          {t('label:velg')}
+                        </option>
+                        {temaer && temaer.map((k: Kodeverk) => (
+                          <option value={k.kode} key={k.kode}>
+                            {k.term}
+                          </option>
+                        ))}
+                      </Select>
+                    </Box>
+                    <Button
+                      variant='secondary'
+                      onClick={onViewFagsakerClick}
+                      disabled={gettingFagsaker || _.isEmpty(valgtTema) || _.isEmpty(personMedFamilie) || !!opprettetSak}
+                    >
+                      {gettingFagsaker && <Loader/>}
+                      {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
+                    </Button>
+                  </HStack>
+                </Box>
+                <Box style={{flex: 1}}>
+                  <VStack gap="2">
+                    {visFagsakerListe && (
+                      <Select
+                        data-testid={namespace + '-saksId'}
+                        error={validation[namespace + '-saksId']?.feilmelding}
+                        id={namespace + '-saksId'}
+                        label={t('label:velg-fagsak')}
+                        onChange={onSakIDChange}
+                        value={valgtSaksId}
+                        disabled={!!opprettetSak}
+                      >
+                        <option value=''>
+                          {t('label:velg')}
+                        </option>
+                        {fagsaker &&
+                          fagsaker.map((f: Fagsak) => (
+                            <option value={f._id} key={f._id}>
+                              {f.nr || "GENERELL SAK"}
+                            </option>
+                          ))}
+                      </Select>
+                    )}
+                    {valgtSektor !== "UB" && fagsaker && fagsaker.length === 0 && (
+                      <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel' disabled={!!opprettetSak}>
+                        {t("el:button-create-x", {x: "fagsak"})}
+                      </Button>
+                    )}
+                    {valgtSektor === "UB" && fagsaker && fagsaker.length >= 0 && (
+                      <HStack gap="2">
+                        <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak} disabled={!!opprettetSak}>
+                          {t("el:button-create-x", {x: "fagsak"})}
+                        </Button>
+                        <Select disabled={!!opprettetSak} label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
+                          <option value={currentYear}>{currentYear}</option>
+                          <option value={currentYear - 1}>{currentYear - 1}</option>
+                          <option value={currentYear - 2}>{currentYear - 2}</option>
+                          <option value={currentYear - 3}>{currentYear - 3}</option>
+                          <option value={currentYear - 4}>{currentYear - 4}</option>
+                        </Select>
+                      </HStack>
+                    )}
+                  </VStack>
+                </Box>
+              </HStack>
+            )}
+            <HStack gap="2">
               <Button
                 variant='primary'
                 disabled={_showNonEUEftaAddressWarning || sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
                 onClick={skjemaSubmit}
               >
-                {sendingSak && <Loader />}
+                {sendingSak && <Loader/>}
                 {t('label:opprett-sak-i-rina')}
               </Button>
-              <HorizontalSeparatorDiv />
-
               <Button
                 variant='tertiary'
                 disabled={_.isEmpty(personMedFamilie)}
@@ -890,72 +827,54 @@ const SEDNew = (): JSX.Element => {
               >
                 {t('label:reset')}
               </Button>
-            </FlexDiv>
-            <VerticalSeparatorDiv />
-          </Column>
-        </Row>
-        <VerticalSeparatorDiv />
-        <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
-        <VerticalSeparatorDiv />
-        {opprettetSak && opprettetSak.sakUrl && (
-          <>
-            <Row>
-              <Column>
-                <Alert variant='success'>
-                  <PileDiv>
-                    <div>
-                      <BodyLong>
-                        {t('label:saksnummer') + ': ' + opprettetSak.sakId + ' ' + t('label:er-opprettet')}.
-                      </BodyLong>
-                      <VerticalSeparatorDiv size='0.5' />
-                    </div>
-                    <FlexDiv>
+            </HStack>
+            <ValidationBox heading={t('validation:feiloppsummering')} validation={validation}/>
+            {opprettetSak && opprettetSak.sakUrl && (
+              <Alert variant='success'>
+                <VStack gap="2">
+                  <BodyLong>
+                    {t('label:saksnummer') + ': ' + opprettetSak.sakId + ' ' + t('label:er-opprettet')}.
+                  </BodyLong>
+                  <HStack gap="2">
+                    <Button
+                      variant='primary'
+                      disabled={!(opprettetSak && allowedToFillOut(valgtSedType!))}
+                      onClick={() => fillOutSed(opprettetSak!)}
+                    >
+                      {t('el:button-fill-sed')}
+                    </Button>
+                    {opprettetSak.sakUrl && (
                       <Button
-                        variant='primary'
-                        disabled={!(opprettetSak && allowedToFillOut(valgtSedType!))}
-                        onClick={() => fillOutSed(opprettetSak!)}
+                        variant='tertiary'
+                        onClick={() => window.open(opprettetSak.sakUrl, '_blank')}
                       >
-                        {t('el:button-fill-sed')}
+                        {t('label:gå-til-rina')}
                       </Button>
-                      <HorizontalSeparatorDiv />
-                      {opprettetSak.sakUrl && (
-                        <Button
-                          variant='tertiary'
-                          onClick={() =>
-                            window.open(opprettetSak.sakUrl, '_blank')}
-                        >
-                          {t('label:gå-til-rina')}
-                        </Button>
-                      )}
-                      <HorizontalSeparatorDiv />
-                      {opprettetSak.sakId && (
-                        <Button
-                          variant='tertiary'
-                          onClick={() =>
-                            navigate({
-                              pathname: '/vedlegg',
-                              search: 'rinasaksnummer=' + opprettetSak.sakId + '&fnr=' + valgtFnr
-                            })}
-                        >
-                          {t('label:legg-til-vedlegg-til-sed')}
-                        </Button>
-                      )}
-                    </FlexDiv>
-                  </PileDiv>
-                </Alert>
-              </Column>
-            </Row>
-            <VerticalSeparatorDiv size='2' />
-          </>
-        )}
-      </MyContent>
-      <PersonInfoContent style={{ flex: 2 }}>
-        {personMedFamilie &&
-          <PersonPanel className='neutral' person={personMedFamilie}/>
-        }
-      </PersonInfoContent>
-      <Margin />
-    </Container>
+                    )}
+                    {opprettetSak.sakId && (
+                      <Button
+                        variant='tertiary'
+                        onClick={() => navigate({
+                          pathname: '/vedlegg',
+                          search: 'rinasaksnummer=' + opprettetSak.sakId + '&fnr=' + valgtFnr
+                        })}
+                      >
+                        {t('label:legg-til-vedlegg-til-sed')}
+                      </Button>
+                    )}
+                  </HStack>
+                </VStack>
+              </Alert>
+            )}
+          </VStack>
+        </Box>
+        <Box className={styles.personInfoContent}>
+          {personMedFamilie && (
+            <PersonPanel className='neutral' person={personMedFamilie}/>
+          )}
+        </Box>
+      </HGrid>
+    </Page.Block>
   )
 }
 
