@@ -1,18 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexDiv,
-  FlexRadioPanels,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -22,7 +9,7 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, JaNei, Periode, RelasjonType } from 'declarations/sed'
@@ -43,6 +30,7 @@ import {
   ValidationFamilierelasjonProps
 } from './validation'
 import {isF003Sed} from "../../../utils/sed";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -263,35 +251,33 @@ const Familierelasjon: React.FC<MainFormProps> = ({
     const _familierelasjon = index < 0 ? _newFamilierelasjon : (inEditMode ? _editFamilierelasjon : familierelasjon)
 
     const addremovepanel = (
-      <AlignEndColumn>
-        <AddRemovePanel<FamilieRelasjon>
-          item={familierelasjon}
-          marginTop={false}
-          index={index}
-          inEditMode={inEditMode}
-          onRemove={onRemove}
-          onAddNew={onAddNew}
-          onCancelNew={onCloseNew}
-          onStartEdit={onStartEdit}
-          onConfirmEdit={onSaveEdit}
-          onCancelEdit={() => onCloseEdit(_namespace)}
-        />
-      </AlignEndColumn>
+      <AddRemovePanel<FamilieRelasjon>
+        item={familierelasjon}
+        marginTop={false}
+        index={index}
+        inEditMode={inEditMode}
+        onRemove={onRemove}
+        onAddNew={onAddNew}
+        onCancelNew={onCloseNew}
+        onStartEdit={onStartEdit}
+        onConfirmEdit={onSaveEdit}
+        onCancelEdit={() => onCloseEdit(_namespace)}
+      />
     )
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(familierelasjon)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="2 4"
       >
-        <VerticalSeparatorDiv size='0.5' />
         {inEditMode
           ? (
-            <>
-              <AlignStartRow>
+            <VStack gap="4">
+              <HStack gap="4" align="start">
                 <PeriodeInput
                   namespace={_namespace + '-periode'}
                   error={{
@@ -303,81 +289,66 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                   setPeriode={(p: Periode) => setPeriode(p, index)}
                   value={_familierelasjon?.periode}
                 />
+                <Spacer/>
                 {addremovepanel}
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column>
-                  <Select
-                    data-testid={_namespace + '-relasjonType'}
-                    error={_v[_namespace + '-relasjonType']?.feilmelding}
-                    id={_namespace + '-relasjonType'}
-                    label={t('label:type')}
-                    menuPortalTarget={document.body}
-                    onChange={(e: unknown) => setRelasjonType((e as Option).value as RelasjonType, index)}
-                    options={isF003Sed(replySed) ? relasjonTypeOptionsF003 : relasjonTypeOptions}
-                    required
-                    defaultValue={_.find(relasjonTypeOptions, r => r.value === _familierelasjon?.relasjonType)}
-                    value={_.find(relasjonTypeOptions, r => r.value === _familierelasjon?.relasjonType)}
-                  />
-                </Column>
-                {_familierelasjon?.relasjonType === 'annet'
-                  ? (
-                    <Column>
-                      <Input
-                        error={_v[_namespace + '-annenRelasjonType']?.feilmelding}
-                        namespace={_namespace}
-                        id='annenRelasjonType'
-                        label={t('label:annen-relasjon')}
-                        onChanged={(value: string) => setAnnenRelasjonType(value, index)}
-                        value={_familierelasjon?.annenRelasjonType}
-                      />
-                    </Column>
-                    )
-                  : (<Column />)}
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column>
+              </HStack>
+              <HGrid columns={2} gap="4" align="start">
+                <Select
+                  data-testid={_namespace + '-relasjonType'}
+                  error={_v[_namespace + '-relasjonType']?.feilmelding}
+                  id={_namespace + '-relasjonType'}
+                  label={t('label:type')}
+                  menuPortalTarget={document.body}
+                  onChange={(e: unknown) => setRelasjonType((e as Option).value as RelasjonType, index)}
+                  options={isF003Sed(replySed) ? relasjonTypeOptionsF003 : relasjonTypeOptions}
+                  required
+                  defaultValue={_.find(relasjonTypeOptions, r => r.value === _familierelasjon?.relasjonType)}
+                  value={_.find(relasjonTypeOptions, r => r.value === _familierelasjon?.relasjonType)}
+                />
+                {_familierelasjon?.relasjonType === 'annet' && (
                   <Input
-                    error={_v[_namespace + '-annenRelasjonPersonNavn']?.feilmelding}
+                    error={_v[_namespace + '-annenRelasjonType']?.feilmelding}
                     namespace={_namespace}
-                    id='annenRelasjonPersonNavn'
-                    label={t('label:person-navn')}
-                    onChanged={(value: string) => setAnnenRelasjonPersonNavn(value, index)}
-                    value={_familierelasjon?.annenRelasjonPersonNavn}
+                    id='annenRelasjonType'
+                    label={t('label:annen-relasjon')}
+                    onChanged={(value: string) => setAnnenRelasjonType(value, index)}
+                    value={_familierelasjon?.annenRelasjonType}
                   />
-                </Column>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column>
-                  <RadioPanelGroup
-                    value={_familierelasjon?.borSammen}
-                    data-testid={_namespace + '-borSammen'}
-                    data-no-border
-                    id={_namespace + '-borSammen'}
-                    error={_v[_namespace + '-borSammen']?.feilmelding}
-                    legend={t('label:bor-sammen')}
-                    name={_namespace + '-borSammen'}
-                    onChange={(e: string) => setBorSammen(e as JaNei, index)}
-                  >
-                    <FlexRadioPanels>
-                      <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                      <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-                    </FlexRadioPanels>
-                  </RadioPanelGroup>
-                </Column>
-              </AlignStartRow>
-            </>
-            )
+                )}
+              </HGrid>
+              <Input
+                error={_v[_namespace + '-annenRelasjonPersonNavn']?.feilmelding}
+                namespace={_namespace}
+                id='annenRelasjonPersonNavn'
+                label={t('label:person-navn')}
+                onChanged={(value: string) => setAnnenRelasjonPersonNavn(value, index)}
+                value={_familierelasjon?.annenRelasjonPersonNavn}
+              />
+              <RadioGroup
+                value={_familierelasjon?.borSammen}
+                data-testid={_namespace + '-borSammen'}
+                id={_namespace + '-borSammen'}
+                error={_v[_namespace + '-borSammen']?.feilmelding}
+                legend={t('label:bor-sammen')}
+                name={_namespace + '-borSammen'}
+                onChange={(e: string) => setBorSammen(e as JaNei, index)}
+              >
+                <HStack gap="4">
+                  <Radio value='ja' className={commonStyles.radioPanel}>{t('label:ja')}</Radio>
+                  <Radio value='nei' className={commonStyles.radioPanel}>{t('label:nei')}</Radio>
+                </HStack>
+              </RadioGroup>
+            </VStack>
+          )
           : (
-            <>
-              <AlignStartRow>
-                <Column>
-                  {t('el:option-familierelasjon-' + _familierelasjon?.relasjonType)}
-                </Column>
-                <Column>
+            <VStack gap="2">
+              <HGrid columns="1fr 1fr auto" gap="4">
+                <div>
+                  <Label>{t('label:relasjon')}</Label>
+                  <div>{t('el:option-familierelasjon-' + _familierelasjon?.relasjonType)}</div>
+                </div>
+                <div>
+                  <Label>{t('label:periode')}</Label>
                   <PeriodeText
                     error={{
                       startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
@@ -386,106 +357,82 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                     namespace={_namespace + '-periode'}
                     periode={_familierelasjon?.periode}
                   />
-                </Column>
+                </div>
                 {addremovepanel}
-              </AlignStartRow>
-                <AlignStartRow>
-                  <Column>
-                    {_familierelasjon?.relasjonType === 'annet' && (
-                      <FormText
-                        error={_v[_namespace + '-annenRelasjonType']?.feilmelding}
-                        id={_namespace + '-annenRelasjonType'}
-                      >
-                        <FlexDiv>
-                          <Label>{t('label:annenRelasjonType')}:</Label>
-                          <HorizontalSeparatorDiv size='0.5' />
-                          {_familierelasjon?.annenRelasjonType}
-                        </FlexDiv>
-                      </FormText>
-                    )}
-                    <FormText
-                      error={_v[_namespace + '-annenRelasjonPersonNavn']?.feilmelding}
-                      id={_namespace + '-annenRelasjonPersonNavn'}
-                    >
-                      <FlexDiv>
-                        <Label>{t('label:annenRelasjonPersonNavn')}:</Label>
-                        <HorizontalSeparatorDiv size='0.5' />
-                        {_familierelasjon?.annenRelasjonPersonNavn}
-                      </FlexDiv>
-                    </FormText>
-                    <FormText
-                      error={_v[_namespace + '-borSammen']?.feilmelding}
-                      id={_namespace + '-borSammen'}
-                    >
-                      <FlexDiv>
-                        <Label>{t('label:borSammen')}:</Label>
-                        <HorizontalSeparatorDiv size='0.5' />
-                        {_familierelasjon?.borSammen}
-                      </FlexDiv>
-                    </FormText>
-                  </Column>
-                </AlignStartRow>
-            </>
-            )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+              </HGrid>
+              <div>
+                {_familierelasjon?.relasjonType === 'annet' && (
+                  <FormText
+                    error={_v[_namespace + '-annenRelasjonType']?.feilmelding}
+                    id={_namespace + '-annenRelasjonType'}
+                  >
+                    <HStack gap="2">
+                      <Label>{t('label:annenRelasjonType')}:</Label>
+                      {_familierelasjon?.annenRelasjonType}
+                    </HStack>
+                  </FormText>
+                )}
+                <FormText
+                  error={_v[_namespace + '-annenRelasjonPersonNavn']?.feilmelding}
+                  id={_namespace + '-annenRelasjonPersonNavn'}
+                >
+                  <HStack gap="2">
+                    <Label>{t('label:annenRelasjonPersonNavn')}:</Label>
+                    {_familierelasjon?.annenRelasjonPersonNavn}
+                  </HStack>
+                </FormText>
+                <FormText
+                  error={_v[_namespace + '-borSammen']?.feilmelding}
+                  id={_namespace + '-borSammen'}
+                >
+                  <HStack gap="2">
+                    <Label>{t('label:borSammen')}:</Label>
+                    {_familierelasjon?.borSammen}
+                  </HStack>
+                </FormText>
+              </div>
+            </VStack>
+          )}
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(familierelasjoner)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-familierelasjon')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
+        {_.isEmpty(familierelasjoner)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-familierelasjon')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
           )
-        : (
-          <>
-            <PaddedHorizontallyDiv>
-              <AlignStartRow>
-                <Column>
-                  <Label>
-                    {t('label:relasjon')}
-                  </Label>
-                </Column>
-                <Column>
-                  <Label>
-                    {t('label:periode')}
-                  </Label>
-                </Column>
-                <Column />
-              </AlignStartRow>
-            </PaddedHorizontallyDiv>
-            <VerticalSeparatorDiv size='0.8' />
-            {familierelasjoner?.map(renderRow)}
-          </>
+          : (
+            <VStack gap="2">
+              {familierelasjoner?.map(renderRow)}
+            </VStack>
           )}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:familierelasjon').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:familierelasjon').toLowerCase() })}
+              </Button>
+            </Box>
           )}
-    </>
+      </VStack>
+    </Box>
   )
 }
 
