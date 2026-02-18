@@ -11,16 +11,8 @@ import {
   CheckmarkCircleFillIcon
 } from '@navikt/aksel-icons'
 
-import { BodyLong, Button } from '@navikt/ds-react'
+import { BodyLong, Box, Button, HStack, VStack } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
-import {
-  FlexCenterDiv,
-  FlexCenterSpacedDiv,
-  HorizontalSeparatorDiv,
-  PaddedHorizontallyDiv,
-  PileCenterDiv,
-  PileDiv
-} from '@navikt/hoykontrast'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import AddPersonModal from 'applications/SvarSed/AddPersonModal/AddPersonModal'
 import classNames from 'classnames'
@@ -35,132 +27,9 @@ import _ from 'lodash'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import {isF001Sed, isF002Sed, canAddPerson} from 'utils/sed'
+import styles from './MainForm.module.css'
 
-const LeftDiv = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  min-width: 300px;
-  max-width: 300px;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-`
-const RightDiv = styled.div`
-  flex: 3;
-  align-self: stretch;
-  position: relative;
-  overflow: hidden;
-  width: 780px;
-`
-const RightActiveDiv = styled.div`
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--a-border-strong);
-  background-color: var(--a-bg-default);
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  height: 100%;
-  margin-left: -1px;
-`
-const NameAndOptionsDiv = styled(PileDiv)`
- &.selected {
-   border-right: 1px solid var(--a-bg-default);
-   background-image: linear-gradient(to right, var(--a-bg-subtle), var(--a-bg-default));
- }
- background-color: var(--a-bg-default);
- border-top: 1px solid var(--a-border-strong);
- border-right: 1px solid var(--a-border-strong);
- border-width: 1px;
- border-bottom-width: 0px;
- border-style: solid;
- border-color: var(--a-border-strong);
-`
-
-const NameDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-  padding: 1rem 0.5rem;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-   color: var(--a-text-on-inverted);
-   background-color: var(--a-surface-action-hover);
-  }
-`
-const NameLabelDiv = styled(FlexCenterDiv)`
-  flex: 1;
-`
-const OptionDiv = styled.div`
-  transition: all 0.2s ease-in-out;
-  padding: 0.5rem;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  &:hover:not(.selected) {
-    color: var(--a-text-on-inverted);
-    background-color: var(--a-surface-action-hover);
-  }
-  &.selected {
-    font-weight: bold;
-    border-top: 1px solid var(--a-border-strong);
-    border-bottom: 1px solid var(--a-border-strong);
-    background-image: linear-gradient(to right, var(--a-bg-subtle), var(--a-bg-default));
-  }
-  &.selected {
-    border-right: 1px solid var(--a-bg-default);
-    margin-right: -1px;
-  }
-  &.first {
-    margin-top: -1px;
-  }
-`
-
-const OptionWithIconDiv = styled(OptionDiv)`
-  white-space: wrap;
-  align-items: start;
-`
-
-const LastDivWithButton = styled.div`
-  flex: 1;
-  padding: 1rem 0.5rem;
-  border-top: 1px solid var(--a-border-strong);
-  border-right: 1px solid var(--a-border-strong);
-  border-right-width: 1px;
-`
-const LastDiv = styled.div`
-  flex: 1;
-  border-top: 1px solid var(--a-border-strong);
-  border-right: 1px solid var(--a-border-strong);
-`
-const LandSpan = styled.span`
-  color: grey;
-  white-space: nowrap;
-`
-const MenuLabelText = styled(BodyLong)`
-  font-weight: bold;
-`
-const MenuArrowDiv = styled.div`
- padding: 0rem 0.5rem;
-`
-const BlankDiv = styled(PileCenterDiv)`
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--a-border-strong);
-  background-color: var(--a-bg-default);
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  margin-left: -1px;
-  height: 100%;
-`
-const BlankContentDiv = styled(FlexCenterDiv)`
-  flex: 1;
-  align-self: center;
-  background-color: var(--a-bg-default);
-`
 export interface MainFormFCProps<T> {
   menuItems?: Array<MenuItem>
   forms: Array<Form>
@@ -424,37 +293,41 @@ const MainForm = <T extends StorageTypes>({
       const isValidated = validationKeys.length > 0
       const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
       return (
-        <NameAndOptionsDiv
+        <div
           key={form.value}
-          className={classNames({ selected })}
+          className={classNames(styles.nameAndOptionsDiv, { [styles.selected]: selected })}
         >
-          <NameDiv
+          <div
+            className={styles.nameDiv}
             onClick={() => {
               changeMenu(form.value, form.value, 'click')
               return false
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                changeMenu(form.value, form.value, 'click')
+              }
+            }}
+            role="button"
+            tabIndex={0}
           >
-            <NameLabelDiv
-              className={classNames({ selected })}
-            >
-              <div>
+            <HStack gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: selected })}>
               {!isValidated
                 ? null
                 : validationHasErrors
                   ? <XMarkOctagonFillIcon height={20} color='red' />
                   : <CheckmarkCircleFillIcon color='green' height={20} />
               }
-              </div>
-              <HorizontalSeparatorDiv size='0.5' />
-              <MenuLabelText className={classNames({ selected })}>
+              <BodyLong className={classNames(styles.menuLabelText, { [styles.selected]: selected })}>
                 {form.label}
-              </MenuLabelText>
-            </NameLabelDiv>
-            <MenuArrowDiv>
+              </BodyLong>
+            </HStack>
+            <Box paddingInline="2">
               <ChevronRightIcon />
-            </MenuArrowDiv>
-          </NameDiv>
-        </NameAndOptionsDiv>
+            </Box>
+          </div>
+        </div>
       )
     })
   }
@@ -476,59 +349,49 @@ const MainForm = <T extends StorageTypes>({
     const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
 
     return (
-      <NameAndOptionsDiv className={classNames({ selected: !open && currentMenu === personId })}>
-        <NameDiv
+      <div className={classNames(styles.nameAndOptionsDiv, { [styles.selected]: !open && currentMenu === personId })}>
+        <div
+          className={styles.nameDiv}
           onClick={() => {
             changeMenu(personId, undefined, 'click')
             return false
           }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              changeMenu(personId, undefined, 'click')
+            }
+          }}
+          role="button"
+          tabIndex={0}
         >
-          <NameLabelDiv
-            className={classNames({
-              selected: focusedMenu === personId
-            })}
-          >
+          <HStack gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === personId })}>
             {isValidated
               ? validationHasErrors
                   ? <XMarkOctagonFillIcon height={20} color='red' />
                   : <CheckmarkCircleFillIcon color='green' height={20} />
               : null}
-            <>
-              <HorizontalSeparatorDiv size='0.5' />
-              <MenuLabelText>
-                {personName}
-              </MenuLabelText>
-            </>
+            <BodyLong className={styles.menuLabelText}>
+              {personName}
+            </BodyLong>
             {personId.startsWith('bruker') && (
-              <>
-                <HorizontalSeparatorDiv size='0.5' />
-                <PersonIcon title="Søker"/>
-              </>
+              <PersonIcon title="Søker"/>
             )}
             {personId.startsWith('ektefelle') && (
-              <>
-                <HorizontalSeparatorDiv size='0.5' />
-                <PersonGroupIcon title="Ektefelle"/>
-              </>
+              <PersonGroupIcon title="Ektefelle"/>
             )}
             {(personId.startsWith('andrePersoner') || personId.startsWith('annenPerson')) && (
-              <>
-                <HorizontalSeparatorDiv size='0.5' />
-                <PersonPlusIcon title="Annen person"/>
-              </>
+              <PersonPlusIcon title="Annen person"/>
             )}
             {personId.startsWith('barn') && (
-              <>
-                <HorizontalSeparatorDiv size='0.5' />
-                <ChildEyesIcon title="Barn"/>
-              </>
+              <ChildEyesIcon title="Barn"/>
             )}
-          </NameLabelDiv>
-          <MenuArrowDiv>
+          </HStack>
+          <Box paddingInline="2">
             {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
-          </MenuArrowDiv>
-        </NameDiv>
-        {open && <PaddedHorizontallyDiv><HorizontalLineSeparator /></PaddedHorizontallyDiv>}
+          </Box>
+        </div>
+        {open && <Box paddingInline="2"><HorizontalLineSeparator /></Box>}
         {open && forms
           .filter(o => {
             const _type = (replySed as ReplySed)?.sedType ?? 'PDU1'
@@ -575,10 +438,12 @@ const MainForm = <T extends StorageTypes>({
             const isValidated = validationKeys.length > 0
             const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
             return (
-              <OptionDiv
-                className={classNames({
-                  selected: currentMenu === personId && currentMenuOption === o.value,
-                  first: i === 0
+              <HStack
+                gap="2"
+                align="center"
+                className={classNames(styles.optionDiv, {
+                  [styles.selected]: currentMenu === personId && currentMenuOption === o.value,
+                  [styles.first]: i === 0
                 })}
                 key={namespace + '-' + personId + '-' + o.value}
                 onClick={() => changeMenu(personId, o.value, 'click')}
@@ -589,12 +454,11 @@ const MainForm = <T extends StorageTypes>({
                       ? <XMarkOctagonFillIcon color='red' height={20} />
                       : <CheckmarkCircleFillIcon color='green' height={20} />
                   : <MenuElipsisHorizontalCircleIcon height={20} />}
-                <HorizontalSeparatorDiv size='0.5' />
                 {o.label}
-              </OptionDiv>
+              </HStack>
             )
           })}
-      </NameAndOptionsDiv>
+      </div>
     )
   }
 
@@ -639,18 +503,23 @@ const MainForm = <T extends StorageTypes>({
 
 
     return(
-      <NameAndOptionsDiv className={classNames({ selected: !open && currentMenu === menuItem.key })}>
-        <NameDiv
+      <div className={classNames(styles.nameAndOptionsDiv, { [styles.selected]: !open && currentMenu === menuItem.key })}>
+        <div
+          className={styles.nameDiv}
           onClick={() => {
             changeMenu(menuItem.key, undefined, 'click')
             return false
           }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              changeMenu(menuItem.key, undefined, 'click')
+            }
+          }}
+          role="button"
+          tabIndex={0}
         >
-          <NameLabelDiv
-            className={classNames({
-              selected: focusedMenu === menuItem.key
-            })}
-          >
+          <HStack gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === menuItem.key })}>
             <div>
             {isValidated
               ? validationHasErrors
@@ -658,16 +527,15 @@ const MainForm = <T extends StorageTypes>({
                 : <CheckmarkCircleFillIcon color='green' height={20} />
               : null}
             </div>
-            <HorizontalSeparatorDiv size='0.5' />
-            <MenuLabelText>
+            <BodyLong className={styles.menuLabelText}>
               {menuItem.label}
-            </MenuLabelText>
-          </NameLabelDiv>
-          <MenuArrowDiv>
+            </BodyLong>
+          </HStack>
+          <Box paddingInline="2">
             {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
-          </MenuArrowDiv>
-        </NameDiv>
-        {open && <PaddedHorizontallyDiv><HorizontalLineSeparator /></PaddedHorizontallyDiv>}
+          </Box>
+        </div>
+        {open && <Box paddingInline="2"><HorizontalLineSeparator /></Box>}
         {open && forms
           .filter(o => {
             const _type = menuItem.key
@@ -681,10 +549,12 @@ const MainForm = <T extends StorageTypes>({
             const isValidated = validationKeys.length > 0
             const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
             return (
-              <OptionWithIconDiv
-                className={classNames({
-                  selected: currentMenu === menuItem.key && currentMenuOption === o.value,
-                  first: i === 0
+              <HStack
+                gap="2"
+                align="start"
+                className={classNames(styles.optionWithIconDiv, {
+                  [styles.selected]: currentMenu === menuItem.key && currentMenuOption === o.value,
+                  [styles.first]: i === 0
                 })}
                 key={namespace + '-' + menuItem.key + '-' + o.value}
                 onClick={() => changeMenu(menuItem.key, o.value, 'click')}
@@ -698,12 +568,11 @@ const MainForm = <T extends StorageTypes>({
                     : <MenuElipsisHorizontalCircleIcon height={20} />
                   }
                 </div>
-                <HorizontalSeparatorDiv size='0.5' />
                 {o.label}
-              </OptionWithIconDiv>
+              </HStack>
             )
           })}
-      </NameAndOptionsDiv>
+      </div>
     )
   }
 
@@ -717,7 +586,7 @@ const MainForm = <T extends StorageTypes>({
   const panelError = _.some(Object.keys(validation), k => k.startsWith(namespace) && validation[k]?.feilmelding !== 'ok')
 
   return (
-    <PileDiv className='mainform'>
+    <VStack className='mainform'>
       <AddPersonModal<T>
         open={_seeNewPersonModal}
         replySed={replySed}
@@ -729,8 +598,8 @@ const MainForm = <T extends StorageTypes>({
         border
         className={classNames({ error: panelError })}
       >
-        <FlexCenterSpacedDiv>
-          <LeftDiv className='left'>
+        <HStack justify="space-between" align="center">
+          <div className={classNames(styles.leftDiv, 'left')}>
             {type === 'twolevel' && (
               <>
                 {type === 'twolevel' && replySed?.bruker && renderTwoLevelMenu(replySed, 'bruker')}
@@ -739,7 +608,7 @@ const MainForm = <T extends StorageTypes>({
                 {type === 'twolevel' && (replySed as F002Sed)?.andrePersoner?.map((ap: any, i: number) => renderTwoLevelMenu(replySed!, `andrePersoner[${i}]`))}
                 {type === 'twolevel' && (replySed as F002Sed)?.barn?.map((b: any, i: number) => renderTwoLevelMenu(replySed!, `barn[${i}]`))}
                 {type === 'twolevel' && (isF001Sed(replySed) || isF002Sed(replySed)) && renderTwoLevelMenu(replySed!, 'familie')}
-                <LastDivWithButton>
+                <div className={styles.lastDivWithButton}>
                   {canAddPerson(replySed) && (
                     <Button
                       variant='tertiary'
@@ -749,7 +618,7 @@ const MainForm = <T extends StorageTypes>({
                       {t('el:button-add-new-x', { x: t('label:person') })}
                     </Button>
                   )}
-                </LastDivWithButton>
+                </div>
               </>
             )}
             {type === 'menuitems' && (
@@ -760,40 +629,40 @@ const MainForm = <T extends StorageTypes>({
                     return renderMenuItems(menuItem, forms)
                   })
                 }
-                {visibleMenu && <LastDiv />}
+                {visibleMenu && <div className={styles.lastDiv} />}
               </>
             )}
             {type === 'onelevel' && (
               <>
                 {renderOneLevelMenu(forms)}
-                <LastDiv />
+                <div className={styles.lastDiv} />
               </>
             )}
-          </LeftDiv>
+          </div>
 
           {visibleMenu &&
-            <RightDiv>
+            <div className={styles.rightDiv}>
               {!currentMenu
                 ? (
-                  <BlankDiv>
-                    <BlankContentDiv>
+                  <div className={styles.blankDiv}>
+                    <div className={styles.blankContentDiv}>
                       {t('label:velg-meny')}
-                    </BlankContentDiv>
-                  </BlankDiv>
+                    </div>
+                  </div>
                   )
                 : (
-                  <RightActiveDiv
+                  <div
+                    className={classNames(styles.rightActiveDiv, `active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right')}
                     key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`}
-                    className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right')}
                   >
                     {getForm(currentMenu, currentMenuOption)}
-                  </RightActiveDiv>
+                  </div>
                   )}
-            </RightDiv>
+            </div>
           }
-        </FlexCenterSpacedDiv>
+        </HStack>
       </WithErrorPanel>
-    </PileDiv>
+    </VStack>
   )
 }
 
