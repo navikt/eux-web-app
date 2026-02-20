@@ -214,7 +214,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
               </BodyLong>
             )}
           </VStack>
-          <FadingLineSeparator style={{marginLeft: '10px', marginRight: '10px'}} className='fadeIn'>
+          <FadingLineSeparator style={{marginLeft: '10px', marginRight: '10px'}}>
             &nbsp;
           </FadingLineSeparator>
           <VStack gap="4">

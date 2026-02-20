@@ -1,17 +1,5 @@
-import { PlusCircleIcon, PersonSuitIcon, GavelSoundBlockIcon, WalletIcon, Buildings3Icon,SackPensionIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Checkbox, Heading, Ingress, Tooltip } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  AlignEndColumn,
-  Column,
-  FlexDiv,
-  FlexBaseDiv,
-  FlexEndDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { PlusCircleIcon, PersonSuitIcon, GavelSoundBlockIcon, WalletIcon, Buildings3Icon, SackPensionIcon } from '@navikt/aksel-icons'
+import {BodyLong, Box, Button, Checkbox, Heading, HGrid, HStack, Spacer, Tooltip, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -21,7 +9,7 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { PDPeriode, PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -241,16 +229,16 @@ const Perioder: React.FC<MainFormProps> = ({
     let icon;
     switch (type) {
       case 'perioderAnsattMedForsikring':
-        icon = <FlexDiv><SackPensionIcon width={size} height={size}/><Buildings3Icon width={size} height={size}/></FlexDiv>
+        icon = <HStack gap="0"><SackPensionIcon width={size} height={size}/><Buildings3Icon width={size} height={size}/></HStack>
         break;
       case 'perioderSelvstendigMedForsikring':
-        icon = <FlexDiv><SackPensionIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></FlexDiv>
+        icon = <HStack gap="0"><SackPensionIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></HStack>
         break;
       case 'perioderAndreForsikringer':
         icon = <SackPensionIcon width={size} height={size}/>
         break;
       case 'perioderAnsettSomForsikret':
-        icon = <FlexDiv><SackPensionIcon width={size} height={size}/><GavelSoundBlockIcon width={size} height={size}/></FlexDiv>
+        icon = <HStack gap="0"><SackPensionIcon width={size} height={size}/><GavelSoundBlockIcon width={size} height={size}/></HStack>
         break;
       case 'perioderAnsattUtenForsikring':
         icon = <Buildings3Icon width={size} height={size}/>
@@ -259,10 +247,10 @@ const Perioder: React.FC<MainFormProps> = ({
         icon = <PersonSuitIcon width={size} height={size}/>
         break;
       case 'perioderLoennSomAnsatt':
-        icon = <FlexDiv><WalletIcon width={size} height={size}/><Buildings3Icon width={size} height={size}/></FlexDiv>
+        icon = <HStack gap="0"><WalletIcon width={size} height={size}/><Buildings3Icon width={size} height={size}/></HStack>
         break;
       case 'perioderInntektSomSelvstendig':
-        icon = <FlexDiv><WalletIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></FlexDiv>
+        icon = <HStack gap="0"><WalletIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></HStack>
         break;
       default:
         icon = <></>
@@ -285,7 +273,6 @@ const Perioder: React.FC<MainFormProps> = ({
     const addremovepanel = (
       <AddRemovePanel<PDPeriode>
         item={periode}
-        marginTop={inEditMode}
         index={index}
         inEditMode={inEditMode}
         onRemove={onRemove}
@@ -298,39 +285,35 @@ const Perioder: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableRow
+      <RepeatableBox
+        padding={inEditMode ? "4" : "2 4"}
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
         className={classNames({
           new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+          errorBorder: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <HGrid columns={"2fr 1fr"} gap="4" align="start">
           {inEditMode
             ? (
-              <>
-                <PeriodeInput
-                  namespace={_namespace}
-                  error={{
-                    startdato: _v[_namespace + '-startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                  }}
-                  hideLabel={false}
-                  setPeriode={(p: PDPeriode) => setPeriode(p, index)}
-                  value={_periode}
-                  finalFormat = 'DD.MM.YYYY'
-                  uiFormat = 'DD.MM.YYYY'
-                />
-              </>
-              )
+              <PeriodeInput
+                namespace={_namespace}
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                hideLabel={false}
+                setPeriode={(p: PDPeriode) => setPeriode(p, index)}
+                value={_periode}
+                finalFormat='DD.MM.YYYY'
+                uiFormat='DD.MM.YYYY'
+              />
+            )
             : (
-              <>
-                <Column flex='2'>
-                  <FlexBaseDiv>
-                    {_sort === 'time' && _periode?.__type && getIcon(_periode.__type!, '32')}
-                    <HorizontalSeparatorDiv />
+                <HStack gap="2" align="start">
+                  {_sort === 'time' && _periode?.__type && getIcon(_periode.__type!, '32')}
+                  <VStack gap="1">
                     <PeriodeText
                       error={{
                         startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -338,145 +321,129 @@ const Perioder: React.FC<MainFormProps> = ({
                       }}
                       namespace={_namespace}
                       periode={_periode}
-                      uiFormat = 'DD.MM.YYYY'
+                      uiFormat='DD.MM.YYYY'
                     />
-                    <HorizontalSeparatorDiv />
-                    <FormText
-                      error={_v[_namespace + '-info']?.feilmelding}
-                      id={_namespace + '-info'}
-                    >
-                      {_periode?.info}
-                    </FormText>
-                  </FlexBaseDiv>
-                </Column>
-              </>
-              )}
-          <AlignEndColumn>
+                    {_periode?.info && (
+                      <FormText
+                        error={_v[_namespace + '-info']?.feilmelding}
+                        id={_namespace + '-info'}
+                      >
+                        {_periode?.info}
+                      </FormText>
+                    )}
+                  </VStack>
+                </HStack>
+            )
+          }
+          <HStack>
+            <Spacer/>
             {addremovepanel}
-          </AlignEndColumn>
-        </AlignStartRow>
+          </HStack>
+        </HGrid>
         {inEditMode && (
-          <>
-            <VerticalSeparatorDiv />
-            <AlignStartRow>
-              <Column>
-                <Select
-                  closeMenuOnSelect
-                  data-testid={_namespace + '-type'}
-                  error={_v[namespace + '-type']?.feilmelding}
-                  id={_namespace + '-type'}
-                  key={_namespace + '-type-' + _periode?.__type}
-                  label={t('label:type')}
-                  menuPortalTarget={document.body}
-                  onChange={(type: any) => setType(type.value, _periode?.__type, index)}
-                  options={periodeOptions}
-                  value={_.find(periodeOptions, o => o.value === _periode?.__type)}
-                  defaultValue={_.find(periodeOptions, o => o.value === _periode?.__type)}
-                />
-              </Column>
-              <Column>
-                <Input
-                  error={_v[_namespace + '-info']?.feilmelding}
-                  namespace={_namespace}
-                  id='info'
-                  key={_namespace + '-info-' + _periode?.info}
-                  label={_periode?.__type === 'perioderAndreForsikringer'
-                    ? t('label:type')
-                    : _periode?.__type === 'perioderAnsettSomForsikret'
-                      ? t('label:begrunnelse')
-                      : ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_periode?.__type ?? '') >= 0
-                          ? t('label:aktivitetstype')
-                          : _periode?.__type === 'perioderLoennSomAnsatt'
-                            ? t('label:loenn')
-                            : _periode?.__type === 'perioderInntektSomSelvstendig'
-                              ? t('label:inntekt')
-                              : t('label:comment')}
-                  onChanged={(info: string) => setPeriodeInfo(info, index)}
-                  value={_periode?.info}
-                />
-              </Column>
-            </AlignStartRow>
-          </>
+          <VStack gap="4" marginBlock="4 0">
+            <HGrid columns={2} gap="4" align="start">
+              <Select
+                closeMenuOnSelect
+                data-testid={_namespace + '-type'}
+                error={_v[namespace + '-type']?.feilmelding}
+                id={_namespace + '-type'}
+                key={_namespace + '-type-' + _periode?.__type}
+                label={t('label:type')}
+                menuPortalTarget={document.body}
+                onChange={(type: any) => setType(type.value, _periode?.__type, index)}
+                options={periodeOptions}
+                value={_.find(periodeOptions, o => o.value === _periode?.__type)}
+                defaultValue={_.find(periodeOptions, o => o.value === _periode?.__type)}
+              />
+              <Input
+                error={_v[_namespace + '-info']?.feilmelding}
+                namespace={_namespace}
+                id='info'
+                key={_namespace + '-info-' + _periode?.info}
+                label={_periode?.__type === 'perioderAndreForsikringer'
+                  ? t('label:type')
+                  : _periode?.__type === 'perioderAnsettSomForsikret'
+                    ? t('label:begrunnelse')
+                    : ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_periode?.__type ?? '') >= 0
+                        ? t('label:aktivitetstype')
+                        : _periode?.__type === 'perioderLoennSomAnsatt'
+                          ? t('label:loenn')
+                          : _periode?.__type === 'perioderInntektSomSelvstendig'
+                            ? t('label:inntekt')
+                            : t('label:comment')}
+                onChanged={(info: string) => setPeriodeInfo(info, index)}
+                value={_periode?.info}
+              />
+            </HGrid>
+          </VStack>
         )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {!_.isEmpty(_allPeriods) && (
-        <>
-          <PaddedHorizontallyDiv>
-            <Checkbox
-              checked={_sort === 'group'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
-            >
-              {t('label:group-by-periodetype')}
-            </Checkbox>
-          </PaddedHorizontallyDiv>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {_.isEmpty(_allPeriods)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-periods')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
+        {!_.isEmpty(_allPeriods) && (
+          <Checkbox
+            checked={_sort === 'group'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+          >
+            {t('label:group-by-periodetype')}
+          </Checkbox>
+        )}
+        {_.isEmpty(_allPeriods)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-periods')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
           )
-        : _sort === 'time'
-          ? _allPeriods.map(renderRow)
-          : (
-            <>
-              {periodeOptions.map(o => {
-                const periods: Array<PDPeriode> | undefined = _.get(replySed, o.value) as Array<PDPeriode> | undefined
-                if (_.isEmpty(periods)) {
-                  return null
-                }
-                return (
-                  <div key={o.value}>
-                    <PaddedHorizontallyDiv>
-                      <FlexEndDiv>
+          : _sort === 'time'
+            ? _allPeriods.map(renderRow)
+            : (
+              <>
+                {periodeOptions.map(o => {
+                  const periods: Array<PDPeriode> | undefined = _.get(replySed, o.value) as Array<PDPeriode> | undefined
+                  if (_.isEmpty(periods)) {
+                    return null
+                  }
+                  return (
+                    <VStack gap="2" key={o.value}>
+                      <HStack gap="1" align="center">
                         {getIcon(o.value, '24')}
-                        <HorizontalSeparatorDiv size='0.35' />
-                        <Ingress>
+                        <BodyLong size="large">
                           {o.label}
-                        </Ingress>
-                      </FlexEndDiv>
-                    </PaddedHorizontallyDiv>
-                    <VerticalSeparatorDiv />
-                    {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
-                    <VerticalSeparatorDiv size='2' />
-                  </div>
-                )
-              })}
-            </>
+                        </BodyLong>
+                      </HStack>
+                      {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
+                    </VStack>
+                  )
+                })}
+              </>
             )}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </Button>
+            </Box>
           )}
-    </>
+      </VStack>
+    </Box>
   )
 }
 

@@ -3,7 +3,6 @@ import {Alert, BodyLong, Box, Button, HStack, Label, Loader, Spacer, VStack} fro
 import { resetPerson, searchPerson } from 'actions/person'
 import ErrorLabel from 'components/Forms/ErrorLabel'
 import Input from 'components/Forms/Input'
-import { ShadowPanel } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Pin } from 'declarations/sed'
 import {PersonInfoPDL} from 'declarations/types'
@@ -178,7 +177,10 @@ const NorskPin: React.FC<NorskPinProps> = ({
       }
       {searchedPerson
         ? (
-          <ShadowPanel>
+          <Box
+            padding="4"
+            background="bg-subtle"
+          >
             <HStack align="center" gap="4">
               <BodyLong>
                 {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
@@ -192,7 +194,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
                 {t('label:fill-in-person-data')}
               </Button>
             </HStack>
-          </ShadowPanel>
+          </Box>
           )
         : _.isEmpty(norwegianPin?.identifikator)
           ? (

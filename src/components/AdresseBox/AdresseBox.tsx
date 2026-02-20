@@ -1,6 +1,5 @@
-import {BodyLong, Tag} from '@navikt/ds-react'
+import {BodyLong, Box, Tag} from '@navikt/ds-react'
 import CountryData from '@navikt/land-verktoy'
-import { TransparentPanel } from 'components/StyledComponents'
 import { Adresse } from 'declarations/sed'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -32,8 +31,11 @@ const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeT
     return null
   }
   return (
-    <TransparentPanel
-      border={border} style={{
+    <Box
+      borderWidth={border ? "1" : "0"}
+      borderColor="border-default"
+      borderRadius="small"
+      style={{
         padding: padding + 'rem',
         display: oneLine ? 'inline-flex' : 'flex',
         flexDirection: oneLine ? 'row' : 'column',
@@ -59,7 +61,7 @@ const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeT
         {adresse?.region ? adresse?.region + ', ' : ''}
         {country ? country.label : countryCodeMap && adresse?.landkode ? countryCodeMap[adresse?.landkode as keyof typeof countryCodeMap] : adresse?.landkode}
       </BodyLong>
-    </TransparentPanel>
+    </Box>
   )
 }
 

@@ -84,7 +84,6 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
     foedselsdato: sak.foedselsdato,
     ...(!sedType.startsWith('X') && sak.fnr && sak.fnr !== "" &&
       {pin: [{
-        land: 'NO',
         landkode: 'NOR',
         identifikator: sak.fnr
       }]})

@@ -1,15 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexBaseDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -18,7 +8,7 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import { PDPeriode } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
@@ -169,7 +159,6 @@ const Dagpenger: React.FC<MainFormProps> = ({
     const addremovepanel = (
       <AddRemovePanel<PDPeriode>
         item={periode}
-        marginTop={inEditMode}
         index={index}
         inEditMode={inEditMode}
         onRemove={onRemove}
@@ -182,64 +171,37 @@ const Dagpenger: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="2 4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          {inEditMode
-            ? (
-              <PeriodeInput
-                namespace={_namespace}
-                error={{
-                  startdato: _v[_namespace + '-startdato']?.feilmelding,
-                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                }}
-                hideLabel={false}
-                setPeriode={(p: PDPeriode) => setPeriode(p, index)}
-                value={_periode}
-                finalFormat = 'DD.MM.YYYY'
-                uiFormat = 'DD.MM.YYYY'
-              />
-              )
-            : (
-              <>
-                <Column>
-                  <FlexBaseDiv>
-                    <HorizontalSeparatorDiv />
-                    <PeriodeText
-                      error={{
-                        startdato: _v[_namespace + '-startdato']?.feilmelding,
-                        sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                      }}
-                      namespace={_namespace}
-                      periode={_periode}
-                    />
-                    <HorizontalSeparatorDiv />
-                    <FormText
-                      error={_v[_namespace + '-info']?.feilmelding}
-                      id={_namespace + '-info'}
-                    >
-                      {_periode?.info}
-                    </FormText>
-                  </FlexBaseDiv>
-                </Column>
-              </>
-              )}
-          <AlignEndColumn>
-            {addremovepanel}
-          </AlignEndColumn>
-        </AlignStartRow>
-        {inEditMode && (
-          <>
-            <VerticalSeparatorDiv />
-            <AlignStartRow>
-              <Column flex='2'>
+        {inEditMode
+          ? (
+            <VStack gap="4">
+              <HGrid columns={"2fr 1fr"} gap="4" align="start">
+                <PeriodeInput
+                  namespace={_namespace}
+                  error={{
+                    startdato: _v[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                  }}
+                  hideLabel={false}
+                  setPeriode={(p: PDPeriode) => setPeriode(p, index)}
+                  value={_periode}
+                  finalFormat='DD.MM.YYYY'
+                  uiFormat='DD.MM.YYYY'
+                />
+                <HStack>
+                  <Spacer/>
+                  {addremovepanel}
+                </HStack>
+              </HGrid>
+              <HGrid columns={"2fr 1fr"} gap="4" align="start">
                 <Input
                   error={_v[_namespace + '-info']?.feilmelding}
                   namespace={_namespace}
@@ -249,49 +211,67 @@ const Dagpenger: React.FC<MainFormProps> = ({
                   onChanged={(info: string) => setPeriodeInfo(info, index)}
                   value={_periode?.info}
                 />
-              </Column>
-              <Column />
-            </AlignStartRow>
-          </>
-        )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+                <div />
+              </HGrid>
+            </VStack>
+            )
+          : (
+            <HStack gap="4" align="center">
+              <HStack gap="4" align="center">
+                <PeriodeText
+                  error={{
+                    startdato: _v[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                  }}
+                  namespace={_namespace}
+                  periode={_periode}
+                />
+                <FormText
+                  error={_v[_namespace + '-info']?.feilmelding}
+                  id={_namespace + '-info'}
+                >
+                  {_periode?.info}
+                </FormText>
+              </HStack>
+              <Spacer/>
+              {addremovepanel}
+            </HStack>
+            )}
+      </RepeatableBox>
     )
   }
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='medium'>
           {t('label:mottatte-dagpenger')}
         </Heading>
-        <VerticalSeparatorDiv />
-      </PaddedDiv>
-      {_.isEmpty(perioderDagpengerMottatt)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-periods')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
-          )
-        : perioderDagpengerMottatt?.map(renderRow)}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-    </>
+        {_.isEmpty(perioderDagpengerMottatt)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-periods')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
+            )
+          : perioderDagpengerMottatt?.map(renderRow)}
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </Button>
+            </Box>
+            )}
+      </VStack>
+    </Box>
   )
 }
 

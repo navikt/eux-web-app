@@ -9,7 +9,7 @@ import {PersonInfo} from 'declarations/sed.d'
 import _ from 'lodash'
 import {useTranslation} from 'react-i18next'
 import {useAppDispatch, useAppSelector} from 'store'
-import {TopAlignedGrid} from "../../../components/StyledComponents";
+import {HGrid} from "@navikt/ds-react";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -63,7 +63,7 @@ const PersonBasic: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <TopAlignedGrid gap="4" columns={3}>
+      <HGrid gap="4" columns={3} align="start">
         <Input
           error={validation[namespace + '-fornavn']?.feilmelding}
           id='fornavn'
@@ -91,7 +91,7 @@ const PersonBasic: React.FC<MainFormProps> = ({
           required
           dateValue={person?.foedselsdato ?? ''}
         />
-      </TopAlignedGrid>
+      </HGrid>
     </>
   )
 }
