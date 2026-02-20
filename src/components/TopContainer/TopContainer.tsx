@@ -1,5 +1,6 @@
 import { alertReset, alertFailure } from 'actions/alert'
 import BannerAlert from 'components/BannerAlert/BannerAlert'
+import MaintenanceBanner from 'components/MaintenanceBanner/MaintenanceBanner'
 import Header from 'components/Header/Header'
 import SessionMonitor from 'components/SessionMonitor/SessionMonitor'
 import Version from 'components/Version/Version'
@@ -155,6 +156,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           onGoBackClick={onGoBackClick}
           unsavedDoc={unsavedDoc}
         />
+        <MaintenanceBanner />
         <BannerAlert
           message={bannerMessage}
           variant={bannerStatus as AlertVariant}

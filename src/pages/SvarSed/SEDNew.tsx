@@ -1,4 +1,4 @@
-import {Alert, BodyLong, Button, Heading, HGrid, Loader, Page, Select, HStack, VStack, Box} from '@navikt/ds-react'
+import {Alert, BodyLong, Button, Heading, HGrid, Loader, Modal, Page, Select, HStack, VStack, Box} from '@navikt/ds-react'
 import { Country } from '@navikt/land-verktoy'
 import * as appActions from 'actions/app'
 import * as personActions from 'actions/person'
@@ -223,6 +223,7 @@ const SEDNew = (): JSX.Element => {
   ]
   const [_showNonEUEftaAddressWarning, setShowNonEUEftaAddressWarning] = useState<boolean>(false)
   const [_notValidNationalityWarning, setNotValidNationalityWarning] = useState<string | undefined>(undefined)
+  const [showMaintenanceWarning, setShowMaintenanceWarning] = useState<boolean>(false)
 
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema].filter((k:Kodeverk) => {
@@ -520,6 +521,7 @@ const SEDNew = (): JSX.Element => {
 
 
   return (
+    <>
     <Page.Block width="2xl" gutters>
       <HGrid columns={"2fr 1fr"} gap="8" paddingBlock="12" paddingInline="4">
         <Box className={styles.myContent}>
@@ -810,7 +812,13 @@ const SEDNew = (): JSX.Element => {
               <Button
                 variant='primary'
                 disabled={_showNonEUEftaAddressWarning || sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
-                onClick={skjemaSubmit}
+                onClick={() => {
+                  if (featureToggles?.featureMaintenanceBanner) {
+                    setShowMaintenanceWarning(true)
+                  } else {
+                    skjemaSubmit()
+                  }
+                }}
               >
                 {sendingSak && <Loader/>}
                 {t('label:opprett-sak-i-rina')}
@@ -875,6 +883,24 @@ const SEDNew = (): JSX.Element => {
         </Box>
       </HGrid>
     </Page.Block>
+      <Modal
+        open={showMaintenanceWarning}
+        onClose={() => setShowMaintenanceWarning(false)}
+        header={{ heading: 'Kan ikke opprette SED' }}
+      >
+        <Modal.Body>
+          <Alert variant='warning'>
+            Kan ikke opprette SED pga. oppdatering fra CDM 4.3 til CDM 4.4,
+            vil være tilgjengelig igjen mandag 23.2.2026
+          </Alert>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={() => setShowMaintenanceWarning(false)}>
+            Lukk
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   )
 }
 
