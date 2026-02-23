@@ -80,8 +80,7 @@ export const initialAppState: AppState = {
   featureToggles: {
     featureSvarsedU: false,
     featureSvarsedH001: IS_DEVELOPMENT,
-    featurePdu1: true,
-    featureMaintenanceBanner: true
+    featurePdu1: true
   },
   alleEnheter: undefined,
   overstyrtEnhetsnummer: undefined
