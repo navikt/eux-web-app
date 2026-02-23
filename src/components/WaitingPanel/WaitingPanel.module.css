@@ -1,0 +1,15 @@
+.waitingPanelDiv {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.rowDirection {
+  flex-direction: row;
+}
+
+.oneLine {
+  display: inline-block;
+  vertical-align: top;
+}
+

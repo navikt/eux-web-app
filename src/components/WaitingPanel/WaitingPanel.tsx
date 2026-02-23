@@ -1,20 +1,7 @@
 import classNames from 'classnames'
 import {BodyLong, Box, Loader} from '@navikt/ds-react'
 import React from 'react'
-import styled from 'styled-components'
-
-export const WaitingPanelDiv = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  &.rowDirection {
-     flex-direction: row;
-  }
-  .oneLine {
-    display: inline-block;
-    vertical-align: top;
-  }
-`
+import styles from './WaitingPanel.module.css'
 
 export type WaitingPanelSize = 'xsmall'| 'small' | 'medium'| 'large' | 'xlarge'| '2xlarge'
 
@@ -29,16 +16,16 @@ export interface WaitingPanelProps {
 const WaitingPanel: React.FC<WaitingPanelProps> = ({
   className, size = 'medium', style = {}, message = 'Vennligst vent...', oneLine = false
 }: WaitingPanelProps): JSX.Element | null => (
-  <WaitingPanelDiv
+  <div
     style={style}
-    className={classNames(className, { rowDirection: oneLine })}
+    className={classNames(styles.waitingPanelDiv, className, { [styles.rowDirection]: oneLine })}
   >
     <Loader type={size} />
     {message && (
       <>
         <Box paddingInline="2">
           <BodyLong
-            className={classNames({ oneLine })}
+            className={classNames({ [styles.oneLine]: oneLine })}
             data-testid='c-waitingpanel__text-id'
           >
             {message}
@@ -46,7 +33,7 @@ const WaitingPanel: React.FC<WaitingPanelProps> = ({
         </Box>
       </>
     )}
-  </WaitingPanelDiv>
+  </div>
 )
 
 WaitingPanel.displayName = 'WaitingPanel'
