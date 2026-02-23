@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect, useState} from "react";
 import Table, {RenderOptions} from "@navikt/tabell";
 import {Attachment, AttachmentContext, AttachmentTableItem} from "../../../declarations/types";
-import styled from "styled-components";
-import {Button, Loader, Checkbox} from "@navikt/ds-react";
+import {Button, Loader, Checkbox, HStack} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";
 import _ from "lodash";
 import {blobToBase64} from "../../../utils/blob";
@@ -14,16 +13,6 @@ import {getAttachmentFromRinaPreview, setAttachmentFromRinaPreview} from "../../
 import { TrashIcon } from '@navikt/aksel-icons';
 import {deleteAttachment, setAttachmentSensitive} from "../../../actions/svarsed";
 import PDFViewer from "../../../components/PDFViewer/PDFViewer";
-
-
-const ButtonsDiv = styled.div`
-  display: flex;
-  align-items: flex-start;
-  padding-top: 0.25rem;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: nowrap;
-`
 
 export interface AttachmentSelector {
   previewAttachmentFileRaw: Blob | null | undefined
@@ -101,7 +90,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
     const previewing = context?.gettingAttachmentFile
     const spinner = previewing && _.isEqual(item as AttachmentTableItem, context?.clickedItem)
     return (
-      <ButtonsDiv>
+      <HStack paddingBlock={"1 0"} justify="space-between" align="center" wrap={false}>
         <Button
           variant='tertiary'
           size='small'
@@ -114,7 +103,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
           {value}
           {spinner && <Loader />}
         </Button>
-      </ButtonsDiv>
+      </HStack>
     )
   }
 
@@ -122,7 +111,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
     const settingSensitive = context?.settingAttachmentSensitive
     const spinner = settingSensitive && _.isEqual(item as AttachmentTableItem, context?.clickedItem)
     return (
-      <ButtonsDiv>
+      <HStack paddingBlock={"1 0"} justify="space-between" align="center" wrap={false}>
         {spinner && <Loader/>}
         {!spinner &&
           <Checkbox
@@ -133,7 +122,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
             {"Sensitivt"}
           </Checkbox>
         }
-      </ButtonsDiv>
+      </HStack>
     )
   }
 
