@@ -6,22 +6,9 @@ import kvinne from "assets/icons/Woman.png";
 import mann from "assets/icons/Man.png";
 import {Alert, Box, Heading, HStack, VStack, Button, Spacer, Select} from "@navikt/ds-react";
 import { TrashIcon, PlusCircleIcon } from '@navikt/aksel-icons';
-import styled from 'styled-components'
 import {toDateFormat} from "components/DateField/DateField";
 import _, {cloneDeep} from "lodash";
-
-const PersonBox = styled(Box)`
-  min-width: 400px;
-  &.personNotSelected  {
-    border: 3px solid red;
-  }
-  &.personSelected  {
-    border: 3px solid green;
-  }
-  &.neutral {
-    background: white;
-  }
-`
+import styles from './PersonPanel.module.css'
 
 export interface PersonPanelProps {
   className?: string
@@ -99,7 +86,7 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
   }
 
   return (
-    <PersonBox className={className} borderWidth="1" padding="4" borderRadius="large" borderColor="border-default">
+    <Box className={`${styles.personBox} ${className ? styles[className] : ''}`} borderWidth="1" padding="4" borderRadius="large" borderColor="border-default">
       <VStack gap="4">
         <HStack gap="4">
           <img
@@ -160,7 +147,7 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
           </Select>
         )}
       </VStack>
-    </PersonBox>
+    </Box>
   )
 }
 

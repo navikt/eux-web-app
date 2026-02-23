@@ -1,0 +1,16 @@
+.personBox {
+  min-width: 400px;
+}
+
+.personNotSelected {
+  border: 3px solid red;
+}
+
+.personSelected {
+  border: 3px solid green;
+}
+
+.neutral {
+  background: white;
+}
+
