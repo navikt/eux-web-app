@@ -31,42 +31,11 @@ import _ from "lodash";
 import kvinne from 'assets/icons/Woman.png'
 import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
-import styled from "styled-components";
 import {alertReset} from "../../actions/alert";
 import * as types from "../../constants/actionTypes";
 import {ChevronDownIcon, StarFillIcon, StarIcon} from "@navikt/aksel-icons";
 import {setSelectedEnhet} from "../../actions/app";
-
-const ImgContainer = styled.span`
-  position: relative;
-  top: 5px;
-`
-
-const FullWidthButton = styled(Button)`
-  display: block;
-  width: 100%
-`
-
-const ActionMenuItem = styled(ActionMenu.Item)`
-  &.selectedEnhet {
-    background-color: var(--a-surface-selected);
-  }
-`
-const ActionMenuButton = styled(Button)`
-  width: 100%;
-  box-shadow: inset 0 0 0 1px var(--a-border-strong);
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  justify-content: space-between;
-  &:hover {
-    background-color: transparent;
-    box-shadow: inset 0 0 0 1px var(--a-border-action-hover);
-  }
-
-  > .navds-label {
-    font-weight: normal;
-  }
-`
+import styles from './JournalfoerPanel.module.css'
 
 export interface JournalfoerPanelProps {
   sak: Sak,
@@ -348,12 +317,12 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
           <HorizontalLineSeparator />
           <HGrid columns={3} gap="4">
             <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation} defaultValue={sak.fagsak &&  sak.fagsak.fnr ? sak.fagsak.fnr : ""}/>
-            <FullWidthButton variant="secondary" onClick={onSearch} loading={searchingJournalfoeringPerson} className='nolabel'>
+            <Button variant="secondary" onClick={onSearch} loading={searchingJournalfoeringPerson} className={`nolabel ${styles.fullWidthButton}`}>
               {t("el:button-search-i-x", {x: "PDL"})}
-            </FullWidthButton>
+            </Button>
             {person &&
               <div className='nolabel'>
-                <ImgContainer><img alt={kind} width={25} height={25} src={src}/></ImgContainer>
+                <span className={styles.imgContainer}><img alt={kind} width={25} height={25} src={src}/></span>
                 &nbsp;&nbsp;
                 {person.etternavn}, {person.fornavn}
               </div>
@@ -367,26 +336,27 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
               <Label>Enhet</Label>
               <ActionMenu>
                 <ActionMenu.Trigger>
-                  <ActionMenuButton
+                  <Button
+                    className={styles.actionMenuButton}
                     variant="secondary-neutral"
                     icon={<ChevronDownIcon aria-hidden/>}
                     iconPosition="right"
                   >
                     {enhet ? enhet.enhetNr + ' - ' + enhet.navn : "Velg"}
-                  </ActionMenuButton>
+                  </Button>
                 </ActionMenu.Trigger>
                 <ActionMenu.Content>
                   <Detail>{enhet ? "Enhet: " + enhet.enhetNr + ' - ' + enhet.navn : ""}</Detail>
                   <ActionMenu.Divider/>
                   {enheter?.map((e) => {
                     return (
-                      <ActionMenuItem
+                      <ActionMenu.Item
                         onSelect={() => setSelected(e)}
-                        className={e.enhetNr === enhet?.enhetNr ? "selectedEnhet" : ""}
+                        className={e.enhetNr === enhet?.enhetNr ? styles.selectedEnhet : ""}
                         icon={e.erFavoritt ? <StarFillIcon/> : <StarIcon/>}
                       >
                         {e.enhetNr + " - " + e.navn}
-                      </ActionMenuItem>)
+                      </ActionMenu.Item>)
                   })}
                 </ActionMenu.Content>
               </ActionMenu>
@@ -406,9 +376,9 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                   </option>
                 ))}
               </Select>
-              <FullWidthButton variant="secondary" onClick={onGetFagsaker} loading={gettingFagsaker} className='nolabel' disabled={_.isEmpty(person) || !_tema}>
+              <Button variant="secondary" onClick={onGetFagsaker} loading={gettingFagsaker} className={`nolabel ${styles.fullWidthButton}`} disabled={_.isEmpty(person) || !_tema}>
                 {t("el:button-finn-x", {x: "fagsaker"})}
-              </FullWidthButton>
+              </Button>
               {showFagsaker &&
                 <Select
                   label={t('label:velg-fagsak')}
@@ -428,36 +398,36 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
             </HGrid>
             <HGrid columns={3} gap="4">
               <Spacer/>
-                {sektor !== "UB" && fagsaker && fagsaker.length === 0 &&
-                  <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak}>
+              {sektor !== "UB" && fagsaker && fagsaker.length === 0 &&
+                <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak}>
+                  {t("el:button-create-x", {x: "fagsak"})}
+                </Button>
+              }
+              {sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
+                <VStack gap="2">
+                  <Spacer/>
+                  <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak} className={styles.fullWidthButton}>
                     {t("el:button-create-x", {x: "fagsak"})}
                   </Button>
-                }
-                {sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
-                  <VStack gap="2">
-                    <Spacer/>
-                    <FullWidthButton variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
-                      {t("el:button-create-x", {x: "fagsak"})}
-                    </FullWidthButton>
-                    <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
-                      <option value={currentYear}>{currentYear}</option>
-                      <option value={currentYear - 1}>{currentYear - 1}</option>
-                      <option value={currentYear - 2}>{currentYear - 2}</option>
-                      <option value={currentYear - 3}>{currentYear - 3}</option>
-                      <option value={currentYear - 4}>{currentYear - 4}</option>
-                    </Select>
-                  </VStack>
-                }
-                <Spacer/>
+                  <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
+                    <option value={currentYear}>{currentYear}</option>
+                    <option value={currentYear - 1}>{currentYear - 1}</option>
+                    <option value={currentYear - 2}>{currentYear - 2}</option>
+                    <option value={currentYear - 3}>{currentYear - 3}</option>
+                    <option value={currentYear - 4}>{currentYear - 4}</option>
+                  </Select>
+                </VStack>
+              }
+              <Spacer/>
             </HGrid>
           </VStack>
           <HGrid columns={3} gap="4">
-              <Checkbox
-                checked={_opprettOppgaveSelected !== undefined && _opprettOppgaveSelected }
-                onChange={onOpprettOppgaveChange}
-              >
-                {t('label:opprett-oppgave')}
-              </Checkbox>
+            <Checkbox
+              checked={_opprettOppgaveSelected !== undefined && _opprettOppgaveSelected }
+              onChange={onOpprettOppgaveChange}
+            >
+              {t('label:opprett-oppgave')}
+            </Checkbox>
           </HGrid>
           <HGrid columns={3} gap="4">
             <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} disabled={!(!journalfoeringLogg && fagsak && enhet && fagsaker && fagsaker.length>0)}>

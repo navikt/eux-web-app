@@ -1,0 +1,31 @@
+.imgContainer {
+  position: relative;
+  top: 5px;
+}
+
+.fullWidthButton {
+  display: block;
+  width: 100%;
+}
+
+.selectedEnhet {
+  background-color: var(--a-surface-selected);
+}
+
+.actionMenuButton {
+  width: 100%;
+  box-shadow: inset 0 0 0 1px var(--a-border-strong);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  justify-content: space-between;
+}
+
+.actionMenuButton:hover {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px var(--a-border-action-hover);
+}
+
+.actionMenuButton > :global(.navds-label) {
+  font-weight: normal;
+}
+
