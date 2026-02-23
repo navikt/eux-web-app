@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {Box, VStack, Heading, BodyLong, HGrid, Button} from "@navikt/ds-react";
 import classNames from "classnames";
 import { useTranslation } from 'react-i18next'
-import styled from "styled-components";
 import {Kodeverk, PersonInfoPDL, PersonInfoUtland, PersonMedFamilie, Validation} from "../../../declarations/types";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
 import PersonPanel from "../PersonPanel/PersonPanel";
@@ -14,6 +13,7 @@ import _ from "lodash";
 import RelasjonUtland from "./RelasjonUtland";
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
 import SearchPersonRelatert from "./SearchPersonRelatert";
+import styles from "./FamilieRelasjoner.module.css"
 
 export interface FamilieRelasjonerSelector {
   familierelasjonKodeverk: Array<Kodeverk> | undefined
@@ -32,14 +32,6 @@ export interface FamilieRelasjonerProps {
   namespace: string
   validation: Validation
 }
-
-export const WithErrorBox = styled(Box)`
-  &.error {
-    margin: -4px;
-    border: 4px solid var(--a-border-danger) !important;
-  }
-`
-
 
 const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
   personMedFamilie, valgteFamilieRelasjonerPDL, valgteFamilieRelasjonerUtland, namespace, validation
@@ -175,14 +167,14 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
   }
 
   return(
-    <WithErrorBox
+    <Box
       background="surface-default"
       borderWidth="1"
       borderColor="border-default"
       padding="4"
       data-testid='family'
       className={classNames({
-        error: hasNamespaceWithErrors(validation, namespace! + "-familieRelasjoner")
+        [styles.error]: hasNamespaceWithErrors(validation, namespace! + "-familieRelasjoner")
       })}
     >
       <VStack gap="4">
@@ -288,7 +280,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
         </div>
         <ErrorLabel error={validation[namespace + '-familieRelasjoner']?.feilmelding}/>
       </VStack>
-    </WithErrorBox>
+    </Box>
 
   )
 }
