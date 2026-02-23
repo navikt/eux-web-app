@@ -4,16 +4,8 @@ import { Periode, PeriodeInputType } from 'declarations/sed'
 import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 import DateField, {isDateValidFormat, toDateFormat} from "components/DateField/DateField";
 
-const WrapperDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  height: 3rem;
-  min-width: 5rem;
-  align-items: center;
-`
 
 export interface PeriodeProps<T> {
   breakInTwo ?: boolean
@@ -106,7 +98,7 @@ const PeriodeInput = <T extends Periode>({
           required={requiredSluttDato}
         />
         {periodeType === 'withcheckbox' && (
-          <WrapperDiv className={classNames({ nolabel: !hideLabel })}>
+          <HStack align="center" minHeight="3rem" minWidth="5rem" className={classNames({ nolabel: !hideLabel })}>
             {_.isEmpty(value?.sluttdato) && (
               <Checkbox
                 error={!!error.aapenPeriodeType}
@@ -116,7 +108,7 @@ const PeriodeInput = <T extends Periode>({
               > {t('label:ukjent')}
               </Checkbox>
             )}
-          </WrapperDiv>
+          </HStack>
         )}
       </>
     )
