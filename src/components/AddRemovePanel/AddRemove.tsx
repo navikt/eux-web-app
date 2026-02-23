@@ -5,6 +5,7 @@ import {Button, BodyLong, HStack, Alert} from '@navikt/ds-react'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import styles from './AddRemovePanel.module.css'
 
 export interface AddRemovePanelProps<T> {
   item: T | null
@@ -50,7 +51,7 @@ const AddRemove = <T extends any>({
 
   if (candidateForDeletion) {
     return (
-      <HStack gap="1" align="center" className={classNames('slideInFromRight')}>
+      <HStack gap="1" align="center" className={classNames(styles.slideInFromRight)}>
         <BodyLong style={{ whiteSpace: 'nowrap' }}>
           {labels?.areYouSure ?? t('label:er-du-sikker')}
         </BodyLong>

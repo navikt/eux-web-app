@@ -50,7 +50,7 @@ const AddRemovePanel = <T extends any>({
 
   if (candidateForDeletion) {
     return (
-      <Box className={classNames('slideInFromRight', { marginTop }, styles.inlineFlex)}>
+      <Box className={classNames(styles.slideInFromRight, { marginTop }, styles.inlineFlex)}>
         <HStack gap="4" align="center">
           <BodyLong style={{ whiteSpace: 'nowrap' }}>
             {labels?.areYouSure ?? t('label:er-du-sikker')}

@@ -6,13 +6,6 @@ import Version from 'components/Version/Version'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import {
-  fadeIn,
-  slideInFromBottom,
-  slideInFromLeft,
-  slideInFromRight,
-  slideInFromTop,
-} from '@navikt/hoykontrast'
 import Error from 'pages/Error'
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -48,30 +41,6 @@ body {
 .hide {
   position: absolute;
   margin-left: -10000px;
-}
-.fadeIn {
-  opacity: 0;
-  animation: ${fadeIn} 0.25s forwards;
-}
-.slideInFromLeft {
-  opacity: 0;
-  transform: translateX(-20px);
-  animation: ${slideInFromLeft(20)} 0.3s forwards;
-}
-.slideInFromRight {
-  opacity: 0;
-  transform: translateX(20px);
-  animation: ${slideInFromRight(20)} 0.3s forwards;
-}
-.slideInFromTop {
-  opacity: 0;
-  transform: translateY(-20px);
-  animation: ${slideInFromTop(20)} 0.3s forwards;
-}
-.slideInFromBottom {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: ${slideInFromBottom(20)} 0.3s forwards;
 }
 
 #joarkBrowser .navds-button--tertiary:hover, #attachmentsFromRina .navds-button--tertiary:hover {

@@ -1,3 +1,5 @@
+@import '../Animations/animations.module.css';
+
 .inlineFlex {
   display: inline-flex;
   align-items: center;
@@ -7,4 +9,10 @@
   &.noMargin {
     margin-top: 0rem;
   }
+}
+
+.slideInFromRight {
+  opacity: 0;
+  transform: translateX(20px);
+  animation: slideInFromRight 0.3s forwards;
 }

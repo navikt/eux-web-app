@@ -186,7 +186,7 @@ const AddMottakereModal = ({
               </HGrid>
               <VStack gap="1">
                 {newMottakere.map(mottakere => (
-                  <HStack gap="2" align="center" key={mottakere.id} className='slideInFromLeft'>
+                  <HStack gap="2" align="center" key={mottakere.id} className={styles.slideInFromLeft}>
                     {mottakere.name}
                     <Button onClick={() => deleteMottakere(mottakere.id)} icon={<TrashIcon/>}/>
                   </HStack>
