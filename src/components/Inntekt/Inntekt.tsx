@@ -1,35 +1,15 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { IInntekt, IInntekter } from 'declarations/types'
-import { BodyLong, Link, Heading } from '@navikt/ds-react'
-import {
-  AlignEndRow,
-  AlignStartRow,
-  Column,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Link, Heading, VStack, HStack, Box, Spacer} from '@navikt/ds-react'
 import { Pagination } from "@navikt/ds-react";
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 import { formatterPenger } from 'utils/PengeUtils'
 
 export interface InntektProps {
   inntekter: IInntekter
 }
-
-const ArbeidsgiverDiv = styled(FlexDiv)`
- background-color: whitesmoke;
- justify-content: space-between;
- padding: 1rem;
-`
-const LeftBorderFlexDiv = styled(FlexDiv)`
-  border-left: 1px solid var(--a-border-strong);
-`
 
 const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
   const { t } = useTranslation()
@@ -58,91 +38,85 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
         const lastIndex = (_currentPage[inntekt.orgNr] - 1) * itemsPerPage + itemsPerPage
 
         return (
-          <div key={inntekt.orgNr}>
-            <AlignStartRow>
-              <Column>
-                <ArbeidsgiverDiv>
-                  <PileDiv>
+          <VStack gap="4" key={inntekt.orgNr}>
+            <HStack width="100%" gap="4">
+              <VStack width="100%" gap="2">
+                <Box padding="4" background="bg-subtle">
+                  <HStack justify="space-between" align="start">
                     <Heading size='small'>
                       {inntekt.arbeidsgiverNavn}
                     </Heading>
-                  </PileDiv>
-                  <PileDiv>
-                    <span><BodyLong>{t('label:orgnr')}</BodyLong></span>
-                    <span><BodyLong>{inntekt.orgNr}</BodyLong></span>
-                  </PileDiv>
-                  <PileDiv>
-                    <span><BodyLong>{t('label:stillingprosent')}</BodyLong></span>
-                    <span><BodyLong>{inntekt.stillingsprosent} %</BodyLong></span>
-                  </PileDiv>
-                  <PileDiv>
-                    <span><BodyLong>{t('label:siste-lønnsendring')}</BodyLong></span>
-                    <span><BodyLong>{inntekt.sisteLoennsendring}</BodyLong></span>
-                  </PileDiv>
-                </ArbeidsgiverDiv>
-                <VerticalSeparatorDiv size='0.5' />
-                <FlexDiv>
-                  <HorizontalSeparatorDiv />
-                  <FlexDiv style={{ flex: '5', justifyContent: 'space-evenly', maxWidth: '600px' }}>
+                    <VStack>
+                      <BodyLong>{t('label:orgnr')}</BodyLong>
+                      <BodyLong>{inntekt.orgNr}</BodyLong>
+                    </VStack>
+                    <VStack>
+                      <BodyLong>{t('label:stillingprosent')}</BodyLong>
+                      <BodyLong>{inntekt.stillingsprosent} %</BodyLong>
+                    </VStack>
+                    <VStack>
+                      <BodyLong>{t('label:siste-lønnsendring')}</BodyLong>
+                      <BodyLong>{inntekt.sisteLoennsendring}</BodyLong>
+                    </VStack>
+                  </HStack>
+                </Box>
+                <HStack>
+                  <Spacer />
+                  <HStack justify="space-evenly" maxWidth="500px">
                     {Object.keys(inntekt.maanedsinntekter)?.map((måned: string, index: number) => {
                       return index >= firstIndex && index < lastIndex
                         ? (
-                          <PileDiv key={måned} style={{ width: '100px' }}>
-                            <PaddedDiv size='0.3'>
+                          <VStack width="100px" key={måned}>
+                            <Box padding="1">
                               {måned}
-                            </PaddedDiv>
-                            <PaddedDiv size='0.3'>
+                            </Box>
+                            <Box padding="1">
                               {formatterPenger(inntekt.maanedsinntekter[måned])}
-                            </PaddedDiv>
-                          </PileDiv>
+                            </Box>
+                          </VStack>
                           )
                         : null
                     })}
-                  </FlexDiv>
-                  <LeftBorderFlexDiv>
-                    <HorizontalSeparatorDiv />
-                    <PileDiv>
-                      <PaddedDiv size='0.3'>
-                        {t('label:gjennomsnitt')}
-                      </PaddedDiv>
-                      <PaddedDiv size='0.3'>
-                        {formatterPenger(inntekt.maanedsinntektSnitt)}
-                      </PaddedDiv>
-                    </PileDiv>
-                  </LeftBorderFlexDiv>
-                  <HorizontalSeparatorDiv />
-
-                </FlexDiv>
-              </Column>
-            </AlignStartRow>
-            <VerticalSeparatorDiv size='0.5' />
-            <AlignEndRow>
-              <Column>
-                <Link target='_blank' href={inntekter.uriInntektRegister} rel='noreferrer'>
+                  </HStack>
+                  <Box style={{borderLeft: "1px solid var(--a-border-strong)"}} paddingInline="2">
+                    <HStack gap="2">
+                      <Spacer />
+                      <VStack>
+                        <Box padding="1">
+                          {t('label:gjennomsnitt')}
+                        </Box>
+                        <Box padding="1">
+                          {formatterPenger(inntekt.maanedsinntektSnitt)}
+                        </Box>
+                      </VStack>
+                      <Spacer/>
+                    </HStack>
+                  </Box>
+                </HStack>
+              </VStack>
+            </HStack>
+            <HStack>
+              <Link target='_blank' href={inntekter.uriInntektRegister} rel='noreferrer'>
+                <HStack gap="2" align="start">
                   {t('label:gå-til-A-inntekt')}
-                  <HorizontalSeparatorDiv size='0.35' />
                   <ExternalLinkIcon />
-                </Link>
-              </Column>
-              <Column>
-                <FlexDiv style={{ flexDirection: 'row-reverse' }}>
-                  {Object.keys(inntekt.maanedsinntekter).length >= itemsPerPage &&
-                    <Pagination
-                      page={_currentPage[inntekt.orgNr]}
-                      count={Math.ceil(Object.keys(inntekt.maanedsinntekter).length/itemsPerPage)}
-                      siblingCount={2}
-                      size="xsmall"
-                      onPageChange={(page: number) => setCurrentPage({
-                        ..._currentPage,
-                        [inntekt.orgNr]: page
-                      })}
-                    />
-                  }
-                </FlexDiv>
-              </Column>
-            </AlignEndRow>
-            <VerticalSeparatorDiv size='2' />
-          </div>
+                </HStack>
+              </Link>
+              <Spacer/>
+              {Object.keys(inntekt.maanedsinntekter).length >= itemsPerPage &&
+                <Pagination
+                  page={_currentPage[inntekt.orgNr]}
+                  count={Math.ceil(Object.keys(inntekt.maanedsinntekter).length/itemsPerPage)}
+                  siblingCount={2}
+                  size="xsmall"
+                  onPageChange={(page: number) => setCurrentPage({
+                    ..._currentPage,
+                    [inntekt.orgNr]: page
+                  })}
+                />
+              }
+            </HStack>
+          </VStack>
         )
       }
       )}
