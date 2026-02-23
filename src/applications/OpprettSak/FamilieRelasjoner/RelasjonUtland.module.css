@@ -1,0 +1,13 @@
+.flashDiv {
+  background: #ffffff;
+}
+
+.flashBackground {
+  animation: fadeBackground 1s;
+}
+
+@keyframes fadeBackground {
+  from { background-color: #ffffff; }
+  to { background-color: #FCE97F; }
+}
+

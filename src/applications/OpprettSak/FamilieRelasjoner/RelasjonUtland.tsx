@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Kodeverk, PersonInfoUtland, Validation} from "../../../declarations/types";
-import styled from "styled-components";
-import {BodyLong, Button, HGrid, Select, TextField, VStack} from "@navikt/ds-react";
+import {BodyLong, Box, Button, HGrid, Select, TextField, VStack} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";
 import {Country} from "@navikt/land-verktoy";
 import CountryDropdown from "../../../components/CountryDropdown/CountryDropdown";
@@ -10,6 +9,7 @@ import useLocalValidation from "../../../hooks/useLocalValidation";
 import {PlusCircleIcon} from "@navikt/aksel-icons";
 import {RelasjonUtlandValidationProps, validateRelasjonUtland} from "./validation";
 import useUnmount from "../../../hooks/useUnmount";
+import styles from './RelasjonUtland.module.css'
 
 export interface RelasjonUtlandProps {
   onAddClick?: (p: PersonInfoUtland) => void
@@ -22,19 +22,6 @@ export interface RelasjonUtlandProps {
   flashBackground?: boolean | null
 }
 
-type StyleTypes = {
-  flashBackground?: boolean | null
-}
-
-const FlashDiv = styled.div<StyleTypes>`
-  background: #ffffff;
-  animation: ${props => props.flashBackground ? 'fadeBackground 1s' : ''};
-
-  @keyframes fadeBackground {
-    from { background-color: #ffffff; }
-    to { background-color: #FCE97F; }
-  }
-`
 
 const RelasjonUtland: React.FC<RelasjonUtlandProps> =({
   namespace, rolleList, onAddClick, valgteFamilieRelasjonerUtland, closeAndOpen, setOpenAgain, flashBackground
@@ -78,7 +65,7 @@ const RelasjonUtland: React.FC<RelasjonUtlandProps> =({
   }
 
   return(
-    <FlashDiv flashBackground={flashBackground}>
+    <Box paddingBlock="4" className={`${styles.flashDiv} ${flashBackground ? styles.flashBackground : ''}`}>
       <VStack gap="4">
         <BodyLong>{t('label:family-utland-add-form')}</BodyLong>
         <HGrid gap="4" columns={3} align="start">
@@ -197,7 +184,7 @@ const RelasjonUtland: React.FC<RelasjonUtlandProps> =({
           </div>
         </HGrid>
       </VStack>
-    </FlashDiv>
+    </Box>
   )
 }
 
