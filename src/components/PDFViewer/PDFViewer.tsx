@@ -5,8 +5,8 @@ import React, {useState} from "react";
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import _ from "lodash";
 import bytes from 'bytes'
-import styled, { keyframes } from 'styled-components'
 import classNames from 'classnames'
+import styles from './PDFViewer.module.css'
 
 export interface PreviewPDFProps {
   file?: string
@@ -16,25 +16,6 @@ export interface PreviewPDFProps {
   height?: string | number
 }
 
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  60% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-`
-export const PDFDiv = styled.div`
-  position: relative;
-  &.animate {
-    animation: ${fadeIn} 0.4s;
-  }
-`
 
 const PDFViewer: React.FC<PreviewPDFProps> = ({
   file, name, size, width, height
@@ -64,8 +45,8 @@ const PDFViewer: React.FC<PreviewPDFProps> = ({
   }
 
   return(
-    <PDFDiv
-      className={classNames({ animate: true })}
+    <div
+      className={classNames(styles.pdfDiv, { [styles.animate]: true })}
       title={'' + name + '\n Sider: ' + (numPages || '0') + '\n Størrelse: ' + _size}
     >
       <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
@@ -78,7 +59,7 @@ const PDFViewer: React.FC<PreviewPDFProps> = ({
           />)
         )}
       </Document>
-    </PDFDiv>
+    </div>
   )
 }
 
