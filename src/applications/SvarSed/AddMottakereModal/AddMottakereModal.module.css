@@ -1,4 +1,4 @@
-@import '../../../components/animations/animations.module.css';
+@import 'src/components/animations/animations.module.css';
 
 .minimalModal {
   min-height: 250px;

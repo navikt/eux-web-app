@@ -1,5 +1,5 @@
 import { TrashIcon } from '@navikt/aksel-icons';
-import {Alert, Button, Loader, Select, Box, HGrid, VStack, HStack} from '@navikt/ds-react'
+import {Alert, Button, Loader, Select, Box, HGrid, VStack, HStack, Spacer} from '@navikt/ds-react'
 import { Country } from '@navikt/land-verktoy'
 import { addMottakere, resetMottakere } from 'actions/svarsed'
 import * as types from 'constants/actionTypes'
@@ -184,14 +184,16 @@ const AddMottakereModal = ({
                   {gettingInstitusjoner && <Loader />}
                 </HStack>
               </HGrid>
-              <VStack gap="1">
+              <Box padding="4">
                 {newMottakere.map(mottakere => (
                   <HStack gap="2" align="center" key={mottakere.id} className={styles.slideInFromLeft}>
+                    <Spacer/>
                     {mottakere.name}
                     <Button onClick={() => deleteMottakere(mottakere.id)} icon={<TrashIcon/>}/>
+                    <Spacer/>
                   </HStack>
                 ))}
-              </VStack>
+              </Box>
             </VStack>
           )
         : (
