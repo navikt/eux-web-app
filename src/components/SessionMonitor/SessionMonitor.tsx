@@ -5,17 +5,12 @@ import { ReplySed } from 'declarations/sed'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import Modal from 'components/Modal/Modal'
 import { BodyLong, Button } from '@navikt/ds-react'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import { IS_Q1_EXPERIMENTAL } from 'constants/environment'
 import { setInterval } from 'worker-timers';
-
-const SessionMonitorDiv = styled.div`
-font-size: 80%;
-`
 
 export interface SessionMonitorProps {
   checkInterval?: number
@@ -221,15 +216,14 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   )
   if ( sessionEndsAt !== undefined && sessionStatusWarning !== undefined && calculateDiff(sessionEndsAt) < ( IS_Q1_EXPERIMENTAL ? 595 * 1000 * 60 : sessionStatusWarning)) {
     return (
-      <SessionMonitorDiv>
+      <div>
         {modalButton}
         {sessionButton}
-      </SessionMonitorDiv>
+      </div>
     )
   } else {
     return (
-      <SessionMonitorDiv>
-      </SessionMonitorDiv>
+      <div/>
     )
   }
 }
