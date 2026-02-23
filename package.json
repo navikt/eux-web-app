@@ -50,7 +50,7 @@
     "file-saver": "2.0.5",
     "http-proxy-middleware": "2.0.9",
     "i18next": "25.8.0",
-    "i18next-browser-languagedetector": "8.2.0",
+    "i18next-browser-languagedetector": "8.2.1",
     "i18next-http-backend": "3.0.2",
     "jose": "4.15.9",
     "lodash": "4.17.23",
