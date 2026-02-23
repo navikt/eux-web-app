@@ -1,0 +1,19 @@
+.modalContent dt {
+  width: 200px;
+  float: left;
+  clear: left;
+  font-weight: bold;
+}
+
+.modalContent dt::after {
+  content: ":";
+}
+
+.odd {
+  background: lightgray;
+}
+
+.modalContent dd {
+  margin-left: 200px;
+}
+

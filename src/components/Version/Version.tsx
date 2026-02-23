@@ -3,9 +3,9 @@ import { State } from 'declarations/reducers'
 import { ServerInfo } from 'declarations/types'
 import React, { useState } from 'react'
 import { useAppSelector } from 'store'
-import styled from 'styled-components'
 import Clipboard from './Clipboard'
-import {APP_BRANCH_NAME, APP_BUILD_DATETIME, APP_BUILD_VERSION, APP_EESSI_KODEVERK, APP_REACT_LIB, APP_VERSION} from "../../constants/environment";
+import {APP_BRANCH_NAME, APP_BUILD_DATETIME, APP_BUILD_VERSION, APP_EESSI_KODEVERK, APP_REACT_LIB, APP_VERSION} from "../../constants/environment"
+import styles from './Version.module.css'
 
 export interface VersjonSelector {
   serverInfo: ServerInfo | undefined
@@ -14,24 +14,6 @@ export interface VersjonSelector {
 const mapState = (state: State): VersjonSelector => ({
   serverInfo: state.app.serverinfo
 })
-
-const ModalDiv = styled.div`
-  dt {
-    width: 200px;
-    float: left;
-    clear: left;
-    font-weight: bold;
-  }
-  dt::after {
-     content: ":";
-  }
-  .odd {
-    background: lightgray;
-  }
-  dd {
-   margin-left: 200px;
-  }
-`
 
 const Version = () => {
   const [visVersjonDetaljer, setVisVersjonDetaljer] = useState(false)
@@ -62,27 +44,27 @@ const Version = () => {
     <>
       <Modal onClose={() => setVisVersjonDetaljer(false)} open={visVersjonDetaljer && !!serverInfo} header={{heading: "Versjonsinfo"}}>
         <Modal.Body>
-          <ModalDiv>
+          <div className={styles.modalContent}>
             <dl>
               <Heading size='small'>Web</Heading>
-              <dt className='odd'>Build time</dt><dd className='odd'>{byggTidspunkt()}</dd>
+              <dt className={styles.odd}>Build time</dt><dd className={styles.odd}>{byggTidspunkt()}</dd>
               <dt>Build version</dt><dd>{byggVersjon()}</dd>
-              <dt className='odd'>Branch</dt><dd className='odd'>{branchVersjon()}</dd>
+              <dt className={styles.odd}>Branch</dt><dd className={styles.odd}>{branchVersjon()}</dd>
               <dt>eessi-kodeverk</dt><dd>{eessiKodeverk()}</dd>
-              <dt className='odd'>React</dt><dd className='odd'>{reactLibVersion()}</dd>
+              <dt className={styles.odd}>React</dt><dd className={styles.odd}>{reactLibVersion()}</dd>
               <p />
               <Heading size='small'>Server</Heading>
-              <dt className='odd'>Namespace</dt><dd className='odd'>{serverInfo.namespace ?? '-'}</dd>
+              <dt className={styles.odd}>Namespace</dt><dd className={styles.odd}>{serverInfo.namespace ?? '-'}</dd>
               <dt>Cluster</dt><dd>{serverInfo.cluster ?? '-'}</dd>
-              <dt className='odd'>BranchName</dt><dd className='odd'>{serverInfo.branchName ?? '-'}</dd>
+              <dt className={styles.odd}>BranchName</dt><dd className={styles.odd}>{serverInfo.branchName ?? '-'}</dd>
               <dt>Vera</dt><dd>{serverInfo.veraUrl ?? '-'}</dd>
-              <dt className='odd'>Gosys</dt><dd className='odd'>{serverInfo.gosysURL ?? '-'}</dd>
+              <dt className={styles.odd}>Gosys</dt><dd className={styles.odd}>{serverInfo.gosysURL ?? '-'}</dd>
               <dt>VersionHash</dt><dd>{serverInfo.longVersionHash ?? '-'}</dd>
             </dl>
             <Button onClick={copyToClipBoard}>
               Klikk for å kopiere versjonsinfo
             </Button>
-          </ModalDiv>
+          </div>
         </Modal.Body>
       </Modal>
       <div style={{ textAlign: 'right' }}>
