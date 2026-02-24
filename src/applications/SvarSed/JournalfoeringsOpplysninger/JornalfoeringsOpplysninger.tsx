@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import {Box, Button, Heading, HGrid, Loader, Modal, Select, VStack} from '@navikt/ds-react'
-import { Dd, Dl, Dt } from 'components/StyledComponents'
-import commonStyles from 'assets/css/common.module.css'
 import {Enhet, Enheter, Fagsak, Fagsaker, Kodemaps, Kodeverk, NavRinasak, PersonInfoPDL, Sak, Tema} from 'declarations/types'
 import { useTranslation } from 'react-i18next'
 import {useAppDispatch, useAppSelector} from "../../../store";
@@ -17,6 +15,7 @@ import {getAlleEnheter} from "../../../actions/app";
 import {getFagsakTema} from "../../../actions/sak";
 import {searchJournalfoeringPerson} from "../../../actions/journalfoering";
 import {FeatureToggles} from "../../../declarations/app";
+import commonStyles from 'assets/css/common.module.css'
 
 
 interface JournalfoeringsOpplysningerProps {
@@ -319,38 +318,38 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             </Heading>
             <div className={commonStyles.horizontalLineSeparator} />
           </VStack>
-          <Dl>
-            <Dt>
+          <dl className={commonStyles.definitionList}>
+            <dt className={commonStyles.definitionTerm}>
               {t('label:person')}:
-            </Dt>
-            <Dd>
+            </dt>
+            <dd className={commonStyles.definitionDescription}>
               {sak.fagsak?.fnr ? sak.fagsak?.fnr : ""}
-            </Dd>
-            <Dt>
+            </dd>
+            <dt className={commonStyles.definitionTerm}>
               {t('label:tema')}:
-            </Dt>
-            <Dd>
+            </dt>
+            <dd className={commonStyles.definitionDescription}>
               {sak.fagsak?.tema ? t('tema:' + sak.fagsak.tema) : ""}
-            </Dd>
-            <Dt>
+            </dd>
+            <dt className={commonStyles.definitionTerm}>
               {t('label:fagsak')}:
-            </Dt>
-            <Dd>
+            </dt>
+            <dd className={commonStyles.definitionDescription}>
               {sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.type ? t('journalfoering:' + sak.fagsak?.type) : ""}
-            </Dd>
+            </dd>
             {featureToggles?.featureAdmin && (currentFagsakTema?.overstyrtEnhetsnummer != null || currentFagsak?.overstyrtEnhetsnummer != null) &&
             <>
-              <Dt>
+              <dt className={commonStyles.definitionTerm}>
                 {t('label:overstyrt-enhet')}:
-              </Dt>
-              <Dd>
+              </dt>
+              <dd className={commonStyles.definitionDescription}>
                 { (currentFagsak == null || currentFagsak?.overstyrtEnhetsnummer == null)
                   ? (currentFagsakTema?.overstyrtEnhetsnummer ?? '')
                   : (currentFagsak?.overstyrtEnhetsnummer ?? '')}
-              </Dd>
+              </dd>
             </>
             }
-          </Dl>
+          </dl>
           <Button
             variant='secondary'
             onClick={() => {

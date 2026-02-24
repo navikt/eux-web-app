@@ -34,3 +34,32 @@
   );
   width: 100%;
 }
+
+.definitionDescription{
+  width: 60%;
+  padding-bottom: 0.35rem;
+  padding-top: 0.35rem;
+  margin-bottom: 0;
+  margin-inline-start: 0;
+}
+
+.definitionTerm{
+  width: 40%;
+  padding-bottom: 0.35rem;
+  padding-top: 0.35rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  .typo-element {
+    margin-left: 0.5rem;
+  }
+  font-weight: bold;
+}
+
+.definitionList{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  .odd {
+    background-color: var(--a-surface-subtle);
+  }
+}

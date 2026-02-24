@@ -1,11 +1,10 @@
 import {BodyLong, Box, Button, Dialog, Heading, VStack} from '@navikt/ds-react'
 import AddMottakereModal from 'applications/SvarSed/AddMottakereModal/AddMottakereModal'
-import { Dd, Dl, Dt } from 'components/StyledComponents'
-import commonStyles from 'assets/css/common.module.css'
 import { Sak } from 'declarations/types'
 import _ from 'lodash'
 import React, {useState} from 'react'
 import { useTranslation } from 'react-i18next'
+import commonStyles from 'assets/css/common.module.css'
 
 interface SaksopplysningerProps {
   sak: Sak
@@ -43,22 +42,22 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
             </Heading>
             <div className={commonStyles.horizontalLineSeparator} />
           </VStack>
-          <Dl>
-            <Dt>
+          <dl className={commonStyles.definitionList}>
+            <dt className={commonStyles.definitionTerm}>
               {t('label:vår-rolle')}:
-            </Dt>
-            <Dd>
+            </dt>
+            <dd className={commonStyles.definitionDescription}>
               {sak.erSakseier && t('label:sakseier')}
               {!sak.erSakseier && t('label:motpart')}
               {_.isNil(sak.erSakseier) && t('label:ukjent')}
-            </Dd>
-            <Dt>
+            </dd>
+            <dt className={commonStyles.definitionTerm}>
               {t('label:andre-deltakere')}:
-            </Dt>
-            <Dd>
+            </dt>
+            <dd className={commonStyles.definitionDescription}>
               {sak.motpart?.map(m => <BodyLong key={m}>{m}</BodyLong>)}
-            </Dd>
-          </Dl>
+            </dd>
+          </dl>
           {canChangeParticipants && (
             <Button
               variant='secondary'

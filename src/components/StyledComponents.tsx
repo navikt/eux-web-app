@@ -1,33 +1,6 @@
 import styled from 'styled-components'
 import {Box} from '@navikt/ds-react'
 
-export const Dd = styled.dd`
-  width: 60%;
-  padding-bottom: 0.35rem;
-  padding-top: 0.35rem;
-  margin-bottom: 0;
-  margin-inline-start: 0;
-`
-export const Dt = styled.dt`
-  width: 40%;
-  padding-bottom: 0.35rem;
-  padding-top: 0.35rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  .typo-element {
-    margin-left: 0.5rem;
-  }
-  font-weight: bold;
-`
-export const Dl = styled.dl`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  .odd {
-    background-color: var(--a-surface-subtle);
-  }
-`
-
 export const RepeatableBox = styled(Box)`
   &.new {
     background-color: rgba(236, 243, 153, 0.5);
