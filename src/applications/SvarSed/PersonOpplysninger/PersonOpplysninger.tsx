@@ -174,14 +174,21 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
       pins = []
     }
     const norwegianPinIndex = _.findIndex(pins, p => p.landkode === 'NOR')
-    if (norwegianPinIndex >= 0) {
-      pins[norwegianPinIndex].identifikator = newPin!.trim()
+    if (newPin.trim()) {
+      if (norwegianPinIndex >= 0) {
+        pins[norwegianPinIndex].identifikator = newPin!.trim()
+      } else {
+        pins.push({
+          identifikator: newPin!.trim(),
+          landkode: 'NOR'
+        })
+      }
     } else {
-      pins.push({
-        identifikator: newPin!.trim(),
-        landkode: 'NOR'
-      })
+      if (norwegianPinIndex >= 0) {
+        pins.splice(norwegianPinIndex, 1)
+      }
     }
+
     dispatch(updateReplySed(`${target}.pin`, pins))
     if (validation[namespace + '-norskpin']) {
       dispatch(resetValidation(namespace + '-norskpin'))
