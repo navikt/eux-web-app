@@ -1,8 +1,6 @@
 import {BodyLong, Box, Button, Heading, HStack, Select, TextField, VStack} from '@navikt/ds-react'
 import { JoarkBrowser } from 'applications/Vedlegg/JoarkBrowser/JoarkBrowser'
 import SEDAttachmentModal from 'applications/Vedlegg/SEDAttachmentModal/SEDAttachmentModal'
-import { SpacedHr } from 'components/StyledComponents'
-import commonStyles from 'assets/css/common.module.css'
 import { JoarkBrowserItem, JoarkBrowserItems } from 'declarations/attachments'
 import _ from 'lodash'
 import React, {useEffect, useState} from 'react'
@@ -188,7 +186,6 @@ const Attachments: React.FC<AttachmentsProps> = ({
         <Heading size='small'>
           {t('label:vedlegg')}
         </Heading>
-        <div className={commonStyles.horizontalLineSeparator} />
         <SEDAttachmentModal
           open={_attachmentsTableVisible}
           fnr={_fnr!}
@@ -200,10 +197,11 @@ const Attachments: React.FC<AttachmentsProps> = ({
         {_.isEmpty(_items) && _.isEmpty(attachmentsFromRina)
           ? (
             <>
-              <SpacedHr />
-              <BodyLong>
-                {t('message:warning-no-attachments')}
-              </BodyLong>
+              <Box borderWidth={"1 0"} paddingBlock="2">
+                <BodyLong>
+                  {t('message:warning-no-attachments')}
+                </BodyLong>
+              </Box>
               <HStack gap="4">
                 <FNRSelectColumn/>
                 {isFSed(replySed) &&

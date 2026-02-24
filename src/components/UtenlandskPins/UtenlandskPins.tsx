@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -239,12 +239,10 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     <>
       {_.isEmpty(pins)
         ? (
-          <Box>
-            <SpacedHr />
+          <Box borderWidth={"1 0"} paddingBlock="2">
             <BodyLong>
               {t('message:warning-no-utenlandskepin')}
             </BodyLong>
-            <SpacedHr />
           </Box>
           )
         : (

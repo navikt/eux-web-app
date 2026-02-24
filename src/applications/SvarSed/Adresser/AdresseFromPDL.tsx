@@ -2,7 +2,6 @@ import { EyeIcon, EyeSlashIcon, MagnifyingGlassIcon } from '@navikt/aksel-icons'
 import {Alert, BodyLong, Box, Button, Checkbox, HStack, Label, Loader, Radio, RadioGroup, VStack} from '@navikt/ds-react'
 import { searchAdresse } from 'actions/adresse'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
-import {SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse, AdresseType } from 'declarations/sed'
 import _ from 'lodash'
@@ -164,7 +163,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
             <Label>
               {t('label:pdl-adresse-til', { person: personName })}
             </Label>
-            <SpacedHr />
+            <Box borderWidth={"1 0 0 0"} paddingBlock="2"/>
             <BodyLong size="large">
               {t('label:hvilke-adresser-skal-registreres')}
             </BodyLong>

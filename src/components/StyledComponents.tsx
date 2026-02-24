@@ -1,17 +1,6 @@
 import styled from 'styled-components'
 import {Box} from '@navikt/ds-react'
 
-export const Hr = styled.div`
-   background: var(--a-border-strong);
-   width: 100%;
-   height: 1px;
-`
-
-export const SpacedHr = styled(Hr)`
-   margin-top: 0.5rem;
-   margin-bottom: 0.5rem;
-`
-
 export const Dd = styled.dd`
   width: 60%;
   padding-bottom: 0.35rem;

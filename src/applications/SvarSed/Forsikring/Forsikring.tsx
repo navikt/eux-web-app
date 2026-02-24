@@ -20,7 +20,7 @@ import Military from 'assets/icons/Military'
 import classNames from 'classnames'
 import Select from 'components/Forms/Select'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { ForsikringPeriode, Periode, PeriodeSort, ReplySed, U002Sed } from 'declarations/sed'
@@ -383,12 +383,10 @@ const Forsikring: React.FC<MainFormProps> = ({
         )}
         {_.isEmpty(_allPeriods)
           ? (
-            <Box>
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-periods')}
               </BodyLong>
-              <SpacedHr />
             </Box>
             )
           : _sort === 'time'

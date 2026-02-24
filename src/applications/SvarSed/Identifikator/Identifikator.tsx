@@ -6,7 +6,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { ArbeidsgiverIdentifikator, ArbeidsgiverIdentifikatorType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -241,12 +241,10 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
     <VStack>
       {_.isEmpty(identifikatorer)
         ? (
-          <Box>
-            <SpacedHr />
+          <Box borderWidth={"1 0"} paddingBlock="2">
             <BodyLong>
               {t('message:warning-no-ids')}
             </BodyLong>
-            <SpacedHr />
           </Box>
           )
         : identifikatorer?.map(renderRow)}

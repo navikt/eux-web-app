@@ -15,7 +15,7 @@ import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
 import InntektFC from 'components/Inntekt/Inntekt'
-import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import {Loennsopplysning, Periode, PeriodeMedForsikring, AnsettelsesType, USed} from 'declarations/sed'
@@ -454,16 +454,14 @@ const InntektForm: React.FC<MainFormProps> = ({
         </Heading>
         {_.isEmpty(loennsopplysninger)
           ? (
-            <Box>
-              <SpacedHr />
               <FormText
                 error={validation[namespace + '-ingen-loennsopplysninger']?.feilmelding}
                 id={namespace + '-ingen-loennsopplysninger'}
               >
-                {t('message:warning-no-inntekt')}
+                <Box borderWidth={"1 0"} paddingBlock="2">
+                  {t('message:warning-no-inntekt')}
+                </Box>
               </FormText>
-              <SpacedHr />
-            </Box>
             )
           : loennsopplysninger?.map(renderRow)}
         {_newForm

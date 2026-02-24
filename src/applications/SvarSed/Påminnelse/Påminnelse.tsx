@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import TextArea from 'components/Forms/TextArea'
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Purring, X009Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -267,11 +267,11 @@ const Påminnelse: React.FC<MainFormProps> = ({
                 error={validation[namespace + '-purringer']?.feilmelding}
                 id={namespace + '-purringer'}
               >
-                <SpacedHr />
-                <BodyLong>
-                  {t('message:warning-no-påminnelse')}
-                </BodyLong>
-                <SpacedHr />
+                <Box borderWidth={"1 0"} paddingBlock="2">
+                  <BodyLong>
+                    {t('message:warning-no-påminnelse')}
+                  </BodyLong>
+                </Box>
               </FormText>
             )
           : purringer?.map(renderRow)

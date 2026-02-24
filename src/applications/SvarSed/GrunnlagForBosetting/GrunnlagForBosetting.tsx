@@ -9,7 +9,7 @@ import DateField from 'components/DateField/DateField'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
-import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Flyttegrunn, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -232,13 +232,11 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
         </Detail>
         {_.isEmpty(flyttegrunn?.perioder)
           ? (
-            <>
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-periods')}
               </BodyLong>
-              <SpacedHr />
-            </>
+            </Box>
             )
           : flyttegrunn?.perioder?.map(renderRow)}
         {_newForm

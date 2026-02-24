@@ -9,7 +9,7 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
-import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, JaNei, Periode, RelasjonType } from 'declarations/sed'
@@ -405,12 +405,10 @@ const Familierelasjon: React.FC<MainFormProps> = ({
         </Heading>
         {_.isEmpty(familierelasjoner)
           ? (
-            <Box>
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-familierelasjon')}
               </BodyLong>
-              <SpacedHr />
             </Box>
           )
           : (

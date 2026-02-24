@@ -9,7 +9,7 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { InntektOgTime, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -306,12 +306,10 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
     <>
       {_.isEmpty(inntektOgTimer)
         ? (
-          <Box>
-            <SpacedHr />
+          <Box borderWidth={"1 0"} paddingBlock="2">
             <BodyLong>
               {t('message:warning-no-inntekt')}
             </BodyLong>
-            <SpacedHr />
           </Box>
           )
         : inntektOgTimer?.map(renderRow)}

@@ -4,7 +4,7 @@ import {Country} from '@navikt/land-verktoy'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { Foedested } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -265,12 +265,10 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
       {
         emptyFoedsted
           ? (
-            <Box>
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-foedested')}
               </BodyLong>
-              <SpacedHr />
             </Box>
             )
           : (

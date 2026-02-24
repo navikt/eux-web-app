@@ -7,7 +7,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { BesvarelseUmulig, BesvarelseKommer, X010Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -664,13 +664,11 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
         </Heading>
         {_.isEmpty(besvarelseKommer)
           ? (
-            <VStack gap="1">
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-dokument')}
               </BodyLong>
-              <SpacedHr />
-            </VStack>
+            </Box>
             )
           : besvarelseKommer?.map(renderBesvarelseKommerRow)}
         {_newBesvarelseKommerForm
@@ -691,13 +689,11 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
         </Heading>
         {_.isEmpty(besvarelseUmulig)
           ? (
-            <VStack gap="1">
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-dokument')}
               </BodyLong>
-              <SpacedHr />
-            </VStack>
+            </Box>
             )
           : besvarelseUmulig?.map(renderBesvarelseUmuligRow)
         }

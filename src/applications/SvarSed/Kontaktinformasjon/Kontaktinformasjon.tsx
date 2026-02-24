@@ -7,7 +7,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Epost, Telefon, TelefonType } from 'declarations/sed'
@@ -415,12 +415,10 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
         </Heading>
         {_.isEmpty(telefoner)
           ? (
-            <Box>
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-telephone')}
               </BodyLong>
-              <SpacedHr />
             </Box>
           )  : (
             <>
@@ -454,12 +452,10 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
 
         {_.isEmpty(eposter)
           ? (
-            <Box>
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-email')}
               </BodyLong>
-              <SpacedHr />
             </Box>
           ) : (
             <>

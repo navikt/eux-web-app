@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { PensjonPeriode, PensjonsType, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -235,12 +235,10 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
     <VStack gap="4">
       {_.isEmpty(perioderMedPensjon)
         ? (
-          <Box>
-            <SpacedHr />
+          <Box borderWidth={"1 0"} paddingBlock="2">
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
-            <SpacedHr />
           </Box>
           )
         : perioderMedPensjon?.map(renderRow)}

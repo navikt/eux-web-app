@@ -7,7 +7,7 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
-import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -256,12 +256,10 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
       <VStack gap="4">
         {_.isEmpty(statsborgerskaper)
           ? (
-            <Box paddingInline="4">
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2" paddingInline="4">
               <BodyLong>
                 {t('message:warning-no-satsborgerskap')}
               </BodyLong>
-              <SpacedHr />
             </Box>
             )
           : (

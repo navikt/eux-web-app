@@ -7,7 +7,7 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -239,12 +239,10 @@ const Adresser: React.FC<MainFormProps> = ({
         />
         {_.isEmpty(adresser)
           ? (
-            <Box id="ingenAdresse">
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2" id="ingenAdresse">
               <BodyLong>
                 {t('message:warning-no-address')}
               </BodyLong>
-              <SpacedHr />
             </Box>
             )
           : adresser?.map(renderRow)}

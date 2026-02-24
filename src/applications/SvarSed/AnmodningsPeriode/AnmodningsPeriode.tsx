@@ -8,7 +8,7 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox } from 'components/StyledComponents'
 import {F001Sed, F002Sed, FSed, Periode} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -229,12 +229,10 @@ const AnmodningsPeriode: React.FC<MainFormProps> = ({
         </Heading>
         {_.isEmpty((replySed as FSed)?.anmodningsperioder)
           ? (
-            <Box>
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-periods')}
               </BodyLong>
-              <SpacedHr />
             </Box>
             )
           : (replySed as FSed)?.anmodningsperioder?.map(renderRow)}

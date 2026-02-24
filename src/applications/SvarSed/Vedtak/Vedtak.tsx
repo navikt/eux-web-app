@@ -19,7 +19,7 @@ import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
@@ -698,13 +698,11 @@ const VedtakFC: React.FC<MainFormProps> = ({
             </Heading>
             {_.isEmpty(vedtak?.vedtaksperioder)
               ? (
-                <VStack>
-                  <SpacedHr />
+                <Box borderWidth={"1 0"} paddingBlock="2">
                   <BodyLong>
                     {t('message:warning-no-periods')}
                   </BodyLong>
-                  <SpacedHr />
-                </VStack>
+                </Box>
                 )
               : vedtak?.vedtaksperioder?.map(renderVedtakPeriodeRow)
             }
@@ -738,13 +736,11 @@ const VedtakFC: React.FC<MainFormProps> = ({
             )}
             {_.isEmpty(_allKompetansePeriods)
               ? (
-                <VStack>
-                  <SpacedHr />
+                <Box borderWidth={"1 0"} paddingBlock="2">
                   <BodyLong>
                     {t('message:warning-no-periods')}
                   </BodyLong>
-                  <SpacedHr />
-                </VStack>
+                </Box>
                 )
               : (_sort === 'time'
                   ? _allKompetansePeriods?.map(renderKompetansePeriodeRow)

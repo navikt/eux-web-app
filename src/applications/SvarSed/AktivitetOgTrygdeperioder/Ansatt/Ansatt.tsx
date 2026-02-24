@@ -9,7 +9,7 @@ import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
 import {ForsikringPeriode, Periode, PeriodeMedForsikring} from 'declarations/sed'
@@ -351,12 +351,10 @@ const Ansatt: React.FC<AnsattProps> = ({
       />
       {_.isEmpty(_plan)
         ? (
-          <Box>
-            <SpacedHr />
+          <Box borderWidth={"1 0"} paddingBlock="2">
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
-            <SpacedHr />
           </Box>
           )
         : (

@@ -5,7 +5,7 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -199,12 +199,10 @@ const Perioder: React.FC<PerioderProps> = ({
     <VStack gap="4">
       {_.isEmpty(perioder)
         ? (
-          <Box>
-            <SpacedHr />
+          <Box borderWidth={"1 0"} paddingBlock="2">
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
-            <SpacedHr />
           </Box>
           )
         : perioder?.map(renderRow)}

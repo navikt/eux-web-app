@@ -7,7 +7,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
-import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
@@ -315,18 +315,16 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
         </Heading>
         {_.isEmpty(_allGrunns)
           ? (
-            <Box>
-              <SpacedHr />
               <BodyLong>
                 <FormText
                   error={validation[namespace + '-grunner']?.feilmelding}
                   id={namespace + '-grunner'}
                 >
-                  {t('message:warning-no-grunn')}
+                  <Box borderWidth={"1 0"} paddingBlock="2">
+                    {t('message:warning-no-grunn')}
+                  </Box>
                 </FormText>
               </BodyLong>
-              <SpacedHr />
-            </Box>
             )
           : _allGrunns?.map(renderRow)}
         {_newForm

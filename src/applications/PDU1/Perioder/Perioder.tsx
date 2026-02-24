@@ -9,7 +9,7 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
-import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { PDPeriode, PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -398,12 +398,10 @@ const Perioder: React.FC<MainFormProps> = ({
         )}
         {_.isEmpty(_allPeriods)
           ? (
-            <Box>
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-periods')}
               </BodyLong>
-              <SpacedHr />
             </Box>
           )
           : _sort === 'time'

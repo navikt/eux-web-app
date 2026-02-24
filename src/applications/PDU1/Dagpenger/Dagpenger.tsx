@@ -8,7 +8,7 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox } from 'components/StyledComponents'
 import { PDPeriode } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
@@ -248,12 +248,10 @@ const Dagpenger: React.FC<MainFormProps> = ({
         </Heading>
         {_.isEmpty(perioderDagpengerMottatt)
           ? (
-            <Box>
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-periods')}
               </BodyLong>
-              <SpacedHr />
             </Box>
             )
           : perioderDagpengerMottatt?.map(renderRow)}

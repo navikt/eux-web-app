@@ -8,7 +8,6 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
 import Inntekt from 'components/Inntekt/Inntekt'
-import { SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import {ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView, ReplySed} from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
@@ -323,12 +322,10 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
         />
         {_.isEmpty(_plan)
           ? (
-            <Box>
-              <SpacedHr />
+            <Box borderWidth={"1 0"} paddingBlock="2">
               <BodyLong>
                 {t('message:warning-no-periods-med-forsikring')}
               </BodyLong>
-              <SpacedHr />
             </Box>
             )
           : (
