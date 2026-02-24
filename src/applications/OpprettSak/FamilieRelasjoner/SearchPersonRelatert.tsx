@@ -3,12 +3,12 @@ import {Alert, HGrid, Loader, Search, VStack} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";
 import {State} from "../../../declarations/reducers";
 import {useAppDispatch, useAppSelector} from "../../../store";
-import {FadingLineSeparator} from "../../../components/StyledComponents";
 import PersonPanel from "../PersonPanel/PersonPanel";
 import {Kodeverk, PersonInfoPDL, PersonInfoUtland, PersonMedFamilie} from "../../../declarations/types";
 import {personRelatertReset, searchPersonRelatert} from "../../../actions/person";
 import _ from "lodash";
 import * as types from "../../../constants/actionTypes";
+import styles from "./FamilieRelasjoner.module.css"
 
 export interface SearchPersonRelatertProps{
   parentNamespace: string
@@ -115,9 +115,7 @@ const SearchPersonRelatert: React.FC<SearchPersonRelatertProps> = ({
           </span>
         }
       </VStack>
-      <FadingLineSeparator style={{marginLeft: '10px', marginRight: '10px'}}>
-        &nbsp;
-      </FadingLineSeparator>
+      <div className={styles.fadingLineSeparator}/>
       <VStack gap="4">
         {_personRelatert &&
           <PersonPanel

@@ -1,17 +1,6 @@
 import styled from 'styled-components'
 import {Box} from '@navikt/ds-react'
 
-export const FadingLineSeparator = styled.div`
-   border-left-width: 1px;
-   border-left-style: solid;
-   border-image: linear-gradient(
-    to bottom,
-     var(--a-bg-subtle) 0%,
-     var(--a-border-strong) 5%,
-     var(--a-border-strong) 95%,
-     var(--a-bg-subtle) 100%
-    ) 1 100%;
-`
 export const HorizontalLineSeparator = styled.div<{size?: string}>`
   height: 1px;
   margin-top: ${(props: any) => props.size || 0}rem;

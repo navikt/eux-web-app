@@ -7,7 +7,6 @@ import {hasNamespaceWithErrors} from "../../../utils/validation";
 import PersonPanel from "../PersonPanel/PersonPanel";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {addFamilierelasjoner, removeFamilierelasjoner} from "../../../actions/sak";
-import {FadingLineSeparator} from "../../../components/StyledComponents";
 import {State} from "../../../declarations/reducers";
 import _ from "lodash";
 import RelasjonUtland from "./RelasjonUtland";
@@ -206,9 +205,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
               </BodyLong>
             )}
           </VStack>
-          <FadingLineSeparator style={{marginLeft: '10px', marginRight: '10px'}}>
-            &nbsp;
-          </FadingLineSeparator>
+          <div className={styles.fadingLineSeparator}/>
           <VStack gap="4">
             <BodyLong size="large">
               {t('label:valgt-familie')}&nbsp;({totalValgt})
