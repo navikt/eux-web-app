@@ -16,7 +16,6 @@ import { ActionWithPayload } from '@navikt/fetch'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import AddPersonModal from 'applications/SvarSed/AddPersonModal/AddPersonModal'
 import classNames from 'classnames'
-import { WithErrorPanel } from 'components/StyledComponents'
 import commonStyles from 'assets/css/common.module.css'
 import { Option } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
@@ -595,8 +594,8 @@ const MainForm = <T extends StorageTypes>({
         parentNamespace={namespace}
         onModalClose={() => setSeeNewPersonModal(false)}
       />
-      <WithErrorPanel
-        className={classNames({ error: panelError })}
+      <Box
+        className={classNames({ [styles.errorBox]: panelError })}
       >
         <HStack justify="space-between" align="center">
           <div className={classNames(styles.leftDiv, 'left')}>
@@ -661,7 +660,7 @@ const MainForm = <T extends StorageTypes>({
             </div>
           }
         </HStack>
-      </WithErrorPanel>
+      </Box>
     </VStack>
   )
 }

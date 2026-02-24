@@ -152,3 +152,7 @@
   align-self: center;
   background-color: var(--a-bg-default);
 }
+
+.errorBox {
+  border: 4px solid var(--a-border-danger) !important;
+}

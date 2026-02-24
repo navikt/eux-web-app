@@ -12,12 +12,6 @@ export const SpacedHr = styled(Hr)`
    margin-bottom: 0.5rem;
 `
 
-export const WithErrorPanel = styled(Box)`
-  &.error {
-    border: 4px solid var(--a-border-danger) !important;
-  }
-`
-
 export const Dd = styled.dd`
   width: 60%;
   padding-bottom: 0.35rem;
