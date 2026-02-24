@@ -71,7 +71,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
   }
 
   const saveNorwegianPin = () => {
-    if (_tempNorwegianPin) {
+    if (_tempNorwegianPin !== undefined) {
       onNorwegianPinSave(_tempNorwegianPin)
     }
     _setSearchFailure(false)
