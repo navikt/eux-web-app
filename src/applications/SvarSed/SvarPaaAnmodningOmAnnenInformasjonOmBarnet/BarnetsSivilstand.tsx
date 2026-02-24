@@ -8,7 +8,6 @@ import {
   AnnenInformasjonBarnet_V43,
   AnnenInformasjonBarnet_V42
 } from "declarations/sed";
-import {TextAreaDiv} from "components/StyledComponents";
 import TextArea from "components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
 import {Options} from "../../../declarations/app";
@@ -66,17 +65,15 @@ const BarnetsSivilstand: React.FC<MainFormProps> = ({
         </Heading>
         {CDM_VERSJON === "4.2" &&
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-barnets-sivilstand']?.feilmelding}
-                namespace={namespace}
-                id='barnets-sivilstand'
-                label={t('label:barnets-sivilstand')}
-                hideLabel={true}
-                onChanged={(v) => setAnnenInformasjonBarnetProperty('sivilstandfritekst', v)}
-                value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V42)?.sivilstandfritekst ?? ''}
-              />
-            </TextAreaDiv>
+            <TextArea
+              error={validation[namespace + '-barnets-sivilstand']?.feilmelding}
+              namespace={namespace}
+              id='barnets-sivilstand'
+              label={t('label:barnets-sivilstand')}
+              hideLabel={true}
+              onChanged={(v) => setAnnenInformasjonBarnetProperty('sivilstandfritekst', v)}
+              value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V42)?.sivilstandfritekst ?? ''}
+            />
           </Box>
         }
         {(parseFloat(CDM_VERSJON) >= 4.3) &&

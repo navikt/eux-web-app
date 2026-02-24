@@ -3,7 +3,6 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { validateKravOmRefusjon, ValidationKravOmRefusjonProps } from 'applications/SvarSed/KravOmRefusjon/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
-import { TextAreaDiv } from 'components/StyledComponents'
 import {F002Sed} from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -50,17 +49,15 @@ const KravOmRefusjon: React.FC<MainFormProps> = ({
         <Heading size='small'>
           {label}
         </Heading>
-        <TextAreaDiv>
-          <TextArea
-            error={validation[namespace + '-krav']?.feilmelding}
-            id='krav'
-            label={t('label:krav-om-refusjon-under-artikkel')}
-            namespace={namespace}
-            onChanged={setKrav}
-            required
-            value={refusjonIHenholdTilArtikkel58IForordningen ?? ''}
-          />
-        </TextAreaDiv>
+        <TextArea
+          error={validation[namespace + '-krav']?.feilmelding}
+          id='krav'
+          label={t('label:krav-om-refusjon-under-artikkel')}
+          namespace={namespace}
+          onChanged={setKrav}
+          required
+          value={refusjonIHenholdTilArtikkel58IForordningen ?? ''}
+        />
       </VStack>
     </Box>
   )

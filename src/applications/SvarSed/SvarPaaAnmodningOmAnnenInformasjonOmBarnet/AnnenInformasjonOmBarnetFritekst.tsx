@@ -1,7 +1,6 @@
 import {Box, Heading, VStack} from '@navikt/ds-react'
 import React from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
-import {TextAreaDiv} from "../../../components/StyledComponents";
 import TextArea from "../../../components/Forms/TextArea";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {useTranslation} from "react-i18next";
@@ -49,17 +48,15 @@ const AnnenInformasjonOmBarnetFritekst: React.FC<MainFormProps> = ({
           {label}
         </Heading>
         <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-          <TextAreaDiv>
-            <TextArea
-              error={validation[namespace + '-fritekst']?.feilmelding}
-              namespace={namespace}
-              id={'fritekst'}
-              label={t('label:FRITEKST')}
-              hideLabel={true}
-              onChanged={(v) => setFritekst(v)}
-              value={fritekst ?? ''}
-            />
-          </TextAreaDiv>
+          <TextArea
+            error={validation[namespace + '-fritekst']?.feilmelding}
+            namespace={namespace}
+            id={'fritekst'}
+            label={t('label:FRITEKST')}
+            hideLabel={true}
+            onChanged={(v) => setFritekst(v)}
+            value={fritekst ?? ''}
+          />
         </Box>
       </VStack>
     </Box>

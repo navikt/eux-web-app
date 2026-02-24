@@ -1,7 +1,6 @@
 import {Box, Heading, HGrid, VStack} from '@navikt/ds-react'
 import React from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
-import {TextAreaDiv} from "../../../components/StyledComponents";
 import TextArea from "../../../components/Forms/TextArea";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {useTranslation} from "react-i18next";
@@ -60,17 +59,15 @@ const InntektForeldreloeseBarnet: React.FC<MainFormProps> = ({
         </Heading>
         {CDM_VERSJON === "4.2" &&
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-barnet-inntekt']?.feilmelding}
-                namespace={namespace}
-                id='barnet-inntekt'
-                label={t('label:inntekt-foreldreløse-barnet')}
-                hideLabel={true}
-                onChanged={(v) => setYtelseTilForeldreloeseProperty('inntektfritekst', v)}
-                value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.barnet?.inntektfritekst ?? ''}
-              />
-            </TextAreaDiv>
+            <TextArea
+              error={validation[namespace + '-barnet-inntekt']?.feilmelding}
+              namespace={namespace}
+              id='barnet-inntekt'
+              label={t('label:inntekt-foreldreløse-barnet')}
+              hideLabel={true}
+              onChanged={(v) => setYtelseTilForeldreloeseProperty('inntektfritekst', v)}
+              value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.barnet?.inntektfritekst ?? ''}
+            />
           </Box>
         }
         {(parseFloat(CDM_VERSJON) >= 4.3) &&

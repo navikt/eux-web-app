@@ -5,7 +5,6 @@ import _ from 'lodash'
 import React from 'react'
 import {useAppDispatch, useAppSelector} from 'store'
 import {SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from "declarations/sed";
-import {TextAreaDiv} from "components/StyledComponents";
 import TextArea from "components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
 import {setReplySed} from "../../../actions/svarsed";
@@ -59,17 +58,15 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
         </Heading>
         {CDM_VERSJON === "4.2" &&
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-barnet-identifisering']?.feilmelding}
-                namespace={namespace}
-                id='barnet-identifisering'
-                label={t('label:identifisering-av-de-beroerte-barna')}
-                hideLabel={true}
-                onChanged={(v) => setYtelseTilForeldreloeseProperty('identifiseringFritekst', v)}
-                value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.barnet?.identifiseringFritekst ?? ''}
-              />
-            </TextAreaDiv>
+            <TextArea
+              error={validation[namespace + '-barnet-identifisering']?.feilmelding}
+              namespace={namespace}
+              id='barnet-identifisering'
+              label={t('label:identifisering-av-de-beroerte-barna')}
+              hideLabel={true}
+              onChanged={(v) => setYtelseTilForeldreloeseProperty('identifiseringFritekst', v)}
+              value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.barnet?.identifiseringFritekst ?? ''}
+            />
           </Box>
         }
         {(parseFloat(CDM_VERSJON) >= 4.3) &&

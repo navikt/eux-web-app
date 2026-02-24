@@ -5,7 +5,6 @@ import _ from 'lodash'
 import React from 'react'
 import {useAppDispatch, useAppSelector} from 'store'
 import {Adresse, SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from "declarations/sed";
-import {TextAreaDiv} from "components/StyledComponents";
 import TextArea from "components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
 import {resetValidation, setValidation} from "../../../actions/validation";
@@ -68,17 +67,15 @@ const DenForeldreloesesBarnetsBosted: React.FC<MainFormProps> = ({
         </Heading>
         {CDM_VERSJON === "4.2" &&
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-barnet-bosted']?.feilmelding}
-                namespace={namespace}
-                id='barnet-bosted'
-                label={t('label:den-foreldreloeses-barnets-bosted')}
-                hideLabel={true}
-                onChanged={(v) => setYtelseTilForeldreloeseProperty('bostedfritekst', v)}
-                value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.barnet?.bostedfritekst ?? ''}
-              />
-            </TextAreaDiv>
+            <TextArea
+              error={validation[namespace + '-barnet-bosted']?.feilmelding}
+              namespace={namespace}
+              id='barnet-bosted'
+              label={t('label:den-foreldreloeses-barnets-bosted')}
+              hideLabel={true}
+              onChanged={(v) => setYtelseTilForeldreloeseProperty('bostedfritekst', v)}
+              value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.barnet?.bostedfritekst ?? ''}
+            />
           </Box>
         }
         {(parseFloat(CDM_VERSJON) >= 4.3) &&

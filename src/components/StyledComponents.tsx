@@ -12,12 +12,6 @@ export const SpacedHr = styled(Hr)`
    margin-bottom: 0.5rem;
 `
 
-export const TextAreaDiv = styled.div`
-  textarea {
-    width: 100%;
-  }
-`
-
 export const WithErrorPanel = styled(Box)`
   &.error {
     border: 4px solid var(--a-border-danger) !important;
