@@ -11,7 +11,7 @@ import {
   Tema
 } from "../../declarations/types";
 import {ActionMenu, Alert, Box, Button, Checkbox, Detail, Dialog, Heading, HGrid, HStack, Label, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
-import {HorizontalLineSeparator} from "../../components/StyledComponents";
+import commonStyles from 'assets/css/common.module.css'
 import {useTranslation} from "react-i18next";
 import {
   journalfoeringReset,
@@ -261,7 +261,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
           <Heading size='small'>
             {t('label:journalfoer')}
           </Heading>
-          <HorizontalLineSeparator />
+          <div className={commonStyles.horizontalLineSeparator} />
           <Loader/>
         </VStack>
       </Box>
@@ -314,7 +314,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
           <Heading size='small'>
             {t('label:journalfoer')}
           </Heading>
-          <HorizontalLineSeparator />
+          <div className={commonStyles.horizontalLineSeparator} />
           <HGrid columns={3} gap="4">
             <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation} defaultValue={sak.fagsak &&  sak.fagsak.fnr ? sak.fagsak.fnr : ""}/>
             <Button variant="secondary" onClick={onSearch} loading={searchingJournalfoeringPerson} className={`nolabel ${styles.fullWidthButton}`}>

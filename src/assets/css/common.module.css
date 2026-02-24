@@ -20,3 +20,17 @@
   border-color: var(--a-surface-action-subtle-hover);
   border-radius: 4px;
 }
+
+.horizontalLineSeparator {
+  height: 1px;
+  margin-top: 0;
+  margin-bottom: 0;
+  background:
+    linear-gradient(90deg,
+    var(--a-bg-subtle) 0%,
+    var(--a-border-strong) 5%,
+    var(--a-border-strong) 95%,
+    var(--a-bg-subtle) 100%
+  );
+  width: 100%;
+}

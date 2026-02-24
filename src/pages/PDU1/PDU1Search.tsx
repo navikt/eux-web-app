@@ -11,7 +11,7 @@ import {
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import classNames from 'classnames'
 import Modal from 'components/Modal/Modal'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import commonStyles from 'assets/css/common.module.css'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
@@ -278,7 +278,7 @@ const PDU1Search = (): JSX.Element => {
         </HStack>
         {newPdu1Mode && (
           <VStack gap="4" align="center">
-            <HorizontalLineSeparator />
+            <div className={commonStyles.horizontalLineSeparator} />
             <Box paddingBlock="4">
               <VStack gap="4" align="center">
                 <Heading size='small'>
@@ -358,7 +358,7 @@ const PDU1Search = (): JSX.Element => {
         )}
       {searchPdu1Mode && (
         <VStack gap="2" align="center">
-          <HorizontalLineSeparator />
+          <div className={commonStyles.horizontalLineSeparator} />
           <Box paddingBlock="4">
             <Heading size='small'>
               {t('el:button-edit-x', { x: 'PD U1' })}

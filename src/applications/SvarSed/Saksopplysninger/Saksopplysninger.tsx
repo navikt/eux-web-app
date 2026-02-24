@@ -1,6 +1,7 @@
 import {BodyLong, Box, Button, Dialog, Heading, VStack} from '@navikt/ds-react'
 import AddMottakereModal from 'applications/SvarSed/AddMottakereModal/AddMottakereModal'
-import { Dd, Dl, Dt, HorizontalLineSeparator } from 'components/StyledComponents'
+import { Dd, Dl, Dt } from 'components/StyledComponents'
+import commonStyles from 'assets/css/common.module.css'
 import { Sak } from 'declarations/types'
 import _ from 'lodash'
 import React, {useState} from 'react'
@@ -40,7 +41,7 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
             <Heading size='small'>
               {t('label:saksopplysninger')}
             </Heading>
-            <HorizontalLineSeparator />
+            <div className={commonStyles.horizontalLineSeparator} />
           </VStack>
           <Dl>
             <Dt>

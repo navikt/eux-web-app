@@ -10,7 +10,7 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import { HorizontalLineSeparator, RepeatableBox, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -418,7 +418,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                   )}
                 </Box>
               </HGrid>
-              <HorizontalLineSeparator />
+              <div className={commonStyles.horizontalLineSeparator} />
             </>
             )}
         </VStack>

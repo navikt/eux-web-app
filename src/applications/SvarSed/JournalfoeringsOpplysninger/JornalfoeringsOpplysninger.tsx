@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Box, Button, Heading, HGrid, Loader, Modal, Select, VStack} from '@navikt/ds-react'
-import { Dd, Dl, Dt, HorizontalLineSeparator } from 'components/StyledComponents'
+import { Dd, Dl, Dt } from 'components/StyledComponents'
+import commonStyles from 'assets/css/common.module.css'
 import {Enhet, Enheter, Fagsak, Fagsaker, Kodemaps, Kodeverk, NavRinasak, PersonInfoPDL, Sak, Tema} from 'declarations/types'
 import { useTranslation } from 'react-i18next'
 import {useAppDispatch, useAppSelector} from "../../../store";
@@ -316,7 +317,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             <Heading size='small'>
               {t('label:journalfoeres-paa')}
             </Heading>
-            <HorizontalLineSeparator />
+            <div className={commonStyles.horizontalLineSeparator} />
           </VStack>
           <Dl>
             <Dt>

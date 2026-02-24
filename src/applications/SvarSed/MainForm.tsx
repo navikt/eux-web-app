@@ -16,7 +16,8 @@ import { ActionWithPayload } from '@navikt/fetch'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import AddPersonModal from 'applications/SvarSed/AddPersonModal/AddPersonModal'
 import classNames from 'classnames'
-import { HorizontalLineSeparator, WithErrorPanel } from 'components/StyledComponents'
+import { WithErrorPanel } from 'components/StyledComponents'
+import commonStyles from 'assets/css/common.module.css'
 import { Option } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
 import { PDU1, Pdu1Person } from 'declarations/pd'
@@ -391,7 +392,7 @@ const MainForm = <T extends StorageTypes>({
             {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
           </Box>
         </div>
-        {open && <Box paddingInline="2"><HorizontalLineSeparator /></Box>}
+        {open && <Box paddingInline="2"><div className={commonStyles.horizontalLineSeparator} /></Box>}
         {open && forms
           .filter(o => {
             const _type = (replySed as ReplySed)?.sedType ?? 'PDU1'
@@ -535,7 +536,7 @@ const MainForm = <T extends StorageTypes>({
             {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
           </Box>
         </div>
-        {open && <Box paddingInline="2"><HorizontalLineSeparator /></Box>}
+        {open && <Box paddingInline="2"><div className={commonStyles.horizontalLineSeparator} /></Box>}
         {open && forms
           .filter(o => {
             const _type = menuItem.key

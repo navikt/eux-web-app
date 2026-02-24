@@ -3,7 +3,7 @@ import {Sak} from 'declarations/types'
 import React, {useEffect} from 'react'
 import { useTranslation } from 'react-i18next'
 
-import {HorizontalLineSeparator } from "../../../components/StyledComponents";
+import commonStyles from 'assets/css/common.module.css'
 import {querySaks} from "../../../actions/svarsed";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {State} from "../../../declarations/reducers";
@@ -56,7 +56,7 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
         <Heading size='small'>
           {t('label:under-journalfoering-ukjent-status')}
         </Heading>
-        <HorizontalLineSeparator />
+        <div className={commonStyles.horizontalLineSeparator} />
         {sak.sedUnderJournalfoeringEllerUkjentStatus && sak.sedUnderJournalfoeringEllerUkjentStatus.length > 0 &&
           <ul>
             {sak.sedUnderJournalfoeringEllerUkjentStatus.map((sedTitle) => {

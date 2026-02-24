@@ -15,7 +15,7 @@ import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
 import InntektFC from 'components/Inntekt/Inntekt'
-import { HorizontalLineSeparator, RepeatableBox, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import {Loennsopplysning, Periode, PeriodeMedForsikring, AnsettelsesType, USed} from 'declarations/sed'
@@ -39,6 +39,7 @@ import {
   ValidationLoennsopplysningProps
 } from './validation'
 import {getSedCategory} from "../../../utils/sed";
+import commonStyles from 'assets/css/common.module.css'
 
 interface InntektFormSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
@@ -428,8 +429,8 @@ const InntektForm: React.FC<MainFormProps> = ({
                             </FormText>
                           </HStack>
                         </HStack>
+                        <div className={commonStyles.horizontalLineSeparator} style={{margin: "0.5rem 0 0.5rem 0"}}/>
                       </VStack>
-                      <HorizontalLineSeparator size='0.5' />
                     </Box>
                   )
                 })}
@@ -491,7 +492,7 @@ const InntektForm: React.FC<MainFormProps> = ({
         {inntekter && (
           <InntektFC inntekter={inntekter} />
         )}
-        <HorizontalLineSeparator />
+        <div className={commonStyles.horizontalLineSeparator}/>
         <BodyLong size="large">
           {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
         </BodyLong>

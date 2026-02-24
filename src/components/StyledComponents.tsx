@@ -1,19 +1,6 @@
 import styled from 'styled-components'
 import {Box} from '@navikt/ds-react'
 
-export const HorizontalLineSeparator = styled.div<{size?: string}>`
-  height: 1px;
-  margin-top: ${(props: any) => props.size || 0}rem;
-  margin-bottom: ${(props: any) => props.size || 0}rem;
-  background: linear-gradient(90deg,
-    var(--a-bg-subtle) 0%,
-    var(--a-border-strong) 5%,
-    var(--a-border-strong) 95%,
-    var(--a-bg-subtle) 100%
-  );
-  width: 100%;
-`
-
 export const Hr = styled.div`
    background: var(--a-border-strong);
    width: 100%;

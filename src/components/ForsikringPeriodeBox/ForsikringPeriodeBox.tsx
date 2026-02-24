@@ -11,7 +11,8 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { toDateFormat } from 'components/DateField/DateField'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {HorizontalLineSeparator, RepeatableBox} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
+import commonStyles from 'assets/css/common.module.css'
 import {
   Adresse,
   ArbeidsgiverIdentifikator,
@@ -505,7 +506,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
         )}
       </HStack>
       {!_inEditMode && (showArbeidsgiver || showAnnen || showAddress || showInntekt) && (
-        <HorizontalLineSeparator />
+        <div className={commonStyles.horizontalLineSeparator} />
       )}
       {newMode || (_inEditMode && editable === 'full')
         ? (
@@ -629,7 +630,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                     </VStack>
                     {showAddress && showAddressInListView  && (
                       <>
-                        <HorizontalLineSeparator />
+                        <div className={commonStyles.horizontalLineSeparator} />
                         <VStack>
                           {_.isEmpty((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse) || !adresseHasProps((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse)
                             ? (

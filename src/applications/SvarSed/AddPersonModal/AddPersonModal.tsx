@@ -5,7 +5,6 @@ import { validateAddPersonModal, ValidationAddPersonModalProps } from 'applicati
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateField from 'components/DateField/DateField'
 import Select from 'components/Forms/Select'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { F002Sed, Kjoenn, PersonInfo } from 'declarations/sed'
 import { StorageTypes } from 'declarations/types'
@@ -291,13 +290,13 @@ const AddPersonModal = <T extends StorageTypes>({
             {(_replySed as F002Sed).andrePersoner?.map((_p: any, i: number) => renderPerson(`andrePersoner[${i}]`))}
             {(_replySed as F002Sed).barn?.map((_b: any, i: number) => renderPerson(`barn[${i}]`))}
           </VStack>
-          <HorizontalLineSeparator/>
+          <div className={commonStyles.horizontalLineSeparator}/>
           <Box background="bg-subtle" padding="4">
             <VStack gap="4">
               <Heading size='small'>
                 {t('el:button-add-new-x', {x: t('label:person').toLowerCase()})}
               </Heading>
-              <HorizontalLineSeparator/>
+              <div className={commonStyles.horizontalLineSeparator}/>
               <HStack gap="2" justify="space-evenly">
                 <TextField
                   error={_validation[namespace + '-fornavn']?.feilmelding}

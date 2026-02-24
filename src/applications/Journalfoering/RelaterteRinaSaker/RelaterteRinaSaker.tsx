@@ -2,7 +2,7 @@ import {Box, Heading, Link, VStack} from '@navikt/ds-react'
 import { Sak } from 'declarations/types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import {HorizontalLineSeparator} from "../../../components/StyledComponents";
+import commonStyles from 'assets/css/common.module.css'
 
 interface RelaterteRinaSakerProps {
   sak: Sak
@@ -21,7 +21,7 @@ const RelaterteRinaSaker = ({ sak }: RelaterteRinaSakerProps) => {
           <Heading size='small'>
             { sak.relaterteRinasakIder && sak.relaterteRinasakIder.length > 1 ? t('label:tilknyttede-saker') : t('label:tilknyttet-sak')}
           </Heading>
-          <HorizontalLineSeparator />
+          <div className={commonStyles.horizontalLineSeparator} />
           <Box paddingInline="4">
             {sak.relaterteRinasakIder?.map((sakId) => {
               return (<><Link href='#' onClick={() => gotoSak(sakId)}>{sakId}</Link><br/></>)

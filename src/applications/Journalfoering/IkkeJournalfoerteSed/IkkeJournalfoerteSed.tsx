@@ -3,7 +3,7 @@ import { Sak } from 'declarations/types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import {useNavigate} from "react-router-dom";
-import {HorizontalLineSeparator} from "../../../components/StyledComponents";
+import commonStyles from 'assets/css/common.module.css'
 
 interface IkkeJournalfoerteSedProps {
   sak: Sak
@@ -41,7 +41,7 @@ const IkkeJournalfoerteSed = ({ sak, bucer }: IkkeJournalfoerteSedProps) => {
         <Heading size='small'>
           {t('label:ikke-journalfoerte-dokumenter')}
         </Heading>
-        <HorizontalLineSeparator />
+        <div className={commonStyles.horizontalLineSeparator} />
         {sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length > 0 &&
           <ul>
             {sak.ikkeJournalfoerteSed.map((sedTitle) => {

@@ -3,7 +3,7 @@ import {
   Sak,
 } from "../../declarations/types";
 import {Box, Button, Dialog, Heading, HStack, Link, Loader, Textarea, VStack} from "@navikt/ds-react";
-import {HorizontalLineSeparator} from "../../components/StyledComponents";
+import commonStyles from 'assets/css/common.module.css'
 import {useTranslation} from "react-i18next";
 import _ from "lodash";
 import {useAppDispatch, useAppSelector} from "../../store";
@@ -190,7 +190,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
           <Heading size='small'>
             {t('label:innhent-mer-info')}
           </Heading>
-          <HorizontalLineSeparator />
+          <div className={commonStyles.horizontalLineSeparator} />
           <Textarea
             label={t('journalfoering:radio-option-fritekst')}
             value={_fritekst}

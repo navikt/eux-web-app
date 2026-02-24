@@ -1,7 +1,8 @@
 import {BodyLong, Box, Button, Heading, HStack, Select, TextField, VStack} from '@navikt/ds-react'
 import { JoarkBrowser } from 'applications/Vedlegg/JoarkBrowser/JoarkBrowser'
 import SEDAttachmentModal from 'applications/Vedlegg/SEDAttachmentModal/SEDAttachmentModal'
-import { HorizontalLineSeparator, SpacedHr } from 'components/StyledComponents'
+import { SpacedHr } from 'components/StyledComponents'
+import commonStyles from 'assets/css/common.module.css'
 import { JoarkBrowserItem, JoarkBrowserItems } from 'declarations/attachments'
 import _ from 'lodash'
 import React, {useEffect, useState} from 'react'
@@ -187,7 +188,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
         <Heading size='small'>
           {t('label:vedlegg')}
         </Heading>
-        <HorizontalLineSeparator />
+        <div className={commonStyles.horizontalLineSeparator} />
         <SEDAttachmentModal
           open={_attachmentsTableVisible}
           fnr={_fnr!}

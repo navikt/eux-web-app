@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {FeilregistrerJournalposterLogg, Sak} from "../../declarations/types";
 import {Box, Button, Dialog, Heading, VStack} from "@navikt/ds-react";
-import {HorizontalLineSeparator} from "../../components/StyledComponents";
+import commonStyles from 'assets/css/common.module.css'
 import {useTranslation} from "react-i18next";
 import {journalfoeringReset, feilregistrerJournalposter} from "../../actions/journalfoering";
 import {useAppDispatch, useAppSelector} from "../../store";
@@ -96,7 +96,7 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
           <Heading size='small'>
             {t('label:feilregistrer-og-avslutt')}
           </Heading>
-          <HorizontalLineSeparator />
+          <div className={commonStyles.horizontalLineSeparator} />
           {t('journalfoering:feilregistrering-journalposter-beskrivelse')}
           <Button variant="secondary" loading={isFeilregistreringJournalposter} onClick={onSend}>
             {t("el:button-feilregistrer-journalposter")}

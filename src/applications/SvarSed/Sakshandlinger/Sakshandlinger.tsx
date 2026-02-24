@@ -1,6 +1,6 @@
 import {BodyLong, Box, Heading, Link, ReadMore, Tooltip, VStack} from '@navikt/ds-react'
 import {createF002Sed, createFSed, createH001Sed, createXSed, deleteSak} from 'actions/svarsed'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import commonStyles from 'assets/css/common.module.css'
 import {Sak, Sed} from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -121,7 +121,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
       <Box padding="4" background="bg-default" borderWidth="1" borderColor="border-default" borderRadius="small">
         <VStack gap="4">
           <Heading size='small'>Sakshandlinger</Heading>
-          <HorizontalLineSeparator />
+          <div className={commonStyles.horizontalLineSeparator} />
           {sakshandlinger}
           {disabledSakshandlinger.length > 0 &&
             <ReadMore header="Handlinger tilgjengelig i RINA">
