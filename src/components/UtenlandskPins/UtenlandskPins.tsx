@@ -6,7 +6,6 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
-import {RepeatableBox} from 'components/StyledComponents'
 import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -20,6 +19,7 @@ import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateUtenlandskPin, ValidationUtenlandskPinProps } from './validation'
 import CountryDropdown from "../CountryDropdown/CountryDropdown";
 import FlagPanel from "../FlagPanel/FlagPanel";
+import commonStyles from 'assets/css/common.module.css'
 
 export interface UtenlandskPinProps {
   pins: Array<Pin> | undefined
@@ -150,12 +150,12 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _pin = index < 0 ? _newPin : (inEditMode ? _editPin : pin)
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getId(pin)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
         padding="4"
       >
@@ -231,7 +231,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
             />
           </HStack>
         </HGrid>
-      </RepeatableBox>
+      </Box>
     )
   }
 

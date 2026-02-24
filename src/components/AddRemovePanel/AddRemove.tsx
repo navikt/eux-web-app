@@ -6,6 +6,7 @@ import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styles from './AddRemovePanel.module.css'
+import commonStyles from "assets/css/common.module.css";
 
 export interface AddRemovePanelProps<T> {
   item: T | null
@@ -142,7 +143,7 @@ const AddRemove = <T extends any>({
   }
 
   return (
-    <HStack gap="1" align="center" className={classNames('control-buttons')}>
+    <HStack gap="1" align="center" className={classNames(commonStyles.controlButtons,)}>
       {allowEdit && (
         <Button
           size='xsmall'

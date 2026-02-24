@@ -399,7 +399,9 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
     <RepeatableBox
       padding="4"
       borderWidth="1"
-      className={classNames(style, {
+      className={classNames({
+        new: style === "new",
+        original: style === "original",
         error: hasNamespaceWithErrors(_v, namespace)
       })}
     >

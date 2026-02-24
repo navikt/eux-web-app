@@ -6,6 +6,7 @@ import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styles from './AddRemovePanel.module.css'
+import commonStyles from 'assets/css/common.module.css'
 
 export interface AddRemovePanelProps<T> {
   item: T | null
@@ -139,7 +140,7 @@ const AddRemovePanel = <T extends any>({
   }
 
   return (
-    <Box className={classNames('control-buttons', 'noMargin', styles.inlineFlex)}>
+    <Box className={classNames(commonStyles.controlButtons, 'noMargin', styles.inlineFlex)}>
       <HStack gap="4" align="center">
         {allowEdit && (
           <Button
