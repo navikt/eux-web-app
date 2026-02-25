@@ -313,19 +313,17 @@ const MainForm = <T extends StorageTypes>({
             tabIndex={0}
           >
             <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: selected })}>
-              {!isValidated
-                ? null
-                : validationHasErrors
-                  ? <Box flexShrink={0}><XMarkOctagonFillIcon height={20} color='red' /></Box>
-                    : <Box flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></Box>
+              {isValidated
+                ? validationHasErrors
+                  ? <HStack flexShrink={0}><XMarkOctagonFillIcon height={20} color='red' /></HStack>
+                    : <HStack flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
+                : null
               }
               <BodyLong className={classNames(styles.menuLabelText, { [styles.selected]: selected })}>
                 {form.label}
               </BodyLong>
               <Spacer/>
-              <Box paddingInline="2">
-                <ChevronRightIcon />
-              </Box>
+              <HStack><ChevronRightIcon /></HStack>
             </HStack>
           </div>
         </div>
@@ -369,8 +367,8 @@ const MainForm = <T extends StorageTypes>({
           <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === personId })}>
             {isValidated
               ? validationHasErrors
-                ? <Box flexShrink={0}><XMarkOctagonFillIcon height={20} color='red' /></Box>
-                : <Box flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></Box>
+                ? <XMarkOctagonFillIcon height={20} color='red' />
+                : <CheckmarkCircleFillIcon color='green' height={20} />
               : null}
             <BodyLong className={styles.menuLabelText}>
               {personName}
@@ -388,9 +386,7 @@ const MainForm = <T extends StorageTypes>({
               <ChildEyesIcon title="Barn"/>
             )}
             <Spacer/>
-            <Box paddingInline="2">
-              {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
-            </Box>
+            {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
           </HStack>
         </div>
         {open && <Box paddingInline="2"><div className={commonStyles.horizontalLineSeparator} /></Box>}
@@ -523,20 +519,18 @@ const MainForm = <T extends StorageTypes>({
           tabIndex={0}
         >
           <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === menuItem.key })}>
-            <div>
             {isValidated
               ? validationHasErrors
-                ? <Box flexShrink={0}><XMarkOctagonFillIcon height={20} color='red' /></Box>
-                : <Box flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></Box>
+                ? <HStack flexShrink={0}><XMarkOctagonFillIcon height={20} color='red' /></HStack>
+                : <HStack flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
               : null}
-            </div>
             <BodyLong className={styles.menuLabelText}>
               {menuItem.label}
             </BodyLong>
             <Spacer/>
-            <Box paddingInline="2">
+            <HStack>
               {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
-            </Box>
+            </HStack>
           </HStack>
         </div>
         {open && <Box paddingInline="2"><div className={commonStyles.horizontalLineSeparator} /></Box>}
