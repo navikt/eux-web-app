@@ -1,0 +1,75 @@
+.sedBox{
+  transition: all 0.15s ease-in-out;
+  &.deviation {
+    border-left: 5px solid var(--a-surface-warning);
+  }
+  &:hover {
+    color: var(--a-text-default) !important;
+    background-color: var(--a-surface-action-subtle-hover) !important;
+  }
+}
+
+.iconDiv{
+  align-items: center;
+  margin-left: -1rem;
+  margin-top: -1rem;
+  margin-bottom: -1rem;
+  justify-content: center;
+  background-color: var(--a-surface-subtle);
+  padding: 1rem;
+}
+
+.iconSpacer{
+  margin-bottom: 0.35rem;
+}
+
+.attachmentButton{
+  padding:0
+}
+
+.attachmentIcon{
+  position: relative;
+  top: 3px;
+}
+
+.myHelpText{
+  & svg {
+    width: 0.7em
+  }
+}
+
+.deviationHelpText{
+  color: var(--a-surface-warning);
+  &:hover > svg {
+    color: var(--a-surface-warning);
+  }
+
+  &:focus-visible > svg {
+    color: var(--a-surface-warning);
+  }
+
+  &:global(.navds-help-text__button):focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 1px var(--a-surface-warning),
+    inset 0 0 0 1px var(--a-surface-warning);
+  }
+
+
+  &:global(.navds-help-text__button)[aria-expanded="true"] > svg {
+    color: var(--a-surface-warning);
+  }
+
+  &[aria-expanded="true"] ~ :global(.navds-popover) :global(.navds-popover__content) {
+    background-color: var(--a-surface-warning-moderate);
+    border-radius: var(--a-border-radius-large);
+  }
+
+  &[aria-expanded="true"] ~ :global(.navds-popover) :global(.navds-popover__arrow) {
+    background-color: var(--a-surface-warning-moderate);
+    border-color: var(--a-border-warning);
+  }
+
+  &[aria-expanded="true"] ~ :global(.navds-popover) {
+    border-color: var(--a-border-warning)
+  }
+}

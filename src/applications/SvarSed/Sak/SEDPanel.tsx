@@ -19,7 +19,6 @@ import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import {getAllowed} from "utils/allowedFeatures";
 import {FeatureToggles} from "../../../declarations/app";
 import Modal from "../../../components/Modal/Modal";
@@ -28,83 +27,7 @@ import AttachmentsFromRinaTable from "../../Vedlegg/Attachments/AttachmentsFromR
 import { saveAs } from 'file-saver'
 import moment from 'moment'
 import classNames from "classnames";
-
-
-const SedBox = styled(Box)`
-  transition: all 0.15s ease-in-out;
-  &.deviation {
-    border-left: 5px solid var(--a-surface-warning);
-  }
-  &:hover {
-    color: var(--a-text-default) !important;
-    background-color: var(--a-surface-action-subtle-hover) !important;
-  }
-`
-
-const IconDiv = styled(VStack)`
-  align-items: center;
-  margin-left: -1rem;
-  margin-top: -1rem;
-  margin-bottom: -1rem;
-  justify-content: center;
-  background-color: var(--a-surface-subtle);
-  padding: 1rem;
-`
-
-const IconSpacerDiv = styled.div`
-  margin-bottom: 0.35rem;
-`
-
-const AttachmentButton = styled(Button)`
-  padding:0
-`
-
-const AttachmentIcon = styled(PaperclipIcon)`
-  position: relative;
-  top: 3px;
-`
-
-const MyHelpText = styled(HelpText)`
-  & svg {
-    width: 0.7em
-  }
-`
-
-const DeviationHelpText = styled(HelpText)`
-  color: var(--a-surface-warning);
-  &:hover > svg {
-    color: var(--a-surface-warning);
-  }
-
-  &:focus-visible > svg {
-    color: var(--a-surface-warning);
-  }
-
-  &.navds-help-text__button:focus-visible {
-    outline: 2px solid transparent;
-    box-shadow: 0 0 0 1px var(--a-surface-warning),
-    inset 0 0 0 1px var(--a-surface-warning);
-  }
-
-
-  &.navds-help-text__button[aria-expanded="true"] > svg {
-    color: var(--a-surface-warning);
-  }
-
-  &[aria-expanded="true"] ~ .navds-popover .navds-popover__content {
-    background-color: var(--a-surface-warning-moderate);
-    border-radius: var(--a-border-radius-large);
-  }
-
-  &[aria-expanded="true"] ~ .navds-popover .navds-popover__arrow {
-    background-color: var(--a-surface-warning-moderate);
-    border-color: var(--a-border-warning);
-  }
-
-  &[aria-expanded="true"] ~ .navds-popover {
-    border-color: var(--a-border-warning)
-  }
-`
+import styles from './SEDPanel.module.css'
 
 interface SEDPanelSelector {
   replySed: ReplySed | null | undefined
@@ -264,14 +187,14 @@ const SEDPanel = ({
     sed.fagsak?.nr !== currentFagsak?.nr)
 
   return (
-    <SedBox
+    <Box
       borderWidth="1"
       borderRadius="small"
       borderColor="border-default"
       padding="4"
       background="surface-default"
-      className={classNames({
-        deviation: sed.fagsak && hasDeviatedFagsak
+      className={classNames(styles.sedBox, {
+        [styles.deviation]: sed.fagsak && hasDeviatedFagsak
       })}
     >
       <Modal
@@ -280,21 +203,21 @@ const SEDPanel = ({
         onModalClose={() => setAttachmentModal(undefined)}
       />
       <HStack gap="4" wrap={false}>
-        <IconDiv align="center">
+        <VStack className={styles.iconDiv} align="center">
           {sed.status === 'received' && <DownloadIcon color='var(--a-surface-action)' width='32' height='32' />}
           {sed.status === 'sent' && <PaperplaneIcon color='green' width='32' height='32' />}
           {sed.status === 'new' && <StarIcon color='orange' width='32' height='32' />}
           {sed.status === 'active' && <PencilIcon width='32' height='32' />}
           {sed.status === 'cancelled' && <XMarkIcon color='red' width='32' height='32' />}
           {!sed.status && <QuestionmarkDiamondIcon color='black' width='32' height='32' />}
-          <IconSpacerDiv/>
+          <div className={styles.iconSpacer}></div>
           <Detail>
             {t('app:status-received-' + (sed.status?.toLowerCase() ?? 'unknown'))}
           </Detail>
           <Detail>
             {sed.sistEndretDato}
           </Detail>
-        </IconDiv>
+        </VStack>
         <VStack gap="2">
           {hasDeviatedFagsak && sed.fagsak &&
             <HStack gap="1">
@@ -302,7 +225,7 @@ const SEDPanel = ({
               {sed.fagsak.tema !== currentFagsak?.tema && <Tag size="xsmall" variant={"warning-moderate"}>{t('tema:' + sed.fagsak.tema)}</Tag>}
               {sed.fagsak?.nr && sed.fagsak?.nr !== currentFagsak?.nr && <Tag size="xsmall" variant={"warning-moderate"}>{sed.fagsak?.nr}</Tag>}
               {!sed.fagsak?.nr && sed.fagsak?.type && sed.fagsak?.type !== currentFagsak?.type && <Tag size="xsmall" variant={"warning-moderate"}>{t('journalfoering:' + sed.fagsak?.type)}</Tag>}
-              <DeviationHelpText title={t('journalfoering:avvikende-journalfoering')}>
+              <HelpText className={styles.deviationHelpText} title={t('journalfoering:avvikende-journalfoering')}>
                 <VStack gap="2">
                   <Heading size={"xsmall"}>{t('journalfoering:avvikende-journalfoering')}</Heading>
                   <HStack gap="4">
@@ -324,7 +247,7 @@ const SEDPanel = ({
 
                   </HStack>
                 </VStack>
-              </DeviationHelpText>
+              </HelpText>
             </HStack>
           }
           <HStack align="center">
@@ -350,13 +273,13 @@ const SEDPanel = ({
             </Button>
             {sed.vedlegg && sed.vedlegg.length > 0 && (
               <div className="navds-button navds-button--tertiary navds-button--small navds-button--icon-only">
-                <AttachmentButton variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
-                  <AttachmentIcon/><span>({sed?.vedlegg?.length})</span>
-                </AttachmentButton>
+                <Button className={styles.attachmentButton} variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
+                  <PaperclipIcon className={styles.attachmentIcon}/><span>({sed?.vedlegg?.length})</span>
+                </Button>
               </div>
             )}
             {sedHandlingerRINA && sedHandlingerRINA.length > 0 &&
-              <MyHelpText title="Handlinger tilgjengelig i RINA" placement={"right"} wrapperClassName="navds-button navds-button--tertiary navds-button--small navds-button--icon-only">
+              <HelpText className={styles.myHelpText} title="Handlinger tilgjengelig i RINA" placement={"right"} wrapperClassName="navds-button navds-button--tertiary navds-button--small navds-button--icon-only">
                 <Heading size="xsmall">Handlinger tilgjengelig i RINA</Heading>
                 <ul>
                   {sedHandlingerRINA.map((sedhandling) => {
@@ -365,7 +288,7 @@ const SEDPanel = ({
                     )
                   })}
                 </ul>
-              </MyHelpText>
+              </HelpText>
             }
           </HStack>
 
@@ -536,7 +459,7 @@ const SEDPanel = ({
           </HStack>
         </VStack>
       </HStack>
-    </SedBox>
+    </Box>
   )
 }
 
