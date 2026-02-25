@@ -158,7 +158,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
         marginBlock="0 4"
         width="100%"
       >
-        <HStack gap="8" align="center" justify={inEditMode ? "start" : "space-between"}>
+        <HStack gap="8" align="start" justify={inEditMode ? "start" : "space-between"}>
           <>
             {inEditMode
               ? (
