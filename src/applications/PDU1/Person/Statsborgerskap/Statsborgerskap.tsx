@@ -7,7 +7,6 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
-import { RepeatableBox } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -27,6 +26,7 @@ import {
 import Modal from "../../../../components/Modal/Modal";
 import {setStatsborgerskapModalShown} from "../../../../actions/pdu1";
 import CountryDropdown from "../../../../components/CountryDropdown/CountryDropdown";
+import commonStyles from 'assets/css/common.module.css'
 
 export interface StatsborgerskapSelector {
   statsborgerskapModalShown: boolean
@@ -172,12 +172,12 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
 
     if(!inEditMode && !statsborgerskap) return
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={statsborgerskap}
-        className={classNames({
-          new: index < 0,
-          error: _v[_namespace + '-land']
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: _v[_namespace + '-land']
         })}
         padding="4"
       >
@@ -227,7 +227,7 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
             onCancelEdit={() => onCloseEdit(_namespace)}
           />
         </HStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

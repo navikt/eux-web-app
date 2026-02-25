@@ -9,7 +9,6 @@ import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
-import {RepeatableBox} from 'components/StyledComponents'
 import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
 import {ForsikringPeriode, Periode, PeriodeMedForsikring} from 'declarations/sed'
@@ -27,6 +26,7 @@ import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateAnsattPeriode, ValidationAnsattPeriodeProps } from './validation'
 import {getSedCategory} from "../../../../utils/sed";
+import commonStyles from 'assets/css/common.module.css'
 
 interface AnsattSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined,
@@ -279,12 +279,12 @@ const Ansatt: React.FC<AnsattProps> = ({
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : p)
 
     return (
-      <RepeatableBox
+      <Box
         padding="2"
         id={'repeatablerow-' + _namespace}
-        className={classNames({
-          new: index < 0,
-          errorBorder: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.errorBorder]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <HStack gap="4" wrap={false} align="start">
@@ -327,7 +327,7 @@ const Ansatt: React.FC<AnsattProps> = ({
             onCancelEdit={() => onCloseEdit(_namespace)}
           />
         </HStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

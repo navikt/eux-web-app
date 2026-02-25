@@ -11,7 +11,6 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { toDateFormat } from 'components/DateField/DateField'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {RepeatableBox} from 'components/StyledComponents'
 import commonStyles from 'assets/css/common.module.css'
 import {
   Adresse,
@@ -396,13 +395,13 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   const _v: Validation = newMode ? _validation : (validation ?? {})
 
   return (
-    <RepeatableBox
+    <Box
       padding="4"
       borderWidth="1"
-      className={classNames({
-        new: style === "new",
-        original: style === "original",
-        error: hasNamespaceWithErrors(_v, namespace)
+      className={classNames(commonStyles.repeatableBox, {
+        [commonStyles.new]: style === "new",
+        [commonStyles.original]: style === "original",
+        [commonStyles.error]: hasNamespaceWithErrors(_v, namespace)
       })}
     >
       <VStack gap="4">
@@ -741,7 +740,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
         </BodyLong>
       )}
       </VStack>
-    </RepeatableBox>
+    </Box>
   )
 }
 

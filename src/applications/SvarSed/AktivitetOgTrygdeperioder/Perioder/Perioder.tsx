@@ -5,7 +5,6 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -20,6 +19,7 @@ import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateThePeriode, ValidationAktivitetPeriodeProps } from './validation'
 import AddRemove from "../../../../components/AddRemovePanel/AddRemove";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -140,13 +140,13 @@ const Perioder: React.FC<PerioderProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
     return (
-      <RepeatableBox
+      <Box
         padding="2"
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
-        className={classNames({
-          new: index < 0,
-          errorBorder: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.errorBorder]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <HStack gap="4" wrap={false} align={"start"}>
@@ -191,7 +191,7 @@ const Perioder: React.FC<PerioderProps> = ({
             onCancelEdit={() => onCloseEdit(_namespace)}
           />
         </HStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

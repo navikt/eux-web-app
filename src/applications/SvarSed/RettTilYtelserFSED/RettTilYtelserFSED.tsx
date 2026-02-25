@@ -12,7 +12,6 @@ import {JaNei, Periode} from 'declarations/sed'
 import {PlusCircleIcon} from "@navikt/aksel-icons";
 import {getIdx} from "../../../utils/namespace";
 import {Validation} from "../../../declarations/types";
-import {RepeatableBox} from "../../../components/StyledComponents";
 import classNames from "classnames";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
@@ -193,14 +192,15 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editPeriodeIndex === index
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getPeriodeId(periode)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="2 4"
+        paddingBlock="2"
+        paddingInline="4"
       >
         <HStack gap="4" align="start">
           {inEditMode
@@ -242,7 +242,7 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
             onCancelEdit={() => onClosePeriodeEdit(_namespace)}
           />
         </HStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

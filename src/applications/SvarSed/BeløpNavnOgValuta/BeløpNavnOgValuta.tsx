@@ -10,7 +10,6 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -282,12 +281,12 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getId(ytelse)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
         padding="4"
       >
@@ -492,7 +491,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
             </VStack>
           )
         }
-      </RepeatableBox>
+      </Box>
     )
   }
 

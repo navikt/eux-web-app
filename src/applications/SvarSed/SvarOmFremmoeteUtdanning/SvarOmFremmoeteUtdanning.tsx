@@ -9,7 +9,6 @@ import {PlusCircleIcon} from "@navikt/aksel-icons";
 import {Periode, Utdanning as UtdanningDTO} from "../../../declarations/sed";
 import {useTranslation} from "react-i18next";
 import {getIdx} from "../../../utils/namespace";
-import {RepeatableBox} from "../../../components/StyledComponents";
 import classNames from "classnames";
 import PeriodeText from "../../../components/Forms/PeriodeText";
 import AddRemovePanel from "../../../components/AddRemovePanel/AddRemovePanel";
@@ -23,6 +22,7 @@ import performValidation from "../../../utils/performValidation";
 import {Validation} from "../../../declarations/types";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
 import useUnmount from "../../../hooks/useUnmount";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -145,12 +145,12 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
 
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getPeriodeId(periode)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
         padding="4"
       >
@@ -207,7 +207,7 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
             </HStack>
           )
         }
-      </RepeatableBox>
+      </Box>
     )
   }
 

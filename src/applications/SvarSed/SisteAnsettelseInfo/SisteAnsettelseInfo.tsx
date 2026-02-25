@@ -10,7 +10,6 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import { RepeatableBox } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -271,12 +270,12 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getId(utbetaling)}
-        className={classNames({
-          new: index < 0,
-          error: _v[_namespace + '-land'] || _v[_namespace + '-fraDato']
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: _v[_namespace + '-land'] || _v[_namespace + '-fraDato']
         })}
         padding="4"
       >
@@ -422,7 +421,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
             </>
             )}
         </VStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

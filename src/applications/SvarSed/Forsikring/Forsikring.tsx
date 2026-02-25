@@ -20,7 +20,6 @@ import Military from 'assets/icons/Military'
 import classNames from 'classnames'
 import Select from 'components/Forms/Select'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
-import {RepeatableBox} from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { ForsikringPeriode, Periode, PeriodeSort, ReplySed, U002Sed } from 'declarations/sed'
@@ -38,6 +37,7 @@ import {
   validateArbeidsperioderOversikt,
   ValidationArbeidsperioderOversiktProps
 } from "../ArbeidsperioderOversikt/validation";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -279,12 +279,12 @@ const Forsikring: React.FC<MainFormProps> = ({
 
     return (
 
-        <RepeatableBox
+        <Box
           id={'repeatablerow-' + namespace}
           key={getId(periode)}
-          className={classNames({
-            new: index < 0,
-            error: hasNamespaceWithErrors(validation, namespace + '[' + _type + ']' + '[' + index + ']')
+          className={classNames(commonStyles.repeatableBox, {
+            [commonStyles.new]: index < 0,
+            [commonStyles.error]: hasNamespaceWithErrors(validation, namespace + '[' + _type + ']' + '[' + index + ']')
           })}
         >
 
@@ -363,7 +363,7 @@ const Forsikring: React.FC<MainFormProps> = ({
                 />
               )}
             </VStack>
-        </RepeatableBox>
+        </Box>
     )
   }
 

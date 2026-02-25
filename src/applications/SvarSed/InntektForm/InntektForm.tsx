@@ -15,7 +15,6 @@ import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
 import InntektFC from 'components/Inntekt/Inntekt'
-import { RepeatableBox } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import {Loennsopplysning, Periode, PeriodeMedForsikring, AnsettelsesType, USed} from 'declarations/sed'
@@ -250,14 +249,15 @@ const InntektForm: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _loennsopplysning = index < 0 ? _newLoennsopplysning : (inEditMode ? _editLoennsopplysning : loennsopplysning)
     return (
-      <RepeatableBox
+      <Box
+        paddingBlock="2"
+        paddingInline="4"
         id={'repeatablerow-' + _namespace}
         key={getId(loennsopplysning)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="2 4"
       >
         <VStack gap="4">
           <HGrid columns={"2fr 1fr"} gap="4" align="start">
@@ -438,7 +438,7 @@ const InntektForm: React.FC<MainFormProps> = ({
             )
           }
         </VStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

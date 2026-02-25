@@ -7,7 +7,6 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
-import { RepeatableBox } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
@@ -28,6 +27,7 @@ import {
   ValidationGrunnProps,
   ValidationProsedyreVedUenighetProps
 } from './validation'
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -218,12 +218,12 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
     }))
 
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getId(grunn)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
         padding="4"
       >
@@ -303,7 +303,7 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
                 />
               </HStack>
             )}
-      </RepeatableBox>
+      </Box>
     )
   }
 

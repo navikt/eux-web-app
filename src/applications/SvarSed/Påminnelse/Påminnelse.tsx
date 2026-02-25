@@ -6,7 +6,6 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import TextArea from 'components/Forms/TextArea'
-import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Purring, X009Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -182,13 +181,13 @@ const Påminnelse: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableBox
+      <Box
         padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(purring)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         {inEditMode
@@ -251,7 +250,7 @@ const Påminnelse: React.FC<MainFormProps> = ({
               {addremovepanel}
             </HStack>
             )}
-      </RepeatableBox>
+      </Box>
     )
   }
 

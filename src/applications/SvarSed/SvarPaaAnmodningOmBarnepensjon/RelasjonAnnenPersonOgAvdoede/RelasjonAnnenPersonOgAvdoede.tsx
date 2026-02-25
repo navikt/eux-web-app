@@ -12,7 +12,6 @@ import {
 } from "../../../../declarations/sed";
 import _ from "lodash";
 import {BodyLong, Box, Button, Heading, VStack, HGrid, Select, Label, HStack, Radio, RadioGroup, Spacer} from "@navikt/ds-react";
-import {RepeatableBox} from "../../../../components/StyledComponents";
 import TextArea from "../../../../components/Forms/TextArea";
 import {PlusCircleIcon} from "@navikt/aksel-icons";
 import {getIdx} from "../../../../utils/namespace";
@@ -203,16 +202,16 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
       </HStack>
     )
     return (
-      <RepeatableBox
+      <Box
         padding="4"
         background="surface-subtle"
         borderWidth="1"
         borderColor="border-subtle"
         id={'repeatablerow-' + _namespace}
         key={getId(relasjon)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         {inEditMode
@@ -326,7 +325,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
             </>
           )
         }
-      </RepeatableBox>
+      </Box>
     )
   }
 

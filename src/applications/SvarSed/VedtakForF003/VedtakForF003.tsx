@@ -14,8 +14,8 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
-import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
+import commonStyles from 'assets/css/common.module.css';
 import {F003Sed, JaNei, Periode, VedtakBarn, VedtakF003} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -33,7 +33,6 @@ import BeløpNavnOgValuta from "../BeløpNavnOgValuta/BeløpNavnOgValuta";
 import {setReplySed} from "../../../actions/svarsed";
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
 import styles from "./VedtakForF003.module.css";
-import commonStyles from "../../../assets/css/common.module.css";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -258,14 +257,14 @@ const VedtakForF003: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editVedtakPeriodeIndex === index
     const _periode = index < 0 ? _newVedtakPeriode : (inEditMode ? _editVedtakPeriode : periode)
     return (
-      <RepeatableBox
-        padding="4"
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getVedtakPeriodeId(periode)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="4"
       >
         <HStack gap="4">
           {inEditMode
@@ -307,7 +306,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
             onCancelEdit={() => onCloseVedtakPeriodeEdit(_namespace)}
           />
         </HStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

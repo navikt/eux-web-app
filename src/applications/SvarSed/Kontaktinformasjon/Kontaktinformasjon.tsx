@@ -7,7 +7,6 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import {RepeatableBox} from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Epost, Telefon, TelefonType } from 'declarations/sed'
@@ -30,6 +29,7 @@ import {
   ValidationKontaktsinformasjonEpostProps,
   ValidationKontaktsinformasjonTelefonProps
 } from './validation'
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -274,14 +274,15 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     const _telefon = index < 0 ? _newTelefon : (inEditMode ? _editTelefon : telefon)
     const getTypeOption = (value: string | undefined | null) => _.find(telefonTypeOptions, s => s.value === value)
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getTelefonId(telefon)}
-        className={classNames({
-          new: index < 0,
-          error: _v[_namespace + '-nummer'] || _v[_namespace + '-type']
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: _v[_namespace + '-nummer'] || _v[_namespace + '-type']
         })}
-        padding="2 4"
+        paddingBlock="2"
+        paddingInline="4"
       >
         <HGrid columns={3} gap="4">
           {inEditMode
@@ -346,7 +347,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
               />
             </HStack>
         </HGrid>
-      </RepeatableBox>
+      </Box>
     )
   }
 
@@ -356,14 +357,15 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _epostEditIndex === index
     const _epost = index < 0 ? _newEpost : (inEditMode ? _editEpost : epost)
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getEpostId(epost)}
-        className={classNames({
-          new: index < 0,
-          error: _v[_namespace + '-adresse']
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: _v[_namespace + '-adresse']
         })}
-        padding="2 4"
+        paddingBlock="2"
+        paddingInline="4"
       >
         <HStack gap="4">
           {inEditMode
@@ -403,7 +405,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
             onCancelEdit={() => onCloseEdit('epost', _namespace)}
           />
         </HStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

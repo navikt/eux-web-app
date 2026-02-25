@@ -6,7 +6,6 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
-import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Statsborgerskap } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -27,6 +26,7 @@ import {
 } from './validation'
 import CountryDropdown from "components/CountryDropdown/CountryDropdown";
 import FlagPanel from "../../../components/FlagPanel/FlagPanel";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -151,17 +151,17 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _statsborgerskap = index < 0 ? _newStatsborgerskap : (inEditMode ? _editStatsborgerskap : statsborgerskap)
     return (
-      <RepeatableBox
+      <Box
         padding="1"
         id={'repeatablerow-' + _namespace}
         key={getId(statsborgerskap)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <VStack gap="4">
-          <HStack gap="4" align="end">
+          <HStack gap="4" align="center">
             {inEditMode
               ? (
                 <Box width="50%">
@@ -204,7 +204,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
             />
           </HStack>
         </VStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

@@ -19,7 +19,6 @@ import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import {RepeatableBox} from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
@@ -36,7 +35,7 @@ import { getIdx, getNSIdx, readNSIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodePeriodeSort, periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
-import commonStyles from "../../../assets/css/common.module.css";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -415,12 +414,12 @@ const VedtakFC: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editVedtakPeriodeIndex === index
     const _periode = index < 0 ? _newVedtakPeriode : (inEditMode ? _editVedtakPeriode : periode)
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getVedtakPeriodeId(periode)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
         padding="4"
       >
@@ -464,7 +463,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
             onCancelEdit={() => onCloseVedtakPeriodeEdit(_namespace)}
           />
         </HStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 
@@ -483,12 +482,12 @@ const VedtakFC: React.FC<MainFormProps> = ({
     const _periode = index < 0 ? _newKompetansePeriode : (inEditMode ? _editKompetansePeriode : periode)
 
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getKompetansePeriodeId(periode)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
         padding="4"
       >
@@ -601,7 +600,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
             )
           }
         </VStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

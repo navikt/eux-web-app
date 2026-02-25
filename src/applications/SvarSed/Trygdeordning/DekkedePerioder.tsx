@@ -6,7 +6,6 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {RepeatableBox} from 'components/StyledComponents'
 import {Periode, PeriodeSort, PersonTypeBrukerF026} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -213,13 +212,13 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
     )
 
     return (
-      <RepeatableBox
+      <Box
         padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         {inEditMode
@@ -278,7 +277,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
               {addremovepanel}
             </HStack>
             )}
-      </RepeatableBox>
+      </Box>
     )
   }
 

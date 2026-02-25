@@ -7,7 +7,6 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableBox } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeDagpenger } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -26,6 +25,7 @@ import {
   ValidatePerioderDagpengerProps,
   ValidationPeriodeDagpengerProps
 } from './validation'
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -205,14 +205,15 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     }
 
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getId(periodeDagpenger)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="2 4"
+        paddingBlock="2"
+        paddingInline="4"
       >
         <VStack gap="4">
           <HGrid columns={"2fr 1fr"} align="start" gap="4">
@@ -276,7 +277,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
             </HGrid>
           )}
         </VStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

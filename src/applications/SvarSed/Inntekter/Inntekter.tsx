@@ -8,7 +8,6 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { RepeatableBox } from 'components/StyledComponents'
 import { Inntekt } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -20,6 +19,7 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateInntekt, ValidationInntektProps } from './validation'
+import commonStyles from 'assets/css/common.module.css'
 
 const Inntekter: React.FC<any> = ({
   inntekter,
@@ -198,12 +198,12 @@ const Inntekter: React.FC<any> = ({
     }
 
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getId(inntekt)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
         padding="4"
         borderWidth="1"
@@ -309,7 +309,7 @@ const Inntekter: React.FC<any> = ({
             />
           </HStack>
         </VStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

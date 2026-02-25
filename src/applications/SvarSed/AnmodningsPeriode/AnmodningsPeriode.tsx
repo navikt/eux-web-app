@@ -8,7 +8,6 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import { RepeatableBox } from 'components/StyledComponents'
 import {F001Sed, F002Sed, FSed, Periode} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -166,14 +165,15 @@ const AnmodningsPeriode: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _periode = index < 0 ? _newAnmodningsperiode : (inEditMode ? _editAnmodningsperiode : periode)
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="2 4"
+        paddingBlock="2"
+        paddingInline="4"
       >
         <HGrid columns={"2fr 1fr"} align="center" gap="4">
           {inEditMode
@@ -217,7 +217,7 @@ const AnmodningsPeriode: React.FC<MainFormProps> = ({
             </HStack>
 
         </HGrid>
-      </RepeatableBox>
+      </Box>
     )
   }
 

@@ -6,7 +6,6 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeMedGrunn} from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -20,6 +19,7 @@ import performValidation from 'utils/performValidation'
 import { periodePeriodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validatePeriodeMedGrunn, ValidationPeriodeMedGrunnProps } from './validation'
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -188,13 +188,13 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
     const _periodeMedGrunn = index < 0 ? _newPeriodeMedGrunn : (inEditMode ? _editPeriodeMedGrunn : periodeMedGrunn)
 
     return (
-      <RepeatableBox
+      <Box
         padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(periodeMedGrunn)}
-        className={classNames({
-          new: index < 0,
-          errorBorder: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.errorBorder]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <HStack gap="4" align="start">
@@ -295,7 +295,7 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
           }
           <Spacer/>
         </HStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

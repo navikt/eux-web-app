@@ -7,7 +7,6 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
-import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -25,6 +24,7 @@ import AdresseForm from './AdresseForm'
 import { validateAdresse, validateAdresser, ValidationAdresseProps, ValidationAdresserProps } from './validation'
 import {isFSed, isS040Sed, isS046Sed} from "../../../utils/sed";
 import DateField from "../../../components/DateField/DateField";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -179,13 +179,13 @@ const Adresser: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableBox
+      <Box
         padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(adresse)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <VStack gap="4">
@@ -220,7 +220,7 @@ const Adresser: React.FC<MainFormProps> = ({
             </HStack>
           )}
         </VStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

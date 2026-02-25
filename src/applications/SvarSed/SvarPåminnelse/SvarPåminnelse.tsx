@@ -7,7 +7,6 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { BesvarelseUmulig, BesvarelseKommer, X010Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -189,24 +188,6 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     } as BesvarelseKommer)
     if (validation[namespace + '-BesvarelseKommer' + getIdx(index) + '-innenDato']) {
       dispatch(resetValidation(namespace + '-BesvarelseKommer' + getIdx(index) + '-innenDato'))
-    }
-  }
-
-  const setYtterligereinformasjon = (Ytterligereinformasjon: string, index: number) => {
-    if (index < 0) {
-      _setNewBesvarelseKommer({
-        ..._newBesvarelseKommer,
-        ytterligereinformasjon: Ytterligereinformasjon.trim()
-      } as BesvarelseKommer)
-      _resetValidationBesvarelseKommer(namespace + '-BesvarelseKommer-ytterligereinformasjon')
-      return
-    }
-    _setEditBesvarelseKommer({
-      ..._editBesvarelseKommer,
-      ytterligereinformasjon: Ytterligereinformasjon.trim()
-    } as BesvarelseKommer)
-    if (validation[namespace + '-BesvarelseKommer' + getIdx(index) + '-ytterligereinformasjon']) {
-      dispatch(resetValidation(namespace + '-BesvarelseKommer' + getIdx(index) + '-ytterligereinformasjon'))
     }
   }
 
@@ -392,13 +373,13 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableBox
+      <Box
         padding="4"
         id={'repeatablerow-' + _namespace}
         key={getBesvarelseKommerId(BesvarelseKommer)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         {inEditMode
@@ -496,7 +477,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
             </HStack>
             )
         }
-      </RepeatableBox>
+      </Box>
     )
   }
 
@@ -529,13 +510,13 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     ]
 
     return (
-      <RepeatableBox
+      <Box
         padding="4"
         id={'repeatablerow-' + _namespace}
         key={getBesvarelseUmuligId(BesvarelseUmulig)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         {inEditMode
@@ -649,7 +630,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
             </VStack>
           )
         }
-      </RepeatableBox>
+      </Box>
     )
   }
 

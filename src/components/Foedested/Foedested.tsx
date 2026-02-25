@@ -4,8 +4,8 @@ import {Country} from '@navikt/land-verktoy'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import {RepeatableBox} from 'components/StyledComponents'
 import { Foedested } from 'declarations/sed'
+import commonStyles from 'assets/css/common.module.css'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import React, { useState } from 'react'
@@ -149,10 +149,10 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
     const _v: Validation = index < 0 ? _validation : validation
 
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + namespace}
-        className={classNames({
-          new: index < 0
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0
         })}
         padding="4"
         marginBlock="0 4"
@@ -256,7 +256,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
             </HStack>
           </Box>
         }
-      </RepeatableBox>
+      </Box>
     )
   }
 

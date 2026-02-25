@@ -9,7 +9,6 @@ import DateField from 'components/DateField/DateField'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
-import { RepeatableBox } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Flyttegrunn, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -28,6 +27,7 @@ import {
   validateGrunnlagForBosettingPeriode, ValidateGrunnlagForBosettingProps,
   ValidationGrunnlagForBosettingPeriodeProps
 } from './validation'
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -167,14 +167,15 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
     const inEditMode = index < 0 || _editIndex === index
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="2 4"
+        paddingBlock="2"
+        paddingInline="4"
       >
         <HGrid columns={"2fr 1fr"} align="center" gap="4">
           {inEditMode
@@ -217,7 +218,7 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
             />
           </HStack>
         </HGrid>
-      </RepeatableBox>
+      </Box>
     )
   }
 

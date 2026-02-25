@@ -9,7 +9,6 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
-import { RepeatableBox } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, JaNei, Periode, RelasjonType } from 'declarations/sed'
@@ -265,14 +264,15 @@ const Familierelasjon: React.FC<MainFormProps> = ({
       />
     )
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getId(familierelasjon)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="2 4"
+        paddingBlock="2"
+        paddingInline="4"
       >
         {inEditMode
           ? (
@@ -393,7 +393,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
               </div>
             </VStack>
           )}
-      </RepeatableBox>
+      </Box>
     )
   }
 

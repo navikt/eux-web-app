@@ -6,7 +6,6 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { PensjonPeriode, PensjonsType, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -20,6 +19,7 @@ import performValidation from 'utils/performValidation'
 import { periodePeriodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validatePerioderMedPensjonPeriode, ValidationPerioderMedPensjonProps } from './validation'
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -151,13 +151,13 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
     const _pensjonPeriode = index < 0 ? _newPensjonPeriode : (inEditMode ? _editPensjonPeriode : pensjonPeriode)
 
     return (
-      <RepeatableBox
+      <Box
         padding="2"
         id={'repeatablerow-' + _namespace}
         key={getId(pensjonPeriode)}
-        className={classNames({
-          new: index < 0,
-          errorBorder: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.errorBorder]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <HStack gap="4" wrap={false} align="start">
@@ -227,7 +227,7 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
             onCancelEdit={() => onCloseEdit(_namespace)}
           />
         </HStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

@@ -6,8 +6,8 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { RepeatableBox } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
+import commonStyles from 'assets/css/common.module.css'
 import { ArbeidsgiverIdentifikator, ArbeidsgiverIdentifikatorType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -152,12 +152,12 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _identifikator = index < 0 ? _newIdentifikator : (inEditMode ? _editIdentifikator : identifikator)
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getId(identifikator)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
         padding="4"
       >
@@ -231,7 +231,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
             onCancelEdit={() => onCloseEdit(_namespace)}
           />
         </HStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

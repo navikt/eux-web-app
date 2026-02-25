@@ -8,8 +8,8 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableBox } from 'components/StyledComponents'
 import { PDPeriode } from 'declarations/pd'
+import commonStyles from 'assets/css/common.module.css'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -171,14 +171,15 @@ const Dagpenger: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableBox
+      <Box
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="2 4"
+        paddingBlock="2"
+        paddingInline="4"
       >
         {inEditMode
           ? (
@@ -237,7 +238,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
               {addremovepanel}
             </HStack>
             )}
-      </RepeatableBox>
+      </Box>
     )
   }
   return (

@@ -9,8 +9,8 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import {RepeatableBox} from 'components/StyledComponents'
 import { InntektOgTime, Periode } from 'declarations/sed'
+import commonStyles from 'assets/css/common.module.css'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -184,13 +184,13 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
     const _inntektOgTime = index < 0 ? _newInntektOgTime : (inEditMode ? _editInntektOgTime : inntektOgTime)
 
     return (
-      <RepeatableBox
+      <Box
         padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(inntektOgTime)}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <VStack gap="4">
@@ -298,7 +298,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
             </HGrid>
             )}
         </VStack>
-      </RepeatableBox>
+      </Box>
     )
   }
 

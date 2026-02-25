@@ -9,8 +9,8 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
-import { RepeatableBox } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
+import commonStyles from 'assets/css/common.module.css'
 import { PDPeriode, PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeSort } from 'declarations/sed'
@@ -285,13 +285,14 @@ const Perioder: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableBox
-        padding={inEditMode ? "4" : "2 4"}
+      <Box
+        paddingBlock={inEditMode ? "4" : "2"}
+        paddingInline={inEditMode ? "4" : "4"}
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
-        className={classNames({
-          new: index < 0,
-          errorBorder: hasNamespaceWithErrors(_v, _namespace)
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.errorBorder]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <HGrid columns={"2fr 1fr"} gap="4" align="start">
@@ -378,7 +379,7 @@ const Perioder: React.FC<MainFormProps> = ({
             </HGrid>
           </VStack>
         )}
-      </RepeatableBox>
+      </Box>
     )
   }
 
