@@ -10,48 +10,7 @@ import Error from 'pages/Error'
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useAppDispatch, useAppSelector } from 'store'
-import { createGlobalStyle } from 'styled-components'
 import styles from "./TopContainer.module.css"
-
-
-const GlobalStyle = createGlobalStyle`
-body {
-  margin: 0;
-  padding: 0;
-  color: var(--a-text-default);
-  background: var(--a-bg-subtle);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-#root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  --ac-button-secondary-bg: white;
-}
-.nolabel {
-  margin-top: 2rem !important;
-}
-
-.nolabel2 {
-  margin-top: 1.5rem !important;
-}
-
-.hide {
-  position: absolute;
-  margin-left: -10000px;
-}
-
-#joarkBrowser .navds-button--tertiary:hover, #attachmentsFromRina .navds-button--tertiary:hover {
-  background-color: var(--a-surface-transparent);
-}
-
-#neessiModal div{
-  user-select:text !important;
-  cursor: default !important;
-}
-`
 
 export interface TopContainerProps {
   className?: string
@@ -111,7 +70,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
 
   return (
     <div>
-      <GlobalStyle />
       <ErrorBoundary
         FallbackComponent={ErrorFallback}
         onReset={() => {
