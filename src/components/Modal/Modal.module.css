@@ -1,0 +1,15 @@
+.modaltext{
+  margin: 1.5rem;
+  text-align: center;
+}
+
+.content{
+  overflow: auto;
+  max-height: 85vh;
+  &.icon {
+    margin-top: 6rem;
+  }
+  &.buttons {
+    margin-top: 3rem;
+  }
+}
