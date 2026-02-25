@@ -11,7 +11,7 @@ import {
   CheckmarkCircleFillIcon
 } from '@navikt/aksel-icons'
 
-import { BodyLong, Box, Button, HStack, VStack } from '@navikt/ds-react'
+import {BodyLong, Box, Button, HStack, Spacer, VStack} from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import AddPersonModal from 'applications/SvarSed/AddPersonModal/AddPersonModal'
@@ -312,20 +312,21 @@ const MainForm = <T extends StorageTypes>({
             role="button"
             tabIndex={0}
           >
-            <HStack gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: selected })}>
+            <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: selected })}>
               {!isValidated
                 ? null
                 : validationHasErrors
-                  ? <XMarkOctagonFillIcon height={20} color='red' />
-                  : <CheckmarkCircleFillIcon color='green' height={20} />
+                  ? <Box flexShrink={0}><XMarkOctagonFillIcon height={20} color='red' /></Box>
+                    : <Box flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></Box>
               }
               <BodyLong className={classNames(styles.menuLabelText, { [styles.selected]: selected })}>
                 {form.label}
               </BodyLong>
+              <Spacer/>
+              <Box paddingInline="2">
+                <ChevronRightIcon />
+              </Box>
             </HStack>
-            <Box paddingInline="2">
-              <ChevronRightIcon />
-            </Box>
           </div>
         </div>
       )
@@ -365,11 +366,11 @@ const MainForm = <T extends StorageTypes>({
           role="button"
           tabIndex={0}
         >
-          <HStack gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === personId })}>
+          <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === personId })}>
             {isValidated
               ? validationHasErrors
-                  ? <XMarkOctagonFillIcon height={20} color='red' />
-                  : <CheckmarkCircleFillIcon color='green' height={20} />
+                ? <Box flexShrink={0}><XMarkOctagonFillIcon height={20} color='red' /></Box>
+                : <Box flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></Box>
               : null}
             <BodyLong className={styles.menuLabelText}>
               {personName}
@@ -386,10 +387,11 @@ const MainForm = <T extends StorageTypes>({
             {personId.startsWith('barn') && (
               <ChildEyesIcon title="Barn"/>
             )}
+            <Spacer/>
+            <Box paddingInline="2">
+              {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
+            </Box>
           </HStack>
-          <Box paddingInline="2">
-            {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
-          </Box>
         </div>
         {open && <Box paddingInline="2"><div className={commonStyles.horizontalLineSeparator} /></Box>}
         {open && forms
@@ -448,6 +450,7 @@ const MainForm = <T extends StorageTypes>({
                 key={namespace + '-' + personId + '-' + o.value}
                 onClick={() => changeMenu(personId, o.value, 'click')}
                 role='button'
+                wrap={false}
               >
                 {isValidated
                   ? validationHasErrors
@@ -519,21 +522,22 @@ const MainForm = <T extends StorageTypes>({
           role="button"
           tabIndex={0}
         >
-          <HStack gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === menuItem.key })}>
+          <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === menuItem.key })}>
             <div>
             {isValidated
               ? validationHasErrors
-                ? <XMarkOctagonFillIcon height={20} color='red' />
-                : <CheckmarkCircleFillIcon color='green' height={20} />
+                ? <Box flexShrink={0}><XMarkOctagonFillIcon height={20} color='red' /></Box>
+                : <Box flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></Box>
               : null}
             </div>
             <BodyLong className={styles.menuLabelText}>
               {menuItem.label}
             </BodyLong>
+            <Spacer/>
+            <Box paddingInline="2">
+              {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
+            </Box>
           </HStack>
-          <Box paddingInline="2">
-            {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
-          </Box>
         </div>
         {open && <Box paddingInline="2"><div className={commonStyles.horizontalLineSeparator} /></Box>}
         {open && forms
@@ -559,13 +563,14 @@ const MainForm = <T extends StorageTypes>({
                 key={namespace + '-' + menuItem.key + '-' + o.value}
                 onClick={() => changeMenu(menuItem.key, o.value, 'click')}
                 role='button'
+                wrap={false}
               >
                 <div>
                   {isValidated
                     ? validationHasErrors
-                      ? <XMarkOctagonFillIcon color='red' height={20} />
-                      : <CheckmarkCircleFillIcon color='green' height={20} />
-                    : <MenuElipsisHorizontalCircleIcon height={20} />
+                      ? <Box flexShrink={0}><XMarkOctagonFillIcon color='red' height={20} /></Box>
+                      : <Box flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></Box>
+                    : <Box flexShrink={0}><MenuElipsisHorizontalCircleIcon height={20} /></Box>
                   }
                 </div>
                 {o.label}
@@ -597,7 +602,7 @@ const MainForm = <T extends StorageTypes>({
       <Box
         className={classNames({ [styles.errorBox]: panelError })}
       >
-        <HStack justify="space-between" align="center">
+        <HStack justify="space-between" align="center" wrap={false}>
           <div className={classNames(styles.leftDiv, 'left')}>
             {type === 'twolevel' && (
               <>
