@@ -69,7 +69,7 @@
     "stacktracey": "2.1.8",
     "url": "0.11.4",
     "winston": "3.19.0",
-    "worker-timers": "8.0.29"
+    "worker-timers": "8.0.30"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "5.17.0",
