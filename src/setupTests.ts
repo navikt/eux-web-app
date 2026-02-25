@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { useDispatch, useSelector } from 'react-redux'
-import 'jest-styled-components'
 import '@testing-library/jest-dom/extend-expect'
 import { TextEncoder, TextDecoder } from 'util';
 (global as any).TextEncoder = TextEncoder;
