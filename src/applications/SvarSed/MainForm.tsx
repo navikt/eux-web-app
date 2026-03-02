@@ -315,8 +315,8 @@ const MainForm = <T extends StorageTypes>({
             <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: selected })}>
               {isValidated
                 ? validationHasErrors
-                  ? <HStack flexShrink={0}><XMarkOctagonFillIcon height={20} color='red' /></HStack>
-                    : <HStack flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
+                  ? <HStack><XMarkOctagonFillIcon height={20} color='red' /></HStack>
+                    : <HStack><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
                 : null
               }
               <BodyLong className={classNames(styles.menuLabelText, { [styles.selected]: selected })}>
@@ -521,8 +521,8 @@ const MainForm = <T extends StorageTypes>({
           <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === menuItem.key })}>
             {isValidated
               ? validationHasErrors
-                ? <HStack flexShrink={0}><XMarkOctagonFillIcon height={20} color='red' /></HStack>
-                : <HStack flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
+                ? <HStack><XMarkOctagonFillIcon height={20} color='red' /></HStack>
+                : <HStack><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
               : null}
             <BodyLong className={styles.menuLabelText}>
               {menuItem.label}
@@ -562,9 +562,9 @@ const MainForm = <T extends StorageTypes>({
                 <div>
                   {isValidated
                     ? validationHasErrors
-                      ? <Box flexShrink={0}><XMarkOctagonFillIcon color='red' height={20} /></Box>
-                      : <Box flexShrink={0}><CheckmarkCircleFillIcon color='green' height={20} /></Box>
-                    : <Box flexShrink={0}><MenuElipsisHorizontalCircleIcon height={20} /></Box>
+                      ? <HStack><XMarkOctagonFillIcon color='red' height={20} /></HStack>
+                      : <HStack><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
+                    : <HStack><MenuElipsisHorizontalCircleIcon height={20} /></HStack>
                   }
                 </div>
                 {o.label}

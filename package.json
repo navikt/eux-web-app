@@ -23,7 +23,8 @@
     "test:ci": "npm run patch:init && npm run patch:env && cross-env NODE_ENV=test jest --updateSnapshot --watchAll=false",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage  --watchAll=false",
     "preview": "vite preview",
-    "knip": "knip"
+    "knip": "knip",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@navikt/aksel-icons": "7.40.0",
