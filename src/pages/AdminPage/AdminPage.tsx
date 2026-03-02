@@ -94,7 +94,22 @@ export const AdminPage: React.FC = (): JSX.Element => {
 
                 <Textarea
                   label="SED hendelser"
-                  description="<rinasakId>_<documentId>_<documentVersion>"
+                  description={
+                    <BodyLong>
+                      <pre>&lt;rinasakId&gt;_&lt;documentId&gt;_&lt;documentVersion&gt;</pre>
+                      <p>
+                        Eksempel:
+                        <pre>98765432_8c484a34717645daa483dada2622141f_1</pre>
+                      </p>
+                      <p>
+                        Eksempel som liste:
+                        <pre>12345678_b364c40358244ece89adcbfb9400e597_1</pre>
+                        <pre>90123456_3e00d6031dfe47fbb78beb4b69c0bf40_1</pre>
+                        <pre>78901234_f968cb9058f54988ac882eb41b141875_4</pre>
+                      </p>
+
+                    </BodyLong>
+                  }
                   resize
                   style={{height: "200px"}}
                   onChange={(e) => {
