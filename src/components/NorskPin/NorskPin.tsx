@@ -71,7 +71,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
   }
 
   const saveNorwegianPin = () => {
-    if (_tempNorwegianPin) {
+    if (_tempNorwegianPin !== undefined) {
       onNorwegianPinSave(_tempNorwegianPin)
     }
     _setSearchFailure(false)
@@ -142,7 +142,6 @@ const NorskPin: React.FC<NorskPinProps> = ({
               <HStack gap="1" wrap={false} align="center">
                 <Button
                   variant='secondary'
-                  disabled={_.isEmpty(_tempNorwegianPin?.trim())}
                   onClick={saveNorwegianPin}
                   icon={<CheckmarkIcon/>}
                 >
