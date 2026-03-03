@@ -2,23 +2,20 @@
   flex: 1;
   background-color: var(--ax-bg-default);
   width: 100%;
-  :global(.aksel-radio__label) {
-    border-radius: 4px;
-    width: 100%;
-    padding: 0.8rem 0.5rem;
-  }
+  border: 1px solid var(--ax-border-neutral-subtle);
+  border-radius: var(--ax-radius-4);
+  padding-inline: var(--ax-space-8);
+  align-items: center;
 }
 
 .radioPanel:has(input[type=radio]:checked){
   background-color: var(--ax-bg-accent-moderate-hover);
   border-color: var(--ax-bg-accent-moderate-hover);
-  border-radius: 4px;
 }
 
 .radioPanel:hover {
   background-color: var(--ax-bg-accent-moderate-hover);
   border-color: var(--ax-bg-accent-moderate-hover);
-  border-radius: 4px;
 }
 
 .horizontalLineSeparator {
