@@ -67,8 +67,8 @@ body {
 
 .c-countrySelect__select__option:hover,
 .c-countrySelect__select__option--is-focused {
-  background-color: var(--ax-bg-accent-moderate-hover) !important;
-  color: var(--ax-text-neutral-contrast) !important;
+  background-color: var(--ax-bg-accent-soft) !important;
+  color: var(--ax-text-neutral) !important;
 }
 
 .c-countrySelect__select__option--is-selected {
