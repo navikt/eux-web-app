@@ -37,7 +37,7 @@
   text-decoration: none;
 }
 
-.styledLink .square {
+.styledLink .square svg {
   color: var(--ax-text-accent-decoration);
 }
 
