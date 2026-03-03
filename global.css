@@ -45,3 +45,69 @@ body {
   --a-text-on-inverted: var(--ax-text-neutral-contrast);
   --a-border-default: var(--ax-border-neutral);
 }
+
+/* Country picker (@navikt/landvelger) dark mode overrides */
+.c-countrySelect__select__menu {
+  background-color: var(--ax-bg-default) !important;
+  border: 1px solid var(--ax-border-neutral-subtle);
+  border-radius: var(--ax-radius-4);
+  box-shadow: var(--ax-shadow-dialog);
+}
+
+.c-countrySelect__select__menu-list {
+  background-color: var(--ax-bg-default) !important;
+  padding: 0 !important;
+  border-radius: var(--ax-radius-4);
+}
+
+.c-countrySelect__select__option {
+  color: var(--ax-text-neutral) !important;
+  background-color: var(--ax-bg-default) !important;
+}
+
+.c-countrySelect__select__option:hover,
+.c-countrySelect__select__option--is-focused {
+  background-color: var(--ax-bg-accent-moderate-hover) !important;
+  color: var(--ax-text-neutral-contrast) !important;
+}
+
+.c-countrySelect__select__option--is-selected {
+  background-color: var(--ax-bg-accent-strong) !important;
+  color: var(--ax-text-neutral-contrast) !important;
+}
+
+.c-countrySelect__select__single-value {
+  color: var(--ax-text-neutral) !important;
+}
+
+.c-countrySelect__select__placeholder {
+  color: var(--ax-text-neutral-subtle) !important;
+}
+
+.c-countrySelect__select__input-container,
+.c-countrySelect__select__input {
+  color: var(--ax-text-neutral) !important;
+}
+
+.c-countrySelect__select__indicator {
+  color: var(--ax-text-neutral-decoration) !important;
+}
+
+.c-countrySelect__select__indicator:hover {
+  color: var(--ax-text-neutral) !important;
+}
+
+.c-countrySelect__select__multi-value {
+  background-color: var(--ax-bg-neutral-moderate) !important;
+  color: var(--ax-text-neutral) !important;
+  border-color: var(--ax-border-neutral-subtle) !important;
+}
+
+.c-countrySelect__select__multi-value__label {
+  color: var(--ax-text-neutral) !important;
+}
+
+.c-countrySelect__select__multi-value__remove:hover {
+  background-color: var(--ax-bg-danger-moderate) !important;
+  color: var(--ax-text-danger) !important;
+}
