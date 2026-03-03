@@ -27,7 +27,7 @@ const FlagPanel: React.FC<FlagPanelProps> = ({
   const country = countryData.findByValue3(land)
 
   return(
-    <HStack gap="4" id={id} align="center">
+    <HStack gap="space-16" id={id} align="center">
       {land && <Flag size='S' country={country ? country.value : "XU"} />}
       {country ? country.label : countryCodeMap && land ? countryCodeMap[land as keyof typeof countryCodeMap] : land}
     </HStack>

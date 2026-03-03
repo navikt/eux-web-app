@@ -52,13 +52,13 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
-        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-          <VStack gap="1">
+        <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
+          <VStack gap="space-4">
             <RadioGroup
               value={svarInntekt?.inntektskilde}
               legend={t('inntektskilde')}
@@ -80,10 +80,10 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
             }
           </VStack>
         </Box>
-        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-          <VStack gap="4">
+        <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
+          <VStack gap="space-16">
             <Label>{t('label:periode-det-kreves-opplysninger-om')}</Label>
-            <HGrid columns={2} gap="4" align="start">
+            <HGrid columns={2} gap="space-16" align="start">
               <DateField
                 error={validation[namespace + '-periode-startdato']?.feilmelding}
                 namespace={namespace}
@@ -103,10 +103,10 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
             </HGrid>
           </VStack>
         </Box>
-        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-          <VStack gap="4">
+        <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
+          <VStack gap="space-16">
             <Label>{t('label:årlig-inntekt')}</Label>
-            <HGrid columns={2} gap="4" align="start">
+            <HGrid columns={2} gap="space-16" align="start">
               <Input
                 error={validation[namespace + '-aarlig-beloep']?.feilmelding}
                 namespace={namespace}
@@ -131,7 +131,7 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
             </HGrid>
           </VStack>
         </Box>
-        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+        <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
           <TextArea
             error={validation[namespace + '-ytterligereInfo']?.feilmelding}
             namespace={namespace}
@@ -143,7 +143,7 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
         </Box>
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default SvarPaaAnmodningOmInntekt

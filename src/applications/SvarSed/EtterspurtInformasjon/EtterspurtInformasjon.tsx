@@ -95,12 +95,12 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <Box padding="4">
-        <VStack gap="4">
+      <Box padding="space-16">
+        <VStack gap="space-16">
           <Heading size='small'>
             {label}
           </Heading>
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <Checkbox
               value="adopsjon"
               checked={!!anmodningOmMerInformasjon?.adopsjon}
@@ -109,7 +109,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               Ved adopsjon
             </Checkbox>
             {!!anmodningOmMerInformasjon?.adopsjon &&
-              <VStack gap="4">
+              <VStack gap="space-16">
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.adopsjon"
                   namespace={namespace + '-adopsjon'}
@@ -130,7 +130,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               </VStack>
             }
           </Box>
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <Checkbox
               value="inntekt"
               checked={!!anmodningOmMerInformasjon?.inntekt}
@@ -139,7 +139,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               Inntekt
             </Checkbox>
             {!!anmodningOmMerInformasjon?.inntekt &&
-              <VStack gap="4">
+              <VStack gap="space-16">
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.inntekt"
                   namespace={namespace + '-inntekt'}
@@ -160,7 +160,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               </VStack>
             }
           </Box>
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <Checkbox
               value="ytelseTilForeldreLoese"
               checked={!!anmodningOmMerInformasjon?.ytelseTilForeldreLoese}
@@ -169,7 +169,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               Ytelse til foreldreløse
             </Checkbox>
             {!!anmodningOmMerInformasjon?.ytelseTilForeldreLoese &&
-              <VStack gap="4">
+              <VStack gap="space-16">
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.ytelseTilForeldreLoese"
                   namespace={namespace + '-ytelseTilForeldreLoese'}
@@ -190,7 +190,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               </VStack>
             }
           </Box>
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <Checkbox
               value="annenInformasjonOmBarnet"
               checked={!!anmodningOmMerInformasjon?.annenInformasjonOmBarnet}
@@ -199,7 +199,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               Annen informasjon angående barnet
             </Checkbox>
             {!!anmodningOmMerInformasjon?.annenInformasjonOmBarnet &&
-              <VStack gap="4">
+              <VStack gap="space-16">
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.annenInformasjonOmBarnet"
                   namespace={namespace + '-annenInformasjonOmBarnet'}
@@ -220,7 +220,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               </VStack>
             }
           </Box>
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <Checkbox
               value="utdanning"
               checked={!!anmodningOmMerInformasjon?.utdanning}
@@ -235,7 +235,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default EtterspurtInformasjon

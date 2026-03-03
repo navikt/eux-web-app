@@ -140,7 +140,7 @@ const PeriodePerioder: React.FC<PerioderProps> = ({
 
     return (
       <Box
-        padding="4"
+        padding="space-16"
         id={'repeatablerow-' + _namespace}
         key={getId(periodePeriode)}
         className={classNames(commonStyles.repeatableBox, {
@@ -148,7 +148,7 @@ const PeriodePerioder: React.FC<PerioderProps> = ({
           [commonStyles.errorBorder]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <HStack gap="4" align="start">
+        <HStack gap="space-16" align="start">
         {inEditMode
           ? (
               <PeriodeInput
@@ -195,10 +195,10 @@ const PeriodePerioder: React.FC<PerioderProps> = ({
   }
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {_.isEmpty(perioder)
         ? (
-          <Box borderWidth={"1 0"} paddingBlock="2">
+          <Box borderWidth={"1 0"} paddingBlock="space-8">
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>

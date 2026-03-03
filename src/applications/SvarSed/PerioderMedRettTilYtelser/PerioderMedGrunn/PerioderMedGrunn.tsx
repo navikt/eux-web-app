@@ -189,7 +189,7 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
 
     return (
       <Box
-        padding="4"
+        padding="space-16"
         id={'repeatablerow-' + _namespace}
         key={getId(periodeMedGrunn)}
         className={classNames(commonStyles.repeatableBox, {
@@ -197,11 +197,11 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
           [commonStyles.errorBorder]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <HStack gap="4" align="start">
+        <HStack gap="space-16" align="start">
           {inEditMode
             ? (
-                <VStack gap="2" width="100%">
-                  <HStack gap="4" wrap={false} align="start">
+                <VStack gap="space-8" width="100%">
+                  <HStack gap="space-16" wrap={false} align="start">
                     <PeriodeInput
                       namespace={_namespace}
                       error={{
@@ -258,7 +258,7 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
               )
             : (
               <VStack width="100%">
-                <HStack gap="4" align="center" wrap={true}>
+                <HStack gap="space-16" align="center" wrap={true}>
                   <PeriodeText
                     error={{
                       startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -267,8 +267,8 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
                     namespace={_namespace}
                     periode={_periodeMedGrunn?.periode}
                   />
-                  <Tag size="small" variant="info">{typeGrunnOptions.find((typeGrunn) => typeGrunn.value ==_periodeMedGrunn?.typeGrunn)?.label}</Tag>
-                  <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+                  <Tag data-color="info" size="small" variant="outline">{typeGrunnOptions.find((typeGrunn) => typeGrunn.value ==_periodeMedGrunn?.typeGrunn)?.label}</Tag>
+                  <div className="aksel-button--small"/> {/* Prevent height flicker on hover */}
                   <Spacer/>
                   <AddRemovePanel<PeriodeMedGrunn>
                     item={periodeMedGrunn}
@@ -284,7 +284,7 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
                   />
                 </HStack>
                 {_periodeMedGrunn?.typeGrunn === 'annet' &&
-                  <Box padding="2">
+                  <Box padding="space-8">
                     <BodyLong size="small">
                       {_periodeMedGrunn.annenGrunn}
                     </BodyLong>
@@ -296,14 +296,14 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
           <Spacer/>
         </HStack>
       </Box>
-    )
+    );
   }
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {_.isEmpty(perioder)
         ? (
-          <Box borderWidth={"1 0"} paddingBlock="2">
+          <Box borderWidth={"1 0"} paddingBlock="space-8">
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>

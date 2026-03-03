@@ -374,7 +374,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
 
     return (
       <Box
-        padding="4"
+        padding="space-16"
         id={'repeatablerow-' + _namespace}
         key={getBesvarelseKommerId(BesvarelseKommer)}
         className={classNames(commonStyles.repeatableBox, {
@@ -384,8 +384,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
       >
         {inEditMode
           ? (
-              <VStack gap="4">
-                <HStack gap="4" align="start">
+              <VStack gap="space-16">
+                <HStack gap="space-16" align="start">
                   <RadioGroup
                     value={_BesvarelseKommer?.gjelder}
                     data-no-border
@@ -396,7 +396,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     name={_namespace + '-gjelder'}
                     onChange={(type: string) => setBesvarelseKommerType(type, index)}
                   >
-                    <HStack gap="4" width="100%">
+                    <HStack gap="space-16" width="100%">
                       <Radio className={commonStyles.radioPanel} value='dokument'>
                         {t('label:dokument')}
                       </Radio>
@@ -411,7 +411,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                   <Spacer/>
                   {addremovepanel}
                 </HStack>
-                <HGrid columns={"2fr 1fr"} gap="4" align="start" width="100%">
+                <HGrid columns={"2fr 1fr"} gap="space-16" align="start" width="100%">
                   <TextArea
                     error={_v[_namespace + '-beskrivelse']?.feilmelding}
                     id='beskrivelse'
@@ -445,8 +445,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
               </VStack>
             )
           : (
-            <HStack gap="4" align="center" width="100%">
-              <HStack gap="4">
+            <HStack gap="space-16" align="center" width="100%">
+              <HStack gap="space-16">
                 <FormText
                   error={_v[_namespace + '-gjelder']?.feilmelding}
                   id={_namespace + '-gjelder'}
@@ -511,7 +511,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
 
     return (
       <Box
-        padding="4"
+        padding="space-16"
         id={'repeatablerow-' + _namespace}
         key={getBesvarelseUmuligId(BesvarelseUmulig)}
         className={classNames(commonStyles.repeatableBox, {
@@ -521,8 +521,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
       >
         {inEditMode
           ? (
-              <VStack gap="4">
-                <HStack gap="4" align="start">
+              <VStack gap="space-16">
+                <HStack gap="space-16" align="start">
                   <RadioGroup
                     value={_BesvarelseUmulig?.gjelder}
                     data-no-border
@@ -533,7 +533,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     name={_namespace + '-gjelder'}
                     onChange={(type: string) => setBesvarelseUmuligType(type, index)}
                   >
-                    <HStack gap="4" width="100%">
+                    <HStack gap="space-16" width="100%">
                       <Radio className={commonStyles.radioPanel} value='dokument'>
                         {t('label:dokument')}
                       </Radio>
@@ -548,7 +548,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                   <Spacer/>
                   {addremovepanel}
                 </HStack>
-                <HGrid columns={"2fr 1fr"} gap="4" align="start" width="100%">
+                <HGrid columns={"2fr 1fr"} gap="space-16" align="start" width="100%">
                   <TextArea
                     error={_v[_namespace + '-beskrivelse']?.feilmelding}
                     id='beskrivelse'
@@ -590,9 +590,9 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
               </VStack>
             )
           : (
-            <VStack gap="4">
-              <HStack gap="4" align="start">
-                <HStack gap="4">
+            <VStack gap="space-16">
+              <HStack gap="space-16" align="start">
+                <HStack gap="space-16">
                   <FormText
                     error={_v[_namespace + '-gjelder']?.feilmelding}
                     id={_namespace + '-gjelder'}
@@ -609,7 +609,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                 <Spacer/>
                 {addremovepanel}
               </HStack>
-              <HStack gap="4" align="start">
+              <HStack gap="space-16" align="start">
                 <FormText
                   error={_v[_namespace + '-begrunnelse']?.feilmelding}
                   id={_namespace + '-begrunnelse'}
@@ -635,8 +635,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -645,7 +645,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
         </Heading>
         {_.isEmpty(besvarelseKommer)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-dokument')}
               </BodyLong>
@@ -670,7 +670,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
         </Heading>
         {_.isEmpty(besvarelseUmulig)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-dokument')}
               </BodyLong>

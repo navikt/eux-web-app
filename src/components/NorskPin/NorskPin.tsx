@@ -99,12 +99,12 @@ const NorskPin: React.FC<NorskPinProps> = ({
   const { t } = useTranslation()
   return (
     <Box>
-      <HStack gap="4" align={!_seeNorskPinForm ? "start" : "end"}>
+      <HStack gap="space-16" align={!_seeNorskPinForm ? "start" : "end"}>
         {!_seeNorskPinForm
           ? (
             <>
               <VStack>
-                <HStack gap="4">
+                <HStack gap="space-16">
                   <Label>
                     {t('label:fnr-eller-dnr')}
                   </Label>
@@ -139,7 +139,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
                 value={_tempNorwegianPin}
               />
               <Spacer/>
-              <HStack gap="1" wrap={false} align="center">
+              <HStack gap="space-4" wrap={false} align="center">
                 <Button
                   variant='secondary'
                   onClick={saveNorwegianPin}
@@ -177,10 +177,10 @@ const NorskPin: React.FC<NorskPinProps> = ({
       {searchedPerson
         ? (
           <Box
-            padding="4"
-            background="bg-subtle"
+            padding="space-16"
+            background="neutral-soft"
           >
-            <HStack align="center" gap="4">
+            <HStack align="center" gap="space-16">
               <BodyLong>
                 {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
               </BodyLong>
@@ -203,7 +203,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
             )
           : <div />}
     </Box>
-  )
+  );
 }
 
 export default NorskPin

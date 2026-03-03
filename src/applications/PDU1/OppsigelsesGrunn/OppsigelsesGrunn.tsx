@@ -94,12 +94,12 @@ const OppsigelsesGrunnFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4" key={namespace + '-div'}>
-      <VStack gap="4">
+    <Box padding="space-16" key={namespace + '-div'}>
+      <VStack gap="space-16">
         <Heading size='medium'>
           {t('label:årsak-til-avsluttet-arbeidsforhold')}
         </Heading>
-        <HGrid columns="2fr 1fr" gap="4" align="start">
+        <HGrid columns="2fr 1fr" gap="space-16" align="start">
           <Select
             data-testid={namespace + '-typeGrunnAnsatt'}
             error={validation[namespace + '-typeGrunnAnsatt']?.feilmelding}
@@ -112,7 +112,7 @@ const OppsigelsesGrunnFC: React.FC<MainFormProps> = ({
             value={_.find(årsakOptions, b => b.value === oppsigelsesGrunn?.typeGrunnAnsatt) ?? null}
             defaultValue={_.find(årsakOptions, b => b.value === oppsigelsesGrunn?.typeGrunnAnsatt)}
           />
-          <Box paddingBlock="8 0">
+          <Box paddingBlock="space-32 space-0">
             <Button variant='secondary' onClick={() => setTypeGrunnAnsatt(undefined)} icon={<TrashIcon/>}>
               {t('el:button-remove')}
             </Button>

@@ -59,15 +59,15 @@ const AdresseH001: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <Box padding="4">
-        <VStack gap="4">
+      <Box padding="space-16">
+        <VStack gap="space-16">
           <Box>
-            <VStack gap="4">
+            <VStack gap="space-16">
               <Heading size='small'>
                 {t('label:anmodning-om-adresse')}
               </Heading>
-              <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-                <VStack gap="4">
+              <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
+                <VStack gap="space-16">
                     <CheckboxGroup
                       legend={t('label:type-adresse')}
                       error={validation[namespace + '-anmodning-type']?.feilmelding}
@@ -76,7 +76,7 @@ const AdresseH001: React.FC<MainFormProps> = ({
                       value={adresseAnmodning?.adresseTyper}
                       onChange={(value) => onAdressetypeChange(value)}
                     >
-                      <HStack gap="4">
+                      <HStack gap="space-16">
                         <Checkbox value='bosted'>
                           {t('el:radio-adresse-anmodning-type-bosted')}
                         </Checkbox>
@@ -95,7 +95,7 @@ const AdresseH001: React.FC<MainFormProps> = ({
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default AdresseH001

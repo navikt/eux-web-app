@@ -46,13 +46,13 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
-        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-          <HGrid columns={2} gap="4" align="start">
+        <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
+          <HGrid columns={2} gap="space-16" align="start">
             <DateField
               error={validation[namespace + '-adoptivforeldreOmsorgFradato']?.feilmelding}
               namespace={namespace}
@@ -71,7 +71,7 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
             />
           </HGrid>
         </Box>
-        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+        <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
           <TextArea
             error={validation[namespace + '-ytterligereInfo']?.feilmelding}
             namespace={namespace}
@@ -83,7 +83,7 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
         </Box>
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default SvarPaaForespoerselOmAdopsjon

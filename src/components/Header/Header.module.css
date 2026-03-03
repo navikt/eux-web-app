@@ -9,8 +9,8 @@
 }
 
 .headerContent{
-  background-color: var(--a-bg-subtle);
-  color: var(--a-text-default);
+  background-color: var(--ax-bg-neutral-soft);
+  color: var(--ax-text-neutral);
   display: flex;
   flex-direction: row;
   height: 3rem;
@@ -27,5 +27,5 @@
 }
 
 .selectedEnhet {
-  background-color: var(--a-surface-selected)
+  background-color: var(--ax-bg-accent-soft)
 }

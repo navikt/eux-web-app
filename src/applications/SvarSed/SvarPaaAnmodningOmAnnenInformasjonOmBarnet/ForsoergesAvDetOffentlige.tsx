@@ -51,13 +51,13 @@ const ForsoergesAvDetOffentlige: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
         {CDM_VERSJON === "4.2" &&
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <TextArea
               error={validation[namespace + '-forsoerges-av-det-offentlige']?.feilmelding}
               namespace={namespace}
@@ -70,7 +70,7 @@ const ForsoergesAvDetOffentlige: React.FC<MainFormProps> = ({
           </Box>
         }
         {(parseFloat(CDM_VERSJON) >= 4.3) &&
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <RadioGroup
               legend={t('label:forsoerges-av-det-offentlige')}
               hideLegend={true}
@@ -80,7 +80,7 @@ const ForsoergesAvDetOffentlige: React.FC<MainFormProps> = ({
               id={namespace + '-forsoerges-av-det-offentlige'}
               onChange={(e:string) => setAnnenInformasjonBarnetProperty("forsoergesAvDetOffentlige",  e as JaNei)}
             >
-              <HStack gap="4">
+              <HStack gap="space-16">
                 <Radio className={commonStyles.radioPanel} value='ja'>
                   Ja
                 </Radio>
@@ -93,7 +93,7 @@ const ForsoergesAvDetOffentlige: React.FC<MainFormProps> = ({
         }
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default ForsoergesAvDetOffentlige

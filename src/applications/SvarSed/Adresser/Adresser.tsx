@@ -180,7 +180,7 @@ const Adresser: React.FC<MainFormProps> = ({
 
     return (
       <Box
-        padding="4"
+        padding="space-16"
         id={'repeatablerow-' + _namespace}
         key={getId(adresse)}
         className={classNames(commonStyles.repeatableBox, {
@@ -188,7 +188,7 @@ const Adresser: React.FC<MainFormProps> = ({
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VStack gap="4">
+        <VStack gap="space-16">
           {inEditMode
             ? (
               <AdresseForm
@@ -201,7 +201,7 @@ const Adresser: React.FC<MainFormProps> = ({
               />
               )
             : (
-              <HStack gap="4">
+              <HStack gap="space-16">
                 <Box width="65%">
                   <AdresseBox adresse={_adresse} seeType={false} />
                 </Box>
@@ -212,7 +212,7 @@ const Adresser: React.FC<MainFormProps> = ({
               </HStack>
               )}
           {inEditMode && (
-            <HStack gap="4">
+            <HStack gap="space-16">
               <Spacer/>
               <Box>
                 {addremovepanel}
@@ -225,8 +225,8 @@ const Adresser: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -239,7 +239,7 @@ const Adresser: React.FC<MainFormProps> = ({
         />
         {_.isEmpty(adresser)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2" id="ingenAdresse">
+            <Box borderWidth={"1 0"} paddingBlock="space-8" id="ingenAdresse">
               <BodyLong>
                 {t('message:warning-no-address')}
               </BodyLong>

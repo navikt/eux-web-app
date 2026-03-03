@@ -421,9 +421,9 @@ const VedtakFC: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="4"
+        padding="space-16"
       >
-        <HStack gap="4" align="start">
+        <HStack gap="space-16" align="start">
           {inEditMode
             ? (
                 <PeriodeInput
@@ -470,7 +470,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
   const getTag = (type: string) => {
     const label: string | undefined = _.find(kompetanseTypeOptions, v => v.value === type)?.label
     if (!label) return null
-    return (<Tag size='small' variant='info'>{label}</Tag>)
+    return (<Tag data-color="info" size='small' variant="outline">{label}</Tag>);
   }
 
   const renderKompetansePeriodeRow = (periode: KompetansePeriode | null, index: number) => {
@@ -489,13 +489,13 @@ const VedtakFC: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="4"
+        padding="space-16"
       >
-        <VStack gap="1">
+        <VStack gap="space-4">
           {inEditMode
             ? (
                 <>
-                  <HGrid columns={2} gap="4" align="start">
+                  <HGrid columns={2} gap="space-16" align="start">
                     <PeriodeInput
                       namespace={_namespace + '-periode'}
                       error={{
@@ -522,7 +522,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
                       />
                     </HStack>
                   </HGrid>
-                  <HGrid columns={2} gap="4">
+                  <HGrid columns={2} gap="space-16">
                     <Select
                       closeMenuOnSelect
                       data-testid={_namespace + '-type'}
@@ -546,7 +546,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
                         name={_namespace + '-borSammen'}
                         onChange={(e: string) => setKompetansePeriodeSkalYtelseUtbetales(e as JaNei, index)}
                       >
-                        <HStack gap="4" align="center">
+                        <HStack gap="space-16" align="center">
                           <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
                           <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
                         </HStack>
@@ -556,8 +556,8 @@ const VedtakFC: React.FC<MainFormProps> = ({
                 </>
             )
             : (
-              <VStack gap="2">
-                <HGrid columns={3} gap="4" align="center">
+              <VStack gap="space-8">
+                <HGrid columns={3} gap="space-16" align="center">
                   <PeriodeText
                     error={{
                       startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
@@ -571,7 +571,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
                       id={_namespace + '-skalYtelseUtbetales'}
                     >
-                      <HStack gap="2">
+                      <HStack gap="space-8">
                         <Label>{t('label:skal-ytelse-utbetales') + ':'}</Label>
                         {t('label:' + _periode?.skalYtelseUtbetales)}
                       </HStack>
@@ -606,8 +606,8 @@ const VedtakFC: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <Box padding="4">
-        <VStack gap="4">
+      <Box padding="space-16">
+        <VStack gap="space-16">
           <Heading size='small'>
             {label}
           </Heading>
@@ -621,7 +621,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
             name={namespace + '-gjelderAlleBarn'}
             onChange={(e: string) => setGjelderAlleBarn(e as JaNei)}
           >
-            <HStack  gap="4" align="center">
+            <HStack  gap="space-16" align="center">
               <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
               <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
               <Spacer/>
@@ -697,7 +697,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
             </Heading>
             {_.isEmpty(vedtak?.vedtaksperioder)
               ? (
-                <Box borderWidth={"1 0"} paddingBlock="2">
+                <Box borderWidth={"1 0"} paddingBlock="space-8">
                   <BodyLong>
                     {t('message:warning-no-periods')}
                   </BodyLong>
@@ -735,7 +735,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
             )}
             {_.isEmpty(_allKompetansePeriods)
               ? (
-                <Box borderWidth={"1 0"} paddingBlock="2">
+                <Box borderWidth={"1 0"} paddingBlock="space-8">
                   <BodyLong>
                     {t('message:warning-no-periods')}
                   </BodyLong>

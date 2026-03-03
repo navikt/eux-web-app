@@ -255,9 +255,9 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }
 
   if(_isLoading){
-    return(
-      <Box padding="4" borderWidth="1" borderRadius="small" borderColor="border-default" background="surface-default">
-        <VStack gap="4">
+    return (
+      <Box padding="space-16" borderWidth="1" borderRadius="2" borderColor="neutral" background="default">
+        <VStack gap="space-16">
           <Heading size='small'>
             {t('label:journalfoer')}
           </Heading>
@@ -265,7 +265,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
           <Loader/>
         </VStack>
       </Box>
-    )
+    );
   }
 
   return (
@@ -286,7 +286,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                   </ul>
                 </>
               }
-              <VStack gap="2">
+              <VStack gap="space-8">
                 {oppgaverFerdigstilt && oppgaverFerdigstilt.length > 0 &&
                   <Heading size="small">{t('label:tilhorende-oppgaver-ferdigstilt', {NO_OF_OPPGAVE: oppgaverFerdigstilt.length})}</Heading>
                 }
@@ -309,13 +309,13 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
           </Dialog.Footer>
         </Dialog.Popup>
       </Dialog>
-      <Box padding="4" borderWidth="1" borderRadius="small" borderColor="border-default" background="surface-default">
-        <VStack gap="4">
+      <Box padding="space-16" borderWidth="1" borderRadius="2" borderColor="neutral" background="default">
+        <VStack gap="space-16">
           <Heading size='small'>
             {t('label:journalfoer')}
           </Heading>
           <div className={commonStyles.horizontalLineSeparator} />
-          <HGrid columns={3} gap="4">
+          <HGrid columns={3} gap="space-16">
             <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation} defaultValue={sak.fagsak &&  sak.fagsak.fnr ? sak.fagsak.fnr : ""}/>
             <Button variant="secondary" onClick={onSearch} loading={searchingJournalfoeringPerson} className={`nolabel ${styles.fullWidthButton}`}>
               {t("el:button-search-i-x", {x: "PDL"})}
@@ -331,17 +331,17 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
               <div className='nolabel'><Alert variant={"error"}>{alertMessage}</Alert></div>
             }
           </HGrid>
-          <HStack gap="4">
-            <VStack gap="2" width="66%">
+          <HStack gap="space-16">
+            <VStack gap="space-8" width="66%">
               <Label>Enhet</Label>
               <ActionMenu>
                 <ActionMenu.Trigger>
                   <Button
+                    data-color="neutral"
                     className={styles.actionMenuButton}
-                    variant="secondary-neutral"
+                    variant="secondary"
                     icon={<ChevronDownIcon aria-hidden/>}
-                    iconPosition="right"
-                  >
+                    iconPosition="right">
                     {enhet ? enhet.enhetNr + ' - ' + enhet.navn : "Velg"}
                   </Button>
                 </ActionMenu.Trigger>
@@ -363,8 +363,8 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
             </VStack>
             <Spacer/>
           </HStack>
-          <VStack gap="2">
-            <HGrid columns={3} gap="4">
+          <VStack gap="space-8">
+            <HGrid columns={3} gap="space-16">
               <Select label={t('label:velg-tema')} onChange={onTemaChange} disabled={_.isEmpty(person)} id="mySelect">
                 <option value=''>
                   {t('label:velg')}
@@ -396,7 +396,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 </Select>
               }
             </HGrid>
-            <HGrid columns={3} gap="4">
+            <HGrid columns={3} gap="space-16">
               <Spacer/>
               {sektor !== "UB" && fagsaker && fagsaker.length === 0 &&
                 <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak}>
@@ -404,7 +404,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 </Button>
               }
               {sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
-                <VStack gap="2">
+                <VStack gap="space-8">
                   <Spacer/>
                   <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak} className={styles.fullWidthButton}>
                     {t("el:button-create-x", {x: "fagsak"})}
@@ -421,7 +421,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
               <Spacer/>
             </HGrid>
           </VStack>
-          <HGrid columns={3} gap="4">
+          <HGrid columns={3} gap="space-16">
             <Checkbox
               checked={_opprettOppgaveSelected !== undefined && _opprettOppgaveSelected }
               onChange={onOpprettOppgaveChange}
@@ -429,7 +429,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
               {t('label:opprett-oppgave')}
             </Checkbox>
           </HGrid>
-          <HGrid columns={3} gap="4">
+          <HGrid columns={3} gap="space-16">
             <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} disabled={!(!journalfoeringLogg && fagsak && enhet && fagsaker && fagsaker.length>0)}>
               {t("el:button-journalfoer")}
             </Button>
@@ -437,7 +437,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default JournalfoerPanel

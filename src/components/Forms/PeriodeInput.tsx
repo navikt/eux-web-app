@@ -116,11 +116,11 @@ const PeriodeInput = <T extends Periode>({
 
   return (
     asGrid ?
-      <HGrid columns={periodeType === "withcheckbox" ? 3 : 2} gap="4" align={"start"}>
+      <HGrid columns={periodeType === "withcheckbox" ? 3 : 2} gap="space-16" align={"start"}>
         {dateFields()}
       </HGrid>
       :
-      <HStack gap="4" wrap={false} align={"start"}>
+      <HStack gap="space-16" wrap={false} align={"start"}>
         {dateFields()}
       </HStack>
   )

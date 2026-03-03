@@ -63,7 +63,7 @@ const PersonBasic: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <HGrid gap="4" columns={3} align="start">
+      <HGrid gap="space-16" columns={3} align="start">
         <Input
           error={validation[namespace + '-fornavn']?.feilmelding}
           id='fornavn'

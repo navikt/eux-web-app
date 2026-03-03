@@ -66,7 +66,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
     return(
       <>
         <Tooltip content={t('message:warning-rina')}>
-          <Box paddingBlock="2">
+          <Box paddingBlock="space-8">
             <BodyLong>
               {t('sakshandlinger:' + sakshandling, t('sakshandlinger:opprett', {SED: sakshandling}))}
             </BodyLong>
@@ -118,8 +118,8 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
 
   return (
     <>
-      <Box padding="4" background="bg-default" borderWidth="1" borderColor="border-default" borderRadius="small">
-        <VStack gap="4">
+      <Box padding="space-16" background="default" borderWidth="1" borderColor="neutral" borderRadius="2">
+        <VStack gap="space-16">
           <Heading size='small'>Sakshandlinger</Heading>
           <div className={commonStyles.horizontalLineSeparator} />
           {sakshandlinger}
@@ -131,7 +131,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default Sakshandlinger

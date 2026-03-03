@@ -1,8 +1,8 @@
-import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, StarFillIcon, StarIcon, WrenchIcon } from '@navikt/aksel-icons'
+import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, MoonIcon, StarFillIcon, StarIcon, SunIcon, WrenchIcon } from '@navikt/aksel-icons'
 import { State } from 'declarations/reducers'
 import {Enhet, Enheter, Saksbehandler} from 'declarations/types'
 import {ActionMenu, BodyShort, Button, Detail, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import {appReset, setFavouriteEnhet, setSelectedEnhet} from 'actions/app'
@@ -41,6 +41,18 @@ const Header: React.FC<HeaderProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('darkMode')
+    return saved ? saved === 'true' : document.documentElement.classList.contains('dark')
+  })
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', darkMode)
+    localStorage.setItem('darkMode', String(darkMode))
+  }, [darkMode])
+
+  const toggleDarkMode = useCallback(() => setDarkMode(prev => !prev), [])
+
   const resetApp = () => {
     dispatch(appReset())
   }
@@ -59,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({
         <InternalHeader.Title as={NavLink} to="/" onClick={resetApp}>
           nEESSI
         </InternalHeader.Title>
-        <HStack align="center" paddingInline="4 0" width="100%">
+        <HStack align="center" paddingInline="space-16 space-0" width="100%">
           <Heading size='small'>
             {title}
           </Heading>
@@ -135,6 +147,12 @@ const Header: React.FC<HeaderProps> = ({
               title={"Merk enheten som favorittenhet"}
               onClick={() => setFavourite(selectedEnhet)}
             />
+          }
+        </InternalHeader.Button>
+        <InternalHeader.Button onClick={toggleDarkMode}>
+          {darkMode
+            ? <SunIcon style={{fontSize: "1.5rem"}} title="Bytt til lyst tema" />
+            : <MoonIcon style={{fontSize: "1.5rem"}} title="Bytt til mørkt tema" />
           }
         </InternalHeader.Button>
       </InternalHeader>

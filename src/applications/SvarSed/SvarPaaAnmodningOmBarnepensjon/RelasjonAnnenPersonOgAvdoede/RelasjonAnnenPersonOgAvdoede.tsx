@@ -203,10 +203,10 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
     )
     return (
       <Box
-        padding="4"
-        background="surface-subtle"
+        padding="space-16"
+        background="neutral-soft"
         borderWidth="1"
-        borderColor="border-subtle"
+        borderColor="neutral-subtle"
         id={'repeatablerow-' + _namespace}
         key={getId(relasjon)}
         className={classNames(commonStyles.repeatableBox, {
@@ -217,7 +217,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
         {inEditMode
           ? (
 
-                <VStack gap="4">
+                <VStack gap="space-16">
                   <Select
                     value={_relasjon?.familierelasjonstype ?? ''}
                     id={namespace + '-type-relasjon'}
@@ -240,7 +240,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
                       value={_relasjon?.annenRelasjon}
                     />
                   }
-                  <HGrid columns={2} gap="4" align="start">
+                  <HGrid columns={2} gap="space-16" align="start">
                     <PeriodeInput
                       namespace={_namespace + '-periode'}
                       error={{
@@ -285,7 +285,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
                     legend={t('label:var-kravstiller-i-samme-hushold')}
                     onChange={(e:string) => setRelasjonProperty("varKravstillerISammeHushold",  e as JaNei,"var-kravstiller-i-samme-hushold", index)}
                   >
-                    <HStack gap="4">
+                    <HStack gap="space-16">
                       <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
                       </Radio>
@@ -301,7 +301,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
           )
           : (
             <>
-              <VStack gap="1">
+              <VStack gap="space-4">
                 <div><Label>{t('label:type')}:</Label> {t('el:option-familierelasjon-' + _relasjon?.familierelasjonstype)}</div>
                 {_relasjon?.familierelasjonstype === 'annet' && <div><Label>{t('label:annen-relasjon')}:</Label> {_relasjon?.annenRelasjon}</div>}
                 <div>
@@ -326,17 +326,17 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
           )
         }
       </Box>
-    )
+    );
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
         {CDM_VERSJON === "4.2" &&
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <TextArea
               error={validation[namespace + '-annen-person-relasjoner']?.feilmelding}
               namespace={namespace}
@@ -352,7 +352,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
           <>
             {_.isEmpty(relasjoner) && !_newForm
               ? (
-                  <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+                  <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
                     <BodyLong>
                       {t('message:warning-no-relasjon')}
                     </BodyLong>
@@ -368,7 +368,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
                   renderRow(null, -1)
                 )
               : (
-                  <Box padding="0">
+                  <Box padding="space-0">
                     <Button
                       variant='tertiary'
                       onClick={() => _setNewForm(true)}
@@ -383,7 +383,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
         }
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default RelasjonAnnenPersonOgAvdoede

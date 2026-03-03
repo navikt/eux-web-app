@@ -520,10 +520,10 @@ const SEDNew = (): JSX.Element => {
 
   return (
     <Page.Block width="2xl" gutters>
-      <HGrid columns={"2fr 1fr"} gap="8" paddingBlock="12" paddingInline="4">
+      <HGrid columns={"2fr 1fr"} gap="space-32" paddingBlock="space-48" paddingInline="space-16">
         <Box className={styles.myContent}>
-          <VStack gap="4">
-            <HStack gap="4">
+          <VStack gap="space-16">
+            <HStack gap="space-16">
               <Box style={{flex: 1}}>
                 <PersonSearch
                   key={namespace + '-fnr-' + valgtFnr}
@@ -567,7 +567,7 @@ const SEDNew = (): JSX.Element => {
                 <PersonPanel className='neutral' person={personMedFamilie}/>
               )}
             </Box>
-            <HStack gap="4">
+            <HStack gap="space-16">
               <Box style={{flex: 1}}>
                 <Select
                   data-testid={namespace + '-sektor'}
@@ -613,7 +613,7 @@ const SEDNew = (): JSX.Element => {
                 )}
               </Box>
             </HStack>
-            <HStack gap="4">
+            <HStack gap="space-16">
               <Box style={{flex: 1}}>
                 <Select
                   data-testid={namespace + '-buctype'}
@@ -667,7 +667,7 @@ const SEDNew = (): JSX.Element => {
                 {t('message:error-non-euefta-address')}
               </Alert>
             )}
-            <HStack gap="4">
+            <HStack gap="space-16">
               <Box style={{flex: 1}}>
                 <CountryDropdown
                   closeMenuOnSelect
@@ -683,7 +683,7 @@ const SEDNew = (): JSX.Element => {
                   values={valgtLandkode}/>
               </Box>
               <Box style={{flex: 1}}>
-                <HStack gap="2" align="center">
+                <HStack gap="space-8" align="center">
                   <Box style={{flex: 1}}>
                     <Select
                       data-testid={namespace + '-institusjon'}
@@ -713,7 +713,7 @@ const SEDNew = (): JSX.Element => {
               </Box>
             </HStack>
             {valgtSektor === 'FB' && (
-              <VStack gap="4">
+              <VStack gap="space-16">
                 <Heading size='medium'>
                   {t('label:familierelasjon')}
                 </Heading>
@@ -726,9 +726,9 @@ const SEDNew = (): JSX.Element => {
               </VStack>
             )}
             {valgtSektor && (
-              <HStack gap="4" align="start">
+              <HStack gap="space-16" align="start">
                 <Box style={{flex: 1}}>
-                  <HStack gap="2" align="end">
+                  <HStack gap="space-8" align="end">
                     <Box className={styles.temaSelect}>
                       <Select
                         data-testid={namespace + '-tema'}
@@ -760,7 +760,7 @@ const SEDNew = (): JSX.Element => {
                   </HStack>
                 </Box>
                 <Box style={{flex: 1}}>
-                  <VStack gap="2">
+                  <VStack gap="space-8">
                     {visFagsakerListe && (
                       <Select
                         data-testid={namespace + '-saksId'}
@@ -788,7 +788,7 @@ const SEDNew = (): JSX.Element => {
                       </Button>
                     )}
                     {valgtSektor === "UB" && fagsaker && fagsaker.length >= 0 && (
-                      <HStack gap="2">
+                      <HStack gap="space-8">
                         <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak} disabled={!!opprettetSak}>
                           {t("el:button-create-x", {x: "fagsak"})}
                         </Button>
@@ -805,7 +805,7 @@ const SEDNew = (): JSX.Element => {
                 </Box>
               </HStack>
             )}
-            <HStack gap="2">
+            <HStack gap="space-8">
               <Button
                 variant='primary'
                 disabled={_showNonEUEftaAddressWarning || sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
@@ -830,11 +830,11 @@ const SEDNew = (): JSX.Element => {
             <ValidationBox heading={t('validation:feiloppsummering')} validation={validation}/>
             {opprettetSak && opprettetSak.sakUrl && (
               <Alert variant='success'>
-                <VStack gap="2">
+                <VStack gap="space-8">
                   <BodyLong>
                     {t('label:saksnummer') + ': ' + opprettetSak.sakId + ' ' + t('label:er-opprettet')}.
                   </BodyLong>
-                  <HStack gap="2">
+                  <HStack gap="space-8">
                     <Button
                       variant='primary'
                       disabled={!(opprettetSak && allowedToFillOut(valgtSedType!))}

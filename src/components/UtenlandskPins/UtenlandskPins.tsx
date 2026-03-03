@@ -157,9 +157,9 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="4"
+        padding="space-16"
       >
-        <HGrid columns={3} gap="4" align="start">
+        <HGrid columns={3} gap="space-16" align="start">
           <>
             {inEditMode
               ? (
@@ -239,7 +239,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     <>
       {_.isEmpty(pins)
         ? (
-          <Box borderWidth={"1 0"} paddingBlock="2">
+          <Box borderWidth={"1 0"} paddingBlock="space-8">
             <BodyLong>
               {t('message:warning-no-utenlandskepin')}
             </BodyLong>
@@ -248,9 +248,9 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
         : (
           <>
             <Box
-              marginInline="4"
+              marginInline="space-16"
             >
-              <HGrid columns={3} gap="4">
+              <HGrid columns={3} gap="space-16">
                 <Label>
                   {t('label:land')}
                 </Label>

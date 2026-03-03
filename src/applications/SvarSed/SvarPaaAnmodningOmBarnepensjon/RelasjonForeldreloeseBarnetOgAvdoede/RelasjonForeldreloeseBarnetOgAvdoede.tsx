@@ -191,10 +191,10 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
     )
     return (
       <Box
-        padding="4"
-        background="surface-subtle"
+        padding="space-16"
+        background="neutral-soft"
         borderWidth="1"
-        borderColor="border-subtle"
+        borderColor="neutral-subtle"
         id={'repeatablerow-' + _namespace}
         key={getId(relasjon)}
         className={classNames(commonStyles.repeatableBox, {
@@ -205,7 +205,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
         {inEditMode
           ? (
 
-                <VStack gap="4">
+                <VStack gap="space-16">
                   <RadioGroup
                     value={_relasjon?.relasjonTilPerson ?? ''}
                     data-testid={namespace + '-relasjon-til-person'}
@@ -214,8 +214,8 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     legend={t('label:relasjon-med') + ' *'}
                     onChange={(e:string) => setRelasjonProperty("relasjonTilPerson",  e,"relasjon-til-person", index)}
                   >
-                    <VStack gap="2">
-                      <HStack gap="4">
+                    <VStack gap="space-8">
+                      <HStack gap="space-16">
                         <Radio className={commonStyles.radioPanel} value='soeker'>
                           {t('el:option-relasjonbarn-relasjontilperson-soeker')}
                         </Radio>
@@ -223,7 +223,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                           {t('el:option-relasjonbarn-relasjontilperson-ektefelle_partner')}
                         </Radio>
                       </HStack>
-                      <HStack gap="4">
+                      <HStack gap="space-16">
                         <Radio className={commonStyles.radioPanel} value='avdoed'>
                           {t('el:option-relasjonbarn-relasjontilperson-avdoed')}
                         </Radio>
@@ -250,7 +250,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     <option value="barnebarn_bror_søster_nevø_niese" key="barnebarn_bror_søster_nevø_niese">{t('el:option-relasjonbarn-type-barnebarn_bror_søster_nevø_niese')}</option>
                     <option value="fosterbarn" key="fosterbarn">{t('el:option-relasjonbarn-type-fosterbarn')}</option>
                   </Select>
-                  <HGrid columns={2} gap="4" align="start">
+                  <HGrid columns={2} gap="space-16" align="start">
                     <PeriodeInput
                       namespace={_namespace + '-periode'}
                       error={{
@@ -271,7 +271,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     legend={t('label:delt-foreldreansvar')}
                     onChange={(e:string) => setRelasjonProperty("fellesOmsorg",  e as JaNei,"felles-omsorg", index)}
                   >
-                    <HStack gap="4">
+                    <HStack gap="space-16">
                       <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
                       </Radio>
@@ -288,7 +288,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     legend={t('label:bor-i-samme-hustand-som-søkeren')}
                     onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomKravstiller",  e as JaNei,"bor-i-samme-hustand-som-kravstiller", index)}
                   >
-                    <HStack gap="4">
+                    <HStack gap="space-16">
                       <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
                       </Radio>
@@ -305,7 +305,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     legend={t('label:bor-i-samme-hustand-som-ektefelle-partneren')}
                     onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomEktefelle",  e as JaNei,"bor-i-samme-hustand-som-ektefelle", index)}
                   >
-                    <HStack gap="4">
+                    <HStack gap="space-16">
                       <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
                       </Radio>
@@ -322,7 +322,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     legend={t('label:bor-i-samme-hustand-som-den-andre-aktuelle-personen')}
                     onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomAnnenPerson",  e as JaNei,"bor-i-samme-hustand-som-annen-person", index)}
                   >
-                    <HStack gap="4">
+                    <HStack gap="space-16">
                       <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
                       </Radio>
@@ -339,7 +339,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     legend={t('label:bor-barnet-paa-institusjon')}
                     onChange={(e:string) => setRelasjonProperty("borPaaInstitusjon",  e as JaNei,"bor-paa-institusjon", index)}
                   >
-                    <HStack gap="4">
+                    <HStack gap="space-16">
                       <Radio className={commonStyles.radioPanel} value='ja'>
                         Ja
                       </Radio>
@@ -354,7 +354,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
           )
           : (
             <>
-              <VStack gap="1">
+              <VStack gap="space-4">
                 <div><Label>{t('label:relasjon-med')}:</Label> {t('el:option-relasjonbarn-relasjontilperson-' + _relasjon?.relasjonTilPerson)}</div>
                 <div><Label>{t('label:type')}:</Label> {t('el:option-relasjonbarn-type-' + _relasjon?.typeRelasjon)}</div>
                 <div>
@@ -380,17 +380,17 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
           )
         }
       </Box>
-    )
+    );
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
         {CDM_VERSJON === "4.2" &&
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <TextArea
               error={validation[namespace + '-barnet-relasjoner']?.feilmelding}
               namespace={namespace}
@@ -406,7 +406,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
           <>
             {_.isEmpty(relasjoner) && !_newForm
               ? (
-                  <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+                  <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
                     <BodyLong>
                       {t('message:warning-no-relasjon')}
                     </BodyLong>
@@ -422,7 +422,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                   renderRow(null, -1)
                 )
               : (
-                  <Box padding="0">
+                  <Box padding="space-0">
                     <Button
                       variant='tertiary'
                       onClick={() => _setNewForm(true)}
@@ -437,7 +437,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
         }
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default RelasjonForeldreloeseBarnetOgAvdoede

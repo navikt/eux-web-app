@@ -90,7 +90,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
     const previewing = context?.gettingAttachmentFile
     const spinner = previewing && _.isEqual(item as AttachmentTableItem, context?.clickedItem)
     return (
-      <HStack paddingBlock={"1 0"} justify="space-between" align="center" wrap={false}>
+      <HStack paddingBlock={"space-4 space-0"} justify="space-between" align="center" wrap={false}>
         <Button
           variant='tertiary'
           size='small'
@@ -111,7 +111,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
     const settingSensitive = context?.settingAttachmentSensitive
     const spinner = settingSensitive && _.isEqual(item as AttachmentTableItem, context?.clickedItem)
     return (
-      <HStack paddingBlock={"1 0"} justify="space-between" align="center" wrap={false}>
+      <HStack paddingBlock={"space-4 space-0"} justify="space-between" align="center" wrap={false}>
         {spinner && <Loader/>}
         {!spinner &&
           <Checkbox

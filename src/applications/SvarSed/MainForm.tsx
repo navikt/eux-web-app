@@ -312,7 +312,7 @@ const MainForm = <T extends StorageTypes>({
             role="button"
             tabIndex={0}
           >
-            <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: selected })}>
+            <HStack wrap={false} gap="space-8" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: selected })}>
               {isValidated
                 ? validationHasErrors
                   ? <HStack><XMarkOctagonFillIcon height={20} color='red' /></HStack>
@@ -364,7 +364,7 @@ const MainForm = <T extends StorageTypes>({
           role="button"
           tabIndex={0}
         >
-          <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === personId })}>
+          <HStack wrap={false} gap="space-8" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === personId })}>
             {isValidated
               ? validationHasErrors
                 ? <XMarkOctagonFillIcon height={20} color='red' />
@@ -389,7 +389,7 @@ const MainForm = <T extends StorageTypes>({
             {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
           </HStack>
         </div>
-        {open && <Box paddingInline="2"><div className={commonStyles.horizontalLineSeparator} /></Box>}
+        {open && <Box paddingInline="space-8"><div className={commonStyles.horizontalLineSeparator} /></Box>}
         {open && forms
           .filter(o => {
             const _type = (replySed as ReplySed)?.sedType ?? 'PDU1'
@@ -437,7 +437,7 @@ const MainForm = <T extends StorageTypes>({
             const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
             return (
               <HStack
-                gap="2"
+                gap="space-8"
                 align="center"
                 className={classNames(styles.optionDiv, {
                   [styles.selected]: currentMenu === personId && currentMenuOption === o.value,
@@ -518,7 +518,7 @@ const MainForm = <T extends StorageTypes>({
           role="button"
           tabIndex={0}
         >
-          <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === menuItem.key })}>
+          <HStack wrap={false} gap="space-8" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === menuItem.key })}>
             {isValidated
               ? validationHasErrors
                 ? <HStack><XMarkOctagonFillIcon height={20} color='red' /></HStack>
@@ -533,7 +533,7 @@ const MainForm = <T extends StorageTypes>({
             </HStack>
           </HStack>
         </div>
-        {open && <Box paddingInline="2"><div className={commonStyles.horizontalLineSeparator} /></Box>}
+        {open && <Box paddingInline="space-8"><div className={commonStyles.horizontalLineSeparator} /></Box>}
         {open && forms
           .filter(o => {
             const _type = menuItem.key
@@ -548,7 +548,7 @@ const MainForm = <T extends StorageTypes>({
             const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
             return (
               <HStack
-                gap="2"
+                gap="space-8"
                 align="start"
                 className={classNames(styles.optionWithIconDiv, {
                   [styles.selected]: currentMenu === menuItem.key && currentMenuOption === o.value,

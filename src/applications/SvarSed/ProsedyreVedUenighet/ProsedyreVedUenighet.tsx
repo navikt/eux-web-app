@@ -225,11 +225,11 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="4"
+        padding="space-16"
       >
           {inEditMode
             ? (
-              <HGrid columns={3} align="center" gap="4">
+              <HGrid columns={3} align="center" gap="space-16">
                 <Select
                   closeMenuOnSelect
                   data-testid={_namespace + '-grunn'}
@@ -273,8 +273,8 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
               </HGrid>
               )
             : (
-              <HStack gap="2" align="start">
-                <HGrid columns={"2fr 1fr"} align="start" gap="4" width="70%">
+              <HStack gap="space-8" align="start">
+                <HGrid columns={"2fr 1fr"} align="start" gap="space-16" width="70%">
                   <FormText
                     error={_v[_namespace + '-grunn']?.feilmelding}
                     id={_namespace + '-grunn'}
@@ -308,8 +308,8 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -320,7 +320,7 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
                   error={validation[namespace + '-grunner']?.feilmelding}
                   id={namespace + '-grunner'}
                 >
-                  <Box borderWidth={"1 0"} paddingBlock="2">
+                  <Box borderWidth={"1 0"} paddingBlock="space-8">
                     {t('message:warning-no-grunn')}
                   </Box>
                 </FormText>

@@ -140,8 +140,8 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4" key={namespace + '-div'}>
-      <VStack gap="4">
+    <Box padding="space-16" key={namespace + '-div'}>
+      <VStack gap="space-16">
         <Heading size='medium'>
           {t('label:rett-til-dagpenger')}
         </Heading>
@@ -154,12 +154,12 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
           name={namespace + '-rettTilDagpengerRadio'}
           onChange={onRettTilDagpengerRadioChange}
         >
-          <VStack gap="2">
+          <VStack gap="space-8">
             <Radio value='rettTilDagpenger'>
               {t('el:checkbox-pdu1-6.1')}
             </Radio>
-            <Box paddingInline="10 10">
-              <VStack gap="2">
+            <Box paddingInline="space-40 space-40">
+              <VStack gap="space-8">
                 <Checkbox
                   checked={rettTilDagpenger?.ihhTilArtikkel64 === 'ja'}
                   data-testid={namespace + '-ihhTilArtikkel64'}
@@ -180,7 +180,7 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
                 >
                   {t('el:checkbox-pdu1-6.1.2')}
                 </Checkbox>
-                <HGrid columns={2} gap="4" align="start">
+                <HGrid columns={2} gap="space-16" align="start">
                   <DateField
                     error={validation[namespace + '-startdato']?.feilmelding}
                     namespace={namespace}
@@ -207,8 +207,8 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
             <Radio value='ikkeRettTilDagpenger'>
               {t('el:checkbox-pdu1-6.2')}
             </Radio>
-            <Box paddingInline="10 10">
-              <VStack gap="2">
+            <Box paddingInline="space-40 space-40">
+              <VStack gap="space-8">
                 <Checkbox
                   checked={ikkeRettTilDagpenger?.ihhTilLovgivning === 'ja'}
                   data-testid={namespace + '-ihhTilLovgivning'}

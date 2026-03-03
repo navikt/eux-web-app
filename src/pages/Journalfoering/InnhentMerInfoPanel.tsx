@@ -185,8 +185,8 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
           </Dialog.Footer>
         </Dialog.Popup>
       </Dialog>
-      <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
-        <VStack gap="4">
+      <Box background="default" padding="space-16" borderWidth="1" borderColor="neutral" borderRadius="2">
+        <VStack gap="space-16">
           <Heading size='small'>
             {t('label:innhent-mer-info')}
           </Heading>
@@ -209,7 +209,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default InnhentMerInfoPanel

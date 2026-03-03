@@ -45,12 +45,12 @@ const BarnetFritekst: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
-        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+        <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
           <TextArea
             error={validation[namespace + '-fritekst']?.feilmelding}
             namespace={namespace}
@@ -63,7 +63,7 @@ const BarnetFritekst: React.FC<MainFormProps> = ({
         </Box>
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default BarnetFritekst

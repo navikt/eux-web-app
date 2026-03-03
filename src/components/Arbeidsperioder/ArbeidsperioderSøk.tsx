@@ -109,8 +109,8 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
   }
 
   return (
-    <VStack gap="4">
-      <HStack gap="2" align="start">
+    <VStack gap="space-16">
+      <HStack gap="space-8" align="start">
         <Input
           namespace={namespace + '-arbeidssok'}
           error={_validation[namespace + '-arbeidssok-startdato']?.feilmelding}
@@ -151,7 +151,7 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
         </Button>
       </HStack>
       {_.isNil(fnr) && _.isFunction(fillOutFnr) && (
-        <HStack gap="4">
+        <HStack gap="space-16">
           <BodyLong>
             {t('message:error-no-fnr')}
           </BodyLong>

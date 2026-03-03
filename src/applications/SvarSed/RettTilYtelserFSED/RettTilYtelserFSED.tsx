@@ -199,10 +199,10 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        paddingBlock="2"
-        paddingInline="4"
+        paddingBlock="space-8"
+        paddingInline="space-16"
       >
-        <HStack gap="4" align="start">
+        <HStack gap="space-16" align="start">
           {inEditMode
             ? (
               <PeriodeInput
@@ -247,12 +247,12 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {t('label:rett-til-ytelser')}
         </Heading>
-        <HGrid columns={2} gap="2">
+        <HGrid columns={2} gap="space-8">
           <RadioGroup
             value={_rettTilFamilieYtelser}
             data-no-border
@@ -263,7 +263,7 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
             name={namespace + '-rettTilFamilieYtelser'}
             onChange={(e: string) => setRettTilFamilieYtelser(e as JaNei)}
           >
-            <HStack gap="4">
+            <HStack gap="space-16">
               <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
               <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
             </HStack>
@@ -278,9 +278,9 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
                 [styles.error]: hasNamespaceWithErrors(validation, namespace + "-perioderMedYtelser")
               })}
               borderWidth="1"
-              padding="4"
+              padding="space-16"
             >
-              <VStack gap="4">
+              <VStack gap="space-16">
                 {_.isEmpty(perioderMedYtelser)
                   ? (
                     <BodyLong>
@@ -310,7 +310,7 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
           </>
         }
         {_rettTilFamilieYtelser && _rettTilFamilieYtelser === "nei" &&
-          <VStack gap="4">
+          <VStack gap="space-16">
 
             <HGrid columns={2}>
               <RadioGroup
@@ -323,7 +323,7 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
                 name={namespace + '-ikkeRettTilYtelser'}
                 onChange={setIkkeRettTilFamilieYtelser}
               >
-                <HStack gap="4">
+                <HStack gap="space-16">
                   {isF026Sed(replySed) && <Radio className={commonStyles.radioPanel} value='krav_ikke_framsatt'>{t('label:krav-ikke-framsatt')}</Radio>}
                   <Radio className={commonStyles.radioPanel} value='for_høy_inntekt'>{t('label:for-hoy-inntekt')}</Radio>
                   <Radio className={commonStyles.radioPanel} value='annen_grunn'>{t('label:annet')}</Radio>
