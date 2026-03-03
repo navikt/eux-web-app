@@ -6,6 +6,9 @@
   border-radius: var(--ax-radius-4);
   padding-inline: var(--ax-space-8);
   align-items: center;
+  &:focus-within::after {
+    inset: 0;
+  }
 }
 
 .radioPanel:has(input[type=radio]:checked){
