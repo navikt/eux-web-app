@@ -12,6 +12,11 @@
     <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <link rel="stylesheet" href="./global.css">
     <script type="application/javascript">
+      if (localStorage.getItem('neessi-theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+    <script type="application/javascript">
       window.frontendlogger = { info: function(){}, warn: function(){}, error: function(){} };
       window.frontendlogger.appname = '%VITE_APP_NAME%';
       window.frontendlogger.context = '%VITE_APP_LOCAL_CONTEXT%';

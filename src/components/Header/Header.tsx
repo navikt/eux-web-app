@@ -1,8 +1,8 @@
-import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, StarFillIcon, StarIcon, WrenchIcon } from '@navikt/aksel-icons'
+import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, MoonIcon, StarFillIcon, StarIcon, SunIcon, WrenchIcon } from '@navikt/aksel-icons'
 import { State } from 'declarations/reducers'
 import {Enhet, Enheter, Saksbehandler} from 'declarations/types'
 import {ActionMenu, BodyShort, Button, Detail, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import {appReset, setFavouriteEnhet, setSelectedEnhet} from 'actions/app'
@@ -40,6 +40,22 @@ const Header: React.FC<HeaderProps> = ({
   const { saksbehandler, enheter, selectedEnhet, featureToggles }: HeaderSelector = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('neessi-theme') === 'dark'
+  })
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode)
+  }, [isDarkMode])
+
+  const toggleDarkMode = useCallback(() => {
+    setIsDarkMode(prev => {
+      const next = !prev
+      localStorage.setItem('neessi-theme', next ? 'dark' : 'light')
+      return next
+    })
+  }, [])
 
   const resetApp = () => {
     dispatch(appReset())
@@ -135,6 +151,12 @@ const Header: React.FC<HeaderProps> = ({
               title={"Merk enheten som favorittenhet"}
               onClick={() => setFavourite(selectedEnhet)}
             />
+          }
+        </InternalHeader.Button>
+        <InternalHeader.Button onClick={toggleDarkMode}>
+          {isDarkMode
+            ? <SunIcon style={{fontSize: "1.5rem"}} title="Bytt til lyst tema" />
+            : <MoonIcon style={{fontSize: "1.5rem"}} title="Bytt til mørkt tema" />
           }
         </InternalHeader.Button>
       </InternalHeader>
