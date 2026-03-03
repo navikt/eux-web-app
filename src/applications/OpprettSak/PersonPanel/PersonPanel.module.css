@@ -11,6 +11,6 @@
 }
 
 .neutral {
-  background: white;
+  background: var(--ax-bg-default);
 }
 

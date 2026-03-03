@@ -1,5 +1,5 @@
 .popOverButton {
-  color: black;
+  color: var(--ax-text-neutral);
   background-color: transparent;
   padding: 0;
   &:hover {
