@@ -8,6 +8,6 @@
 
 @keyframes fadeBackground {
   from { background-color: var(--ax-bg-default); }
-  to { background-color: #FCE97F; }
+  to { background-color: var(--ax-bg-warning-moderate); }
 }
 
