@@ -268,7 +268,7 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
                     periode={_periodeMedGrunn?.periode}
                   />
                   <Tag size="small" variant="info">{typeGrunnOptions.find((typeGrunn) => typeGrunn.value ==_periodeMedGrunn?.typeGrunn)?.label}</Tag>
-                  <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+                  <div className="aksel-button--small"/> {/* Prevent height flicker on hover */}
                   <Spacer/>
                   <AddRemovePanel<PeriodeMedGrunn>
                     item={periodeMedGrunn}

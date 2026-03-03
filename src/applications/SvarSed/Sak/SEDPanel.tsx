@@ -204,7 +204,7 @@ const SEDPanel = ({
       />
       <HStack gap="4" wrap={false}>
         <VStack className={styles.iconDiv} align="center">
-          {sed.status === 'received' && <DownloadIcon color='var(--a-surface-action)' width='32' height='32' />}
+          {sed.status === 'received' && <DownloadIcon color='var(--ax-bg-accent-strong)' width='32' height='32' />}
           {sed.status === 'sent' && <PaperplaneIcon color='green' width='32' height='32' />}
           {sed.status === 'new' && <StarIcon color='orange' width='32' height='32' />}
           {sed.status === 'active' && <PencilIcon width='32' height='32' />}
@@ -272,14 +272,14 @@ const SEDPanel = ({
             >
             </Button>
             {sed.vedlegg && sed.vedlegg.length > 0 && (
-              <div className="navds-button navds-button--tertiary navds-button--small navds-button--icon-only">
+              <div className="aksel-button aksel-button--tertiary aksel-button--small aksel-button--icon-only">
                 <Button className={styles.attachmentButton} variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
                   <PaperclipIcon className={styles.attachmentIcon}/><span>({sed?.vedlegg?.length})</span>
                 </Button>
               </div>
             )}
             {sedHandlingerRINA && sedHandlingerRINA.length > 0 &&
-              <HelpText className={styles.myHelpText} title="Handlinger tilgjengelig i RINA" placement={"right"} wrapperClassName="navds-button navds-button--tertiary navds-button--small navds-button--icon-only">
+              <HelpText className={styles.myHelpText} title="Handlinger tilgjengelig i RINA" placement={"right"} wrapperClassName="aksel-button aksel-button--tertiary aksel-button--small aksel-button--icon-only">
                 <Heading size="xsmall">Handlinger tilgjengelig i RINA</Heading>
                 <ul>
                   {sedHandlingerRINA.map((sedhandling) => {

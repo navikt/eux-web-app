@@ -115,7 +115,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         </Search.Button>
       </Search>
       {(error ?? localValidation) && (
-        <span className='navds-error-message navds-error-message--medium'>
+        <span className='aksel-error-message aksel-error-message--medium'>
           {error ?? localValidation}
         </span>
       )}

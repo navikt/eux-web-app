@@ -9,8 +9,7 @@ import styles from './Error.module.css'
 
 const convert = new Convert({
   newline: true,
-  escapeXML: true,
-  fg: '#000'
+  escapeXML: true
 })
 
 export interface ErrorProps {

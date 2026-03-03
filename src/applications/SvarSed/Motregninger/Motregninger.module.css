@@ -1,8 +1,8 @@
 .motregningBox {
   &.new {
-    background-color: rgba(236, 243, 153, 0.5);
+    background-color: var(--ax-bg-success-softA);
   };
   &.error {
-    background-color: rgba(255, 0, 0, 0.2);
+    background-color: var(--ax-bg-danger-softA);
   };
 }

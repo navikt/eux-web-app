@@ -110,7 +110,7 @@ const SearchPersonRelatert: React.FC<SearchPersonRelatertProps> = ({
           </Search.Button>
         </Search>
         {_error &&
-          <span className='navds-error-message navds-error-message--medium'>
+          <span className='aksel-error-message aksel-error-message--medium'>
             {_error}
           </span>
         }

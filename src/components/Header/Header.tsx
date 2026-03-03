@@ -1,8 +1,8 @@
-import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, StarFillIcon, StarIcon, WrenchIcon } from '@navikt/aksel-icons'
+import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, MoonIcon, StarFillIcon, StarIcon, SunIcon, WrenchIcon } from '@navikt/aksel-icons'
 import { State } from 'declarations/reducers'
 import {Enhet, Enheter, Saksbehandler} from 'declarations/types'
 import {ActionMenu, BodyShort, Button, Detail, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
-import React from 'react'
+import React, {useCallback, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import {appReset, setFavouriteEnhet, setSelectedEnhet} from 'actions/app'
@@ -41,6 +41,18 @@ const Header: React.FC<HeaderProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark'
+  })
+
+  const toggleDarkMode = useCallback(() => {
+    const next = !isDarkMode
+    setIsDarkMode(next)
+    document.documentElement.classList.toggle('dark', next)
+    document.documentElement.classList.toggle('light', !next)
+    localStorage.setItem('theme', next ? 'dark' : 'light')
+  }, [isDarkMode])
+
   const resetApp = () => {
     dispatch(appReset())
   }
@@ -65,6 +77,9 @@ const Header: React.FC<HeaderProps> = ({
           </Heading>
         </HStack>
         <Spacer/>
+        <InternalHeader.Button onClick={toggleDarkMode} aria-label="Bytt tema">
+          {isDarkMode ? <SunIcon title="Bytt til lyst tema" /> : <MoonIcon title="Bytt til mørkt tema" />}
+        </InternalHeader.Button>
         <ActionMenu>
           <ActionMenu.Trigger>
             <InternalHeader.Button>

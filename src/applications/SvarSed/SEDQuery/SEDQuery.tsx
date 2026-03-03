@@ -98,7 +98,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
             </Search>
 
             {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (
-              <span className='navds-error-message navds-error-message--medium'>
+              <span className='aksel-error-message aksel-error-message--medium'>
                 {_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
               </span>
             )}

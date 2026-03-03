@@ -1,14 +1,14 @@
 .whiteContainer {
-  background-color: #ffffff;
+  background-color: var(--ax-bg-default);
 }
 
 .square {
   width: 150px;
   height: 150px;
   margin: 0 1rem;
-  background: #ffffff;
+  background: var(--ax-bg-default);
   border-radius: 5px;
-  border: 2px solid #0067C5;
+  border: 2px solid var(--ax-border-accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,12 +32,12 @@
 
 .styledLink {
   cursor: pointer;
-  color: #000000;
+  color: var(--ax-text-neutral);
   font-weight: bold;
 }
 
 .styledLink:active {
-  color: #000000;
+  color: var(--ax-text-neutral);
   background-color: transparent;
 }
 

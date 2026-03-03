@@ -2,7 +2,7 @@
   position: fixed;
   bottom: 0;
   right: 0;
-  color: #3e3832;
+  color: var(--ax-text-neutral-subtle);
   overflow: hidden;
   margin: 0.5rem;
   padding: 0em 0.5em;

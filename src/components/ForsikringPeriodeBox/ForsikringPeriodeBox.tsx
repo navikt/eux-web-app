@@ -446,7 +446,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                     {toDateFormat(_forsikringPeriode?.startdato, 'DD.MM.YYYY')}
                   </Label>
                   {_v[namespace + '-startdato']?.feilmelding && (
-                    <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                    <Label role='alert' aria-live='assertive' className='aksel-error-message aksel-error-message--medium'>
                       {_v[namespace + '-startdato']?.feilmelding}
                     </Label>
                   )}
@@ -459,7 +459,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                         {toDateFormat(_forsikringPeriode?.sluttdato, 'DD.MM.YYYY')}
                       </Label>
                       {_v[namespace + '-sluttdato']?.feilmelding && (
-                        <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                        <Label role='alert' aria-live='assertive' className='aksel-error-message aksel-error-message--medium'>
                           {_v[namespace + '-sluttdato']?.feilmelding}
                         </Label>
                       )}
@@ -471,7 +471,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                         {' (' + _forsikringPeriode?.aapenPeriodeType + ')'}
                       </Label>
                       {_v[namespace + '-aapenPeriodeType']?.feilmelding && (
-                        <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                        <Label role='alert' aria-live='assertive' className='aksel-error-message aksel-error-message--medium'>
                           {_v[namespace + '-aapenPeriodeType']?.feilmelding}
                         </Label>
                       )}
@@ -624,7 +624,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                         {(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
                       </Label>
                       {_v[namespace+ '-arbeidsgiver-navn']?.feilmelding && (
-                        <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                        <Label role='alert' aria-live='assertive' className='aksel-error-message aksel-error-message--medium'>
                           {_v[namespace + '-arbeidsgiver-navn']?.feilmelding}
                         </Label>
                       )}
@@ -648,7 +648,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                               />
                               )}
                           {_v[namespace + '-arbeidsgiver-adresse']?.feilmelding && (
-                            <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                            <Label role='alert' aria-live='assertive' className='aksel-error-message aksel-error-message--medium'>
                               {_v[namespace + '-arbeidsgiver-adresse']?.feilmelding}
                             </Label>
                           )}
@@ -678,7 +678,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           )
                         })}
                     {_v[namespace + '-arbeidsgiver-identifikatorer']?.feilmelding && (
-                      <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                      <Label role='alert' aria-live='assertive' className='aksel-error-message aksel-error-message--medium'>
                         {_v[namespace + '-arbeidsgiver-identifikatorer']?.feilmelding}
                       </Label>
                     )}

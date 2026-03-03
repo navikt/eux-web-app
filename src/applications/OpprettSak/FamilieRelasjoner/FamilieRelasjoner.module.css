@@ -1,6 +1,6 @@
 .error{
   margin: -4px;
-  border: 4px solid var(--a-border-danger) !important;
+  border: 4px solid var(--ax-border-danger) !important;
 }
 
 .fadingLineSeparator {
@@ -10,9 +10,9 @@
   border-left-style: solid;
   border-image: linear-gradient(
     to bottom,
-    var(--a-bg-subtle) 0%,
-    var(--a-border-strong) 5%,
-    var(--a-border-strong) 95%,
-    var(--a-bg-subtle) 100%
+    var(--ax-bg-neutral-soft) 0%,
+    var(--ax-border-neutral-strong) 5%,
+    var(--ax-border-neutral-strong) 95%,
+    var(--ax-bg-neutral-soft) 100%
   ) 1 100%;
 }

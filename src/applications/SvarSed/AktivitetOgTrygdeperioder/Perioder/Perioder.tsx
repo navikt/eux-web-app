@@ -178,7 +178,7 @@ const Perioder: React.FC<PerioderProps> = ({
               )
           }
           <Spacer/>
-          <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+          <div className="aksel-button--small"/> {/* Prevent height flicker on hover */}
           <AddRemove<Periode>
             item={periode}
             index={index}

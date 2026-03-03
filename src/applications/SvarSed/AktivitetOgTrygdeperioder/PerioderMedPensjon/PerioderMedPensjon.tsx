@@ -213,7 +213,7 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
           )
         }
           <Spacer/>
-          <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+          <div className="aksel-button--small"/> {/* Prevent height flicker on hover */}
           <AddRemovePanel<PensjonPeriode>
             item={pensjonPeriode}
             marginTop={inEditMode}

@@ -78,7 +78,7 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
                         : null
                     })}
                   </HStack>
-                  <Box style={{borderLeft: "1px solid var(--a-border-strong)"}} paddingInline="2">
+                  <Box style={{borderLeft: "1px solid var(--ax-border-neutral-strong)"}} paddingInline="2">
                     <HStack gap="2">
                       <Spacer />
                       <VStack>

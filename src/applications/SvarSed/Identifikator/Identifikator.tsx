@@ -249,7 +249,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
           )
         : identifikatorer?.map(renderRow)}
       {hasError && (
-        <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
+        <div role='alert' aria-live='assertive' className='aksel-error-message aksel-error-message--medium aksel-label'>
           {hasError}
         </div>
       )}

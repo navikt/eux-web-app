@@ -13,7 +13,7 @@ const ErrorLabel = ({
   }
 
   return (
-    <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+    <Label role='alert' aria-live='assertive' className='aksel-error-message aksel-error-message--medium'>
       {error}
     </Label>
   )

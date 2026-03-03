@@ -1,8 +1,8 @@
 body {
   margin: 0;
   padding: 0;
-  color: var(--a-text-default);
-  background: var(--a-bg-subtle);
+  color: var(--ax-text-neutral);
+  background: var(--ax-bg-neutral-soft);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -11,7 +11,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  --ac-button-secondary-bg: white;
 }
 .nolabel {
   margin-top: 2rem !important;
@@ -26,11 +25,100 @@ body {
   margin-left: -10000px;
 }
 
-#joarkBrowser .navds-button--tertiary:hover, #attachmentsFromRina .navds-button--tertiary:hover {
-  background-color: var(--a-surface-transparent);
+#joarkBrowser .aksel-button--tertiary:hover, #attachmentsFromRina .aksel-button--tertiary:hover {
+  background-color: transparent;
 }
 
 #neessiModal div{
   user-select:text !important;
   cursor: default !important;
+}
+
+/* Legacy token aliases for @navikt/landvelger compatibility */
+:root, .light {
+  --a-surface-default: var(--ax-bg-default);
+  --a-surface-subtle: var(--ax-bg-neutral-soft);
+  --a-surface-action-selected: var(--ax-bg-accent-strong);
+  --a-surface-action-hover: var(--ax-bg-accent-moderate-hover);
+  --a-surface-danger: var(--ax-bg-danger-strong);
+  --a-text-default: var(--ax-text-neutral);
+  --a-text-on-inverted: var(--ax-text-neutral-contrast);
+  --a-border-default: var(--ax-border-neutral);
+}
+
+.dark {
+  --a-surface-default: var(--ax-bg-default);
+  --a-surface-subtle: var(--ax-bg-neutral-soft);
+  --a-surface-action-selected: var(--ax-bg-accent-strong);
+  --a-surface-action-hover: var(--ax-bg-accent-strong-hover);
+  --a-surface-danger: var(--ax-bg-danger-strong);
+  --a-text-default: var(--ax-text-neutral);
+  --a-text-on-inverted: #fff;
+  --a-border-default: var(--ax-border-neutral);
+}
+
+/* CSS overrides for @navikt/landvelger react-select */
+.c-countrySelect__select__menu {
+  background-color: var(--ax-bg-default) !important;
+  border: 1px solid var(--ax-border-neutral-subtle);
+  border-radius: var(--ax-radius-4);
+  box-shadow: var(--ax-shadow-dialog);
+}
+
+.c-countrySelect__select__menu-list {
+  background-color: var(--ax-bg-default) !important;
+  padding: 0 !important;
+  border-radius: var(--ax-radius-4);
+}
+
+.c-countrySelect__select__option {
+  color: var(--ax-text-neutral) !important;
+  background-color: var(--ax-bg-default) !important;
+}
+
+.c-countrySelect__select__option:hover,
+.c-countrySelect__select__option--is-focused {
+  background-color: var(--ax-bg-accent-soft) !important;
+  color: var(--ax-text-neutral) !important;
+}
+
+.c-countrySelect__select__option--is-selected {
+  background-color: var(--ax-bg-accent-strong) !important;
+  color: var(--ax-text-neutral-contrast) !important;
+}
+
+.c-countrySelect__select__single-value {
+  color: var(--ax-text-neutral) !important;
+}
+
+.c-countrySelect__select__placeholder {
+  color: var(--ax-text-neutral-subtle) !important;
+}
+
+.c-countrySelect__select__input-container,
+.c-countrySelect__select__input {
+  color: var(--ax-text-neutral) !important;
+}
+
+.c-countrySelect__select__indicator {
+  color: var(--ax-text-neutral-decoration) !important;
+}
+
+.c-countrySelect__select__indicator:hover {
+  color: var(--ax-text-neutral) !important;
+}
+
+.c-countrySelect__select__multi-value {
+  background-color: var(--ax-bg-neutral-moderate) !important;
+  color: var(--ax-text-neutral) !important;
+  border-color: var(--ax-border-neutral-subtle) !important;
+}
+
+.c-countrySelect__select__multi-value__label {
+  color: var(--ax-text-neutral) !important;
+}
+
+.c-countrySelect__select__multi-value__remove:hover {
+  background-color: var(--ax-bg-danger-moderate) !important;
+  color: var(--ax-text-danger) !important;
 }

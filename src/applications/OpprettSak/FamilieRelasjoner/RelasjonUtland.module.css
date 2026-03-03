@@ -1,5 +1,5 @@
 .flashDiv {
-  background: #ffffff;
+  background: var(--ax-bg-default);
 }
 
 .flashBackground {
@@ -7,7 +7,7 @@
 }
 
 @keyframes fadeBackground {
-  from { background-color: #ffffff; }
-  to { background-color: #FCE97F; }
+  from { background-color: var(--ax-bg-default); }
+  to { background-color: var(--ax-bg-warning-moderate); }
 }
 

@@ -494,7 +494,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                             labels={{remove: "Fjern status"}}
                             alertOnDelete={hasTransferedPeriods() ? t('message:info-trygdeperioder-maa-overfoeres-paa-nytt') : undefined}
                           />
-                          <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
+                          <div className="aksel-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
                         </HStack>
                         <VStack gap="2" align="start" width="100%">
                           <Box
@@ -650,7 +650,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                   {aktivitetStatus.status !== "ingenInfo" &&
                                     <HStack width="100%">
                                       <Spacer/>
-                                      <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
+                                      <div className="aksel-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
                                       <AddRemove<Aktivitet>
                                         item={aktivitet}
                                         index={idx}
