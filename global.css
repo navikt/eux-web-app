@@ -33,3 +33,15 @@ body {
   user-select:text !important;
   cursor: default !important;
 }
+
+/* Legacy Aksel v7 token aliases for @navikt/landvelger compatibility */
+:root, .light, .dark {
+  --a-surface-default: var(--ax-bg-default);
+  --a-surface-subtle: var(--ax-bg-neutral-soft);
+  --a-surface-action-selected: var(--ax-bg-accent-strong);
+  --a-surface-action-hover: var(--ax-bg-accent-moderate-hover);
+  --a-surface-danger: var(--ax-bg-danger-strong);
+  --a-text-default: var(--ax-text-neutral);
+  --a-text-on-inverted: var(--ax-text-neutral-contrast);
+  --a-border-default: var(--ax-border-neutral);
+}

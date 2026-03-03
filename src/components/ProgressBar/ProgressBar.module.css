@@ -24,17 +24,17 @@
   background-size: 1rem 1rem;
   animation: progressBarAnimation 1s linear infinite;
   &.inprogress {
-    background-color: var(--ax-accent-600);
-    color: var(--ax-neutral-000);
+    background-color: var(--ax-bg-accent-strong);
+    color: var(--ax-text-neutral-contrast);
     background-image: linear-gradient(45deg, hsla(0, 0%, 100%, .15) 25%, transparent 0, transparent 50%, hsla(0, 0%, 100%, .15) 0, hsla(0, 0%, 100%, .15) 75%, transparent 0, transparent);
   }
   &.done {
-    background-color: var(--ax-success-600);
-    color: var(--ax-neutral-000);
+    background-color: var(--ax-bg-success-strong);
+    color: var(--ax-text-neutral-contrast);
   }
   &.error {
-    background-color: var(--ax-danger-600);
-    color: var(--ax-neutral-000);
+    background-color: var(--ax-bg-danger-strong);
+    color: var(--ax-text-neutral-contrast);
   }
   &.todo {
     background-color: var(--ax-border-neutral-subtle);

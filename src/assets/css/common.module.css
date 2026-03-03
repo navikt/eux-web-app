@@ -66,19 +66,19 @@
 
 .repeatableBox{
   &.new {
-    background-color: rgba(236, 243, 153, 0.5);
+    background-color: var(--ax-bg-success-softA);
   };
   &.error {
-    background-color: rgba(255, 0, 0, 0.2);
+    background-color: var(--ax-bg-danger-softA);
   };
   &.original {
-    background-color: var(--ax-accent-100);
+    background-color: var(--ax-bg-accent-soft);
   };
   &.errorBorder {
     border: 1px solid var(--ax-border-danger);
   }
   &:hover:not(.new):not(.error) {
-    background-color: var(--ax-neutral-100);
+    background-color: var(--ax-bg-neutral-soft);
   }
   &:not(:hover) .controlButtons {
     visibility: hidden;
