@@ -115,7 +115,7 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
             modalTitle: t('message:warning-x-not-saved', { x: 'SED' }),
             modalContent: (
               <>
-                <HStack gap="4">
+                <HStack gap="space-16">
                   <Button
                     variant='secondary' onClick={() => {
                       _setShowSaveModal(false)
@@ -139,7 +139,7 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
         {type === 'edit' && (<SEDEdit />)}
       </>
     </TopContainer>
-  )
+  );
 }
 
 export default SvarSedPage

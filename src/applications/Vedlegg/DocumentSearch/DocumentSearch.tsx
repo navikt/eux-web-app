@@ -68,7 +68,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
   const yyyMMdd = (dato: string): string => moment(dato).format('YYYY-MM-DD')
 
   return (
-    <HGrid gap="4" columns={2}>
+    <HGrid gap="space-16" columns={2}>
       <VStack>
         <Search
           label={t('label:rina-saksnummer')}
@@ -110,9 +110,8 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           {t('message:error-noDocumentFound')}
         </BodyLong>
       )}
-
     </HGrid>
-  )
+  );
 }
 
 export default DocumentSearch

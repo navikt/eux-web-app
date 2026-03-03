@@ -396,7 +396,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
 
   return (
     <Box
-      padding="4"
+      padding="space-16"
       borderWidth="1"
       className={classNames(commonStyles.repeatableBox, {
         [commonStyles.new]: style === "new",
@@ -404,7 +404,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
         [commonStyles.error]: hasNamespaceWithErrors(_v, namespace)
       })}
     >
-      <VStack gap="4">
+      <VStack gap="space-16">
       {(newMode || (_inEditMode && allowEdit)) && (
         <HStack>
           <Spacer/>
@@ -424,7 +424,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
           />
         </HStack>
       )}
-      <HStack gap="4" align="center">
+      <HStack gap="space-16" align="center">
         {newMode || (_inEditMode && allowEdit)
           ? (
             <PeriodeInput
@@ -446,7 +446,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                     {toDateFormat(_forsikringPeriode?.startdato, 'DD.MM.YYYY')}
                   </Label>
                   {_v[namespace + '-startdato']?.feilmelding && (
-                    <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                    <Label role='alert' aria-live='assertive' className='aksel-error-message'>
                       {_v[namespace + '-startdato']?.feilmelding}
                     </Label>
                   )}
@@ -459,7 +459,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                         {toDateFormat(_forsikringPeriode?.sluttdato, 'DD.MM.YYYY')}
                       </Label>
                       {_v[namespace + '-sluttdato']?.feilmelding && (
-                        <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                        <Label role='alert' aria-live='assertive' className='aksel-error-message'>
                           {_v[namespace + '-sluttdato']?.feilmelding}
                         </Label>
                       )}
@@ -471,7 +471,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                         {' (' + _forsikringPeriode?.aapenPeriodeType + ')'}
                       </Label>
                       {_v[namespace + '-aapenPeriodeType']?.feilmelding && (
-                        <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                        <Label role='alert' aria-live='assertive' className='aksel-error-message'>
                           {_v[namespace + '-aapenPeriodeType']?.feilmelding}
                         </Label>
                       )}
@@ -586,7 +586,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
             )}
 
             {showBeløp && (
-              <HGrid gap="4" align="start" columns={2}>
+              <HGrid gap="space-16" align="start" columns={2}>
                 <Input
                   error={_v[namespace + '-beloep']?.feilmelding}
                   namespace={namespace}
@@ -615,16 +615,16 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
           )
         : (
           <>
-            <HStack gap="4">
+            <HStack gap="space-16">
               {showArbeidsgiver && (
                 <>
-                  <VStack gap="4">
+                  <VStack gap="space-16">
                     <VStack>
                       <Label id={namespace + '-arbeidsgiver-navn'}>
                         {(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
                       </Label>
                       {_v[namespace+ '-arbeidsgiver-navn']?.feilmelding && (
-                        <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                        <Label role='alert' aria-live='assertive' className='aksel-error-message'>
                           {_v[namespace + '-arbeidsgiver-navn']?.feilmelding}
                         </Label>
                       )}
@@ -648,7 +648,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                               />
                               )}
                           {_v[namespace + '-arbeidsgiver-adresse']?.feilmelding && (
-                            <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                            <Label role='alert' aria-live='assertive' className='aksel-error-message'>
                               {_v[namespace + '-arbeidsgiver-adresse']?.feilmelding}
                             </Label>
                           )}
@@ -670,15 +670,15 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                               error={_validation[_namespace + '-identifikatorer']?.feilmelding}
                               id={_namespace + '-identifikatorer'}
                             >
-                              <HStack gap="2">
+                              <HStack gap="space-8">
                                 <Label>{t('label:' + id.type) + ':'}</Label>
                                 {id?.id}
                               </HStack>
                             </FormText>
-                          )
+                          );
                         })}
                     {_v[namespace + '-arbeidsgiver-identifikatorer']?.feilmelding && (
-                      <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                      <Label role='alert' aria-live='assertive' className='aksel-error-message'>
                         {_v[namespace + '-arbeidsgiver-identifikatorer']?.feilmelding}
                       </Label>
                     )}
@@ -694,7 +694,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                     {(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo}
                   </Label>
                   {(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimer?.map((inntektOgTime: InntektOgTime) => (
-                    <HGrid columns={3} gap="4" align="center" key={inntektOgTime?.inntektsperiode.startdato} width="100%">
+                    <HGrid columns={3} gap="space-16" align="center" key={inntektOgTime?.inntektsperiode.startdato} width="100%">
                       <PeriodeText
                         error={{
                           startdato: _v[namespace + '-inntektOgTimer-startdato']?.feilmelding,
@@ -716,7 +716,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
               </BodyLong>
             )}
             {showBeløp && (
-              <HStack gap="2">
+              <HStack gap="space-8">
                 <Label>{t('label:beløp') + ':'} </Label>
                 <FormText
                   error={_v[namespace + '-beloep']?.feilmelding}
@@ -741,7 +741,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
       )}
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default ForsikringPeriodeBox

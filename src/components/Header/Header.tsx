@@ -59,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({
         <InternalHeader.Title as={NavLink} to="/" onClick={resetApp}>
           nEESSI
         </InternalHeader.Title>
-        <HStack align="center" paddingInline="4 0" width="100%">
+        <HStack align="center" paddingInline="space-16 space-0" width="100%">
           <Heading size='small'>
             {title}
           </Heading>
@@ -151,7 +151,7 @@ const Header: React.FC<HeaderProps> = ({
         </header>
       )}
     </>
-  )
+  );
 }
 
 export default Header

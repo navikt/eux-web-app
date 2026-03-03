@@ -123,7 +123,7 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
     <HStack
       data-testid='c-sedAttachmentSender__div-id'
       className={className}
-      gap="4"
+      gap="space-16"
       justify="center"
       align="center"
     >
@@ -155,7 +155,7 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
         </Button>
       )}
     </HStack>
-  )
+  );
 }
 
 export default SEDAttachmentSender

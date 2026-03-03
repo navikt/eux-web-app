@@ -152,7 +152,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     const _statsborgerskap = index < 0 ? _newStatsborgerskap : (inEditMode ? _editStatsborgerskap : statsborgerskap)
     return (
       <Box
-        padding="1"
+        padding="space-4"
         id={'repeatablerow-' + _namespace}
         key={getId(statsborgerskap)}
         className={classNames(commonStyles.repeatableBox, {
@@ -160,8 +160,8 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VStack gap="4">
-          <HStack gap="4" align="center">
+        <VStack gap="space-16">
+          <HStack gap="space-16" align="center">
             {inEditMode
               ? (
                 <Box width="50%">
@@ -205,18 +205,18 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
           </HStack>
         </VStack>
       </Box>
-    )
+    );
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
         {_.isEmpty(statsborgerskaper)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-satsborgerskap')}
               </BodyLong>
@@ -247,7 +247,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
         }
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Nasjonaliteter

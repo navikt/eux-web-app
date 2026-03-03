@@ -142,8 +142,8 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
   const data = _svar === 'positivt' ? (replySed as H002Sed)?.positivtSvar : (replySed as H002Sed)?.negativtSvar
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -164,7 +164,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
               }
             }}
           >
-            <HGrid columns={2} gap="4" align="start">
+            <HGrid columns={2} gap="space-16" align="start">
               <Radio className={commonStyles.radioPanel} description={t('message:help-jeg-kan-sende')} value='positivt'>
                 {t('el:option-svar-1')}
               </Radio>
@@ -220,7 +220,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
         )}
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default SvarPåForespørsel

@@ -175,8 +175,8 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4" key={namespace + '-div'}>
-      <VStack gap="4">
+    <Box padding="space-16" key={namespace + '-div'}>
+      <VStack gap="space-16">
         <Heading size='medium'>
           {t('label:andre-mottatte-utbetalinger')}
         </Heading>
@@ -187,7 +187,7 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
           error={!!validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingEtterEndtArbeidsforholdCheckbox(e.target.checked)}
         >
-          <HStack gap="2" align="start" wrap={false}>
+          <HStack gap="space-8" align="start" wrap={false}>
             {t('el:checkbox-pdu1-4.1')}
             <Input
               error={validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
@@ -208,7 +208,7 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
           id={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKompensasjonForEndtArbeidsforholdCheckbox(e.target.checked)}
         >
-          <HStack gap="2" align="start" wrap={false}>
+          <HStack gap="space-8" align="start" wrap={false}>
             {t('el:checkbox-pdu1-4.2')}
             <Input
               error={validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
@@ -229,7 +229,7 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
           id={namespace + '-kompensasjonForFeriedagerCheckbox'}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKompensasjonForFeriedagerCheckbox(e.target.checked)}
         >
-          <HStack gap="2" align="start" wrap={false}>
+          <HStack gap="space-8" align="start" wrap={false}>
             {t('el:checkbox-pdu1-4.3')}
             <Input
               error={validation[namespace + '-kompensasjonForFeriedager-beloep']?.feilmelding}
@@ -240,7 +240,7 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
               onChanged={setKompensasjonForFeriedagerBeloep}
               value={etterbetalinger?.kompensasjonForFeriedager?.beloep}
             />
-            <Box paddingInline="2">
+            <Box paddingInline="space-8">
               for
             </Box>
             <Input
@@ -252,7 +252,7 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
               onChanged={setKompensasjonForFeriedagerAntallDager}
               value={etterbetalinger?.kompensasjonForFeriedager?.antallDager}
             />
-            <Box paddingInline="2">
+            <Box paddingInline="space-8">
               dager
             </Box>
           </HStack>
@@ -264,7 +264,7 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
           error={!!validation[namespace + '-avkallKompensasjonBegrunnelseCheckbox']?.feilmelding}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAvkallKompensasjonBegrunnelseCheckbox(e.target.checked)}
         >
-          <HStack gap="2" align="start" wrap={false}>
+          <HStack gap="space-8" align="start" wrap={false}>
             {t('el:checkbox-pdu1-4.4')}
             <Input
               error={validation[namespace + '-avkallKompensasjonBegrunnelse']?.feilmelding}
@@ -285,7 +285,7 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
           id={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAndreYtelserSomMottasForTidenCheckbox(e.target.checked)}
         >
-          <HStack gap="2" align="start" wrap={false}>
+          <HStack gap="space-8" align="start" wrap={false}>
             {t('el:checkbox-pdu1-4.5')}
             <Input
               error={validation[namespace + '-andreYtelserSomMottasForTiden']?.feilmelding}
@@ -300,7 +300,7 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
         </Checkbox>
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default EtterbetalingerFC

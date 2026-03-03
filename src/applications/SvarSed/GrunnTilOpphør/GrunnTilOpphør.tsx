@@ -97,12 +97,12 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
   const value = _.find(årsakOptions, b => b.value === sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt) || null
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
-        <HGrid columns={"2fr 1fr"} gap="4" align="end">
+        <HGrid columns={"2fr 1fr"} gap="space-16" align="end">
             <Select
               data-testid={namespace + '-typeGrunnOpphoerAnsatt'}
               error={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
@@ -149,7 +149,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
         )}
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default GrunnTilOpphør

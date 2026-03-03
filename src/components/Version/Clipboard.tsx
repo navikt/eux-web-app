@@ -1,10 +1,10 @@
 /* eslint-disable func-names */
 
-export default (function (window, document, navigator) {
+export default ((function(window, document, navigator) {
   let textArea: any
 
   function isOS () {
-    return navigator.userAgent.match(/ipad|iphone/i)
+    return navigator.userAgent.match(/ipad|iphone/i);
   }
 
   function createTextArea (text: any) {
@@ -43,4 +43,4 @@ export default (function (window, document, navigator) {
   return {
     copy
   }
-})(window, document, navigator)
+})(window, document, navigator));

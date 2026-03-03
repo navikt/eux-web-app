@@ -88,7 +88,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   }
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {type && (
         <RadioGroup
           disabled={disabled}
@@ -102,14 +102,14 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
           required={required.indexOf('type') >= 0}
           onChange={(e: string) => setType((e as AdresseType))}
         >
-          <HStack gap="4">
+          <HStack gap="space-16">
             <Radio className={commonStyles.radioPanel} value='bosted'>{t('label:bosted')}</Radio>
             <Radio className={commonStyles.radioPanel} value='opphold'>{t('label:opphold')}</Radio>
             <Radio className={commonStyles.radioPanel} value='kontakt'>{t('label:kontakt')}</Radio>
           </HStack>
         </RadioGroup>
       )}
-      <HGrid columns={"2fr 1fr"} gap="4">
+      <HGrid columns={"2fr 1fr"} gap="space-16">
         <Input
           disabled={disabled}
           error={validation[namespace + '-gate']?.feilmelding}
@@ -133,7 +133,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
           />
         )}
       </HGrid>
-      <HGrid columns={4} gap="4" align="start">
+      <HGrid columns={4} gap="space-16" align="start">
         <Input
           disabled={disabled}
           error={validation[namespace + '-postnummer']?.feilmelding}
@@ -183,7 +183,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
         </div>
       </HGrid>
     </VStack>
-  )
+  );
 }
 
 export default AdresseForm

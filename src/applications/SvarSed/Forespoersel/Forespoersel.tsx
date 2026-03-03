@@ -46,13 +46,13 @@ const Forespoersel: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
-        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-          <HGrid columns={2} gap="4">
+        <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
+          <HGrid columns={2} gap="space-16">
             <RadioGroup
               value={sykdom?.ytelse?.type}
               legend={t('label:type-ytelse-det-gjelder')}
@@ -76,7 +76,7 @@ const Forespoersel: React.FC<MainFormProps> = ({
             </RadioGroup>
           </HGrid>
         </Box>
-        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+        <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
           <PeriodeInput
             namespace={namespace + '-forespoerselomperiode'}
             periodeType="withcheckbox"
@@ -91,7 +91,7 @@ const Forespoersel: React.FC<MainFormProps> = ({
         </Box>
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Forespoersel

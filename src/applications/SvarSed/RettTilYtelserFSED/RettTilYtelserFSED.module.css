@@ -1,5 +1,5 @@
 .greyBox{
-  background-color: var(--a-surface-subtle);
+  background-color: var(--ax-bg-neutral-soft);
   &.error {
     background-color: rgba(255, 0, 0, 0.2);
   };

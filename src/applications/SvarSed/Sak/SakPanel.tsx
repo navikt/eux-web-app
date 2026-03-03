@@ -19,7 +19,6 @@ const SakPanel = ({
 }: SakPanelProps) => {
   const { t } = useTranslation()
   return (
-
     <LinkCard
       aria-label={sak.sakType + ' - ' + sak.sakTittel}
       onClick={onSelected}
@@ -30,7 +29,7 @@ const SakPanel = ({
         {sak.sakType + ' - ' + sak.sakTittel}
       </LinkCard.Title>
       <LinkCard.Description>
-        <HStack gap="2">
+        <HStack gap="space-8">
           <BodyLong>
             {t('label:motpart')}:
           </BodyLong>
@@ -43,7 +42,7 @@ const SakPanel = ({
             {t('label:sist-oppdatert') + ': ' + sak.sistEndretDato}
           </BodyLong>
           <Spacer/>
-          <HStack align="center" gap="4">
+          <HStack align="center" gap="space-16">
             <span>
               {t('label:saksnummer') + ': '}
             </span>
@@ -53,7 +52,7 @@ const SakPanel = ({
               rel='noreferrer'
               onClick={(e) => e.stopPropagation()}
             >
-              <HStack gap="4" align="center">
+              <HStack gap="space-16" align="center">
                 <span>
                   {sak?.sakId}
                 </span>
@@ -78,7 +77,7 @@ const SakPanel = ({
         )}
       </LinkCard.Description>
     </LinkCard>
-  )
+  );
 }
 
 export default SakPanel

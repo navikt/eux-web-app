@@ -48,7 +48,7 @@ const Trygdeordning: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <Box padding="4">
+      <Box padding="space-16">
         <Heading size='small'>
           {t('label:periode-trygdeordning-avsenderlandet')}
         </Heading>
@@ -83,7 +83,7 @@ const Trygdeordning: React.FC<MainFormProps> = ({
         />
       }
     </>
-  )
+  );
 }
 
 export default Trygdeordning

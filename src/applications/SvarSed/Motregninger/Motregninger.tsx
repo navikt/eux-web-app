@@ -289,9 +289,9 @@ const MotregningerFC: React.FC<MainFormProps> = ({
     if (inEditMode) {
       return (
         <Box
-          padding="4"
-          background="surface-subtle"
-          borderColor="border-subtle"
+          padding="space-16"
+          background="neutral-soft"
+          borderColor="neutral-subtle"
           borderWidth="1"
           className={classNames(
             styles.motregningBox,
@@ -301,8 +301,8 @@ const MotregningerFC: React.FC<MainFormProps> = ({
             }
           )}
         >
-          <VStack gap="4">
-            <HStack gap="4">
+          <VStack gap="space-16">
+            <HStack gap="space-16">
               {isF001Sed(replySed) && <Label>{svarType}</Label>}
               {isF002Sed(replySed) &&
                 <RadioGroup
@@ -312,7 +312,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                   onChange={(value: string) => setMotregningProp("svarType", value, index)}
                   error={_v[_namespace + '-svarType']?.feilmelding}
                 >
-                  <HStack gap="4">
+                  <HStack gap="space-16">
                     {type === "barn" && <Radio value="anmodning_om_motregning_per_barn">{t('label:anmodning')}</Radio>}
                     {type === "barn" && <Radio value="svar_på_anmodning_om_motregning_per_barn">{t('label:anmodning-svar')}</Radio>}
                     {type === "heleFamilien" && <Radio value="anmodning_om_motregning_for_hele_familien">{t('label:anmodning')}</Radio>}
@@ -324,14 +324,14 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               {addRemove}
             </HStack>
             {addingNewBarnMotregning &&
-              <VStack gap="1">
-                <HGrid columns={3} gap="4" align="start">
+              <VStack gap="space-4">
+                <HGrid columns={3} gap="space-16" align="start">
                   <Label>Velg barn</Label>
                   <Label>{t('label:betegnelse-på-ytelse')}</Label>
                 </HGrid>
                 {barn.map((b, idx) => {
                   return (
-                    <HGrid columns={3} gap="4" align="start">
+                    <HGrid columns={3} gap="space-16" align="start">
                       <Checkbox
                         value={b.personInfo.fornavn + ' ' + b.personInfo.etternavn}
                         onChange={(e) => setBarnYtelse("barnetsNavn", e.target.checked ? e.target.value : "", idx)}
@@ -349,13 +349,13 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                         value={_motregning && _motregning.__barn && _motregning.__barn[idx] ? _motregning.__barn[idx].ytelseNavn : ''}
                       />
                     </HGrid>
-                  )
+                  );
                 })}
                 <ErrorLabel error={_v[_namespace + '-barn']?.feilmelding}/>
               </VStack>
             }
             {!addingNewBarnMotregning && type === "barn" && // TODO: bytt ut med dropdown for å velge barnets navn fra sed
-              <HGrid columns={2} gap="4" align="start">
+              <HGrid columns={2} gap="space-16" align="start">
                 <Select
                   error={_v[_namespace + '-barnetsNavn']?.feilmelding}
                   id='barnetsNavn'
@@ -379,7 +379,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               </HGrid>
             }
             {type === "heleFamilien" &&
-              <HGrid columns={2} gap="4" align="start">
+              <HGrid columns={2} gap="space-16" align="start">
                 <Input
                   error={_v[_namespace + '-antallPersoner']?.feilmelding}
                   id='antallPersoner'
@@ -399,7 +399,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 />
               </HGrid>
             }
-            <HGrid columns={3} gap="4" align="start">
+            <HGrid columns={3} gap="space-16" align="start">
               <DateField
                 error={_v[_namespace + '-vedtaksdato']?.feilmelding}
                 id='vedtaksdato'
@@ -432,7 +432,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 values={_motregning?.valuta}
               />
             </HGrid>
-            <HGrid columns={3} gap="4" align="start">
+            <HGrid columns={3} gap="space-16" align="start">
               <Input
                 error={_v[_namespace + '-mottakersNavn']?.feilmelding}
                 namespace={_namespace}
@@ -449,7 +449,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 legend={t('label:periode-avgrensing')}
                 onChange={(value: string) => setMotregningProp("utbetalingshyppighet", value, index)}
               >
-                <HStack gap="2">
+                <HStack gap="space-8">
                   <Radio value='Månedlig'>{t('label:månedlig')}</Radio>
                   <Radio value='Årlig'>{t('label:årlig')}</Radio>
                 </HStack>
@@ -491,27 +491,27 @@ const MotregningerFC: React.FC<MainFormProps> = ({
             />
           </VStack>
         </Box>
-      )
+      );
     }
 
     return (
-      <Box padding="4" background="surface-subtle" borderColor="border-subtle" borderWidth="1">
-        <VStack gap="4">
-          <HStack gap="4">
+      <Box padding="space-16" background="neutral-soft" borderColor="neutral-subtle" borderWidth="1">
+        <VStack gap="space-16">
+          <HStack gap="space-16">
             <Label>{svarType}</Label>
             <Spacer/>
             {addRemove}
           </HStack>
-          <HGrid columns={2} gap="4">
+          <HGrid columns={2} gap="space-16">
             {type === "barn" && <VStack><Label>Barnets navn</Label>{_motregning?.barnetsNavn}</VStack>}
             {type === "heleFamilien" && <VStack><Label>Antall personer det innvilges ytelse for</Label>{_motregning?.antallPersoner}</VStack>}
             <VStack><Label>{t('label:betegnelse-på-ytelse')}</Label>{_motregning?.ytelseNavn}</VStack>
           </HGrid>
-          <HGrid columns={2} gap="4">
+          <HGrid columns={2} gap="space-16">
             <VStack><Label>{t('label:vedtaksdato')}</Label>{toDateFormat(_motregning?.vedtaksdato, "DD.MM.YYYY")}</VStack>
             <VStack><Label>{t('label:beløp')}</Label>{_motregning?.beloep} {_motregning?.valuta} ({_motregning?.utbetalingshyppighet})</VStack>
           </HGrid>
-          <HGrid columns={2} gap="4">
+          <HGrid columns={2} gap="space-16">
             <VStack>
               <Label>Periode</Label>
               <PeriodeText
@@ -535,15 +535,15 @@ const MotregningerFC: React.FC<MainFormProps> = ({
           </VStack>
         </VStack>
       </Box>
-    )
+    );
   }
 
   const renderTotalBeloep = (type: string) => {
     const target = type === "barn" ? "barnOppsummert" : "heleFamilienOppsummert"
     return (
-      <Box borderWidth="1" borderColor="border-subtle" padding="4">
-        <VStack gap="4">
-          <HGrid columns={2} gap="4" align="start">
+      <Box borderWidth="1" borderColor="neutral-subtle" padding="space-16">
+        <VStack gap="space-16">
+          <HGrid columns={2} gap="space-16" align="start">
             <Input
               error={validation[namespace + '-' + target + '-totalbeloep']?.feilmelding}
               id= {target + '-totalbeloep'}
@@ -565,7 +565,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               values={(motregninger as any)?.[target]?.valuta}
             />
           </HGrid>
-          <HGrid columns={2} gap="4" align="start">
+          <HGrid columns={2} gap="space-16" align="start">
             <Input
               error={validation[namespace + '-' + target + '-betalingsreferanse']?.feilmelding}
               id={target + '-betalingsreferanse'}
@@ -585,7 +585,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
           </HGrid>
         </VStack>
       </Box>
-    )
+    );
   }
 
   return (
@@ -608,8 +608,8 @@ const MotregningerFC: React.FC<MainFormProps> = ({
         beloepArray={motregninger?.heleFamilien}
         resetWarning={!!motregninger?.heleFamilienOppsummert?.totalbeloep || !!motregninger?.heleFamilienOppsummert?.valuta}
       />
-      <Box padding="4">
-        <VStack gap="4">
+      <Box padding="space-16">
+        <VStack gap="space-16">
           <Heading size='small'>
             {label}
           </Heading>
@@ -622,7 +622,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               </HStack>
             </Tabs.List>
             <Tabs.Panel value="barnMotregninger">
-              <VStack gap="4" marginBlock="4">
+              <VStack gap="space-16" marginBlock="space-16">
                 {CDM_VERSION! >= 4.4 && !_.isEmpty(motregninger?.barn) &&
                   <HStack>
                     <Spacer/>
@@ -640,7 +640,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 {_.isEmpty(motregninger?.barn) && !_newBarnForm
                   ? (
                     <>
-                      <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle">
+                      <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle" background="neutral-soft">
                         <BodyLong>
                           {t('message:warning-no-motregning')}
                         </BodyLong>
@@ -670,7 +670,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               </VStack>
             </Tabs.Panel>
             <Tabs.Panel value="heleFamilienMotregninger">
-              <VStack gap="4" marginBlock="4">
+              <VStack gap="space-16" marginBlock="space-16">
                 {CDM_VERSION! >= 4.4 && !_.isEmpty(motregninger?.heleFamilien) &&
                   <HStack>
                     <Spacer/>
@@ -688,7 +688,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 {_.isEmpty(motregninger?.heleFamilien) && !_newHelefamilienForm
                   ? (
                     <>
-                      <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle">
+                      <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle" background="neutral-soft">
                         <BodyLong>
                           {t('message:warning-no-motregning')}
                         </BodyLong>
@@ -721,7 +721,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default MotregningerFC

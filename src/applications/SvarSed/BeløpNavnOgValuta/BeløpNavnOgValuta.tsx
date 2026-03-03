@@ -288,13 +288,13 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="4"
+        padding="space-16"
       >
         {inEditMode
           ? (
-            <VStack gap="4">
+            <VStack gap="space-16">
               {!utvidetBarneTrygd &&
-                <HGrid columns={2} gap="4">
+                <HGrid columns={2} gap="space-16">
                   <RadioGroup
                     defaultValue={ytelse?.ytelseNavn}
                     data-no-border
@@ -305,7 +305,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     name={_namespace + '-ytelseNavn'}
                     onChange={(e: string) => setYtelseNavn(e as YtelseNavn, index)}
                   >
-                    <VStack gap="1">
+                    <VStack gap="space-4">
                       <Radio className={commonStyles.radioPanel} value='Barnetrygd'>{t('el:option-familieytelser-barnetrygd')}</Radio>
                       <Radio className={commonStyles.radioPanel} value='Kontantstøtte'>{t('el:option-familieytelser-kontantstøtte')}</Radio>
                       {personID === 'familie' && <Radio className={commonStyles.radioPanel} value='Utvidet barnetrygd'>{t('el:option-familieytelser-utvidet-barnetrygd')}</Radio>}
@@ -328,7 +328,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                   </Box>
                 </HGrid>
               }
-              <HGrid columns={2} gap="4">
+              <HGrid columns={2} gap="space-16">
                 <Input
                   error={_v[_namespace + '-beloep']?.feilmelding}
                   namespace={_namespace}
@@ -357,7 +357,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
               <Heading size='small'>
                 {t('label:grant-date')}
               </Heading>
-              <HGrid columns={2} gap="4">
+              <HGrid columns={2} gap="space-16">
                 <PeriodeInput
                   namespace={namespace}
                   error={{
@@ -385,13 +385,13 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                   legend={t('label:periode-avgrensing') + ' *'}
                   onChange={(e: string) => setUtbetalingshyppighet(e as Utbetalingshyppighet, index)}
                 >
-                  <HStack gap="4">
+                  <HStack gap="space-16">
                     <Radio className={commonStyles.radioPanel} value='Månedlig'>{t('label:månedlig')}</Radio>
                     <Radio className={commonStyles.radioPanel} value='Årlig'>{t('label:årlig')}</Radio>
                   </HStack>
                 </RadioGroup>
               </HGrid>
-              <HGrid columns={2} gap="4">
+              <HGrid columns={2} gap="space-16">
                 <Input
                   error={_v[_namespace + '-mottakersNavn']?.feilmelding}
                   namespace={_namespace}
@@ -408,15 +408,15 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
             </VStack>
             )
           : (
-            <VStack gap="4">
+            <VStack gap="space-16">
               <VStack>
-                <HGrid columns={2} gap="4">
+                <HGrid columns={2} gap="space-16">
                   {!utvidetBarneTrygd &&
                     <FormText
                       error={_v[_namespace + '-ytelseNavn']?.feilmelding}
                       id={_namespace + '-ytelseNavn'}
                     >
-                      <HStack gap="2">
+                      <HStack gap="space-8">
                         <Label>{t('label:betegnelse-på-ytelse') + ':'}</Label>
                         {_ytelse?.ytelseNavn}
                       </HStack>
@@ -428,7 +428,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                         error={_v[_namespace + '-antallPersoner']?.feilmelding}
                         id={_namespace + '-antallPersoner'}
                       >
-                        <HStack gap="2">
+                        <HStack gap="space-8">
                           <Label>{t('label:antall-innvilges') + ':'}</Label>
                           {_ytelse?.antallPersoner}
                         </HStack>
@@ -436,8 +436,8 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     </>
                   )}
                 </HGrid>
-                <HGrid columns={2} gap="4">
-                  <HStack gap="2">
+                <HGrid columns={2} gap="space-16">
+                  <HStack gap="space-8">
                     <Label>{t('label:beløp') + ':'}</Label>
                     <FormText
                       error={_v[_namespace + '-beloep']?.feilmelding}
@@ -453,7 +453,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     </FormText>
                   </HStack>
                 </HGrid>
-                <HGrid columns={2} gap="4">
+                <HGrid columns={2} gap="space-16">
                   <PeriodeText
                     error={{
                       startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -466,19 +466,19 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
                     id={_namespace + '-utbetalingshyppighet'}
                   >
-                    <HStack gap="2">
+                    <HStack gap="space-8">
                       <Label>{t('label:periode-avgrensing') + ':'}</Label>
                       {_ytelse?.utbetalingshyppighet}
                     </HStack>
                   </FormText>
                 </HGrid>
               </VStack>
-              <HGrid columns={2} gap="4">
+              <HGrid columns={2} gap="space-16">
                 <FormText
                   error={_v[_namespace + '-mottakersNavn']?.feilmelding}
                   id={_namespace + '-mottakersNavn'}
                 >
-                  <HStack gap="2">
+                  <HStack gap="space-8">
                     <Label>{t('label:mottakers-navn') + ':'}</Label>
                     {_ytelse?.mottakersNavn}
                   </HStack>
@@ -492,14 +492,14 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
           )
         }
       </Box>
-    )
+    );
   }
 
 
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         {showHeading &&
           <Heading size='small'>
             {personID === 'familie' ? t('label:beløp-for-hele-familien') : t('label:beløp-navn-valuta-barn')}
@@ -528,7 +528,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
             )}
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default BeløpNavnOgValuta

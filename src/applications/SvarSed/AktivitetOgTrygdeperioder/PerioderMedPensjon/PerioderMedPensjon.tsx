@@ -152,7 +152,7 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
 
     return (
       <Box
-        padding="2"
+        padding="space-8"
         id={'repeatablerow-' + _namespace}
         key={getId(pensjonPeriode)}
         className={classNames(commonStyles.repeatableBox, {
@@ -160,10 +160,10 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
           [commonStyles.errorBorder]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <HStack gap="4" wrap={false} align="start">
+        <HStack gap="space-16" wrap={false} align="start">
         {inEditMode
           ? (
-            <VStack gap="4">
+            <VStack gap="space-16">
               <PeriodeInput
                 namespace={_namespace}
                 error={{
@@ -186,7 +186,7 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
                 name={_namespace + '-pensjonstype'}
                 onChange={(newPensjonsType: PensjonsType) => setPensjonsType(newPensjonsType, index)}
               >
-                <HStack gap="4" paddingInline="1">
+                <HStack gap="space-16" paddingInline="space-4">
                   <Radio value='alderspensjon'>
                     {t('el:option-trygdeordning-alderspensjon')}
                   </Radio>
@@ -198,7 +198,7 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
             </VStack>
             )
           : (
-              <HStack gap="4" align="center">
+              <HStack gap="space-16" align="center">
                 <PeriodeText
                   error={{
                     startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -208,12 +208,12 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
                   periode={_pensjonPeriode?.periode}
                 />
                 <Spacer/>
-                <Tag variant="info">{t('el:option-trygdeordning-' + pensjonPeriode?.pensjonstype)}</Tag>
+                <Tag data-color="info" variant="outline">{t('el:option-trygdeordning-' + pensjonPeriode?.pensjonstype)}</Tag>
               </HStack>
           )
         }
           <Spacer/>
-          <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+          <div className="aksel-button--small"/> {/* Prevent height flicker on hover */}
           <AddRemovePanel<PensjonPeriode>
             item={pensjonPeriode}
             marginTop={inEditMode}
@@ -228,14 +228,14 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
           />
         </HStack>
       </Box>
-    )
+    );
   }
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {_.isEmpty(perioderMedPensjon)
         ? (
-          <Box borderWidth={"1 0"} paddingBlock="2">
+          <Box borderWidth={"1 0"} paddingBlock="space-8">
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
@@ -258,7 +258,7 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
           )
       }
     </VStack>
-  )
+  );
 }
 
 export default PerioderMedPensjon

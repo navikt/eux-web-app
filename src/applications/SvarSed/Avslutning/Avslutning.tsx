@@ -93,8 +93,8 @@ const Avslutning: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -120,7 +120,7 @@ const Avslutning: React.FC<MainFormProps> = ({
           name={namespace + '-avslutningType'}
           onChange={setAvslutningType}
         >
-          <HStack gap="4">
+          <HStack gap="space-16">
             <Radio className={commonStyles.radioPanel} value='manuell'>
               {t('label:manuell')}
             </Radio>
@@ -157,7 +157,7 @@ const Avslutning: React.FC<MainFormProps> = ({
         )}
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Avslutning

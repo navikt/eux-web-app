@@ -277,10 +277,10 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: _v[_namespace + '-land'] || _v[_namespace + '-fraDato']
         })}
-        padding="4"
+        padding="space-16"
       >
-        <VStack gap="4">
-          <HGrid columns="1fr auto" gap="4" align="start">
+        <VStack gap="space-16">
+          <HGrid columns="1fr auto" gap="space-16" align="start">
             {inEditMode
               ? (
                 <RadioGroup
@@ -291,7 +291,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                   id={_namespace + '-utbetalingType'}
                   onChange={(e: string) => setUtbetalingType(e, index)}
                 >
-                  <VStack gap="2">
+                  <VStack gap="space-8">
                     <Radio className={commonStyles.radioPanel} value='inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet'>
                       {t('el:option-typebeløp-inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet')}
                     </Radio>
@@ -309,7 +309,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-utbetalingType']?.feilmelding}
                   id={_namespace + '-utbetalingType'}
                 >
-                  <HStack gap="2">
+                  <HStack gap="space-8">
                     <Label>{t('label:utbetaling-type') + ':'}</Label>
                     {t('el:option-typebeløp-' + _utbetaling?.utbetalingType)}
                   </HStack>
@@ -322,7 +322,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
               <Heading size='small'>
                 {t('label:utbetaling')}
               </Heading>
-              <HGrid columns={3} gap="4" align="start">
+              <HGrid columns={3} gap="space-16" align="start">
                 <Input
                   type='number'
                   error={_v[_namespace + '-beloep']?.feilmelding}
@@ -374,10 +374,10 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
             )}
           {!inEditMode && (
             <>
-              <HGrid columns={2} gap="4">
-                <HStack gap="2">
+              <HGrid columns={2} gap="space-16">
+                <HStack gap="space-8">
                   <Label>{t('label:beløp') + ':'}</Label>
-                  <HStack gap="2">
+                  <HStack gap="space-8">
                     <FormText
                       error={_v[_namespace + '-beloep']?.feilmelding}
                       id={_namespace + '-beloep'}
@@ -398,7 +398,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-feriedagerTilGode']?.feilmelding}
                       id={_namespace + '-feriedagerTilGode'}
                     >
-                      <HStack gap="2">
+                      <HStack gap="space-8">
                         <Label>{t('label:feriedager-til-gode') + ':'}</Label>
                         {_utbetaling?.feriedagerTilGode}
                       </HStack>
@@ -409,7 +409,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-loennTilDato']?.feilmelding}
                       id={_namespace + '-loennTilDato'}
                     >
-                      <HStack gap="2">
+                      <HStack gap="space-8">
                         <Label>{t('label:loenn-til-dato') + ':'}</Label>
                         {_utbetaling?.loennTilDato}
                       </HStack>
@@ -422,18 +422,18 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
             )}
         </VStack>
       </Box>
-    )
+    );
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
         {_.isEmpty(sisteAnsettelseInfo?.utbetalinger)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-utbetaling')}
               </BodyLong>
@@ -485,7 +485,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
         />
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default SisteAnsettelseInfoFC

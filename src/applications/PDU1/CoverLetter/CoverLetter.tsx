@@ -46,8 +46,8 @@ const CoverLetter: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4" key={namespace + '-div'}>
-      <VStack gap="4">
+    <Box padding="space-16" key={namespace + '-div'}>
+      <VStack gap="space-16">
       <Heading size='medium'>
         {t('label:cover-letter')}
       </Heading>
@@ -64,7 +64,7 @@ const CoverLetter: React.FC<MainFormProps> = ({
       />
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default CoverLetter

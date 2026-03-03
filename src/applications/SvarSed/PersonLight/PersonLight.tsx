@@ -132,8 +132,8 @@ const PersonLightFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -156,7 +156,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
             {t('label:sensitivPerson', {gradering: personLight?.adressebeskyttelse})}
           </Alert>
         }
-        <HGrid columns={3} gap="4">
+        <HGrid columns={3} gap="space-16">
           <Input
             error={validation[namespace + '-fornavn']?.feilmelding}
             id='fornavn'
@@ -195,7 +195,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
           name={namespace + '-kjoenn'}
           onChange={setKjoenn}
         >
-          <HGrid columns={3} gap="4">
+          <HGrid columns={3} gap="space-16">
             <Radio className={commonStyles.radioPanel} value='M'>
               {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
             </Radio>
@@ -209,7 +209,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
         </RadioGroup>
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default PersonLightFC

@@ -86,9 +86,9 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
   }
 
   return (
-    <Box className={`${styles.personBox} ${className ? styles[className] : ''}`} borderWidth="1" padding="4" borderRadius="large" borderColor="border-default">
-      <VStack gap="4">
-        <HStack gap="4">
+    <Box className={`${styles.personBox} ${className ? styles[className] : ''}`} borderWidth="1" padding="space-16" borderRadius="8" borderColor="neutral">
+      <VStack gap="space-16">
+        <HStack gap="space-16">
           <img
             alt={kind}
             width={50}
@@ -148,7 +148,7 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
         )}
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default PersonPanel

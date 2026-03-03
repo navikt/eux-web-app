@@ -280,14 +280,14 @@ const Ansatt: React.FC<AnsattProps> = ({
 
     return (
       <Box
-        padding="2"
+        padding="space-8"
         id={'repeatablerow-' + _namespace}
         className={classNames(commonStyles.repeatableBox, {
           [commonStyles.new]: index < 0,
           [commonStyles.errorBorder]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <HStack gap="4" wrap={false} align="start">
+        <HStack gap="space-16" wrap={false} align="start">
           {inEditMode
             ? (
               <PeriodeInput
@@ -328,11 +328,11 @@ const Ansatt: React.FC<AnsattProps> = ({
           />
         </HStack>
       </Box>
-    )
+    );
   }
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       <BodyLong>
         {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
       </BodyLong>
@@ -351,14 +351,14 @@ const Ansatt: React.FC<AnsattProps> = ({
       />
       {_.isEmpty(_plan)
         ? (
-          <Box borderWidth={"1 0"} paddingBlock="2">
+          <Box borderWidth={"1 0"} paddingBlock="space-8">
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
           </Box>
           )
         : (
-          <VStack gap="4">
+          <VStack gap="space-16">
             {_plan?.map((item, index) => renderPlan(item, index, (index > 0 ? _plan![index - 1] : undefined)))}
           </VStack>
           )}
@@ -377,7 +377,7 @@ const Ansatt: React.FC<AnsattProps> = ({
           </Box>
           )}
     </VStack>
-  )
+  );
 }
 
 export default Ansatt

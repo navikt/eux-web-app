@@ -185,7 +185,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
 
     return (
       <Box
-        padding="4"
+        padding="space-16"
         id={'repeatablerow-' + _namespace}
         key={getId(inntektOgTime)}
         className={classNames(commonStyles.repeatableBox, {
@@ -193,8 +193,8 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VStack gap="4">
-        <HStack align="start" gap="4">
+        <VStack gap="space-16">
+        <HStack align="start" gap="space-16">
           {inEditMode
             ? (
               <PeriodeInput
@@ -236,7 +236,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
         </HStack>
         {inEditMode
           ? (
-            <HStack gap="4">
+            <HStack gap="space-16">
               <Input
                 error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
                 namespace={_namespace}
@@ -271,7 +271,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
             )
           : (
             <HGrid columns={2}>
-              <HStack gap="2">
+              <HStack gap="space-8">
                 <Label>{t('label:beløp') + ':'}</Label>
                 <FormText
                   error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
@@ -290,7 +290,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                 error={_v[_namespace + '-arbeidstimer']?.feilmelding}
                 id={_namespace + '-arbeidstimer'}
               >
-                <HStack gap="2">
+                <HStack gap="space-8">
                   {t('label:arbeidstimer')}:
                   {_inntektOgTime?.arbeidstimer ? _inntektOgTime?.arbeidstimer.replace('.', ',') : '-'}
                 </HStack>
@@ -299,14 +299,14 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
             )}
         </VStack>
       </Box>
-    )
+    );
   }
 
   return (
     <>
       {_.isEmpty(inntektOgTimer)
         ? (
-          <Box borderWidth={"1 0"} paddingBlock="2">
+          <Box borderWidth={"1 0"} paddingBlock="space-8">
             <BodyLong>
               {t('message:warning-no-inntekt')}
             </BodyLong>
@@ -327,7 +327,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
           </Box>
           )}
     </>
-  )
+  );
 }
 
 export default InntektOgTimerFC

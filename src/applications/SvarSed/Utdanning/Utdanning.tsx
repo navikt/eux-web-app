@@ -36,7 +36,7 @@ const Utdanning: React.FC<MainFormProps> = ({
   }
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       <RadioGroup
         id={namespace + '-type'}
         value={utdanning?.type}
@@ -44,7 +44,7 @@ const Utdanning: React.FC<MainFormProps> = ({
         onChange={(v:string)=>setUtdanning("type", v)}
         error={validation[namespace + '-type']?.feilmelding}
       >
-        <HStack gap="2">
+        <HStack gap="space-8">
           <Radio className={commonStyles.radioPanel} value='skole'>Skole</Radio>
           <Radio className={commonStyles.radioPanel} value='høyskole'>Høyskole</Radio>
           <Radio className={commonStyles.radioPanel} value='universitet'>Universitet</Radio>
@@ -59,7 +59,7 @@ const Utdanning: React.FC<MainFormProps> = ({
         onChange={(v:string)=>setUtdanning("typeDeltakelse", v)}
         error={validation[namespace + '-typedeltakelse']?.feilmelding}
       >
-        <HStack gap="2">
+        <HStack gap="space-8">
           <Radio className={commonStyles.radioPanel} value='deltid'>Deltid</Radio>
           <Radio className={commonStyles.radioPanel} value='heltid'>Heltid</Radio>
         </HStack>
@@ -72,7 +72,7 @@ const Utdanning: React.FC<MainFormProps> = ({
         error={validation[namespace + '-timer-pr']?.feilmelding}
         id={namespace + '-timer-pr'}
       >
-        <HStack gap="2">
+        <HStack gap="space-8">
           <Radio className={commonStyles.radioPanel} value='dag'>Dag</Radio>
           <Radio className={commonStyles.radioPanel} value='uke'>Uke</Radio>
           <Radio className={commonStyles.radioPanel} value='maaned'>Måned</Radio>
@@ -96,7 +96,7 @@ const Utdanning: React.FC<MainFormProps> = ({
         value={utdanning?.ytterligereInformasjon ?? ''}
       />
     </VStack>
-  )
+  );
 }
 
 export default Utdanning

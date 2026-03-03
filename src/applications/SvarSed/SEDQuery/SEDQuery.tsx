@@ -65,15 +65,15 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
   }
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       <HGrid
         columns="2"
-        gap="4"
+        gap="space-16"
         className={classNames({ error: _validation.saksnummerOrFnr })}
         width="100%"
       >
-        <VStack gap="2">
-          <VStack gap="1">
+        <VStack gap="space-8">
+          <VStack gap="space-4">
             <BodyShort>
               {t('label:søk-rina-sak-for-å-sende-svarsed')}
             </BodyShort>
@@ -98,7 +98,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
             </Search>
 
             {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (
-              <span className='navds-error-message navds-error-message--medium'>
+              <span className='aksel-error-message'>
                 {_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
               </span>
             )}
@@ -114,7 +114,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
         </Alert>
       )}
     </VStack>
-  )
+  );
 }
 
 export default SEDQuery

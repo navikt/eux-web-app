@@ -237,15 +237,15 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
 
   const renderPlan = (item: PlanItem<ForsikringPeriode>, index: number, previousItem: PlanItem<ForsikringPeriode> | undefined) => {
     return (
-      <VStack gap="4" key={getId(item, index)}>
+      <VStack gap="space-16" key={getId(item, index)}>
         {_sort === 'group' && (previousItem === undefined || previousItem.type !== item.type) && (
-          <Box paddingInline="4">
+          <Box paddingInline="space-16">
             <Label>{t('label:' + item.type)}</Label>
           </Box>
         )}
         {renderPlanItem(item, index)}
       </VStack>
-    )
+    );
   }
 
   const renderPlanItem = (item: PlanItem<ForsikringPeriode> | null, index: number) => {
@@ -303,8 +303,8 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {t('label:oversikt-brukers-arbeidsperioder')}
         </Heading>
@@ -322,7 +322,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
         />
         {_.isEmpty(_plan)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-periods-med-forsikring')}
               </BodyLong>
@@ -330,7 +330,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
             )
           : (
             <>
-              <HStack gap="4">
+              <HStack gap="space-16">
                 <Checkbox
                   checked={_sort === 'group'}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
@@ -376,7 +376,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
         {inntekter && <Inntekt inntekter={inntekter} />}
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default ArbeidsperioderOversikt

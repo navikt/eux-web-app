@@ -141,7 +141,7 @@ const Perioder: React.FC<PerioderProps> = ({
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
     return (
       <Box
-        padding="2"
+        padding="space-8"
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
         className={classNames(commonStyles.repeatableBox, {
@@ -149,7 +149,7 @@ const Perioder: React.FC<PerioderProps> = ({
           [commonStyles.errorBorder]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <HStack gap="4" wrap={false} align={"start"}>
+        <HStack gap="space-16" wrap={false} align={"start"}>
           {inEditMode
             ? (
               <PeriodeInput
@@ -178,7 +178,7 @@ const Perioder: React.FC<PerioderProps> = ({
               )
           }
           <Spacer/>
-          <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+          <div className="aksel-button--small"/> {/* Prevent height flicker on hover */}
           <AddRemove<Periode>
             item={periode}
             index={index}
@@ -192,14 +192,14 @@ const Perioder: React.FC<PerioderProps> = ({
           />
         </HStack>
       </Box>
-    )
+    );
   }
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {_.isEmpty(perioder)
         ? (
-          <Box borderWidth={"1 0"} paddingBlock="2">
+          <Box borderWidth={"1 0"} paddingBlock="space-8">
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
@@ -222,7 +222,7 @@ const Perioder: React.FC<PerioderProps> = ({
           )
       }
     </VStack>
-  )
+  );
 }
 
 export default Perioder

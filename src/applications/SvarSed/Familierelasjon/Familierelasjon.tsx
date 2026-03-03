@@ -271,13 +271,13 @@ const Familierelasjon: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        paddingBlock="2"
-        paddingInline="4"
+        paddingBlock="space-8"
+        paddingInline="space-16"
       >
         {inEditMode
           ? (
-            <VStack gap="4">
-              <HStack gap="4" align="start">
+            <VStack gap="space-16">
+              <HStack gap="space-16" align="start">
                 <PeriodeInput
                   namespace={_namespace + '-periode'}
                   error={{
@@ -292,7 +292,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                 <Spacer/>
                 {addremovepanel}
               </HStack>
-              <HGrid columns={2} gap="4" align="start">
+              <HGrid columns={2} gap="space-16" align="start">
                 <Select
                   data-testid={_namespace + '-relasjonType'}
                   error={_v[_namespace + '-relasjonType']?.feilmelding}
@@ -333,7 +333,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                 name={_namespace + '-borSammen'}
                 onChange={(e: string) => setBorSammen(e as JaNei, index)}
               >
-                <HStack gap="4">
+                <HStack gap="space-16">
                   <Radio value='ja' className={commonStyles.radioPanel}>{t('label:ja')}</Radio>
                   <Radio value='nei' className={commonStyles.radioPanel}>{t('label:nei')}</Radio>
                 </HStack>
@@ -341,8 +341,8 @@ const Familierelasjon: React.FC<MainFormProps> = ({
             </VStack>
           )
           : (
-            <VStack gap="2">
-              <HGrid columns="1fr 1fr auto" gap="4">
+            <VStack gap="space-8">
+              <HGrid columns="1fr 1fr auto" gap="space-16">
                 <div>
                   <Label>{t('label:relasjon')}</Label>
                   <div>{t('el:option-familierelasjon-' + _familierelasjon?.relasjonType)}</div>
@@ -366,7 +366,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-annenRelasjonType']?.feilmelding}
                     id={_namespace + '-annenRelasjonType'}
                   >
-                    <HStack gap="2">
+                    <HStack gap="space-8">
                       <Label>{t('label:annenRelasjonType')}:</Label>
                       {_familierelasjon?.annenRelasjonType}
                     </HStack>
@@ -376,7 +376,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-annenRelasjonPersonNavn']?.feilmelding}
                   id={_namespace + '-annenRelasjonPersonNavn'}
                 >
-                  <HStack gap="2">
+                  <HStack gap="space-8">
                     <Label>{t('label:annenRelasjonPersonNavn')}:</Label>
                     {_familierelasjon?.annenRelasjonPersonNavn}
                   </HStack>
@@ -385,7 +385,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-borSammen']?.feilmelding}
                   id={_namespace + '-borSammen'}
                 >
-                  <HStack gap="2">
+                  <HStack gap="space-8">
                     <Label>{t('label:borSammen')}:</Label>
                     {_familierelasjon?.borSammen}
                   </HStack>
@@ -394,25 +394,25 @@ const Familierelasjon: React.FC<MainFormProps> = ({
             </VStack>
           )}
       </Box>
-    )
+    );
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
         {_.isEmpty(familierelasjoner)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-familierelasjon')}
               </BodyLong>
             </Box>
           )
           : (
-            <VStack gap="2">
+            <VStack gap="space-8">
               {familierelasjoner?.map(renderRow)}
             </VStack>
           )}
@@ -431,7 +431,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
           )}
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Familierelasjon

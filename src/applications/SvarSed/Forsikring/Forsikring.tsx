@@ -278,98 +278,96 @@ const Forsikring: React.FC<MainFormProps> = ({
     namespace = _type ? namespace + '[' + _type + ']' + idx : namespace + idx*/
 
     return (
-
-        <Box
-          id={'repeatablerow-' + namespace}
-          key={getId(periode)}
-          className={classNames(commonStyles.repeatableBox, {
-            [commonStyles.new]: index < 0,
-            [commonStyles.error]: hasNamespaceWithErrors(validation, namespace + '[' + _type + ']' + '[' + index + ']')
-          })}
-        >
-
-            <VStack gap="4">
-              {copyMode && <div ref={ref}></div>}
-              {newMode && (
-                <Box padding="4">
-                  <Select
-                    closeMenuOnSelect
-                    data-testid={namespace + '-type'}
-                    error={_newTypeError}
-                    id={namespace + '-type'}
-                    label={t('label:type')}
-                    menuPortalTarget={document.body}
-                    onChange={(type: any) => setType(type.value)}
-                    options={periodeOptions}
-                    value={_.find(periodeOptions, o => o.value === _type)}
-                    defaultValue={_.find(periodeOptions, o => o.value === _type)}
-                  />
-                </Box>
-              )}
-              {_type && newMode && (
-                <Box padding="4">
-                  <ForsikringPeriodeBox
-                    key={(_periode as ForsikringPeriode).__type}
-                    allowDelete
-                    allowEdit
-                    forsikringPeriode={_periode as ForsikringPeriode}
-                    newMode={newMode || copyMode}
-                    editable='full'
-                    showAddress={showAddress}
-                    showArbeidsgiver={showArbeidsgiver}
-                    showInntekt={showInntekt}
-                    showAnnen={showAnnen}
-                    showBeløp={showBeløp}
-                    icon={!!periode && _sort === 'time' ? getIcon(periode!.__type!, '24') : null}
-                    onForsikringPeriodeEdit={onSaveEdit}
-                    onForsikringPeriodeDelete={onRemove}
-                    onForsikringPeriodeNew={onAddNew}
-                    onForsikringPeriodeNewClose={onCloseNew}
-                    namespace={namespace}
-                    validation={validation}
-                    resetValidation={doResetValidation}
-                    setValidation={doSetValidation}
-                    setCopiedPeriod={_setCopiedPeriod}
-                    index={index}
-                    type={_type}
-                  />
-                </Box>
-              )}
-              {_type && !newMode && (
-                <ForsikringPeriodeBox
-                  key={(_periode as ForsikringPeriode).__type}
-                  allowDelete
-                  allowEdit
-                  forsikringPeriode={_periode as ForsikringPeriode}
-                  newMode={newMode || copyMode}
-                  editable='full'
-                  showAddress={showAddress}
-                  showArbeidsgiver={showArbeidsgiver}
-                  showInntekt={showInntekt}
-                  showAnnen={showAnnen}
-                  showBeløp={showBeløp}
-                  icon={!!periode && _sort === 'time' ? getIcon(periode!.__type!, '24') : null}
-                  onForsikringPeriodeEdit={onSaveEdit}
-                  onForsikringPeriodeDelete={onRemove}
-                  onForsikringPeriodeNew={onAddNew}
-                  onForsikringPeriodeNewClose={onCloseNew}
-                  namespace={namespace}
-                  validation={validation}
-                  resetValidation={doResetValidation}
-                  setValidation={doSetValidation}
-                  setCopiedPeriod={_setCopiedPeriod}
-                  index={index}
-                  type={_type}
-                />
-              )}
-            </VStack>
-        </Box>
-    )
+      <Box
+        id={'repeatablerow-' + namespace}
+        key={getId(periode)}
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.new]: index < 0,
+          [commonStyles.error]: hasNamespaceWithErrors(validation, namespace + '[' + _type + ']' + '[' + index + ']')
+        })}
+      >
+        <VStack gap="space-16">
+          {copyMode && <div ref={ref}></div>}
+          {newMode && (
+            <Box padding="space-16">
+              <Select
+                closeMenuOnSelect
+                data-testid={namespace + '-type'}
+                error={_newTypeError}
+                id={namespace + '-type'}
+                label={t('label:type')}
+                menuPortalTarget={document.body}
+                onChange={(type: any) => setType(type.value)}
+                options={periodeOptions}
+                value={_.find(periodeOptions, o => o.value === _type)}
+                defaultValue={_.find(periodeOptions, o => o.value === _type)}
+              />
+            </Box>
+          )}
+          {_type && newMode && (
+            <Box padding="space-16">
+              <ForsikringPeriodeBox
+                key={(_periode as ForsikringPeriode).__type}
+                allowDelete
+                allowEdit
+                forsikringPeriode={_periode as ForsikringPeriode}
+                newMode={newMode || copyMode}
+                editable='full'
+                showAddress={showAddress}
+                showArbeidsgiver={showArbeidsgiver}
+                showInntekt={showInntekt}
+                showAnnen={showAnnen}
+                showBeløp={showBeløp}
+                icon={!!periode && _sort === 'time' ? getIcon(periode!.__type!, '24') : null}
+                onForsikringPeriodeEdit={onSaveEdit}
+                onForsikringPeriodeDelete={onRemove}
+                onForsikringPeriodeNew={onAddNew}
+                onForsikringPeriodeNewClose={onCloseNew}
+                namespace={namespace}
+                validation={validation}
+                resetValidation={doResetValidation}
+                setValidation={doSetValidation}
+                setCopiedPeriod={_setCopiedPeriod}
+                index={index}
+                type={_type}
+              />
+            </Box>
+          )}
+          {_type && !newMode && (
+            <ForsikringPeriodeBox
+              key={(_periode as ForsikringPeriode).__type}
+              allowDelete
+              allowEdit
+              forsikringPeriode={_periode as ForsikringPeriode}
+              newMode={newMode || copyMode}
+              editable='full'
+              showAddress={showAddress}
+              showArbeidsgiver={showArbeidsgiver}
+              showInntekt={showInntekt}
+              showAnnen={showAnnen}
+              showBeløp={showBeløp}
+              icon={!!periode && _sort === 'time' ? getIcon(periode!.__type!, '24') : null}
+              onForsikringPeriodeEdit={onSaveEdit}
+              onForsikringPeriodeDelete={onRemove}
+              onForsikringPeriodeNew={onAddNew}
+              onForsikringPeriodeNewClose={onCloseNew}
+              namespace={namespace}
+              validation={validation}
+              resetValidation={doResetValidation}
+              setValidation={doSetValidation}
+              setCopiedPeriod={_setCopiedPeriod}
+              index={index}
+              type={_type}
+            />
+          )}
+        </VStack>
+      </Box>
+    );
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -383,7 +381,7 @@ const Forsikring: React.FC<MainFormProps> = ({
         )}
         {_.isEmpty(_allPeriods)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-periods')}
               </BodyLong>
@@ -400,9 +398,9 @@ const Forsikring: React.FC<MainFormProps> = ({
                   }
                   return (
                     <div key={o.value}>
-                      <VStack gap="8">
+                      <VStack gap="space-32">
                         <Box/>
-                        <HStack gap="2">
+                        <HStack gap="space-8">
                           {getIcon(o.value, '20')}
                           <Label>
                             {o.label}
@@ -411,7 +409,7 @@ const Forsikring: React.FC<MainFormProps> = ({
                         {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
                       </VStack>
                     </div>
-                  )
+                  );
                 })}
               </>
             )
@@ -433,7 +431,7 @@ const Forsikring: React.FC<MainFormProps> = ({
         }
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Forsikring

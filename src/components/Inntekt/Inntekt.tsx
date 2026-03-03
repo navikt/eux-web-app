@@ -38,10 +38,10 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
         const lastIndex = (_currentPage[inntekt.orgNr] - 1) * itemsPerPage + itemsPerPage
 
         return (
-          <VStack gap="4" key={inntekt.orgNr}>
-            <HStack width="100%" gap="4">
-              <VStack width="100%" gap="2">
-                <Box padding="4" background="bg-subtle">
+          <VStack gap="space-16" key={inntekt.orgNr}>
+            <HStack width="100%" gap="space-16">
+              <VStack width="100%" gap="space-8">
+                <Box padding="space-16" background="neutral-soft">
                   <HStack justify="space-between" align="start">
                     <Heading size='small'>
                       {inntekt.arbeidsgiverNavn}
@@ -67,25 +67,25 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
                       return index >= firstIndex && index < lastIndex
                         ? (
                           <VStack width="100px" key={måned}>
-                            <Box padding="1">
+                            <Box padding="space-4">
                               {måned}
                             </Box>
-                            <Box padding="1">
+                            <Box padding="space-4">
                               {formatterPenger(inntekt.maanedsinntekter[måned])}
                             </Box>
                           </VStack>
                           )
-                        : null
+                        : null;
                     })}
                   </HStack>
-                  <Box style={{borderLeft: "1px solid var(--a-border-strong)"}} paddingInline="2">
-                    <HStack gap="2">
+                  <Box style={{borderLeft: "1px solid var(--ax-border-neutral-strong)"}} paddingInline="space-8">
+                    <HStack gap="space-8">
                       <Spacer />
                       <VStack>
-                        <Box padding="1">
+                        <Box padding="space-4">
                           {t('label:gjennomsnitt')}
                         </Box>
-                        <Box padding="1">
+                        <Box padding="space-4">
                           {formatterPenger(inntekt.maanedsinntektSnitt)}
                         </Box>
                       </VStack>
@@ -97,7 +97,7 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
             </HStack>
             <HStack>
               <Link target='_blank' href={inntekter.uriInntektRegister} rel='noreferrer'>
-                <HStack gap="2" align="start">
+                <HStack gap="space-8" align="start">
                   {t('label:gå-til-A-inntekt')}
                   <ExternalLinkIcon />
                 </HStack>
@@ -117,11 +117,11 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
               }
             </HStack>
           </VStack>
-        )
+        );
       }
       )}
     </>
-  )
+  );
 }
 
 export default Inntekt

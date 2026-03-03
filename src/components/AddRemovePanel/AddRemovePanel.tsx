@@ -52,7 +52,7 @@ const AddRemovePanel = <T extends any>({
   if (candidateForDeletion) {
     return (
       <Box className={classNames(styles.slideInFromRight, { marginTop }, styles.inlineFlex)}>
-        <HStack gap="4" align="center">
+        <HStack gap="space-16" align="center">
           <BodyLong style={{ whiteSpace: 'nowrap' }}>
             {labels?.areYouSure ?? t('label:er-du-sikker')}
           </BodyLong>
@@ -72,13 +72,13 @@ const AddRemovePanel = <T extends any>({
           </Button>
         </HStack>
       </Box>
-    )
+    );
   }
 
   if (candidateForEdition) {
     return (
       <Box className={classNames({ marginTop }, styles.inlineFlex)}>
-        <HStack gap="4" align="center">
+        <HStack gap="space-16" align="center">
           <Button
             size='small'
             variant='tertiary'
@@ -103,13 +103,13 @@ const AddRemovePanel = <T extends any>({
           </Button>
         </HStack>
       </Box>
-    )
+    );
   }
 
   if (isNew) {
     return (
       <Box className={classNames({ marginTop }, styles.inlineFlex)}>
-        <HStack gap="4" align="center">
+        <HStack gap="space-16" align="center">
           <Button
             size='small'
             variant='tertiary'
@@ -136,12 +136,12 @@ const AddRemovePanel = <T extends any>({
           </Button>
         </HStack>
       </Box>
-    )
+    );
   }
 
   return (
     <Box className={classNames(commonStyles.controlButtons, 'noMargin', styles.inlineFlex)}>
-      <HStack gap="4" align="center">
+      <HStack gap="space-16" align="center">
         {allowEdit && (
           <Button
             size='small'
@@ -180,7 +180,7 @@ const AddRemovePanel = <T extends any>({
         )}
       </HStack>
     </Box>
-  )
+  );
 }
 
 export default AddRemovePanel

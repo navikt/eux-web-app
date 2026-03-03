@@ -1,11 +1,11 @@
 @import '../Animations/animations.module.css';
 
 .progressBarDiv {
-  background-color: var(--a-bg-default);
+  background-color: var(--ax-bg-default);
   width: 100%;
   display: block;
   border-radius: 4px;
-  border-color: var(--a-border-default);
+  border-color: var(--ax-border-neutral);
   border-width: 1px;
   &.border {
     border-style: solid;
@@ -24,19 +24,19 @@
   background-size: 1rem 1rem;
   animation: progressBarAnimation 1s linear infinite;
   &.inprogress {
-    background-color: var(--a-blue-500);
-    color: var(--a-white);
+    background-color: var(--ax-accent-600);
+    color: var(--ax-neutral-000);
     background-image: linear-gradient(45deg, hsla(0, 0%, 100%, .15) 25%, transparent 0, transparent 50%, hsla(0, 0%, 100%, .15) 0, hsla(0, 0%, 100%, .15) 75%, transparent 0, transparent);
   }
   &.done {
-    background-color: var(--a-green-500);
-    color: var(--a-white);
+    background-color: var(--ax-success-600);
+    color: var(--ax-neutral-000);
   }
   &.error {
-    background-color: var(--a-red-500);
-    color: var(--a-white);
+    background-color: var(--ax-danger-600);
+    color: var(--ax-neutral-000);
   }
   &.todo {
-    background-color: var(--a-border-divider);
+    background-color: var(--ax-border-neutral-subtle);
   }
 }

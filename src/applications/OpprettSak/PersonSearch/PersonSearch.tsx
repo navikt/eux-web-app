@@ -97,7 +97,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   }
 
   return (
-    <VStack gap="1">
+    <VStack gap="space-4">
       <Search
         label={label ? label : t('label:søker')}
         /* error={error ?? localValidation} */
@@ -115,7 +115,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         </Search.Button>
       </Search>
       {(error ?? localValidation) && (
-        <span className='navds-error-message navds-error-message--medium'>
+        <span className='aksel-error-message'>
           {error ?? localValidation}
         </span>
       )}
@@ -125,7 +125,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         </Alert>
       )}
     </VStack>
-  )
+  );
 }
 
 export default PersonSearch

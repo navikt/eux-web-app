@@ -225,69 +225,37 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="4"
+        padding="space-16"
       >
-          {inEditMode
-            ? (
-              <HGrid columns={3} align="center" gap="4">
-                <Select
-                  closeMenuOnSelect
-                  data-testid={_namespace + '-grunn'}
-                  error={_v[_namespace + '-grunn']?.feilmelding}
-                  id={_namespace + '-grunn'}
-                  label={t('label:velg-grunn-til-uenighet')}
-                  menuPortalTarget={document.body}
-                  onChange={(o: unknown) => setGrunn((o as Option).value, _grunn?.grunn, index)}
-                  options={thisGrunnOptions}
-                  value={_.find(grunnOptions, b => b.value === _grunn?.grunn)}
-                  defaultValue={_.find(grunnOptions, b => b.value === _grunn?.grunn)}
-                />
-                <Select
-                  closeMenuOnSelect
-                  data-testid={_namespace + '-person'}
-                  error={_v[_namespace + '-person']?.feilmelding}
-                  id={_namespace + '-person'}
-                  label={t('label:personen-det-gjelder')}
-                  menuPortalTarget={document.body}
-                  onChange={(o: unknown) => setPerson((o as Option).value, index)}
-                  options={personOptions}
-                  required
-                  value={_.find(personOptions, b => b.value === _grunn?.person)}
-                  defaultValue={_.find(personOptions, b => b.value === _grunn?.person)}
-                />
-                <HStack align="start">
-                  <Spacer/>
-                  <AddRemovePanel<Grunn>
-                    item={grunn}
-                    marginTop={inEditMode}
-                    index={index}
-                    inEditMode={inEditMode}
-                    onRemove={onRemove}
-                    onAddNew={onAddNew}
-                    onCancelNew={onCloseNew}
-                    onStartEdit={onStartEdit}
-                    onConfirmEdit={onSaveEdit}
-                    onCancelEdit={() => onCloseEdit(_namespace)}
-                  />
-                </HStack>
-              </HGrid>
-              )
-            : (
-              <HStack gap="2" align="start">
-                <HGrid columns={"2fr 1fr"} align="start" gap="4" width="70%">
-                  <FormText
-                    error={_v[_namespace + '-grunn']?.feilmelding}
-                    id={_namespace + '-grunn'}
-                  >
-                    {_.find(thisGrunnOptions, g => g.value === _grunn?.grunn)?.label}:
-                  </FormText>
-                  <FormText
-                    error={_v[_namespace + '-person']?.feilmelding}
-                    id={_namespace + '-person'}
-                  >
-                    {_.find(personOptions, p => p.value === _grunn?.person)?.label}
-                  </FormText>
-                </HGrid>
+        {inEditMode
+          ? (
+            <HGrid columns={3} align="center" gap="space-16">
+              <Select
+                closeMenuOnSelect
+                data-testid={_namespace + '-grunn'}
+                error={_v[_namespace + '-grunn']?.feilmelding}
+                id={_namespace + '-grunn'}
+                label={t('label:velg-grunn-til-uenighet')}
+                menuPortalTarget={document.body}
+                onChange={(o: unknown) => setGrunn((o as Option).value, _grunn?.grunn, index)}
+                options={thisGrunnOptions}
+                value={_.find(grunnOptions, b => b.value === _grunn?.grunn)}
+                defaultValue={_.find(grunnOptions, b => b.value === _grunn?.grunn)}
+              />
+              <Select
+                closeMenuOnSelect
+                data-testid={_namespace + '-person'}
+                error={_v[_namespace + '-person']?.feilmelding}
+                id={_namespace + '-person'}
+                label={t('label:personen-det-gjelder')}
+                menuPortalTarget={document.body}
+                onChange={(o: unknown) => setPerson((o as Option).value, index)}
+                options={personOptions}
+                required
+                value={_.find(personOptions, b => b.value === _grunn?.person)}
+                defaultValue={_.find(personOptions, b => b.value === _grunn?.person)}
+              />
+              <HStack align="start">
                 <Spacer/>
                 <AddRemovePanel<Grunn>
                   item={grunn}
@@ -302,14 +270,46 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
                   onCancelEdit={() => onCloseEdit(_namespace)}
                 />
               </HStack>
-            )}
+            </HGrid>
+            )
+          : (
+            <HStack gap="space-8" align="start">
+              <HGrid columns={"2fr 1fr"} align="start" gap="space-16" width="70%">
+                <FormText
+                  error={_v[_namespace + '-grunn']?.feilmelding}
+                  id={_namespace + '-grunn'}
+                >
+                  {_.find(thisGrunnOptions, g => g.value === _grunn?.grunn)?.label}:
+                </FormText>
+                <FormText
+                  error={_v[_namespace + '-person']?.feilmelding}
+                  id={_namespace + '-person'}
+                >
+                  {_.find(personOptions, p => p.value === _grunn?.person)?.label}
+                </FormText>
+              </HGrid>
+              <Spacer/>
+              <AddRemovePanel<Grunn>
+                item={grunn}
+                marginTop={inEditMode}
+                index={index}
+                inEditMode={inEditMode}
+                onRemove={onRemove}
+                onAddNew={onAddNew}
+                onCancelNew={onCloseNew}
+                onStartEdit={onStartEdit}
+                onConfirmEdit={onSaveEdit}
+                onCancelEdit={() => onCloseEdit(_namespace)}
+              />
+            </HStack>
+          )}
       </Box>
-    )
+    );
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -320,7 +320,7 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
                   error={validation[namespace + '-grunner']?.feilmelding}
                   id={namespace + '-grunner'}
                 >
-                  <Box borderWidth={"1 0"} paddingBlock="2">
+                  <Box borderWidth={"1 0"} paddingBlock="space-8">
                     {t('message:warning-no-grunn')}
                   </Box>
                 </FormText>
@@ -350,7 +350,7 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
         />
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default ProsedyreVedUenighetFC

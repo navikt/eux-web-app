@@ -25,8 +25,8 @@ const SEDDetails: React.FC = () => {
 
 
   return (
-    <HStack gap="4" align="start">
-      <VStack gap="1" align="center" title={t('')}>
+    <HStack gap="space-16" align="start">
+      <VStack gap="space-4" align="center" title={t('')}>
         {replySed?.sed?.status === 'received' && <EnvelopeClosedIcon width='20' height='20' />}
         {replySed?.sed?.status === 'sent' && <PaperplaneIcon width='20' height='20' />}
         {(_.isNil(replySed?.sed) || replySed?.sed?.status === 'new') && <StarIcon width='20' height='20' />}
@@ -40,7 +40,7 @@ const SEDDetails: React.FC = () => {
         {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
       </Label>
     </HStack>
-  )
+  );
 }
 
 export default SEDDetails

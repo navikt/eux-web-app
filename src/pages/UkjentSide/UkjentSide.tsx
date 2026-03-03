@@ -11,7 +11,7 @@ const UkjentSide: React.FC = (): JSX.Element => {
         <Page.Block width="2xl" as="main">
           <HStack>
             <Spacer/>
-            <Box paddingBlock="12">
+            <Box paddingBlock="space-48">
               <Alert variant='warning'>
                 <Heading size='medium'>
                   {t('message:error-unknownPage-cantFindRoute', { pathname: window.location.pathname })}
@@ -30,7 +30,7 @@ const UkjentSide: React.FC = (): JSX.Element => {
         </Page.Block>
       </TopContainer>
     </Page>
-  )
+  );
 }
 
 export default UkjentSide

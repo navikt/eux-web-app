@@ -205,15 +205,15 @@ const Inntekter: React.FC<any> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="4"
+        padding="space-16"
         borderWidth="1"
-        borderColor="border-default"
+        borderColor="neutral"
       >
-        <VStack gap="4">
+        <VStack gap="space-16">
           {inEditMode
             ? (
               <>
-                <HGrid columns={3} gap="4" align="start">
+                <HGrid columns={3} gap="space-16" align="start">
                   <Select
                     closeMenuOnSelect
                     data-testid={_namespace + '-type'}
@@ -262,8 +262,8 @@ const Inntekter: React.FC<any> = ({
               </>
               )
             : (
-              <VStack gap="2">
-                <HStack gap="2">
+              <VStack gap="space-8">
+                <HStack gap="space-8">
                   {inntektTypeLabel}
                   {_inntekt?.type === 'annet_vederlag' && (
                     <FormText
@@ -274,9 +274,9 @@ const Inntekter: React.FC<any> = ({
                     </FormText>
                   )}
                 </HStack>
-                <HStack gap="2">
+                <HStack gap="space-8">
                   <Label>{t('label:beløp') + ':'}</Label>
-                  <HStack gap="2">
+                  <HStack gap="space-8">
                     <FormText
                       error={_v[_namespace + '-beloep']?.feilmelding}
                       id={_namespace + '-beloep'}
@@ -310,11 +310,11 @@ const Inntekter: React.FC<any> = ({
           </HStack>
         </VStack>
       </Box>
-    )
+    );
   }
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {inntekter?.map(renderRow)}
       {_newForm
         ? renderRow(null, -1)
@@ -330,7 +330,7 @@ const Inntekter: React.FC<any> = ({
           </Box>
           )}
     </VStack>
-  )
+  );
 }
 
 export default Inntekter

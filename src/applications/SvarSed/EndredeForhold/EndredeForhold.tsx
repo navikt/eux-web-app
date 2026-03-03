@@ -56,8 +56,8 @@ const EndredeForhold: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -69,7 +69,7 @@ const EndredeForhold: React.FC<MainFormProps> = ({
           value={(replySed as H001Sed).ytterligereInfoType}
           onChange={(e: string | number | boolean) => setYtterligereInfoType(e as YtterligereInfoType)}
         >
-          <HStack gap="4">
+          <HStack gap="space-16">
             <Radio className={commonStyles.radioPanel} value='melding_om_mer_informasjon'>
               {t('el:option-ytterligere-1')}
             </Radio>
@@ -88,7 +88,7 @@ const EndredeForhold: React.FC<MainFormProps> = ({
         />
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default EndredeForhold

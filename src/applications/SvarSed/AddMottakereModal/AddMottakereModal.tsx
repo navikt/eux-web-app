@@ -122,11 +122,11 @@ const AddMottakereModal = ({
   return (
     <Box className={styles.minimalModal}>
       {alertMessage && alertType && [types.SVARSED_MOTTAKERE_ADD_FAILURE].indexOf(alertType) >= 0 && (
-        <VStack gap="4" align="center">
+        <VStack gap="space-16" align="center">
           <Box>
             <Alert variant='error'>{alertMessage}</Alert>
           </Box>
-          <HStack gap="4" justify="center">
+          <HStack gap="space-16" justify="center">
             <Button
               variant='secondary'
               onClick={onClose}
@@ -138,8 +138,8 @@ const AddMottakereModal = ({
       )}
       {_.isEmpty(mottakere)
         ? (
-            <VStack gap="4">
-              <HGrid columns={2} gap="4" align="start">
+            <VStack gap="space-16">
+              <HGrid columns={2} gap="space-16" align="start">
                 <Box>
                   <CountryDropdown
                     closeMenuOnSelect
@@ -154,7 +154,7 @@ const AddMottakereModal = ({
                     menuPortalTarget={null}
                   />
                 </Box>
-                <HStack gap="2" align="end">
+                <HStack gap="space-8" align="end">
                   <Select
                     data-testid={namespace + '-institusjon'}
                     disabled={!!_.isEmpty(landkode) || gettingInstitusjoner}
@@ -184,9 +184,9 @@ const AddMottakereModal = ({
                   {gettingInstitusjoner && <Loader />}
                 </HStack>
               </HGrid>
-              <Box padding="4">
+              <Box padding="space-16">
                 {newMottakere.map(mottakere => (
-                  <HStack gap="2" align="center" key={mottakere.id} className={styles.slideInFromLeft}>
+                  <HStack gap="space-8" align="center" key={mottakere.id} className={styles.slideInFromLeft}>
                     <Spacer/>
                     {mottakere.name}
                     <Button onClick={() => deleteMottakere(mottakere.id)} icon={<TrashIcon/>}/>
@@ -197,17 +197,17 @@ const AddMottakereModal = ({
             </VStack>
           )
         : (
-          <Box padding="4">
+          <Box padding="space-16">
             <Alert variant='success'>
               {t('message:success-mottakere-saved')}
             </Alert>
           </Box>
           )}
       <HStack justify="center">
-        <Box padding="4">
+        <Box padding="space-16">
           {_.isEmpty(mottakere)
             ? (
-              <HStack gap="4">
+              <HStack gap="space-16">
                 <Button
                   variant='primary'
                   disabled={addingMottakere}
@@ -236,7 +236,7 @@ const AddMottakereModal = ({
         </Box>
       </HStack>
     </Box>
-  )
+  );
 }
 
 export default AddMottakereModal

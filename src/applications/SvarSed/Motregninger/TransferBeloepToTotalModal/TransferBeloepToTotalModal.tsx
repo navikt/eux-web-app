@@ -90,14 +90,14 @@ const TransferBeloepToTotalModal: React.FC<TransferBeloepToTotalModalProps> = ({
 
   const HiddenAlert: React.FC = () => <Alert size="small" variant="info" style={{visibility:"hidden"}}>-</Alert>
 
-  return(
+  return (
     <Modal
       open={modalOpen}
       description={warnings.length > 0  ? warnings : undefined}
       modal={{
         modalTitle: title,
         modalContent: (
-          <Box borderWidth="1" borderColor="border-subtle" padding="4">
+          <Box borderWidth="1" borderColor="neutral-subtle" padding="space-16">
             {beloepArray?.map((item, i) => {
               let totalBeloep = parseFloat(item.beloep)
               const fomDato = _.isString(item.startdato) ?
@@ -115,7 +115,7 @@ const TransferBeloepToTotalModal: React.FC<TransferBeloepToTotalModalProps> = ({
               }
 
               return (
-                <HStack gap="4" align="center">
+                <HStack gap="space-16" align="center">
                   <Checkbox
                     key={getId(item)}
                     checked={!!(_valgteBeloep && _valgteBeloep["beloep-" + i])}
@@ -123,7 +123,7 @@ const TransferBeloepToTotalModal: React.FC<TransferBeloepToTotalModalProps> = ({
                   >
                     {totalBeloep.toFixed(0)} {item.valuta}
                   </Checkbox>
-                  {"barnetsNavn" in item && item.barnetsNavn ? <Tag size="xsmall" variant={"warning-moderate"}>{item.barnetsNavn}</Tag> : null}
+                  {"barnetsNavn" in item && item.barnetsNavn ? <Tag data-color="warning" size="xsmall" variant={"moderate"}>{item.barnetsNavn}</Tag> : null}
                   {"utbetalingshyppighet" in item && item.utbetalingshyppighet &&
                     <HelpText>
                       <BodyShort size="small">
@@ -142,9 +142,9 @@ const TransferBeloepToTotalModal: React.FC<TransferBeloepToTotalModalProps> = ({
                     </HelpText>
                   }
                 </HStack>
-              )
+              );
             })}
-            {!_totalBeloepAlert && <HStack align="center" gap="2"><b>Totalbeløp:</b>{_totalBeloepTekst}<HiddenAlert/></HStack>}
+            {!_totalBeloepAlert && <HStack align="center" gap="space-8"><b>Totalbeløp:</b>{_totalBeloepTekst}<HiddenAlert/></HStack>}
             {_totalBeloepAlert}
           </Box>
         ),
@@ -164,7 +164,7 @@ const TransferBeloepToTotalModal: React.FC<TransferBeloepToTotalModalProps> = ({
       width="medium"
       onModalClose={() => onModalClose()}
     />
-  )
+  );
 }
 
 export default TransferBeloepToTotalModal

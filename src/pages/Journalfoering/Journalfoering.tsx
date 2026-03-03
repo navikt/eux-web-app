@@ -77,8 +77,8 @@ export const Journalfoering: React.FC<JournalfoeringProps> = ({}: Journalfoering
       <TopContainer backButton={true} onGoBackClick={goBack} title={"Journalføring"}>
         <SakBanner />
         <Page.Block width="2xl" gutters as="main">
-          <HGrid columns="2fr 1fr" gap="4" paddingBlock="12">
-            <VStack gap="4">
+          <HGrid columns="2fr 1fr" gap="space-16" paddingBlock="space-48">
+            <VStack gap="space-16">
               <JournalfoerPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
               <InnhentMerInfoPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
               <FeilregistrerJournalposterPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
@@ -90,7 +90,7 @@ export const Journalfoering: React.FC<JournalfoeringProps> = ({}: Journalfoering
         </Page.Block>
       </TopContainer>
     </Page>
-  )
+  );
 }
 
 export default Journalfoering

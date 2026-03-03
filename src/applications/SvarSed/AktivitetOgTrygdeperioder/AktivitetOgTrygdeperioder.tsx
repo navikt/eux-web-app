@@ -149,15 +149,15 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
         resetWarning={perioderMedRettTilFamilieytelser && perioderMedRettTilFamilieytelser.length > 0}
         closedPeriodsWarning={!!hasOpenPeriods(trygdeperioder)}
       />
-      <Box padding="4">
-        <VStack gap="4">
+      <Box padding="space-16">
+        <VStack gap="space-16">
           <Box>
-            <VStack gap="4">
+            <VStack gap="space-16">
               <Heading size='small'>
                 {t('label:aktivitet-og-trygdeperioder')}
               </Heading>
-              <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-                <VStack gap="4">
+              <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
+                <VStack gap="space-16">
                   <RadioGroup
                     legend={t('label:personens-status')}
                     value={aktivitet?.status}
@@ -211,7 +211,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                       name={namespace + '-aktivitet-type'}
                       onChange={(value) => onAktivitetChange("type", value)}
                     >
-                      <HStack gap="4">
+                      <HStack gap="space-16">
                         <Radio value='inaktiv'>
                           {t('el:radio-aktivitet-type-inaktiv')}
                         </Radio>
@@ -234,14 +234,14 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
               {aktivitet?.status && aktivitet?.type && aktivitet?.status === 'aktiv' &&
                 <>
                   <Box
-                    padding="4"
+                    padding="space-16"
                     borderWidth={validation[namespace + '-aktivitet-perioder']?.feilmelding ? '2' : '1'}
-                    borderColor={validation[namespace + '-aktivitet-perioder']?.feilmelding ? 'border-danger' : 'border-subtle'}
+                    borderColor={validation[namespace + '-aktivitet-perioder']?.feilmelding ? 'danger' : 'neutral-subtle'}
                     id={namespace + '-aktivitet-perioder'}
                   >
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                       <Heading size='xsmall'>
-                        <HStack gap="4" align="center">
+                        <HStack gap="space-16" align="center">
                           {t('label:ansettelsesperioder')}
                           <Button
                             size={"xsmall"}
@@ -284,14 +284,14 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
               {aktivitet?.status && ((aktivitet?.status === 'inaktiv' && aktivitet?.type) || (aktivitet?.status === "ingenInfo")) &&
                 <>
                   <Box
-                    padding="4"
+                    padding="space-16"
                     borderWidth={validation[namespace + '-aktivitet-perioder']?.feilmelding ? '2' : '1'}
-                    borderColor={validation[namespace + '-aktivitet-perioder']?.feilmelding ? 'border-danger' : 'border-subtle'}
+                    borderColor={validation[namespace + '-aktivitet-perioder']?.feilmelding ? 'danger' : 'neutral-subtle'}
                     id={namespace + '-aktivitet-perioder'}
                   >
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                       <Heading size='xsmall'>
-                        <HStack gap="4" align="center">
+                        <HStack gap="space-16" align="center">
                           {t('label:perioder-uten-aktivitet')}
                           <Button
                             size={"xsmall"}
@@ -329,10 +329,10 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                 </>
               }
               {trygdeperioder && trygdeperioder.length > 0 &&
-                <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                  <VStack gap="4">
+                <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
+                  <VStack gap="space-16">
                       <Heading size='xsmall'>
-                        <HStack gap="4" align="center">
+                        <HStack gap="space-16" align="center">
                           {t('label:trygdeperioder')}
                           {aktivitet?.status && aktivitet?.status === 'aktiv' &&
                             <Button
@@ -348,7 +348,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                         </HStack>
                       </Heading>
                     {aktivitet?.status && aktivitet?.status !== 'aktiv' &&
-                      <HStack gap="4" align="center">
+                      <HStack gap="space-16" align="center">
                         <Button
                           size={"xsmall"}
                           variant='tertiary'
@@ -382,8 +382,8 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                 </Box>
               }
               {perioderMedPensjon && perioderMedPensjon.length > 0 &&
-                <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                  <VStack gap="4">
+                <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
+                  <VStack gap="space-16">
                     <Heading size='xsmall'>
                       {t('label:perioder-med-pensjon')}
                     </Heading>
@@ -400,8 +400,8 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
               }
 
               {perioderMedRettTilFamilieytelser && perioderMedRettTilFamilieytelser.length > 0 &&
-                <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                  <VStack gap="4">
+                <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
+                  <VStack gap="space-16">
                     <Heading size='xsmall'>
                       {t('label:perioder-med-rett-til-familieytelser')}
                     </Heading>
@@ -423,8 +423,8 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
               }
 
               {dekkedePerioder && dekkedePerioder.length > 0 &&
-                <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                  <VStack gap="4">
+                <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
+                  <VStack gap="space-16">
                     <Heading size='xsmall'>
                       {t('label:dekkede-perioder')}
                     </Heading>
@@ -446,8 +446,8 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
               }
 
               {udekkedePerioder && udekkedePerioder.length > 0 &&
-                <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                  <VStack gap="4">
+                <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
+                  <VStack gap="space-16">
                     <Heading size='xsmall'>
                       {t('label:udekkede-perioder')}
                     </Heading>
@@ -469,10 +469,10 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
               }
 
               {aktivitet?.status && ((aktivitet?.status === 'inaktiv' && aktivitet?.type) || (aktivitet?.status === "ingenInfo")) &&
-                <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                  <VStack gap="4">
+                <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
+                  <VStack gap="space-16">
                     <Heading size='xsmall'>
-                      <HStack gap="4" align="center">
+                      <HStack gap="space-16" align="center">
                         {t('label:perioder-med-aktivitet')}
                       </HStack>
                     </Heading>
@@ -497,7 +497,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default AktivitetOgTrygdeperioder

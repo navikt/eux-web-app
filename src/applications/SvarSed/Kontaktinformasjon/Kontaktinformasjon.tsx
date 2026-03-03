@@ -281,10 +281,10 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: _v[_namespace + '-nummer'] || _v[_namespace + '-type']
         })}
-        paddingBlock="2"
-        paddingInline="4"
+        paddingBlock="space-8"
+        paddingInline="space-16"
       >
-        <HGrid columns={3} gap="4">
+        <HGrid columns={3} gap="space-16">
           {inEditMode
             ? (
               <Input
@@ -348,7 +348,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
             </HStack>
         </HGrid>
       </Box>
-    )
+    );
   }
 
   const renderEpostRow = (epost: Epost | null, index: number) => {
@@ -364,10 +364,10 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: _v[_namespace + '-adresse']
         })}
-        paddingBlock="2"
-        paddingInline="4"
+        paddingBlock="space-8"
+        paddingInline="space-16"
       >
-        <HStack gap="4">
+        <HStack gap="space-16">
           {inEditMode
             ? (
               <Input
@@ -406,25 +406,25 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
           />
         </HStack>
       </Box>
-    )
+    );
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
         {_.isEmpty(telefoner)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-telephone')}
               </BodyLong>
             </Box>
           )  : (
             <>
-              <HGrid columns={3} gap="4" paddingInline="4">
+              <HGrid columns={3} gap="space-16" paddingInline="space-16">
                 <Label>
                   {t('label:telefonnummer') + ' *'}
                 </Label>
@@ -454,14 +454,14 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
 
         {_.isEmpty(eposter)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-email')}
               </BodyLong>
             </Box>
           ) : (
             <>
-              <HStack gap="4" paddingInline="4">
+              <HStack gap="space-16" paddingInline="space-16">
                 <Label>
                   {t('label:epost') + ' *'}
                 </Label>
@@ -486,7 +486,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
         }
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Kontaktinformasjon

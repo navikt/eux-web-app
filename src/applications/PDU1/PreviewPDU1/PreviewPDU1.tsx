@@ -105,7 +105,7 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
         modal={previewModal}
         onModalClose={() => setPreviewModal(undefined)}
       />
-      <HStack gap="4">
+      <HStack gap="space-16">
         {pdu1 && (
           <Button
             variant='tertiary'
@@ -143,7 +143,7 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
         )}
       </HStack>
     </>
-  )
+  );
 }
 
 export default PreviewPDU1

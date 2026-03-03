@@ -59,8 +59,8 @@ const MottakAvSoknad: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <HGrid columns={"1fr 2fr"} gap="4">
+    <Box padding="space-16">
+      <HGrid columns={"1fr 2fr"} gap="space-16">
         <DateField
           error={validation[namespace + '-kravMottattDato']?.feilmelding}
           namespace={namespace}
@@ -77,14 +77,14 @@ const MottakAvSoknad: React.FC<MainFormProps> = ({
           onChange={(e: string | number | boolean) => setKravType(e as string)}
           value={krav?.kravType}
         >
-          <HStack gap="4">
+          <HStack gap="space-16">
             <Radio className={commonStyles.radioPanel} value='nytt_krav'>{t('label:kravType-nytt_krav')}</Radio>
             <Radio className={commonStyles.radioPanel} value='endrede_omstendigheter'>{t('label:kravType-endrede_omstendigheter')}</Radio>
           </HStack>
         </RadioGroup>
       </HGrid>
     </Box>
-  )
+  );
 }
 
 export default MottakAvSoknad

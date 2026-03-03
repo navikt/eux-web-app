@@ -178,13 +178,13 @@ const Dagpenger: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        paddingBlock="2"
-        paddingInline="4"
+        paddingBlock="space-8"
+        paddingInline="space-16"
       >
         {inEditMode
           ? (
-            <VStack gap="4">
-              <HGrid columns={"2fr 1fr"} gap="4" align="start">
+            <VStack gap="space-16">
+              <HGrid columns={"2fr 1fr"} gap="space-16" align="start">
                 <PeriodeInput
                   namespace={_namespace}
                   error={{
@@ -202,7 +202,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
                   {addremovepanel}
                 </HStack>
               </HGrid>
-              <HGrid columns={"2fr 1fr"} gap="4" align="start">
+              <HGrid columns={"2fr 1fr"} gap="space-16" align="start">
                 <Input
                   error={_v[_namespace + '-info']?.feilmelding}
                   namespace={_namespace}
@@ -217,8 +217,8 @@ const Dagpenger: React.FC<MainFormProps> = ({
             </VStack>
             )
           : (
-            <HStack gap="4" align="center">
-              <HStack gap="4" align="center">
+            <HStack gap="space-16" align="center">
+              <HStack gap="space-16" align="center">
                 <PeriodeText
                   error={{
                     startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -239,17 +239,17 @@ const Dagpenger: React.FC<MainFormProps> = ({
             </HStack>
             )}
       </Box>
-    )
+    );
   }
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='medium'>
           {t('label:mottatte-dagpenger')}
         </Heading>
         {_.isEmpty(perioderDagpengerMottatt)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-periods')}
               </BodyLong>
@@ -271,7 +271,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
             )}
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Dagpenger

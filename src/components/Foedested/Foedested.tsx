@@ -154,11 +154,11 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
         className={classNames(commonStyles.repeatableBox, {
           [commonStyles.new]: index < 0
         })}
-        padding="4"
-        marginBlock="0 4"
+        padding="space-16"
+        marginBlock="space-0 space-16"
         width="100%"
       >
-        <HStack gap="8" align="start" justify={inEditMode ? "start" : "space-between"}>
+        <HStack gap="space-32" align="start" justify={inEditMode ? "start" : "space-between"}>
           <>
             {inEditMode
               ? (
@@ -239,7 +239,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
           }
         </HStack>
         {inEditMode &&
-          <Box padding="4">
+          <Box padding="space-16">
             <HStack>
               <Spacer/>
               <AddRemovePanel<Foedested>
@@ -257,7 +257,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
           </Box>
         }
       </Box>
-    )
+    );
   }
 
   return (
@@ -265,7 +265,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
       {
         emptyFoedsted
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-foedested')}
               </BodyLong>
@@ -277,7 +277,6 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
             </>
             )
       }
-
       {_newForm
         ? renderRow(null, -1)
         : (
@@ -296,7 +295,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
           </>
           )}
     </>
-  )
+  );
 }
 
 export default FoedestedFC

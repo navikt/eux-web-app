@@ -184,8 +184,8 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
 
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -199,7 +199,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
           value={utbetalingTilInstitusjon?.begrunnelse ?? ''}
           maxLength={255}
         />
-        <HGrid columns={2} gap="4" align="start">
+        <HGrid columns={2} gap="space-16" align="start">
           <Input
             error={validation[namespace + '-id']?.feilmelding}
             id='id'
@@ -239,7 +239,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
         </RadioGroup>
         {_kontoType === 'ordinaer' && (
           <VStack>
-            <HGrid columns={3} gap="4" align="start">
+            <HGrid columns={3} gap="space-16" align="start">
               <Input
                 error={validation[namespace + '-kontoOrdinaer-bankensNavn']?.feilmelding}
                 id='kontoOrdinaer-bankensNavn'
@@ -267,7 +267,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? ''}
               />
             </HGrid>
-            <Box paddingBlock="4">
+            <Box paddingBlock="space-16">
               <AdresseForm
                 adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
                 onAdressChanged={setOrdinaerAdresse}
@@ -280,7 +280,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
         )}
         {_kontoType === 'sepa' && (
           <>
-            <HGrid columns={2} gap="4" align="start">
+            <HGrid columns={2} gap="space-16" align="start">
               <Input
                 error={validation[namespace + '-kontoSepa-iban']?.feilmelding}
                 id='kontoSepa-iban'
@@ -300,8 +300,8 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
               />
             </HGrid>
             {parseFloat((replySed as F002Sed).sak?.cdmVersjon!) >= 4.4 &&
-              <VStack gap="4">
-                <HGrid columns={2} gap="4" align="start">
+              <VStack gap="space-16">
+                <HGrid columns={2} gap="space-16" align="start">
                   <Input
                     error={validation[namespace + '-kontoSepa-banknavn']?.feilmelding}
                     id='kontoSepa-banknavn'
@@ -319,7 +319,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                     value={utbetalingTilInstitusjon?.kontoSepa?.betalingsreferanse ?? ''}
                   />
                 </HGrid>
-                <HGrid columns={2} gap="4" align="start">
+                <HGrid columns={2} gap="space-16" align="start">
                   <Input
                     error={validation[namespace + '-kontoSepa-kontoeier']?.feilmelding}
                     id='kontoSepa-kontoeier'
@@ -340,7 +340,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
         </Box>
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Kontoopplysning

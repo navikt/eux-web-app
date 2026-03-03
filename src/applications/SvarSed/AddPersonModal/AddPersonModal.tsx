@@ -247,7 +247,7 @@ const AddPersonModal = <T extends StorageTypes>({
 
     return (
       <HStack key={personId}>
-        <HStack gap="2">
+        <HStack gap="space-8">
           <BodyLong>
             {p?.fornavn + ' ' + (p?.etternavn ?? '')}
           </BodyLong>
@@ -266,7 +266,7 @@ const AddPersonModal = <T extends StorageTypes>({
           onRemove={() => onRemovePerson(personId)}
         />
       </HStack>
-    )
+    );
   }
 
   const modalClose = () => {
@@ -282,7 +282,7 @@ const AddPersonModal = <T extends StorageTypes>({
       width="1"
     >
       <NavModal.Body id='add-person-modal-id'>
-        <VStack gap="4">
+        <VStack gap="space-16">
           <VStack>
             {_replySed?.bruker && renderPerson('bruker')}
             {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle')}
@@ -291,13 +291,13 @@ const AddPersonModal = <T extends StorageTypes>({
             {(_replySed as F002Sed).barn?.map((_b: any, i: number) => renderPerson(`barn[${i}]`))}
           </VStack>
           <div className={commonStyles.horizontalLineSeparator}/>
-          <Box background="bg-subtle" padding="4">
-            <VStack gap="4">
+          <Box background="neutral-soft" padding="space-16">
+            <VStack gap="space-16">
               <Heading size='small'>
                 {t('el:button-add-new-x', {x: t('label:person').toLowerCase()})}
               </Heading>
               <div className={commonStyles.horizontalLineSeparator}/>
-              <HStack gap="2" justify="space-evenly">
+              <HStack gap="space-8" justify="space-evenly">
                 <TextField
                   error={_validation[namespace + '-fornavn']?.feilmelding}
                   id={namespace + '-fornavn'}
@@ -328,7 +328,7 @@ const AddPersonModal = <T extends StorageTypes>({
                   value={_newPersonFnr}
                 />
               </HStack>
-              <HStack gap="2" align="center" justify="space-evenly">
+              <HStack gap="space-8" align="center" justify="space-evenly">
                 <RadioGroup
                   value={_newPersonKjoenn}
                   data-no-border
@@ -339,7 +339,7 @@ const AddPersonModal = <T extends StorageTypes>({
                   name={namespace + '-kjoenn'}
                   onChange={setKjoenn}
                 >
-                  <HStack gap="2">
+                  <HStack gap="space-8">
                     <Radio value='M' className={commonStyles.radioPanel}>
                       {t(_newPersonRelation?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
                     </Radio>
@@ -389,7 +389,7 @@ const AddPersonModal = <T extends StorageTypes>({
         </VStack>
       </NavModal.Body>
     </NavModal>
-  )
+  );
 }
 
 export default AddPersonModal

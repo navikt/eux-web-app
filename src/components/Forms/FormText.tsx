@@ -13,7 +13,7 @@ const FormText = ({
   error,
   id
 }: FormTextProps) => (
-  <VStack gap="4" tabIndex={0} id={id}>
+  <VStack gap="space-16" tabIndex={0} id={id}>
     {children}
     <ErrorLabel error={error} />
   </VStack>

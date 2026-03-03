@@ -46,7 +46,7 @@ export const Error = ({ error }: ErrorProps) => {
             </Accordion>
           )}
           {footer && (
-            <VStack gap="2">
+            <VStack gap="space-8">
               <div className={styles.line}/>
               <BodyLong>
                 {footer}
@@ -56,7 +56,7 @@ export const Error = ({ error }: ErrorProps) => {
         </Page.Block>
       </TopContainer>
     </Page>
-  )
+  );
 }
 
 export default Error

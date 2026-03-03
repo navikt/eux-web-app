@@ -185,7 +185,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
     <>
       <Modal ref={ref} header={{ heading: t('label:endre-tema-fagsak') }} width="medium" onClose={onModalClose}>
         <Modal.Body>
-          <VStack gap="4" padding="4">
+          <VStack gap="space-16" padding="space-16">
             <PersonSearch
               label={t('label:person')}
               key={`${namespace}-fnr-${currentFagsak?.fnr || 'empty'}-${isModalOpen ? 'open' : 'closed'}`}
@@ -222,7 +222,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
               <PersonPanel className='neutral' person={person}/>
             }
             {!gettingFagsaker && sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
-              <HGrid gap="4" align="end" columns={2}>
+              <HGrid gap="space-16" align="end" columns={2}>
                 <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
                   <option value={currentYear}>{currentYear}</option>
                   <option value={currentYear - 1}>{currentYear - 1}</option>
@@ -235,7 +235,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                 </Button>
               </HGrid>
             }
-            <HGrid gap="4" align="center" columns={2}>
+            <HGrid gap="space-16" align="center" columns={2}>
               <Select
                 id={namespace + '-tema'}
                 label={t('label:velg-tema')}
@@ -278,7 +278,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
               }
             </HGrid>
             {featureToggles?.featureAdmin &&
-              <HGrid gap="4" align="center" columns={2}>
+              <HGrid gap="space-16" align="center" columns={2}>
                 <Select
                   id={namespace + '-overstyrt-enhet'}
                   label={t('label:velg-overstyrt-enhet')}
@@ -309,10 +309,9 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
           </VStack>
         </Modal.Body>
       </Modal>
-
-      <Box borderWidth="1" borderRadius="small" borderColor="border-default" padding="4" background="surface-default">
+      <Box borderWidth="1" borderRadius="2" borderColor="neutral" padding="space-16" background="default">
         <VStack>
-          <VStack gap="4">
+          <VStack gap="space-16">
             <Heading size='small'>
               {t('label:journalfoeres-paa')}
             </Heading>
@@ -362,7 +361,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default JournalfoeringsOpplysninger

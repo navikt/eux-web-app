@@ -64,11 +64,11 @@ const RelasjonUtland: React.FC<RelasjonUtlandProps> =({
     }
   }
 
-  return(
-    <Box paddingBlock="4" className={`${styles.flashDiv} ${flashBackground ? styles.flashBackground : ''}`}>
-      <VStack gap="4">
+  return (
+    <Box paddingBlock="space-16" className={`${styles.flashDiv} ${flashBackground ? styles.flashBackground : ''}`}>
+      <VStack gap="space-16">
         <BodyLong>{t('label:family-utland-add-form')}</BodyLong>
-        <HGrid gap="4" columns={3} align="start">
+        <HGrid gap="space-16" columns={3} align="start">
           <TextField
             id={namespace + '-pin'}
             error={_validation[namespace + '-pin']?.feilmelding}
@@ -100,7 +100,7 @@ const RelasjonUtland: React.FC<RelasjonUtlandProps> =({
             values={_relation.statsborgerskap ?? ''}
           />
         </HGrid>
-        <HGrid gap="4" columns={2} align="start">
+        <HGrid gap="space-16" columns={2} align="start">
           <TextField
             id={namespace + '-fornavn'}
             error={_validation[namespace + '-fornavn']?.feilmelding}
@@ -121,7 +121,7 @@ const RelasjonUtland: React.FC<RelasjonUtlandProps> =({
             value={_relation.etternavn ?? ''}
           />
         </HGrid>
-        <HGrid gap="4" columns={2} align="start">
+        <HGrid gap="space-16" columns={2} align="start">
           <Select
             id={namespace + '-kjoenn'}
             error={_validation[namespace + '-kjoenn']?.feilmelding}
@@ -153,7 +153,7 @@ const RelasjonUtland: React.FC<RelasjonUtlandProps> =({
             dateValue={_relation.foedselsdato}
           />
         </HGrid>
-        <HGrid gap="4" columns={2} align="start">
+        <HGrid gap="space-16" columns={2} align="start">
           <Select
             id={namespace + '-familierelasjon'}
             error={_validation[namespace + '-familierelasjon']?.feilmelding}
@@ -185,7 +185,7 @@ const RelasjonUtland: React.FC<RelasjonUtlandProps> =({
         </HGrid>
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default RelasjonUtland

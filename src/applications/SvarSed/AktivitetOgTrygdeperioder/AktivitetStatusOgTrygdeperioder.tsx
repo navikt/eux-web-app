@@ -301,7 +301,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
           name={namespace + '-aktivitet-type'}
           onChange={(value) => _setSelectedActivityType(value)}
         >
-          <HStack gap="4">
+          <HStack gap="space-16">
             <Radio value='inaktiv'>
               {t('el:radio-aktivitet-type-inaktiv')}
             </Radio>
@@ -310,7 +310,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
             </Radio>
           </HStack>
         </RadioGroup>
-      )
+      );
     }
 
   }
@@ -400,12 +400,12 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
         closedPeriodsWarning={!!hasOpenPeriods(trygdeperioder)}
         cdmVersion={(replySed as F001Sed).sak?.cdmVersjon}
       />
-      <Box padding="4">
-        <VStack gap="4">
-          <Box padding="4" borderWidth="1" borderColor="border-subtle" background="surface-subtle">
-            <VStack gap="4">
+      <Box padding="space-16">
+        <VStack gap="space-16">
+          <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle" background="neutral-soft">
+            <VStack gap="space-16">
               <Heading size='small'>
-                <HStack gap="4" align="center">
+                <HStack gap="space-16" align="center">
                   Aktivitet
                   <Spacer/>
                   <Button
@@ -421,8 +421,8 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
               </Heading>
 
               {_showAddStatus &&
-                <Box padding="4" borderWidth="1" borderColor="border-subtle" className={styles.statusBoxOpen}>
-                  <VStack gap="4">
+                <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle" className={styles.statusBoxOpen}>
+                  <VStack gap="space-16">
                     <RadioGroup
                       legend={"Status"}
                       value={_selectedStatus}
@@ -438,7 +438,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                         {t('el:radio-aktivitet-status-ingeninfo')}
                       </Radio>
                     </RadioGroup>
-                    <HStack gap="4">
+                    <HStack gap="space-16">
                       <Button
                         variant='primary'
                         onClick={() => onStatusAdd(_selectedStatus)}
@@ -467,7 +467,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                       return <Tabs.Tab value={aktivitetStatus.status + '-' + idx} label={t('label:status-'+aktivitetStatus.status)}/>
                     })}
                     <Spacer/>
-                    <HStack gap="2">
+                    <HStack gap="space-8">
                       {!allStatusesAdded && !_showAddStatus &&
                       <Button
                         size={"xsmall"}
@@ -484,8 +484,8 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                 {aktivitetStatuser?.map((aktivitetStatus: AktivitetStatus, idx: number) => {
                   return (
                     <Tabs.Panel value={aktivitetStatus.status + '-' + idx}>
-                      <VStack gap="4" marginBlock="4" align="start">
-                        <HStack padding="0">
+                      <VStack gap="space-16" marginBlock="space-16" align="start">
+                        <HStack padding="space-0">
                           <AddRemove<AktivitetStatus>
                             item={aktivitetStatus}
                             index={idx}
@@ -494,18 +494,18 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                             labels={{remove: "Fjern status"}}
                             alertOnDelete={hasTransferedPeriods() ? t('message:info-trygdeperioder-maa-overfoeres-paa-nytt') : undefined}
                           />
-                          <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
+                          <div className="aksel-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
                         </HStack>
-                        <VStack gap="2" align="start" width="100%">
+                        <VStack gap="space-8" align="start" width="100%">
                           <Box
-                            padding="4"
-                            background="surface-neutral-moderate"
+                            padding="space-16"
+                            background="neutral-moderate"
                             borderWidth={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter']?.feilmelding ? '2' : '1'}
-                            borderColor={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter']?.feilmelding ? 'border-danger' : 'border-subtle'}
+                            borderColor={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter']?.feilmelding ? 'danger' : 'neutral-subtle'}
                             width="100%"
                           >
-                            <VStack gap="4">
-                              <HStack gap="4">
+                            <VStack gap="space-16">
+                              <HStack gap="space-16">
                                 <b>Status:</b>{t('label:status-' + aktivitetStatus.status)}
                                 <Spacer/>
                                 {aktivitetStatus.status !== "ingenInfo" &&
@@ -524,10 +524,10 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                           <ErrorLabel error={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter']?.feilmelding}/>
                         </VStack>
                         {_showAddActivityType && aktivitetStatus.status !== "ingenInfo" &&
-                          <Box padding="4" borderWidth="1" borderColor="border-subtle" width="100%" className={styles.statusBoxOpen}>
+                          <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle" width="100%" className={styles.statusBoxOpen}>
                             <VStack>
                               {getAktivitetTyper(aktivitetStatus.status)}
-                              <HStack gap="4">
+                              <HStack gap="space-16">
                                 <Button
                                   variant='primary'
                                   onClick={() => onActivityTypeAdd(_selectedActivityType, idx)}
@@ -566,15 +566,15 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                           return (
                             <VStack width="100%">
                               <Box
-                                padding="4"
+                                padding="space-16"
                                 borderWidth={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter-' + aktivitetIdx + '-perioder']?.feilmelding ? '2' : '1'}
-                                borderColor={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter-' + aktivitetIdx + '-perioder']?.feilmelding ? 'border-danger' : 'border-subtle'}
+                                borderColor={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter-' + aktivitetIdx + '-perioder']?.feilmelding ? 'danger' : 'neutral-subtle'}
                                 width="100%"
                               >
-                                <VStack gap="4" width="100%">
+                                <VStack gap="space-16" width="100%">
                                   {aktivitetStatus.status !== "ingenInfo" &&
                                     <VStack>
-                                      <HStack gap="4" width="100%" align="center">
+                                      <HStack gap="space-16" width="100%" align="center">
                                         {typeLabel && <Label>{typeLabel}:</Label>}
                                         <Button
                                           variant='tertiary'
@@ -595,7 +595,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                     <Box className={styles.statusBoxOpen}>
                                       <VStack>
                                         {getAktivitetTyper(aktivitetStatus.status, true)}
-                                        <HStack gap="4">
+                                        <HStack gap="space-16">
                                           <Button
                                             variant='primary'
                                             onClick={() => onActivityTypeChange(idx)}
@@ -650,7 +650,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                   {aktivitetStatus.status !== "ingenInfo" &&
                                     <HStack width="100%">
                                       <Spacer/>
-                                      <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
+                                      <div className="aksel-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
                                       <AddRemove<Aktivitet>
                                         item={aktivitet}
                                         index={idx}
@@ -665,24 +665,24 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                               </Box>
                               <ErrorLabel error={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter-' + aktivitetIdx + '-perioder']?.feilmelding}/>
                             </VStack>
-                          )}
+                          );}
                         )}
                       </VStack>
                     </Tabs.Panel>
-                  )
+                  );
                 })}
               </Tabs>
             </VStack>
           </Box>
           {hasTransferedPeriods() &&
-            <Box padding="4" borderWidth="1" borderColor="border-subtle" background="surface-default">
-              <VStack gap="4">
+            <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle" background="default">
+              <VStack gap="space-16">
                 <Heading size={"small"}>Trygdeperioder</Heading>
                 {trygdeperioder && trygdeperioder.length > 0 &&
-                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                    <VStack gap="4">
+                  <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
+                    <VStack gap="space-16">
                       <Heading size='xsmall'>
-                        <HStack gap="4" align="center">
+                        <HStack gap="space-16" align="center">
                           {t('label:trygdeperioder')}
                           {getInaktivPeriods(trygdeperioder).length === 0 &&
                             <Button
@@ -698,7 +698,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                         </HStack>
                       </Heading>
                       {getInaktivPeriods(trygdeperioder).length > 0 &&
-                        <HStack gap="4" align="center">
+                        <HStack gap="space-16" align="center">
                           <Button
                             size={"xsmall"}
                             variant='tertiary'
@@ -730,8 +730,8 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                   </Box>
                 }
                 {perioderMedPensjon && perioderMedPensjon.length > 0 &&
-                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                    <VStack gap="4">
+                  <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
+                    <VStack gap="space-16">
                       <Heading size='xsmall'>
                         {t('label:perioder-med-pensjon')}
                       </Heading>
@@ -748,8 +748,8 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                 }
 
                 {perioderMedRettTilFamilieytelser && perioderMedRettTilFamilieytelser.length > 0 &&
-                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                    <VStack gap="4">
+                  <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
+                    <VStack gap="space-16">
                       <Heading size='xsmall'>
                         {t('label:perioder-med-rett-til-familieytelser')}
                       </Heading>
@@ -771,8 +771,8 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                 }
 
                 {dekkedePerioder && dekkedePerioder.length > 0 &&
-                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                    <VStack gap="4">
+                  <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
+                    <VStack gap="space-16">
                       <Heading size='xsmall'>
                         {t('label:dekkede-perioder')}
                       </Heading>
@@ -794,8 +794,8 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                 }
 
                 {udekkedePerioder && udekkedePerioder.length > 0 &&
-                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                    <VStack gap="4">
+                  <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
+                    <VStack gap="space-16">
                       <Heading size='xsmall'>
                         {t('label:udekkede-perioder')}
                       </Heading>
@@ -821,7 +821,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default AktivitetStatusOgTrygdeperioder

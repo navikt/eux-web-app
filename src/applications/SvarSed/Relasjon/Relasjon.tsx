@@ -282,14 +282,14 @@ const Relasjon: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="4"
+        padding="space-16"
         borderWidth="1"
-        borderColor="border-default"
-        borderRadius="small"
+        borderColor="neutral"
+        borderRadius="2"
       >
         {inEditMode
           ? (
-            <VStack gap="4">
+            <VStack gap="space-16">
               <RadioGroup
                 defaultValue={_barnetilhoerighet?.relasjonTilPerson}
                 data-testid={_namespace + '-relasjonTilPerson'}
@@ -298,14 +298,14 @@ const Relasjon: React.FC<MainFormProps> = ({
                 legend={t('label:relasjon-med') + ' *'}
                 onChange={(e: string) => setRelasjon(e as BarnRelasjon, index)}
               >
-                <HStack gap="4">
+                <HStack gap="space-16">
                   <Radio className={commonStyles.radioPanel} value='søker'>{t('label:søker')}</Radio>
                   <Radio className={commonStyles.radioPanel} value='ektefelle_partner'>{t('label:ektefelle_partner')}</Radio>
                   <Radio className={commonStyles.radioPanel} value='avdød'>{t('label:avdød')}</Radio>
                   <Radio className={commonStyles.radioPanel} value='annen_person'>{t('label:annen_person')}</Radio>
                 </HStack>
               </RadioGroup>
-              <HGrid columns="1fr 2fr" gap="4" align="start">
+              <HGrid columns="1fr 2fr" gap="space-16" align="start">
                 <Select
                   closeMenuOnSelect
                   data-testid={_namespace + '-relasjonType'}
@@ -331,7 +331,7 @@ const Relasjon: React.FC<MainFormProps> = ({
                   requiredStartDato={false}
                 />
               </HGrid>
-              <HGrid columns={2} gap="4" align="start">
+              <HGrid columns={2} gap="space-16" align="start">
                 <RadioGroup
                   value={_barnetilhoerighet?.erDeltForeldreansvar}
                   data-testid={_namespace + '-erDeltForeldreansvar'}
@@ -340,7 +340,7 @@ const Relasjon: React.FC<MainFormProps> = ({
                   legend={t('label:delt-foreldreansvar')}
                   onChange={(e: string) => setErDeltForeldreansvar(e as JaNei, index)}
                 >
-                  <HStack gap="4">
+                  <HStack gap="space-16">
                     <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
                     <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
                   </HStack>
@@ -349,8 +349,8 @@ const Relasjon: React.FC<MainFormProps> = ({
               <Label>
                 {t('label:hvor-bor-barnet')}
               </Label>
-              <HStack gap="4" align="end">
-                <VStack gap="2">
+              <HStack gap="space-16" align="end">
+                <VStack gap="space-8">
                   <Checkbox
                     checked={_barnetilhoerighet?.borIBrukersHushold === 'ja'}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion1(e.target.checked, index)}
@@ -393,13 +393,13 @@ const Relasjon: React.FC<MainFormProps> = ({
             </VStack>
             )
           : (
-            <VStack gap="4">
-              <HStack gap="2" wrap>
+            <VStack gap="space-16">
+              <HStack gap="space-8" wrap>
                 <FormText
                   error={_v[_namespace + '-relasjonTilPerson']?.feilmelding}
                   id={_namespace + '-relasjonTilPerson'}
                 >
-                  <HStack gap="1">
+                  <HStack gap="space-4">
                     {t('label:relasjon-med')}
                     {t('label:' + _barnetilhoerighet?.relasjonTilPerson).toLowerCase()},
                   </HStack>
@@ -419,13 +419,13 @@ const Relasjon: React.FC<MainFormProps> = ({
                   periode={barnetilhoerighet?.periode}
                 />
               </HStack>
-              <HStack gap="4" align="start">
-                <VStack gap="1">
+              <HStack gap="space-16" align="start">
+                <VStack gap="space-4">
                   <FormText
                     error={_v[_namespace + '-erDeltForeldreansvar']?.feilmelding}
                     id={_namespace + '-erDeltForeldreansvar'}
                   >
-                    <HStack gap="1">
+                    <HStack gap="space-4">
                       <Label>{t('label:delt-foreldreansvar')}:</Label>
                       {barnetilhoerighet?.erDeltForeldreansvar ? t('label:' + barnetilhoerighet?.erDeltForeldreansvar) : '-'}
                     </HStack>
@@ -434,7 +434,7 @@ const Relasjon: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-borIBrukersHushold']?.feilmelding}
                     id={_namespace + '-borIBrukersHushold'}
                   >
-                    <HStack gap="1">
+                    <HStack gap="space-4">
                       <Label>{t('label:barn-i-hustand-spørsmål-1')}:</Label>
                       {barnetilhoerighet?.borIBrukersHushold ? t('label:' + barnetilhoerighet?.borIBrukersHushold) : '-'}
                     </HStack>
@@ -443,7 +443,7 @@ const Relasjon: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-borIEktefellesHushold']?.feilmelding}
                     id={_namespace + '-borIEktefellesHushold'}
                   >
-                    <HStack gap="1">
+                    <HStack gap="space-4">
                       <Label>{t('label:barn-i-hustand-spørsmål-2')}:</Label>
                       {barnetilhoerighet?.borIEktefellesHushold ? t('label:' + barnetilhoerighet?.borIEktefellesHushold) : '-'}
                     </HStack>
@@ -452,7 +452,7 @@ const Relasjon: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-borIAnnenPersonsHushold']?.feilmelding}
                     id={_namespace + '-borIAnnenPersonsHushold'}
                   >
-                    <HStack gap="1">
+                    <HStack gap="space-4">
                       <Label>{t('label:barn-i-hustand-spørsmål-3')}:</Label>
                       {barnetilhoerighet?.borIAnnenPersonsHushold ? t('label:' + barnetilhoerighet?.borIAnnenPersonsHushold) : '-'}
                     </HStack>
@@ -461,7 +461,7 @@ const Relasjon: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-borPaaInstitusjon']?.feilmelding}
                     id={_namespace + '-borPaaInstitusjon'}
                   >
-                    <HStack gap="1">
+                    <HStack gap="space-4">
                       <Label>{t('label:barn-i-hustand-spørsmål-4')}:</Label>
                       {barnetilhoerighet?.borPaaInstitusjon ? t('label:' + barnetilhoerighet?.borPaaInstitusjon) : '-'}
                     </HStack>
@@ -488,18 +488,18 @@ const Relasjon: React.FC<MainFormProps> = ({
           )
         }
       </Box>
-    )
+    );
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {t('label:relasjon-til-barn')}
         </Heading>
         {_.isEmpty(barnetilhoerigheter)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-relasjon')}
               </BodyLong>
@@ -521,7 +521,7 @@ const Relasjon: React.FC<MainFormProps> = ({
             )}
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Relasjon

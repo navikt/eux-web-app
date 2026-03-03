@@ -114,7 +114,7 @@ const SEDSearch = (): JSX.Element => {
   const nrEditableSaks = _.filter(visibleSaks, (s: Sak) => _.find(s.sedListe, (sed: Sed) => isSedEditable(s, sed, sedStatus)) !== undefined)?.length ?? 0
 
   return (
-    <HStack marginBlock="12">
+    <HStack marginBlock="space-48">
       <Spacer />
       <Box minWidth="800px">
         <VStack width="100%">
@@ -147,7 +147,7 @@ const SEDSearch = (): JSX.Element => {
                 legend=''
                 value={_filter}
               >
-                <HStack gap="4">
+                <HStack gap="space-16">
                   <Radio value='all'>{t('label:alle') + ' (' + visibleSaks.length + ')'}</Radio>
                   {familieytelser > 0 && <Radio value='FB_'>{t('label:familieytelser') + ' (' + familieytelser + ')'}</Radio>}
                   {dagpenger > 0 && <Radio value='UB_'>{t('label:dagpenger') + ' (' + dagpenger + ')'}</Radio>}
@@ -161,7 +161,7 @@ const SEDSearch = (): JSX.Element => {
           {queryingSaks
             ? (<WaitingPanel />)
             : (
-                <VStack gap="4">
+                <VStack gap="space-16">
                   {!filteredSaks || filteredSaks?.length === 0 &&
                     <Alert variant='warning'>
                       Ingen saker funnet
@@ -192,7 +192,7 @@ const SEDSearch = (): JSX.Element => {
       </Box>
       <Spacer />
     </HStack>
-  )
+  );
 }
 
 export default SEDSearch

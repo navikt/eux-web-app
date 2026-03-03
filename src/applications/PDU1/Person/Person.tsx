@@ -87,12 +87,12 @@ const Person: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='medium'>
           {t('label:personopplysninger')}
         </Heading>
-        <HGrid columns={3} gap="4" align="start">
+        <HGrid columns={3} gap="space-16" align="start">
           <Input
             error={validation[namespace + '-fornavn']?.feilmelding}
             id='fornavn'
@@ -123,7 +123,7 @@ const Person: React.FC<MainFormProps> = ({
             required
           />
         </HGrid>
-        <HGrid columns={"2fr 1fr"} gap="4">
+        <HGrid columns={"2fr 1fr"} gap="space-16">
         <RadioGroup
           value={pdu1Person?.kjoenn}
           data-no-border
@@ -134,7 +134,7 @@ const Person: React.FC<MainFormProps> = ({
           name={namespace + '-kjoenn'}
           onChange={onKjoennChange}
         >
-          <HStack gap="4">
+          <HStack gap="space-16">
             <Radio className={commonStyles.radioPanel} value='K'>
               {t('label:kvinne')}
             </Radio>
@@ -153,7 +153,7 @@ const Person: React.FC<MainFormProps> = ({
         setReplySed={setReplySed}
         updateReplySed={updateReplySed}
       />
-      <VStack gap="4">
+      <VStack gap="space-16">
         <Heading size='small'>{t('label:adresse')}</Heading>
         <Adresse
           replySed={replySed}
@@ -163,8 +163,8 @@ const Person: React.FC<MainFormProps> = ({
           updateReplySed={updateReplySed}
         />
         <Heading size='small'>{t('label:pins')}</Heading>
-        <HGrid columns={2} gap="4" align="start">
-          <VStack gap="2">
+        <HGrid columns={2} gap="space-16" align="start">
+          <VStack gap="space-8">
             <Input
               error={validation[namespace + '-fnr']?.feilmelding}
               id='fnr'
@@ -196,7 +196,7 @@ const Person: React.FC<MainFormProps> = ({
         />
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Person

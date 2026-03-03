@@ -88,9 +88,9 @@ const FamilieRelasjonF003: React.FC<MainFormProps> = ({
     }
   }
 
-  return(
-    <Box padding="4">
-      <VStack gap="4">
+  return (
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -106,7 +106,7 @@ const FamilieRelasjonF003: React.FC<MainFormProps> = ({
           value={familieRelasjon?.periode}
           asGrid={true}
         />
-        <HGrid columns={2} gap="4">
+        <HGrid columns={2} gap="space-16">
           <Select
             data-testid={namespace + '-forelderType'}
             error={validation[namespace + '-forelderType']?.feilmelding}
@@ -148,14 +148,14 @@ const FamilieRelasjonF003: React.FC<MainFormProps> = ({
           legend={t('label:bor-sammen')}
           onChange={(e: string) => setBorSammen(e as JaNei)}
         >
-          <HGrid columns={2} gap="4">
+          <HGrid columns={2} gap="space-16">
             <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
             <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
           </HGrid>
         </RadioGroup>
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default FamilieRelasjonF003

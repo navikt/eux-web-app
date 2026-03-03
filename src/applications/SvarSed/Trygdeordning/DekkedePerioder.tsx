@@ -180,7 +180,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   }
 
   const getTag = (type: string) => (
-    <Tag size='small' variant='info'>
+    <Tag data-color="info" size='small' variant="outline">
       {type === 'dekkedePerioder' && t('label:dekkede')}
       {type === 'udekkedePerioder' && t('label:udekkede')}
     </Tag>
@@ -213,7 +213,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
 
     return (
       <Box
-        padding="4"
+        padding="space-16"
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
         className={classNames(commonStyles.repeatableBox, {
@@ -223,8 +223,8 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       >
         {inEditMode
           ? (
-              <VStack gap="4">
-                <HStack gap="4">
+              <VStack gap="space-16">
+                <HStack gap="space-16">
                   <PeriodeInput
                     namespace={_namespace}
                     hideLabel={false}
@@ -250,7 +250,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
                     name={_namespace + '-type'}
                     onChange={(newType: string) => setType(newType, index)}
                   >
-                    <HStack gap="4" width="100%">
+                    <HStack gap="space-16" width="100%">
                       <Radio className={commonStyles.radioPanel} value='dekkedePerioder'>
                         {t('label:dekkede')}
                       </Radio>
@@ -263,7 +263,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
               </VStack>
             )
           : (
-            <HStack gap="4" align="center">
+            <HStack gap="space-16" align="center">
               <PeriodeText
                 periode={periode}
                 namespace={_namespace}
@@ -278,22 +278,22 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
             </HStack>
             )}
       </Box>
-    )
+    );
   }
 
   return (
-    <Box padding="4">
+    <Box padding="space-16">
       <Box
-        background="surface-subtle"
+        background="neutral-soft"
         borderWidth="1"
-        borderColor="border-subtle"
+        borderColor="neutral-subtle"
         id={namespace + '-dekkedePerioder'}
         className={classNames({
           [styles.errorBox]: hasNamespaceWithErrors(validation, namespace)
         })}
-        padding="4"
+        padding="space-16"
       >
-        <VStack gap="4">
+        <VStack gap="space-16">
         {!_.isEmpty(_allPeriods) && (
           <Checkbox
             checked={_sort === 'group'}
@@ -348,7 +348,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
         </VStack>
       </Box>
     </Box>
-  )
+  );
 }
 
 export default DekkedePerioder

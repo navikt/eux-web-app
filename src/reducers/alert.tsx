@@ -127,10 +127,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         if ((action as ActionWithPayload).status === 409) {
           const url = (action as ActionWithPayload).context.sakUrl
           stripeMessage = (
-            <HStack gap="2">
+            <HStack gap="space-8">
               <span>{i18n.t('message:error-svarsed-failure-duplicate') as string}</span>
               <Link target='_blank' href={url} rel='noreferrer'>
-                <HStack gap="2">
+                <HStack gap="space-8">
                   <span>
                     {i18n.t('message:error-svarsed-failure-duplicate-2') as string}
                   </span>
