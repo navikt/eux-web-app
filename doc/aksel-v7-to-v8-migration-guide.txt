@@ -1,0 +1,226 @@
+Migration Guide from Aksel v7 to v8
+
+
+----
+Grunnleggende
+
+Versjon 8
+Stabil
+Oppdatert 24. februar 2026
+Innhold på siden
+[1. Oppdatere tokens](https://aksel.nav.no/grunnleggende/migreringsguider/versjon-8#62b63e017097)
+[2. Oppdatere CSS](https://aksel.nav.no/grunnleggende/migreringsguider/versjon-8#0aa0cf90a481)
+[3. Oppdatere React](https://aksel.nav.no/grunnleggende/migreringsguider/versjon-8#9d4eb25e9b5b)
+[4. Oppdatere tailwindcss](https://aksel.nav.no/grunnleggende/migreringsguider/versjon-8#ceb32412bc8f)
+[5. Oppdatere Stylelint](https://aksel.nav.no/grunnleggende/migreringsguider/versjon-8#a83a76ec8724)
+[Send innspill](https://github.com/navikt/aksel/issues/new?labels=foresp%C3%B8rsel+%F0%9F%A5%B0%2Ckomponenter+%F0%9F%A7%A9&template=update-component.yml&title=%5BInnspill%5D%20Versjon%208)
+For å gjøre migreringen enklere, anbefaler vi å laste ned CLI-verktøyet vårt.
+
+BASH
+
+
+yarn add @navikt/aksel -D
+npm install @navikt/aksel -D
+Du kan også kjøre verktøyet direkte med npx/yarn dlx/pnpm dlx
+
+BASH
+
+
+npx @navikt/aksel@latest codemod ...
+1. Oppdatere tokens
+Hvis du laster @navikt/ds-tokens manuelt for å bruke tokens vil import og tokens måtte oppdateres.
+
+Følger med CSS-pakken
+Du trenger ikke laste @navikt/ds-tokens for seg selv hvis du bruker @navikt/ds-css, tokens følger med.
+
+1.1 Hvis du bruker "darkside"
+Imports
+
+
+@navikt/ds-tokens/darkside-css
+@navikt/ds-tokens/css
+
+@navikt/ds-tokens/darkside-scss
+@navikt/ds-tokens/scss
+
+@navikt/ds-tokens/darkside-less
+@navikt/ds-tokens/less
+
+@navikt/ds-tokens/darkside-js
+@navikt/ds-tokens/js
+1.2 Oppdatere token-variabler
+Alle tokens må oppdateres. Vi har laget et codemod-script som hjelper deg på veien. Du vil få listet ut alle tilfeller der du manuelt må gjøre oppdateringer.
+
+Script
+
+
+yarn run aksel codemod v8-tokens
+[Dokumentasjon for nye tokens finner du her](https://aksel.nav.no/grunnleggende/styling/design-tokens). Trenger du dokumentasjon for gamle tokens finnes de på [aksel-v7.nav.no](https://aksel-v7.nav.no/grunnleggende/styling/design-tokens).
+
+1.3 Hvis du ikke bruker "darkside"
+Oppdater til scoped import med mindre codemod-en nevnt over allerede har gjort det for deg.
+
+Imports
+
+
+@navikt/ds-tokens/dist/tokens(.css|.js|.scss|.less)
+@navikt/ds-tokens/(js|scss|less)
+Trenger du fortsatt tilgang til gamle tokens, kan du [kopiere dem fra JsDelivery](https://cdn.jsdelivr.net/npm/@navikt/ds-tokens@7/dist/tokens.css) lokalt til eget repo frem til alt er migrert.
+
+2. Oppdatere CSS
+Hvis du bruker tokens fra Aksel gjennom @navikt/ds-css må disse oppdateres på samme måte som steg 1. Se steg ["1.2 oppdatere token-variabler"](https://aksel.nav.no/grunnleggende/migreringsguider/versjon-7-og-tidligere#d8ee0efaee7d) for instruksjoner.
+
+2.1 Hvis du bruker "darkside"
+CSS import
+
+
+@navikt/ds-css/darkside
+@navikt/ds-css
+2.2 Hvis du ikke bruker "darkside"
+CSS bruker nå [layers](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@layer), som gjør at styling fra Aksel har spesifisitet 0.
+Alle klassenavn starter nå med .aksel
+Store deler av CSS-en er refaktorert til å støtte theming og farging.
+Fjernet [hidden]{ display: none !important; } fra css-reset
+Hvis du har brukt .navds-klasser i CSS-en din vil disse altså ikke lenger fungere, og må oppdateres. Siden CSS-en fra Aksel nå har spesifisitet 0 vil mer komplekse selektorer potensielt kunne forenkles. Vi anbefaler imidlertid å ikke overskrive Aksel-CSS så langt det er mulig. Hvis du likevel gjør det, bør du legge på egne klasser i className i stedet for å referere til .aksel-klasser direkte.
+
+Har du fortsatt utfordringer med å løse noe, ønsker vi tilbakemelding om dette slik at vi kan løse det for alle.
+
+2.3 Komponent-tokens
+Komponent-spesifikke tokens er fjernet.
+
+Eksempel tokens
+
+
+--ac-button-primary-bg
+--ac-button-primary-text
+--ac-button-primary-hover-bg
+--ac-button-primary-active-bg
+--ac-button-primary-focus-border
+Siden vi nå har innebygd theming-støtte, fleksibel farging av komponenter og CSS-pakken har spesifisitet 0 ser vi ikke lenger behov for å støtte komponent-tokens. All bruk av disse må manuelt oppdateres. Dette rydder opp i ~400 tokens, der 90% ikke er brukt.
+
+3. Oppdatere React
+3.1 Hvis du bruker "darkside"
+Du trenger ikke lengre å bruke <Theme />-komponenten som midlertidig "feature-flag". Theming vil nå fungere uansett.
+
+Typen AkselColor støtter ikke lengre arbitrære string-verdier. Se [Theming-artikkelen](https://aksel.nav.no/grunnleggende/styling/theming) for hvordan du setter opp riktige typer.
+
+3.2 List
+Props title, description og headingTag er fjernet. Du må nå bruke Heading og BodyShort direkte. I tillegg er ytre marger fjernet. Codemod-script gjør en best-effort for å erstatte dette med riktige komponenter, men bør manuelt verifiseres!
+
+Script
+
+
+yarn run aksel codemod v8-list
+Diff
+
+
+<List
+  title="Lorem ipsum"
+  description="Lorem ipsum"
+  headingTag="h3"
+>
+  <List.Item>
+    lorem ipsum
+  </List.Item>
+  <List.Item>
+    lorem ipsum
+  </List.Item>
+</List>
+
+<div>
+  <Heading as="h3" size="small">
+    Lorem ipsum
+  </Heading>
+  <BodyShort>
+    Lorem ipsum
+  </BodyShort>
+  <Box marginBlock="space-16" asChild>
+    <List>
+      <List.Item>
+        lorem ipsum
+      </List.Item>
+      <List.Item>
+        lorem ipsum
+      </List.Item>
+    </List>
+  </Box>
+</div>
+
+Vis mindre kode
+3.3 Avviklede props
+Accordion, Popover og Page har alle avviklede props som ikke lenger har noen effekt:
+
+Accordion: headingSize er fjernet. Størrelse blir nå styrt av size
+Popover: arrow er fjernet.
+Page: background er fjernet.
+Codemod-script fjerner disse propsene fra relevante komponenter.
+
+BASH
+
+
+yarn run aksel codemod v8-prop-deprecate
+3.4 Box
+Box-komponenten er en refleksjon av token-pakken vår. Siden alle bakgrunner, border-farger og shadows er oppdatert må disse synkes. Codemod-script løser de fleste tilfeller, men noen farger og spesielt bruk av shadow må migreres manuelt.
+
+BASH
+
+
+yarn run aksel codemod v8-box
+3.4.1 Box.New
+Komponenten er markert som avviklet og kan nå oppdateres til vanlig Box. Codemod-script tar seg av renaming og oppdatering av imports.
+
+BASH
+
+
+yarn run aksel codemod v8-box-new
+3.5 Oppdatere variant-props (valgfritt)
+På sikt vil vi flytte all endring av "farger" fra variant-prop til data-color-attributt. I versjon 8 støttes begge deler slik at du ikke må oppdatere nå, men det vil måtte gjøres i fremtidige versjoner. Codemod-script oppdaterer til data-color der det er relevant.
+
+BASH
+
+
+yarn run aksel codemod v8-tag-variant
+yarn run aksel codemod v8-toggle-group-variant
+yarn run aksel codemod v8-accordion-variant
+yarn run aksel codemod v8-chips-variant
+yarn run aksel codemod v8-button-variant
+yarn run aksel codemod v8-link-variant
+4. Oppdatere tailwindcss
+4.1 Hvis du bruker "darkside"
+Diff
+
+
+module.exports = {
+ content: [require("@navikt/ds-tailwind/darkside-tw3")],
+ content: [require("@navikt/ds-tailwind")],
+};
+4.2 Hvis du ikke bruker "darkside"
+Tailwind-pakken fra Aksel er en refleksjon av token-pakken, som vil si at store deler av klassene er oppdatert.
+
+Codemod-script gjør en best-effort for å oppdatere alle instanser den finner og kan oppdatere, men tailwind tilbyr ingen metoder for å validere at alt stemmer, så test nøye! Du kan hoppe over dette steget hvis du allerede har gjennomført token-migrering på steg 1.
+
+BASH
+
+
+yarn run aksel codemod v8-tokens
+Du finner gammel config på [JsDelivery](https://cdn.jsdelivr.net/npm/@navikt/ds-tailwind@7/tailwind.config.js) hvis du ønsker å migrere litt av gangen.
+
+Nytt
+Alle tailwind-klasserer refererer nå til css-variabler. Dette gjør at theming støttes automatisk.
+
+Krever at du har lastet enten css-pakken eller token-pakken i appen.
+Endring av opacity direkte på farger er ikke mulig lenger, f.eks text-red-500/70.
+Alle tailwind-klasser fra Aksel er nå prefikset med ax
+Diff
+
+
+ className="md:bg-surface-info"
+ className="ax-md:bg-ax-bg-info-moderate"
+Config extender ikke lenger "spacing-scale" fra Aksel. Bruk tailwind sin innebygde skala. Det samme gjelder z-index og maxWidth.
+
+5. Oppdatere Stylelint
+@navikt/aksel-stylelint er oppdatert til å reflektere endringene i klassenavn-prefix (.aksel), nye tokens og sjekk på gamle klasser.
+
+Regelen aksel/design-token-no-component-reference er fjernet.
+Regelen aksel/no-legacy-classes er lagt til.
+Pakken er også skrevet om til ESM, som gjør at du må være på Stylelint v16 eller nyere.
