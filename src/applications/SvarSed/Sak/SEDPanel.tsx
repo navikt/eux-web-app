@@ -205,11 +205,11 @@ const SEDPanel = ({
       <HStack gap="space-16" wrap={false}>
         <VStack className={styles.iconDiv} align="center">
           {sed.status === 'received' && <DownloadIcon color='var(--ax-bg-accent-strong)' width='32' height='32' />}
-          {sed.status === 'sent' && <PaperplaneIcon color='green' width='32' height='32' />}
-          {sed.status === 'new' && <StarIcon color='orange' width='32' height='32' />}
+          {sed.status === 'sent' && <PaperplaneIcon color='var(--ax-bg-success-strong)' width='32' height='32' />}
+          {sed.status === 'new' && <StarIcon color='var(--ax-bg-warning-strong)' width='32' height='32' />}
           {sed.status === 'active' && <PencilIcon width='32' height='32' />}
-          {sed.status === 'cancelled' && <XMarkIcon color='red' width='32' height='32' />}
-          {!sed.status && <QuestionmarkDiamondIcon color='black' width='32' height='32' />}
+          {sed.status === 'cancelled' && <XMarkIcon color='var(--ax-bg-danger-strong)' width='32' height='32' />}
+          {!sed.status && <QuestionmarkDiamondIcon color='var(--ax-bg-neutral-strong)' width='32' height='32' />}
           <div className={styles.iconSpacer}></div>
           <Detail>
             {t('app:status-received-' + (sed.status?.toLowerCase() ?? 'unknown'))}
