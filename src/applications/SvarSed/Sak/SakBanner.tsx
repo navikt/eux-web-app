@@ -40,19 +40,19 @@ const SakBanner = () => {
     return null
   }
 
-  let cdmVariant: any = ""
+  let cdmVariantColor: any = ""
   switch (currentSak.cdmVersjon){
     case '4.2':
-      cdmVariant = "alt3-moderate"
+      cdmVariantColor = "brand-blue"
       break
     case '4.3':
-      cdmVariant = "alt2-moderate"
+      cdmVariantColor = "meta-lime"
       break
     case '4.4':
-      cdmVariant = "alt1-moderate"
+      cdmVariantColor = "meta-purple"
       break
     default:
-      cdmVariant = "neutral-moderate"
+      cdmVariantColor = "neutral"
       break
   }
 
@@ -121,7 +121,7 @@ const SakBanner = () => {
         <VStack>
           {currentSak && currentSak.cdmVersjon &&
             <Box>
-              <Tag size="small" variant={cdmVariant}>CDM: {currentSak.cdmVersjon}</Tag>
+              <Tag size="small" variant="moderate" data-color={cdmVariantColor}>CDM: {currentSak.cdmVersjon}</Tag>
             </Box>
           }
           <HStack gap="space-8">
