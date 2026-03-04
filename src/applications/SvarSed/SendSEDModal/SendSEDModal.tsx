@@ -237,7 +237,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     )}
                     {!_.isNil(sedCreatedResponse) && (
                       <HStack gap="space-8" align="center">
-                        <CheckmarkCircleFillIcon color='green' />
+                        <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' />
                         <span>{t('message:loading-sed-lagret')}</span>
                       </HStack>
                     )}
@@ -245,7 +245,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <div>
                     {_finished && (
                       <HStack gap="space-8" align="center">
-                        <CheckmarkCircleFillIcon color='green' />
+                        <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' />
                         <span>{_finished}</span>
                       </HStack>
                     )}
@@ -259,7 +259,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <div>
                     {!_.isNil(sedSendResponse) && _finished && (
                       <HStack gap="space-8" align="center">
-                        <CheckmarkCircleFillIcon color='green' />
+                        <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' />
                         <span>{t('message:loading-sed-sendt')}</span>
                       </HStack>
                     )}

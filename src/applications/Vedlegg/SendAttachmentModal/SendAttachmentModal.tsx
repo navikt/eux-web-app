@@ -175,7 +175,7 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
             {_finished && (
               <VStack gap="space-16" align="stretch" justify="center" minHeight="200px" minWidth="600px">
                 <HStack gap="space-8" align="center" justify="center">
-                  <CheckmarkCircleFillIcon color='green' />
+                  <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' />
                   <span>{_finished}</span>
                 </HStack>
                 <HStack gap="space-8" align="center" justify="center">
