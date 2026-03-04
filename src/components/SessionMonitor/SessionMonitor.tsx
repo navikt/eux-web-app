@@ -199,7 +199,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   ]
 
   const sessionButton = (
-    <Button variant='tertiary' size='small' onClick={() => setModal(true)}  style={{color: 'red'}}>
+    <Button variant='tertiary' size='small' onClick={() => setModal(true)}  style={{color: 'var(--ax-text-danger-subtle)'}}>
       Sesjon utløper om {Math.ceil(calculateDiff(sessionEndsAt) / 1000 / 60)} min
     </Button>
   )
