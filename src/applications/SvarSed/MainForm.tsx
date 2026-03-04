@@ -315,8 +315,8 @@ const MainForm = <T extends StorageTypes>({
             <HStack wrap={false} gap="space-8" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: selected })}>
               {isValidated
                 ? validationHasErrors
-                  ? <HStack><XMarkOctagonFillIcon height={20} color='red' /></HStack>
-                    : <HStack><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
+                  ? <HStack><XMarkOctagonFillIcon height={20} color='var(--ax-bg-danger-strong)' /></HStack>
+                    : <HStack><CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' height={20} /></HStack>
                 : null
               }
               <BodyLong className={classNames(styles.menuLabelText, { [styles.selected]: selected })}>
@@ -367,8 +367,8 @@ const MainForm = <T extends StorageTypes>({
           <HStack wrap={false} gap="space-8" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === personId })}>
             {isValidated
               ? validationHasErrors
-                ? <XMarkOctagonFillIcon height={20} color='red' />
-                : <CheckmarkCircleFillIcon color='green' height={20} />
+                ? <XMarkOctagonFillIcon height={20} color='var(--ax-bg-danger-strong)' />
+                : <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' height={20} />
               : null}
             <BodyLong className={styles.menuLabelText}>
               {personName}
@@ -450,8 +450,8 @@ const MainForm = <T extends StorageTypes>({
               >
                 {isValidated
                   ? validationHasErrors
-                      ? <XMarkOctagonFillIcon color='red' height={20} />
-                      : <CheckmarkCircleFillIcon color='green' height={20} />
+                      ? <XMarkOctagonFillIcon color='var(--ax-bg-danger-strong)' height={20} />
+                      : <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' height={20} />
                   : <MenuElipsisHorizontalCircleIcon height={20} />}
                 {o.label}
               </HStack>
@@ -521,8 +521,8 @@ const MainForm = <T extends StorageTypes>({
           <HStack wrap={false} gap="space-8" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === menuItem.key })}>
             {isValidated
               ? validationHasErrors
-                ? <HStack><XMarkOctagonFillIcon height={20} color='red' /></HStack>
-                : <HStack><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
+                ? <HStack><XMarkOctagonFillIcon height={20} color='var(--ax-bg-danger-strong)' /></HStack>
+                : <HStack><CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' height={20} /></HStack>
               : null}
             <BodyLong className={styles.menuLabelText}>
               {menuItem.label}
@@ -562,8 +562,8 @@ const MainForm = <T extends StorageTypes>({
                 <div>
                   {isValidated
                     ? validationHasErrors
-                      ? <HStack><XMarkOctagonFillIcon color='red' height={20} /></HStack>
-                      : <HStack><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
+                      ? <HStack><XMarkOctagonFillIcon color='var(--ax-bg-danger-strong)' height={20} /></HStack>
+                      : <HStack><CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' height={20} /></HStack>
                     : <HStack><MenuElipsisHorizontalCircleIcon height={20} /></HStack>
                   }
                 </div>
