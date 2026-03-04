@@ -468,7 +468,7 @@ The landvelger package uses V7 CSS variables (`--a-border-default`, `--a-surface
   --a-surface-default: var(--ax-bg-default);
   --a-surface-subtle: var(--ax-bg-neutral-soft);
   --a-surface-danger: var(--ax-border-danger);
-  --a-surface-action-hover: var(--ax-border-accent-hover);
+  --a-surface-action-hover: var(--ax-bg-accent-strong-hover);
   --a-text-default: var(--ax-text-neutral);
 }
 ```
