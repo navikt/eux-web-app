@@ -72,6 +72,7 @@
   }
   &.new {
     background-color: var(--ax-bg-success-moderate);
+    border: 1px solid var(--ax-border-success);
   };
   &.error {
     background-color: var(--ax-bg-danger-moderate);
