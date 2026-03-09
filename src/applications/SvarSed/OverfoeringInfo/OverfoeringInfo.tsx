@@ -58,9 +58,18 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
   ]
 
   const dokumenterVedlagtTypeOptions: Options = [
-    { label: t('el:option-overfoeringinfo-dokument-soeknad'), value: 'søknad' },
-    { label: t('el:option-overfoeringinfo-dokument-vedtak'), value: 'vedtak' },
+    { label: t('el:option-overfoeringinfo-dokument-soeknad'), value: 'soeknad' },
+    { label: t('el:option-overfoeringinfo-dokument-doedsattest'), value: 'doedsattest' },
+    { label: t('el:option-overfoeringinfo-dokument-fakturaer'), value: 'fakturaer' },
+    { label: t('el:option-overfoeringinfo-dokument-ligningsattest'), value: 'ligningsattest' },
+    { label: t('el:option-overfoeringinfo-dokument-krav'), value: 'krav' },
+    { label: t('el:option-overfoeringinfo-dokument-medisinsk_dokumentasjon'), value: 'medisinsk_dokumentasjon' },
+    { label: t('el:option-overfoeringinfo-dokument-arbeidsattest'), value: 'arbeidsattest' },
+    { label: t('el:option-overfoeringinfo-dokument-foedselsattest'), value: 'foedselsattest' },
+    { label: t('el:option-overfoeringinfo-dokument-ekteskapsattest'), value: 'ekteskapsattest' },
+    { label: t('el:option-overfoeringinfo-dokument-vitnemaal'), value: 'vitnemaal' },
     { label: t('el:option-overfoeringinfo-dokument-medisinsk_rapport'), value: 'medisinsk_rapport' },
+    { label: t('el:option-overfoeringinfo-dokument-legeattest'), value: 'legeattest' },
     { label: t('el:option-overfoeringinfo-dokument-annet'), value: 'annet' }
   ]
 
