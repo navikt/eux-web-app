@@ -121,7 +121,7 @@ const SakBanner = () => {
         <VStack>
           {currentSak && currentSak.cdmVersjon &&
             <Box>
-              <Tag size="small" variant="moderate" data-color={cdmVariantColor}>CDM: {currentSak.cdmVersjon}</Tag>
+              <Tag size="small" variant="outline" data-color={cdmVariantColor}>CDM: {currentSak.cdmVersjon}</Tag>
             </Box>
           }
           <HStack gap="space-8">

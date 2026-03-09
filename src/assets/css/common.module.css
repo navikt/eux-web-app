@@ -1,6 +1,6 @@
 .radioPanel{
   flex: 1;
-  background-color: var(--ax-bg-default);
+  background-color: var(--ax-bg-input);
   width: 100%;
   border-radius: 4px;
   padding: 0.8rem 0.5rem;
@@ -68,7 +68,7 @@
   :global(.c-countrySelect__select__control),
   :global(.aksel-select__input),
   :global(.aksel-combobox__wrapper) {
-    background-color: var(--ax-bg-default);
+    background-color: var(--ax-bg-input);
   }
   &.new {
     background-color: var(--ax-bg-success-moderate);

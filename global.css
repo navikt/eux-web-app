@@ -36,17 +36,17 @@ body {
 }
 
 .dark .c-countrySelect__select__control {
-  background-color: var(--ax-bg-default);
+  background-color: var(--ax-bg-input);
   border-color: var(--ax-border-neutral);
 }
 
 .dark .c-countrySelect__select__menu {
-  background-color: var(--ax-bg-default);
+  background-color: var(--ax-bg-input);
   color: var(--ax-text-neutral);
 }
 
 .dark .c-countrySelect__select__option {
-  background-color: var(--ax-bg-default);
+  background-color: var(--ax-bg-input);
   color: var(--ax-text-neutral);
 }
 
@@ -83,7 +83,7 @@ body {
 /* @navikt/landvelger uses V7 CSS variables in inline styles — alias them to V8 equivalents */
 :root {
   --a-border-default: var(--ax-border-neutral);
-  --a-surface-default: var(--ax-bg-default);
+  --a-surface-default: var(--ax-bg-input);
   --a-surface-subtle: var(--ax-bg-neutral-soft);
   --a-surface-danger: var(--ax-bg-danger-strong);
   --a-surface-action-hover: var(--ax-bg-accent-strong-hover);
