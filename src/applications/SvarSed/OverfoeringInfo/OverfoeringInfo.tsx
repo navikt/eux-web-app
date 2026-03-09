@@ -90,7 +90,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
   }
 
   const setGrunnerForOverfoering = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.grunnerForOverfoering', value.trim()))
+    dispatch(updateReplySed('overfoeringInfo.grunnerForOverfoering', value.trim() || undefined))
     if (validation[namespace + '-grunnerForOverfoering']) {
       dispatch(resetValidation(namespace + '-grunnerForOverfoering'))
     }
@@ -120,7 +120,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
   const setInformasjonAngaarYtelseType = (value: string) => {
     dispatch(updateReplySed('overfoeringInfo.informasjonAngaarYtelse.type', value.trim()))
     if (value !== 'andre') {
-      dispatch(updateReplySed('overfoeringInfo.informasjonAngaarYtelse.andre', ''))
+      dispatch(updateReplySed('overfoeringInfo.informasjonAngaarYtelse.andre', undefined))
     }
     if (validation[namespace + '-informasjonAngaarYtelse-type']) {
       dispatch(resetValidation(namespace + '-informasjonAngaarYtelse-type'))
@@ -128,7 +128,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
   }
 
   const setInformasjonAngaarYtelseAndre = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.informasjonAngaarYtelse.andre', value.trim()))
+    dispatch(updateReplySed('overfoeringInfo.informasjonAngaarYtelse.andre', value.trim() || undefined))
     if (validation[namespace + '-informasjonAngaarYtelse-andre']) {
       dispatch(resetValidation(namespace + '-informasjonAngaarYtelse-andre'))
     }
@@ -137,7 +137,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
   const setAnnenKorrespondanseType = (value: string) => {
     dispatch(updateReplySed('overfoeringInfo.annenKorrespondanse.type', value.trim()))
     if (value !== 'andre') {
-      dispatch(updateReplySed('overfoeringInfo.annenKorrespondanse.andre', ''))
+      dispatch(updateReplySed('overfoeringInfo.annenKorrespondanse.andre', undefined))
     }
     if (validation[namespace + '-annenKorrespondanse-type']) {
       dispatch(resetValidation(namespace + '-annenKorrespondanse-type'))
@@ -145,7 +145,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
   }
 
   const setAnnenKorrespondanseAndre = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.annenKorrespondanse.andre', value.trim()))
+    dispatch(updateReplySed('overfoeringInfo.annenKorrespondanse.andre', value.trim() || undefined))
     if (validation[namespace + '-annenKorrespondanse-andre']) {
       dispatch(resetValidation(namespace + '-annenKorrespondanse-andre'))
     }
@@ -154,14 +154,14 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
   const setDokumenterVedlagtType = (value: string, checked: boolean) => {
     const current = sed.overfoeringInfo?.dokumenterVedlagt?.type ?? []
     const updated = checked ? [...current, value] : current.filter(v => v !== value)
-    dispatch(updateReplySed('overfoeringInfo.dokumenterVedlagt.type', updated))
+    dispatch(updateReplySed('overfoeringInfo.dokumenterVedlagt.type', updated.length > 0 ? updated : undefined))
     if (validation[namespace + '-dokumenterVedlagt-type']) {
       dispatch(resetValidation(namespace + '-dokumenterVedlagt-type'))
     }
   }
 
   const setDokumenterVedlagtAnnet = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.dokumenterVedlagt.annet', value.trim() ? [value.trim()] : []))
+    dispatch(updateReplySed('overfoeringInfo.dokumenterVedlagt.annet', value.trim() ? [value.trim()] : undefined))
     if (validation[namespace + '-dokumenterVedlagt-annet']) {
       dispatch(resetValidation(namespace + '-dokumenterVedlagt-annet'))
     }
