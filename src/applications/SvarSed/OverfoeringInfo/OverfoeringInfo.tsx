@@ -57,7 +57,9 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
 
   const annenKorrespondanseTypeOptions: Options = [
     { label: t('el:option-overfoeringinfo-korrespondanse-motregning_av_innskudd'), value: 'motregning_av_innskudd' },
-    { label: t('el:option-overfoeringinfo-korrespondanse-andre'), value: 'andre' }
+    { label: t('el:option-overfoeringinfo-korrespondanse-motregning_av_ytelser'), value: 'motregning_av_ytelser' },
+    { label: t('el:option-overfoeringinfo-korrespondanse-tilbakekreving'), value: 'tilbakekreving' },
+    { label: t('el:option-overfoeringinfo-korrespondanse-annet'), value: 'annet' }
   ]
 
   const dokumenterVedlagtTypeOptions: Options = [
@@ -148,7 +150,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
 
   const setAnnenKorrespondanseType = (value: string) => {
     dispatch(updateReplySed('overfoeringInfo.annenKorrespondanse.type', value.trim()))
-    if (value !== 'andre') {
+    if (value !== 'annet') {
       dispatch(updateReplySed('overfoeringInfo.annenKorrespondanse.andre', undefined))
     }
     if (validation[namespace + '-annenKorrespondanse-type']) {
@@ -308,7 +310,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
           defaultValue={_.find(annenKorrespondanseTypeOptions, o => o.value === sed.overfoeringInfo?.annenKorrespondanse?.type)}
         />
 
-        {sed.overfoeringInfo?.annenKorrespondanse?.type === 'andre' && (
+        {sed.overfoeringInfo?.annenKorrespondanse?.type === 'annet' && (
           <TextArea
             error={validation[namespace + '-annenKorrespondanse-andre']?.feilmelding}
             namespace={namespace}
