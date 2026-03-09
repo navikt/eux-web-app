@@ -47,12 +47,21 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
 
   const informasjonAngaarYtelseTypeOptions: Options = [
     { label: t('el:option-overfoeringinfo-ytelse-lovvalg'), value: 'lovvalg' },
-    { label: t('el:option-overfoeringinfo-ytelse-sykdom'), value: 'sykdom' },
-    { label: t('el:option-overfoeringinfo-ytelse-familieytelser'), value: 'familieytelser' },
-    { label: t('el:option-overfoeringinfo-ytelse-pensjon'), value: 'pensjon' },
+    { label: t('el:option-overfoeringinfo-ytelse-sykepenger_kontantytelse'), value: 'sykepenger_kontantytelse' },
+    { label: t('el:option-overfoeringinfo-ytelse-naturalytelser'), value: 'naturalytelser' },
+    { label: t('el:option-overfoeringinfo-ytelse-kontantytelse_for_arbeidsulykke_eller_yrkessykdom'), value: 'kontantytelse_for_arbeidsulykke_eller_yrkessykdom' },
+    { label: t('el:option-overfoeringinfo-ytelse-naturalytelse_knyttet_til_yrkesskade_eller_yrkessykdom'), value: 'naturalytelse_knyttet_til_yrkesskade_eller_yrkessykdom' },
+    { label: t('el:option-overfoeringinfo-ytelse-foreldrepenger_til_mor_far'), value: 'foreldrepenger_til_mor_far' },
+    { label: t('el:option-overfoeringinfo-ytelse-ytelse_til_langvarig_pleie'), value: 'ytelse_til_langvarig_pleie' },
+    { label: t('el:option-overfoeringinfo-ytelse-ufoerepensjon'), value: 'ufoerepensjon' },
+    { label: t('el:option-overfoeringinfo-ytelse-alderspensjon'), value: 'alderspensjon' },
+    { label: t('el:option-overfoeringinfo-ytelse-etterlattepensjon'), value: 'etterlattepensjon' },
+    { label: t('el:option-overfoeringinfo-ytelse-gravferdsstoenad'), value: 'gravferdsstoenad' },
     { label: t('el:option-overfoeringinfo-ytelse-dagpenger'), value: 'dagpenger' },
-    { label: t('el:option-overfoeringinfo-ytelse-yrkesskade'), value: 'yrkesskade' },
-    { label: t('el:option-overfoeringinfo-ytelse-andre'), value: 'andre' }
+    { label: t('el:option-overfoeringinfo-ytelse-foertidspensjon'), value: 'foertidspensjon' },
+    { label: t('el:option-overfoeringinfo-ytelse-familieytelse'), value: 'familieytelse' },
+    { label: t('el:option-overfoeringinfo-ytelse-spesiell_innskuddsfri_kontantytelse'), value: 'spesiell_innskuddsfri_kontantytelse' },
+    { label: t('el:option-overfoeringinfo-ytelse-annen_ytelse'), value: 'annen_ytelse' }
   ]
 
   const annenKorrespondanseTypeOptions: Options = [
@@ -133,7 +142,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
 
   const setInformasjonAngaarYtelseType = (value: string) => {
     dispatch(updateReplySed('overfoeringInfo.informasjonAngaarYtelse.type', value.trim()))
-    if (value !== 'andre') {
+    if (value !== 'annen_ytelse') {
       dispatch(updateReplySed('overfoeringInfo.informasjonAngaarYtelse.andre', undefined))
     }
     if (validation[namespace + '-informasjonAngaarYtelse-type']) {
@@ -283,7 +292,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
           defaultValue={_.find(informasjonAngaarYtelseTypeOptions, o => o.value === sed.overfoeringInfo?.informasjonAngaarYtelse?.type)}
         />
 
-        {sed.overfoeringInfo?.informasjonAngaarYtelse?.type === 'andre' && (
+        {sed.overfoeringInfo?.informasjonAngaarYtelse?.type === 'annen_ytelse' && (
           <TextArea
             error={validation[namespace + '-informasjonAngaarYtelse-andre']?.feilmelding}
             namespace={namespace}
