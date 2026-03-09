@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "13.0.0-migrate-aksel-v7-to-v8",
+  "version": "13.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -206,6 +206,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@13.0.0-migrate-aksel-v7-to-v8",
+  "_id": "neessi@13.0.0",
   "disabled-homepage": "http://eesi2.no/melosys"
 }
