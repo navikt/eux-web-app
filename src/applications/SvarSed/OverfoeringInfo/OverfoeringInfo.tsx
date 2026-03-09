@@ -38,8 +38,11 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
 
   const tilTypeOptions: Options = [
     { label: t('el:option-overfoeringinfo-til-kompetent_institusjon'), value: 'kompetent_institusjon' },
-    { label: t('el:option-overfoeringinfo-til-bostedsinstitusjon'), value: 'bostedsinstitusjon' },
-    { label: t('el:option-overfoeringinfo-til-kontaktinstitusjon'), value: 'kontaktinstitusjon' }
+    { label: t('el:option-overfoeringinfo-til-kontaktinstitusjon'), value: 'kontaktinstitusjon' },
+    { label: t('el:option-overfoeringinfo-til-samarbeidsorgan'), value: 'samarbeidsorgan' },
+    { label: t('el:option-overfoeringinfo-til-institusjon_paa_oppholdsstedet'), value: 'institusjon_paa_oppholdsstedet' },
+    { label: t('el:option-overfoeringinfo-til-institusjon_paa_bostedet'), value: 'institusjon_paa_bostedet' },
+    { label: t('el:option-overfoeringinfo-til-angitt_institusjon'), value: 'angitt_institusjon' }
   ]
 
   const informasjonAngaarYtelseTypeOptions: Options = [

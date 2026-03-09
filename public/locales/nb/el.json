@@ -348,8 +348,11 @@
   "radio-adresse-anmodning-type-kontakt": "Personens kontaktadresse",
 
   "option-overfoeringinfo-til-kompetent_institusjon": "Kompetent institusjon",
-  "option-overfoeringinfo-til-bostedsinstitusjon": "Bostedsinstitusjon",
   "option-overfoeringinfo-til-kontaktinstitusjon": "Kontaktinstitusjon",
+  "option-overfoeringinfo-til-samarbeidsorgan": "Samarbeidsorgan",
+  "option-overfoeringinfo-til-institusjon_paa_oppholdsstedet": "Institusjon på oppholdsstedet",
+  "option-overfoeringinfo-til-institusjon_paa_bostedet": "Institusjon på bostedet",
+  "option-overfoeringinfo-til-angitt_institusjon": "Angitt institusjon",
   "option-overfoeringinfo-ytelse-lovvalg": "Lovvalg",
   "option-overfoeringinfo-ytelse-sykdom": "Sykdom",
   "option-overfoeringinfo-ytelse-familieytelser": "Familieytelser",
