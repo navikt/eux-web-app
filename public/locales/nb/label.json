@@ -361,6 +361,10 @@
   "orgnr": "Org.nr.",
   "organisasjonsnummer": "Org.nr.",
   "overfør-perioder-til": "Overfør til {{periodeType}}",
+  "overfoering-av-krav-dokument-informasjon": "Overføring av krav/dokument/informasjon",
+  "overfoering-krav": "Krav som overføres",
+  "overfoering-dokument": "Dokument som overføres",
+  "overfoering-informasjon": "Informasjon som overføres",
   "oversikt-brukers-arbeidsperioder": "Oversikt over brukers arbeidsperioder",
   "overstyrt-enhet": "Enhet",
 

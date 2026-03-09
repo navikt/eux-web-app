@@ -16,9 +16,9 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjem' | 'mobil'
 
-export type ReplySed = F001Sed | F002Sed | F003Sed | F026Sed | F027Sed | H001Sed | H002Sed | S040Sed | U002Sed | U004Sed | U017Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
+export type ReplySed = F001Sed | F002Sed | F003Sed | F026Sed | F027Sed | H001Sed | H002Sed | H065Sed | S040Sed | U002Sed | U004Sed | U017Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
-export type SedTypes = 'F001' | 'F002' | 'F003' | 'F026' | 'F027' |'H001' | 'H002' | 'S040'| 'S046'| 'U002' | 'U004' | 'U017' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
+export type SedTypes = 'F001' | 'F002' | 'F003' | 'F026' | 'F027' |'H001' | 'H002' | 'H065' | 'S040'| 'S046'| 'U002' | 'U004' | 'U017' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -889,6 +889,16 @@ export interface H002Sed extends HSed {
   }
   positivtSvar?: H002Svar
   negativtSvar?: H002Svar
+}
+
+export interface H065Overfoering {
+  krav?: string
+  dokument?: string
+  informasjon?: string
+}
+
+export interface H065Sed extends HSed {
+  overfoering?: H065Overfoering
 }
 
 export interface S040Sed extends BaseReplySed {
