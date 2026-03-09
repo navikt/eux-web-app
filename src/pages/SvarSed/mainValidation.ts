@@ -11,7 +11,7 @@ import {
   ValidationBeløpNavnOgValutasProps
 } from 'applications/SvarSed/BeløpNavnOgValuta/validation'
 import { validateEndredeForhold, ValidationEndredeForholdProps } from 'applications/SvarSed/EndredeForhold/validation'
-import { validateOverfoering, ValidationOverfoeringProps } from 'applications/SvarSed/Overfoering/validation'
+import { validateOverfoeringInfo, ValidationOverfoeringInfoProps } from 'applications/SvarSed/OverfoeringInfo/validation'
 import {
   validateFamilierelasjoner,
   ValidationFamilierelasjonerProps
@@ -412,9 +412,9 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (isH065Sed(replySed)) {
-      hasErrors.push(performValidation<ValidationOverfoeringProps>(v, `svarsed-${personID}-overfoering`, validateOverfoering, {
+      hasErrors.push(performValidation<ValidationOverfoeringInfoProps>(v, `svarsed-${personID}-overfoeringinfo`, validateOverfoeringInfo, {
         replySed,
-        personName: i18n.t('label:overfoering-av-krav-dokument-informasjon').toLowerCase()
+        personName: i18n.t('label:overfoeringsinformasjon').toLowerCase()
       }, true))
     }
   }

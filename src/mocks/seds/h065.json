@@ -1,6 +1,6 @@
 {
   "sedType": "H065",
-  "sedVersjon": "4.2",
+  "sedVersjon": "4.4",
   "bruker": {
     "personInfo": {
       "fornavn": "æøå",
@@ -53,10 +53,29 @@
       }
     ]
   },
-  "overfoering": {
-    "krav": "æøå",
-    "dokument": "æøå",
-    "informasjon": "æøå"
+  "overfoeringInfo": {
+    "erBrukerSoekeren": "ja",
+    "mottaksdato": "2001-01-01",
+    "grunnerForOverfoering": "æøå",
+    "til": {
+      "type": "kompetent_institusjon",
+      "institusjon": {
+        "id": "NO:inst-1",
+        "navn": "æøå"
+      }
+    },
+    "informasjonAngaarYtelse": {
+      "type": "lovvalg",
+      "andre": "æøå"
+    },
+    "annenKorrespondanse": {
+      "type": "motregning_av_innskudd",
+      "andre": "æøå"
+    },
+    "dokumenterVedlagt": {
+      "type": ["søknad"],
+      "annet": ["æøå"]
+    }
   },
   "ytterligereInfo": "æøå"
 }

@@ -49,7 +49,7 @@ import SvarPåminnelse from 'applications/SvarSed/SvarPåminnelse/SvarPåminnels
 import Trygdeordning from 'applications/SvarSed/Trygdeordning/Trygdeordning'
 import Ugyldiggjøre from 'applications/SvarSed/Ugyldiggjøre/Ugyldiggjøre'
 import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
-import Overfoering from 'applications/SvarSed/Overfoering/Overfoering'
+import OverfoeringInfo from 'applications/SvarSed/OverfoeringInfo/OverfoeringInfo'
 import TextArea from 'components/Forms/TextArea'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
@@ -449,7 +449,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' },
                   { label: t('el:option-mainform-anmodning'), value: 'anmodning', component: Anmodning, type: 'H001' },
                   { label: t('el:option-mainform-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' },
-                  { label: t('el:option-mainform-overfoering'), value: 'overfoering', component: Overfoering, type: 'H065' },
+                  { label: t('el:option-mainform-overfoeringinfo'), value: 'overfoeringinfo', component: OverfoeringInfo, type: 'H065' },
                   { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
                   { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
                   { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
