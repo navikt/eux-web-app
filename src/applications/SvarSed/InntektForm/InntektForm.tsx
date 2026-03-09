@@ -250,8 +250,8 @@ const InntektForm: React.FC<MainFormProps> = ({
     const _loennsopplysning = index < 0 ? _newLoennsopplysning : (inEditMode ? _editLoennsopplysning : loennsopplysning)
     return (
       <Box
-        paddingBlock="2"
-        paddingInline="4"
+        paddingBlock="space-8"
+        paddingInline="space-16"
         id={'repeatablerow-' + _namespace}
         key={getId(loennsopplysning)}
         className={classNames(commonStyles.repeatableBox, {
@@ -259,8 +259,8 @@ const InntektForm: React.FC<MainFormProps> = ({
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VStack gap="4">
-          <HGrid columns={"2fr 1fr"} gap="4" align="start">
+        <VStack gap="space-16">
+          <HGrid columns={"2fr 1fr"} gap="space-16" align="start">
             {inEditMode
               ? (
                 <PeriodeInput
@@ -307,7 +307,7 @@ const InntektForm: React.FC<MainFormProps> = ({
           </HGrid>
           {inEditMode
             ? (
-              <HGrid columns={3} gap="4" align="start">
+              <HGrid columns={3} gap="space-16" align="start">
                 <Input
                   error={_v[_namespace + '-arbeidsdager']?.feilmelding}
                   namespace={namespace}
@@ -340,12 +340,12 @@ const InntektForm: React.FC<MainFormProps> = ({
               </HGrid>
               )
             : (
-              <HGrid columns={3} gap="4">
+              <HGrid columns={3} gap="space-16">
                 <FormText
                   error={_v[_namespace + '-arbeidsdager']?.feilmelding}
                   id={_namespace + '-arbeidsdager'}
                 >
-                  <HStack gap="2">
+                  <HStack gap="space-8">
                     <Label>{t('label:arbeidsdager') + ':'}</Label>
                     {_loennsopplysning?.arbeidsdager}
                   </HStack>
@@ -354,7 +354,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-arbeidstimer']?.feilmelding}
                   id={_namespace + '-arbeidstimer'}
                 >
-                  <HStack gap="2">
+                  <HStack gap="space-8">
                     <Label>{t('label:arbeidstimer') + ':'}</Label>
                     {_loennsopplysning?.arbeidstimer ? parseFloat(_loennsopplysning?.arbeidstimer).toLocaleString('nb-NO') : undefined}
                   </HStack>
@@ -363,7 +363,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-ansettelsestype']?.feilmelding}
                   id={_namespace + '-ansettelsestype'}
                 >
-                  <HStack gap="2">
+                  <HStack gap="space-8">
                     <Label>{t('label:type-periode') + ':'}</Label>
                     {_loennsopplysning?.ansettelsestype}
                   </HStack>
@@ -372,7 +372,7 @@ const InntektForm: React.FC<MainFormProps> = ({
               )}
           {inEditMode
             ? (
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <Heading size='small'>
                   {t('label:inntekter')}
                 </Heading>
@@ -395,7 +395,7 @@ const InntektForm: React.FC<MainFormProps> = ({
               </VStack>
               )
             : (
-              <VStack gap="2">
+              <VStack gap="space-8">
                 {_loennsopplysning?.inntekter?.map((inntekt: Inntekt, index: number) => {
                   let inntektTypeLabel = ""
                   if(CDM_VERSJON >= 4.3 && inntekt?.type === "nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet") {
@@ -408,13 +408,13 @@ const InntektForm: React.FC<MainFormProps> = ({
 
                   return (
                     <Box key={getIdInntekt(inntekt)}>
-                      <VStack gap="2">
+                      <VStack gap="space-8">
                         <BodyLong>
                           {inntektTypeLabel + (inntekt.typeAnnen ? ': ' + inntekt.typeAnnen : '')}
                         </BodyLong>
-                        <HStack gap="2">
+                        <HStack gap="space-8">
                           <Label>{t('label:beløp') + ':'}</Label>
-                          <HStack gap="2">
+                          <HStack gap="space-8">
                             <FormText
                               error={_v[_namespace + '-inntekter' + getIdx(index) + '-beloep']?.feilmelding}
                               id={_namespace + '-inntekter' + getIdx(index) + '-beloep'}
@@ -447,8 +447,8 @@ const InntektForm: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -458,7 +458,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                 error={validation[namespace + '-ingen-loennsopplysninger']?.feilmelding}
                 id={namespace + '-ingen-loennsopplysninger'}
               >
-                <Box borderWidth={"1 0"} paddingBlock="2">
+                <Box borderWidth={"1 0"} paddingBlock="space-8">
                   {t('message:warning-no-inntekt')}
                 </Box>
               </FormText>
@@ -500,7 +500,7 @@ const InntektForm: React.FC<MainFormProps> = ({
           type={arbeidsperioderSøkType}
         />
         {arbeidsperioder?.arbeidsperioder && (
-          <VStack gap="4">
+          <VStack gap="space-16">
             <Heading size='small'>
               {t('label:arbeidsperioder')}
             </Heading>

@@ -181,8 +181,8 @@ const Attachments: React.FC<AttachmentsProps> = ({
   }
 
   return (
-    <Box padding="4" borderWidth="1" background="bg-default">
-      <VStack gap="4">
+    <Box padding="space-16" borderWidth="1" background="default">
+      <VStack gap="space-16">
         <Heading size='small'>
           {t('label:vedlegg')}
         </Heading>
@@ -197,12 +197,12 @@ const Attachments: React.FC<AttachmentsProps> = ({
         {_.isEmpty(_items) && _.isEmpty(attachmentsFromRina)
           ? (
             <>
-              <Box borderWidth={"1 0"} paddingBlock="2">
+              <Box borderWidth={"1 0"} paddingBlock="space-8">
                 <BodyLong>
                   {t('message:warning-no-attachments')}
                 </BodyLong>
               </Box>
-              <HStack gap="4">
+              <HStack gap="space-16">
                 <FNRSelectColumn/>
                 {isFSed(replySed) &&
                   <>
@@ -241,7 +241,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
                 tableId='vedlegg-view'
                 onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
               />
-              <HStack gap="4">
+              <HStack gap="space-16">
                 <FNRSelectColumn/>
                 {isFSed(replySed) &&
                   <>
@@ -274,7 +274,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
             )}
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Attachments

@@ -1,23 +1,23 @@
 .radioPanel{
   flex: 1;
-  background-color: var(--a-surface-default);
+  background-color: var(--ax-bg-input);
   width: 100%;
-  :global(.navds-radio__label) {
+  border-radius: 4px;
+  padding: 0.8rem 0.5rem;
+  align-items: center;
+  &:focus-within::after {
+    inset: 0;
     border-radius: 4px;
-    width: 100%;
-    padding: 0.8rem 0.5rem;
   }
 }
 
 .radioPanel:has(input[type=radio]:checked){
-  background-color: var(--a-surface-action-subtle-hover);
-  border-color: var(--a-surface-action-subtle-hover);
+  background-color: var(--ax-bg-accent-moderate-hover);
   border-radius: 4px;
 }
 
 .radioPanel:hover {
-  background-color: var(--a-surface-action-subtle-hover);
-  border-color: var(--a-surface-action-subtle-hover);
+  background-color: var(--ax-bg-accent-moderate-hover);
   border-radius: 4px;
 }
 
@@ -27,10 +27,10 @@
   margin-bottom: 0;
   background:
     linear-gradient(90deg,
-    var(--a-bg-subtle) 0%,
-    var(--a-border-strong) 5%,
-    var(--a-border-strong) 95%,
-    var(--a-bg-subtle) 100%
+    var(--ax-bg-neutral-soft) 0%,
+    var(--ax-border-neutral-strong) 5%,
+    var(--ax-border-neutral-strong) 95%,
+    var(--ax-bg-neutral-soft) 100%
   );
   width: 100%;
 }
@@ -60,25 +60,31 @@
   flex-wrap: wrap;
   width: 100%;
   .odd {
-    background-color: var(--a-surface-subtle);
+    background-color: var(--ax-bg-neutral-soft);
   }
 }
 
 .repeatableBox{
+  :global(.c-countrySelect__select__control),
+  :global(.aksel-select__input),
+  :global(.aksel-combobox__wrapper) {
+    background-color: var(--ax-bg-input);
+  }
   &.new {
-    background-color: rgba(236, 243, 153, 0.5);
+    background-color: var(--ax-bg-success-moderate);
+    border: 1px solid var(--ax-border-success);
   };
   &.error {
-    background-color: rgba(255, 0, 0, 0.2);
+    background-color: var(--ax-bg-danger-moderate);
   };
   &.original {
-    background-color: var(--a-blue-100);
+    background-color: var(--ax-accent-200);
   };
   &.errorBorder {
-    border: 1px solid var(--a-border-danger);
+    border: 1px solid var(--ax-border-danger);
   }
   &:hover:not(.new):not(.error) {
-    background-color: var(--a-gray-100);
+    background-color: var(--ax-neutral-200);
   }
   &:not(:hover) .controlButtons {
     visibility: hidden;

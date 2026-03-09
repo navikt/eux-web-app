@@ -152,11 +152,11 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="4"
+        padding="space-16"
       >
         {inEditMode ?
           (
-            <HStack gap="4">
+            <HStack gap="space-16">
               <PeriodeInput
                 namespace={_namespace}
                 error={{
@@ -182,7 +182,7 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
             </HStack>
           ) :
           (
-            <HStack gap="4">
+            <HStack gap="space-16">
               <PeriodeText
                 error={{
                   startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -212,15 +212,15 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
-        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+        <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
           <Utdanning replySed={replySed} setReplySed={setReplySed} parentNamespace={namespace} parentTarget={target} updateReplySed={updateReplySed}/>
         </Box>
-        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+        <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
           <Label>{t('label:deltakelse-paa-utdanning')}</Label>
           {_.isEmpty(deltakelsePaaUtdanning)
             ? (
@@ -243,7 +243,7 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
         </Box>
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default SvarOmFremmoeteUtdanning

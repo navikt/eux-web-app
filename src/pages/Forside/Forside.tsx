@@ -95,13 +95,13 @@ const Forside: React.FC = (): JSX.Element => {
 
   return (
     <TopContainer title={t('app:page-title-forside')}>
-      <VStack gap="20" paddingBlock={"0 12"}>
+      <VStack gap="space-80" paddingBlock={"space-0 space-48"}>
         <div className={styles.logoDiv}>
           {getLogo(saksbehandler)}
         </div>
         <HStack justify="center">
           <Box minWidth="800px">
-            <VStack gap="0">
+            <VStack gap="space-0">
               <Heading size='medium'>
                 {t('app:page-title-svarsed-search')}
               </Heading>
@@ -123,11 +123,11 @@ const Forside: React.FC = (): JSX.Element => {
           </Box>
         </HStack>
       </VStack>
-      <Box className={styles.whiteContainer} padding="12">
+      <Box className={styles.whiteContainer} padding="space-48">
         <HStack justify="center">
           <Box className={styles.content}>
-            <VStack gap="6" className={styles.contentArea}>
-              <HStack gap="0" justify="center">
+            <VStack gap="space-24" className={styles.contentArea}>
+              <HStack gap="space-0" justify="center">
                 <Link className={styles.styledLink} onClick={() => navigate({ pathname: '/svarsed/new', search: window.location.search })}>
                   <div className={styles.square}>
                     <OpprettSak className={styles.opprettSakIcon}/>

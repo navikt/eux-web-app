@@ -51,8 +51,8 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
 
 
   return (
-    <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
-      <VStack gap="4">
+    <Box background="default" padding="space-16" borderWidth="1" borderColor="neutral" borderRadius="2">
+      <VStack gap="space-16">
         <Heading size='small'>
           {t('label:under-journalfoering-ukjent-status')}
         </Heading>
@@ -73,7 +73,7 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
         }
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default SedUnderJournalfoeringEllerUkjentStatus

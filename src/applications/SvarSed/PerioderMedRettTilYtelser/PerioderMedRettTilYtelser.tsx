@@ -107,12 +107,12 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
   }
 
   return (
-    <VStack gap="4" padding="4">
+    <VStack gap="space-16" padding="space-16">
       <Heading size='small'>
         {t('label:rett-til-ytelser')}
       </Heading>
-      <Box borderWidth="1" borderColor="border-subtle" background="bg-subtle" padding="4">
-        <HStack gap="4">
+      <Box borderWidth="1" borderColor="neutral-subtle" background="neutral-soft" padding="space-16">
+        <HStack gap="space-16">
           <Checkbox
             checked={_rettTilFamilieytelser}
             onChange= {(e: React.ChangeEvent<HTMLInputElement>) => setRettTilFamilieytelser(e.target.checked)}
@@ -130,9 +130,9 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
       {_rettTilFamilieytelser &&
         <>
           <Box
-            padding="4"
+            padding="space-16"
             borderWidth={validation[namespace + '-periodermedretttilfamilieytelser']?.feilmelding ? '2' : '1'}
-            borderColor={validation[namespace + '-periodermedretttilfamilieytelser']?.feilmelding ? 'border-danger' : 'border-subtle'}
+            borderColor={validation[namespace + '-periodermedretttilfamilieytelser']?.feilmelding ? 'danger' : 'neutral-subtle'}
             id={namespace + '-periodermedretttilfamilieytelser'}
           >
             <Heading size='xsmall'>
@@ -154,9 +154,9 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
       {_ikkeRettTilFamilieytelser &&
         <>
           <Box
-            padding="4"
+            padding="space-16"
             borderWidth={validation[namespace + '-periodermedikkeretttilfamilieytelser']?.feilmelding ? '2' : '1'}
-            borderColor={validation[namespace + '-periodermedikkeretttilfamilieytelser']?.feilmelding ? 'border-danger' : 'border-subtle'}
+            borderColor={validation[namespace + '-periodermedikkeretttilfamilieytelser']?.feilmelding ? 'danger' : 'neutral-subtle'}
             id={namespace + '-periodermedikkeretttilfamilieytelser'}
           >
 
@@ -177,7 +177,7 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
         </>
       }
     </VStack>
-  )
+  );
 }
 
 export default PerioderMedRettTilYtelser

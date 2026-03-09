@@ -165,23 +165,23 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
     return !!ekskluderteVerdier.find((ekskludertRolle: string) => ekskludertRolle === rolle)
   }
 
-  return(
+  return (
     <Box
-      background="surface-default"
+      background="default"
       borderWidth="1"
-      borderColor="border-default"
-      padding="4"
+      borderColor="neutral"
+      padding="space-16"
       data-testid='family'
       className={classNames({
         [styles.error]: hasNamespaceWithErrors(validation, namespace! + "-familieRelasjoner")
       })}
     >
-      <VStack gap="4">
+      <VStack gap="space-16">
         <Heading size='small'>
           {t('label:family-description')}
         </Heading>
-        <HGrid gap="4" columns={'minmax(450px, auto) 21px minmax(450px, auto)'}>
-          <VStack gap="4">
+        <HGrid gap="space-16" columns={'minmax(450px, auto) 21px minmax(450px, auto)'}>
+          <VStack gap="space-16">
             <BodyLong size="large">
               {t('label:familierelasjon-i-pdl')}
             </BodyLong>
@@ -206,7 +206,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
             )}
           </VStack>
           <div className={styles.fadingLineSeparator}/>
-          <VStack gap="4">
+          <VStack gap="space-16">
             <BodyLong size="large">
               {t('label:valgt-familie')}&nbsp;({totalValgt})
             </BodyLong>
@@ -278,8 +278,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
         <ErrorLabel error={validation[namespace + '-familieRelasjoner']?.feilmelding}/>
       </VStack>
     </Box>
-
-  )
+  );
 }
 
 export default FamilieRelasjoner

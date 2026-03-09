@@ -19,7 +19,7 @@ type SelectProps = Props & {
 const Select = (props: SelectProps): JSX.Element => {
   return (
     <div
-      className={classNames({ 'navds-select--error': !!props.error })}
+      className={classNames({ 'aksel-select--error': !!props.error })}
       data-testid={props['data-testid'] || props.id}
       style={props.style}
     >
@@ -39,14 +39,14 @@ const Select = (props: SelectProps): JSX.Element => {
             minHeight: props.size === 'small' ? '35px' : '48px',
             borderWidth: props.error ? '3px' : '1px',
             borderStyle: 'solid',
-            borderColor: props.error ? 'var(--a-surface-danger)' : 'var(--a-border-default)',
+            borderColor: props.error ? 'var(--ax-bg-danger-strong)' : 'var(--ax-border-neutral)',
             borderRadius: '4px',
-            color: 'var(--a-text-default)',
-            backgroundColor: isDisabled ? 'var(--a-surface-subtle)' : 'var(--a-surface-default)'
+            color: 'var(--ax-text-neutral)',
+            backgroundColor: isDisabled ? 'var(--ax-bg-neutral-soft)' : 'var(--ax-bg-default)'
           }),
           indicatorSeparator: (styles: any) => ({
             ...styles,
-            backgroundColor: 'var(--a-border-default)'
+            backgroundColor: 'var(--ax-border-neutral)'
           }),
           menu: (styles: any) => ({
             ...styles,
@@ -57,33 +57,33 @@ const Select = (props: SelectProps): JSX.Element => {
             ...styles,
             borderWidth: '1px',
             borderStyle: 'solid',
-            borderColor: 'var(--a-border-default)',
-            backgroundColor: 'var(--a-surface-subtle)'
+            borderColor: 'var(--ax-border-neutral)',
+            backgroundColor: 'var(--ax-bg-neutral-soft)'
           }),
           option: (styles: any, { isDisabled, isFocused, isSelected }: any) => ({
             ...styles,
             color: isFocused
-              ? 'var(--a-text-on-inverted)'
+              ? 'var(--ax-text-neutral-contrast)'
               : isSelected
-                ? 'var(--a-text-on-inverted)'
-                : 'var(--a-text-default)',
+                ? 'var(--ax-text-neutral-contrast)'
+                : 'var(--ax-text-neutral)',
             backgroundColor: isFocused
-              ? 'var(--a-border-focus)'
+              ? 'var(--ax-border-focus)'
               : isSelected
-                ? 'var(--a-surface-action)'
+                ? 'var(--ax-bg-accent-strong)'
                 : isDisabled
-                  ? 'var(--a-surface-subtle)'
-                  : 'var(--a-surface-default)'
+                  ? 'var(--ax-bg-neutral-soft)'
+                  : 'var(--ax-bg-default)'
           }),
           singleValue: (styles: any) => ({
             ...styles,
-            color: 'var(--a-text-default)'
+            color: 'var(--ax-text-neutral)'
           })
         }}
         {...props}
       />
       {props.error && (
-        <label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
+        <label role='alert' aria-live='assertive' className='aksel-error-message aksel-error-message--medium aksel-label'>
           {props.error}
         </label>
       )}

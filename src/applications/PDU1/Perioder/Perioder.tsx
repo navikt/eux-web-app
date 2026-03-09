@@ -229,16 +229,16 @@ const Perioder: React.FC<MainFormProps> = ({
     let icon;
     switch (type) {
       case 'perioderAnsattMedForsikring':
-        icon = <HStack gap="0"><SackPensionIcon width={size} height={size}/><Buildings3Icon width={size} height={size}/></HStack>
+        icon = <HStack gap="space-0"><SackPensionIcon width={size} height={size}/><Buildings3Icon width={size} height={size}/></HStack>
         break;
       case 'perioderSelvstendigMedForsikring':
-        icon = <HStack gap="0"><SackPensionIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></HStack>
+        icon = <HStack gap="space-0"><SackPensionIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></HStack>
         break;
       case 'perioderAndreForsikringer':
         icon = <SackPensionIcon width={size} height={size}/>
         break;
       case 'perioderAnsettSomForsikret':
-        icon = <HStack gap="0"><SackPensionIcon width={size} height={size}/><GavelSoundBlockIcon width={size} height={size}/></HStack>
+        icon = <HStack gap="space-0"><SackPensionIcon width={size} height={size}/><GavelSoundBlockIcon width={size} height={size}/></HStack>
         break;
       case 'perioderAnsattUtenForsikring':
         icon = <Buildings3Icon width={size} height={size}/>
@@ -247,10 +247,10 @@ const Perioder: React.FC<MainFormProps> = ({
         icon = <PersonSuitIcon width={size} height={size}/>
         break;
       case 'perioderLoennSomAnsatt':
-        icon = <HStack gap="0"><WalletIcon width={size} height={size}/><Buildings3Icon width={size} height={size}/></HStack>
+        icon = <HStack gap="space-0"><WalletIcon width={size} height={size}/><Buildings3Icon width={size} height={size}/></HStack>
         break;
       case 'perioderInntektSomSelvstendig':
-        icon = <HStack gap="0"><WalletIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></HStack>
+        icon = <HStack gap="space-0"><WalletIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></HStack>
         break;
       default:
         icon = <></>
@@ -286,8 +286,8 @@ const Perioder: React.FC<MainFormProps> = ({
 
     return (
       <Box
-        paddingBlock={inEditMode ? "4" : "2"}
-        paddingInline={inEditMode ? "4" : "4"}
+        paddingBlock={inEditMode ? "space-16" : "space-8"}
+        paddingInline="space-16"
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
         className={classNames(commonStyles.repeatableBox, {
@@ -295,7 +295,7 @@ const Perioder: React.FC<MainFormProps> = ({
           [commonStyles.errorBorder]: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <HGrid columns={"2fr 1fr"} gap="4" align="start">
+        <HGrid columns={"2fr 1fr"} gap="space-16" align="start">
           {inEditMode
             ? (
               <PeriodeInput
@@ -312,9 +312,9 @@ const Perioder: React.FC<MainFormProps> = ({
               />
             )
             : (
-                <HStack gap="2" align="start">
+                <HStack gap="space-8" align="start">
                   {_sort === 'time' && _periode?.__type && getIcon(_periode.__type!, '32')}
-                  <VStack gap="1">
+                  <VStack gap="space-4">
                     <PeriodeText
                       error={{
                         startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -342,8 +342,8 @@ const Perioder: React.FC<MainFormProps> = ({
           </HStack>
         </HGrid>
         {inEditMode && (
-          <VStack gap="4" marginBlock="4 0">
-            <HGrid columns={2} gap="4" align="start">
+          <VStack gap="space-16" marginBlock="space-16 space-0">
+            <HGrid columns={2} gap="space-16" align="start">
               <Select
                 closeMenuOnSelect
                 data-testid={_namespace + '-type'}
@@ -384,8 +384,8 @@ const Perioder: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -399,7 +399,7 @@ const Perioder: React.FC<MainFormProps> = ({
         )}
         {_.isEmpty(_allPeriods)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-periods')}
               </BodyLong>
@@ -415,8 +415,8 @@ const Perioder: React.FC<MainFormProps> = ({
                     return null
                   }
                   return (
-                    <VStack gap="2" key={o.value}>
-                      <HStack gap="1" align="center">
+                    <VStack gap="space-8" key={o.value}>
+                      <HStack gap="space-4" align="center">
                         {getIcon(o.value, '24')}
                         <BodyLong size="large">
                           {o.label}

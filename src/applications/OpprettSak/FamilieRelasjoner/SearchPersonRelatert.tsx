@@ -94,8 +94,8 @@ const SearchPersonRelatert: React.FC<SearchPersonRelatertProps> = ({
   }
 
   return (
-    <HGrid gap="4" columns={'minmax(450px, auto) 21px minmax(450px, auto)'}>
-      <VStack gap="1">
+    <HGrid gap="space-16" columns={'minmax(450px, auto) 21px minmax(450px, auto)'}>
+      <VStack gap="space-4">
         <Search
           label={t('label:fnr-dnr')}
           id={namespace + '-fnr-dnr'}
@@ -110,13 +110,13 @@ const SearchPersonRelatert: React.FC<SearchPersonRelatertProps> = ({
           </Search.Button>
         </Search>
         {_error &&
-          <span className='navds-error-message navds-error-message--medium'>
+          <span className='aksel-error-message aksel-error-message--medium'>
             {_error}
           </span>
         }
       </VStack>
       <div className={styles.fadingLineSeparator}/>
-      <VStack gap="4">
+      <VStack gap="space-16">
         {_personRelatert &&
           <PersonPanel
             person={_personRelatert}

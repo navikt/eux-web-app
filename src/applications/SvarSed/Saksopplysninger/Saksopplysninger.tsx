@@ -34,9 +34,9 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
           </Dialog.Body>
         </Dialog.Popup>
       </Dialog>
-      <Box padding="4" background="bg-default" borderWidth="1" borderColor="border-default" borderRadius="small">
+      <Box padding="space-16" background="default" borderWidth="1" borderColor="neutral" borderRadius="2">
         <VStack>
-          <VStack gap="4">
+          <VStack gap="space-16">
             <Heading size='small'>
               {t('label:saksopplysninger')}
             </Heading>
@@ -69,7 +69,7 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default Saksopplysninger

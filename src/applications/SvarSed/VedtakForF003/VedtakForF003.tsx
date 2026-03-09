@@ -264,9 +264,9 @@ const VedtakForF003: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="4"
+        padding="space-16"
       >
-        <HStack gap="4">
+        <HStack gap="space-16">
           {inEditMode
             ? (
                 <PeriodeInput
@@ -312,8 +312,8 @@ const VedtakForF003: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <Box padding="4">
-        <VStack gap="4">
+      <Box padding="space-16">
+        <VStack gap="space-16">
           <Heading size='small'>
             {label}
           </Heading>
@@ -328,7 +328,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
               name={namespace + '-gjelderAlleBarn'}
               onChange={(e: string) => setGjelderAlleBarn(e as JaNei)}
             >
-              <HStack gap="4">
+              <HStack gap="space-16">
                 <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
                 <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
               </HStack>
@@ -339,8 +339,8 @@ const VedtakForF003: React.FC<MainFormProps> = ({
           </Label>
           <Box
             borderWidth="1"
-            padding="4"
-            background="surface-subtle"
+            padding="space-16"
+            background="neutral-soft"
             id={namespace + '-vedtaksperioder'}
             className={classNames({
               [styles.error]: hasNamespaceWithErrors(validation, namespace + "-vedtaksperioder")
@@ -348,7 +348,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
           >
             {_.isEmpty(vedtak?.vedtaksperioder)
               ? (
-                <Box padding="4">
+                <Box padding="space-16">
                   <BodyLong>
                     {t('message:warning-no-periods')}
                   </BodyLong>
@@ -371,9 +371,9 @@ const VedtakForF003: React.FC<MainFormProps> = ({
             <ErrorLabel error={validation[namespace + '-vedtaksperioder']?.feilmelding}/>
           }
           {vedtak?.gjelderAlleBarn === 'nei' && (
-            <VStack gap="4">
+            <VStack gap="space-16">
               <span>{t('label:avhuk-de-barn-vedtaket') + ':' } </span>
-              <VStack gap="4">
+              <VStack gap="space-16">
                 {(replySed as F003Sed)?.barn?.map((b, index) => {
                   const vedtakBarn: VedtakBarn = {
                     fornavn: b.personInfo?.fornavn,
@@ -382,33 +382,33 @@ const VedtakForF003: React.FC<MainFormProps> = ({
                   }
                   const checked: boolean = _.find(vedtak?.barnVedtaketOmfatter, vb => _.isEqual(vb, vedtakBarn)) !== undefined
                   return (
-                      <Box
-                        borderWidth="1"
-                        padding="4"
-                        background="surface-subtle"
-                        key={`${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`}
-                        className={classNames({
-                          [styles.error]: hasNamespaceWithErrors(validation, namespace + "-barnVedtaketOmfatter")
-                        })}
+                    <Box
+                      borderWidth="1"
+                      padding="space-16"
+                      background="neutral-soft"
+                      key={`${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`}
+                      className={classNames({
+                        [styles.error]: hasNamespaceWithErrors(validation, namespace + "-barnVedtaketOmfatter")
+                      })}
+                    >
+                      <Checkbox
+                        checked={checked}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckBarn(vedtakBarn, index, e.target.checked)}
                       >
-                        <Checkbox
-                          checked={checked}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckBarn(vedtakBarn, index, e.target.checked)}
-                        >
-                          {vedtakBarn.fornavn + ' ' + (vedtakBarn.etternavn ?? '') + ' (' + vedtakBarn.foedselsdato + ')'}
-                        </Checkbox>
-                        {checked &&
-                          <BeløpNavnOgValuta
-                            replySed={replySed}
-                            parentNamespace="vedtak"
-                            setReplySed={setReplySed}
-                            updateReplySed={updateReplySed}
-                            personID={"barn[" + index + "]"}
-                            options={{showHeading: false}}
-                          />
-                        }
-                      </Box>
-                  )
+                        {vedtakBarn.fornavn + ' ' + (vedtakBarn.etternavn ?? '') + ' (' + vedtakBarn.foedselsdato + ')'}
+                      </Checkbox>
+                      {checked &&
+                        <BeløpNavnOgValuta
+                          replySed={replySed}
+                          parentNamespace="vedtak"
+                          setReplySed={setReplySed}
+                          updateReplySed={updateReplySed}
+                          personID={"barn[" + index + "]"}
+                          options={{showHeading: false}}
+                        />
+                      }
+                    </Box>
+                  );
                 })}
               </VStack>
               {validation[namespace + '-barnVedtaketOmfatter']?.feilmelding &&
@@ -428,7 +428,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
                 name={namespace + '-utvidet-barnetrygd'}
                 onChange={setUtvidetBarnetrygd}
               >
-                <HStack gap="4">
+                <HStack gap="space-16">
                   <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
                   <Radio className={commonStyles.radioPanel}value='nei'>{t('label:nei')}</Radio>
                 </HStack>
@@ -436,7 +436,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
             </HStack>
           }
           {_utvidetBarneTrygd === "ja" && vedtak?.gjelderAlleBarn === 'nei' &&
-            <Box borderWidth="1" padding="4" background="surface-subtle">
+            <Box borderWidth="1" padding="space-16" background="neutral-soft">
               <BeløpNavnOgValuta
                 replySed={replySed}
                 parentNamespace="vedtak"
@@ -448,7 +448,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
             </Box>
           }
           {vedtak?.gjelderAlleBarn === 'ja' &&
-            <Box borderWidth="1" padding="4" background="surface-subtle">
+            <Box borderWidth="1" padding="space-16" background="neutral-soft">
               <BeløpNavnOgValuta
                 replySed={replySed}
                 parentNamespace="vedtak"
@@ -486,7 +486,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default VedtakForF003

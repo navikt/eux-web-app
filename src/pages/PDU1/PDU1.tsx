@@ -88,7 +88,7 @@ export const PDU1Page: React.FC<PDU1PageProps> = ({
             modalTitle: t('message:warning-x-not-saved', { x: 'PDU1' }),
             modalContent: (
               <>
-                <HStack gap="4">
+                <HStack gap="space-16">
                   <Button
                     variant='secondary' onClick={() => {
                       _setShowSaveModal(false)
@@ -106,7 +106,7 @@ export const PDU1Page: React.FC<PDU1PageProps> = ({
           }}
         />
         <Page.Block width="2xl" gutters as="main" background="bg-subtle">
-          <HStack padding="12" width="100%">
+          <HStack padding="space-48" width="100%">
             <Spacer/>
             {type === 'search' && (<PDU1Search />)}
             {(type === 'create' || type === 'edit') && (<PDU1Edit type={type} />)}

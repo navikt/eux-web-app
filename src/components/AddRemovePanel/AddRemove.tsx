@@ -52,7 +52,7 @@ const AddRemove = <T extends any>({
 
   if (candidateForDeletion) {
     return (
-      <HStack gap="1" align="center" className={classNames(styles.slideInFromRight)}>
+      <HStack gap="space-4" align="center" className={classNames(styles.slideInFromRight)}>
         <BodyLong style={{ whiteSpace: 'nowrap' }}>
           {labels?.areYouSure ?? t('label:er-du-sikker')}
         </BodyLong>
@@ -84,7 +84,7 @@ const AddRemove = <T extends any>({
 
   if (candidateForEdition) {
     return (
-      <HStack gap="1" align="center" wrap={false}>
+      <HStack gap="space-4" align="center" wrap={false}>
         <Button
           size="xsmall"
           variant='tertiary'
@@ -113,7 +113,7 @@ const AddRemove = <T extends any>({
 
   if (isNew) {
     return (
-      <HStack gap="1" align="center" wrap={false}>
+      <HStack gap="space-4" align="center" wrap={false}>
         <Button
           size='xsmall'
           variant='tertiary'
@@ -143,7 +143,7 @@ const AddRemove = <T extends any>({
   }
 
   return (
-    <HStack gap="1" align="center" className={classNames(commonStyles.controlButtons,)}>
+    <HStack gap="space-4" align="center" className={classNames(commonStyles.controlButtons,)}>
       {allowEdit && (
         <Button
           size='xsmall'

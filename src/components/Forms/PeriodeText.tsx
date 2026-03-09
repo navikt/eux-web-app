@@ -25,7 +25,7 @@ const PeriodeText = ({
   const { t } = useTranslation()
   return (
     <VStack>
-      <HStack align="center" gap="4">
+      <HStack align="center" gap="space-16">
         <div id={namespace + '-startdato'}>
           <BodyLong>
             {!_.isEmpty(periode?.startdato)

@@ -62,9 +62,9 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
             <Dialog.Title>Status</Dialog.Title>
           </Dialog.Header>
           <Dialog.Body>
-            <VStack gap="4">
+            <VStack gap="space-16">
               {feilregistrerJournalposterLogg?.bleFeilregistrert && feilregistrerJournalposterLogg?.bleFeilregistrert?.length > 0 &&
-                <VStack gap="4">
+                <VStack gap="space-16">
                   <Heading size={"small"}>{t('journalfoering:modal-ble-feilregistrert-title')}</Heading>
                   {feilregistrerJournalposterLogg?.bleFeilregistrert.map((sedTittel) => {
                     return (<>{sedTittel}<br/></>)
@@ -72,7 +72,7 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
                 </VStack>
               }
               {feilregistrerJournalposterLogg?.bleIkkeFeilregistrert && feilregistrerJournalposterLogg?.bleIkkeFeilregistrert?.length > 0 &&
-                <VStack gap="4">
+                <VStack gap="space-16">
                   <Heading size={"small"}>{t('journalfoering:modal-ble-ikke-feilregistrert-title')}</Heading>
                   {feilregistrerJournalposterLogg?.bleIkkeFeilregistrert.map((sedTittel) => {
                     return (<>{sedTittel}<br/></>)
@@ -91,8 +91,8 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
           </Dialog.Footer>
         </Dialog.Popup>
       </Dialog>
-      <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
-        <VStack gap="4" align="start">
+      <Box background="default" padding="space-16" borderWidth="1" borderColor="neutral" borderRadius="2">
+        <VStack gap="space-16" align="start">
           <Heading size='small'>
             {t('label:feilregistrer-og-avslutt')}
           </Heading>
@@ -104,7 +104,7 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default FeilregistrerJournalposterPanel

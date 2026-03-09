@@ -40,25 +40,25 @@ const SakBanner = () => {
     return null
   }
 
-  let cdmVariant: any = ""
+  let cdmVariantColor: any = ""
   switch (currentSak.cdmVersjon){
     case '4.2':
-      cdmVariant = "alt3-moderate"
+      cdmVariantColor = "brand-blue"
       break
     case '4.3':
-      cdmVariant = "alt2-moderate"
+      cdmVariantColor = "meta-lime"
       break
     case '4.4':
-      cdmVariant = "alt1-moderate"
+      cdmVariantColor = "meta-purple"
       break
     default:
-      cdmVariant = "neutral-moderate"
+      cdmVariantColor = "neutral"
       break
   }
 
   return (
-    <Box background="bg-default" paddingBlock="4" paddingInline="16">
-      <HStack gap="4" align="start">
+    <Box background="default" paddingBlock="space-16" paddingInline="space-64">
+      <HStack gap="space-16" align="start">
         <VStack>
           <Heading size='small'>
             {currentSak.sakType + ' - ' + currentSak.sakTittel}
@@ -69,7 +69,7 @@ const SakBanner = () => {
         </VStack>
         <Spacer/>
         <VStack>
-          <HStack gap="4">
+          <HStack gap="space-16">
             <img
               alt={kind}
               width={24}
@@ -77,7 +77,7 @@ const SakBanner = () => {
               src={src}
             />
             {!!currentSak.fornavn && currentSak.etternavn && (
-              <HStack gap="2">
+              <HStack gap="space-8">
                 <Label>
                   {currentSak.etternavn + ', ' + currentSak.fornavn}
                 </Label>
@@ -93,7 +93,7 @@ const SakBanner = () => {
               </HStack>
             )}
           </HStack>
-          <HStack gap="2">
+          <HStack gap="space-8">
             {currentSak.fnr && (
               <>
                 {t('label:fnr.') + ': '}
@@ -121,11 +121,11 @@ const SakBanner = () => {
         <VStack>
           {currentSak && currentSak.cdmVersjon &&
             <Box>
-              <Tag size="small" variant={cdmVariant}>CDM: {currentSak.cdmVersjon}</Tag>
+              <Tag size="small" variant="outline" data-color={cdmVariantColor}>CDM: {currentSak.cdmVersjon}</Tag>
             </Box>
           }
-          <HStack gap="2">
-            <HStack gap="4">
+          <HStack gap="space-8">
+            <HStack gap="space-16">
               <span>
                 {t('label:rina-saksnummer')}
               </span>
@@ -145,9 +145,7 @@ const SakBanner = () => {
                 <Popover
                   open={popoverOpen}
                   onClose={() => setPopoverOpen(false)}
-                  arrow
-                  anchorEl={iconRef.current}
-                >
+                  anchorEl={iconRef.current}>
                   <Popover.Content style={{ maxWidth: '600px' }}>
                     <Heading size='small'>
                       {t('label:international-id')}:
@@ -170,7 +168,7 @@ const SakBanner = () => {
               </>
             )}
           </HStack>
-          <HStack gap="2">
+          <HStack gap="space-8">
             <Link target='_blank' href={currentSak.sakUrl} rel='noreferrer'>
               <span>
                 {t('label:åpne_sak_i_RINA')}
@@ -186,7 +184,7 @@ const SakBanner = () => {
         </VStack>
       </HStack>
     </Box>
-  )
+  );
 }
 
 export default SakBanner

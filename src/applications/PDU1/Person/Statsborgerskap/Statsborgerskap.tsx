@@ -179,9 +179,9 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: _v[_namespace + '-land']
         })}
-        padding="4"
+        padding="space-16"
       >
-        <HStack gap="4" justify="space-between" align="center">
+        <HStack gap="space-16" justify="space-between" align="center">
           <Box flexGrow="1">
             {inEditMode
               ? (
@@ -207,7 +207,7 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
                     id={_namespace + '-statsborgerskap'}
                     error={_v[_namespace + '-statsborgerskap']?.feilmelding}
                   >
-                    <HStack gap="2" align="center">
+                    <HStack gap="space-8" align="center">
                       <Flag size='S' country={country ? country.value : "XU"} />
                       {country ? country.label : countryCodeMap && _statsborgerskap ? countryCodeMap[_statsborgerskap as keyof typeof countryCodeMap] : _statsborgerskap}
                     </HStack>
@@ -238,8 +238,8 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
         modal={{
           modalTitle: t("message:warning-unknown-statsborgerskap"),
           modalContent: (
-            <Box padding="4" minWidth="400px">
-              <VStack gap="2" align="center">
+            <Box padding="space-16" minWidth="400px">
+              <VStack gap="space-8" align="center">
                 <BodyLong>{t("message:warning-unknown-statsborgerskap-text1")}</BodyLong>
                 <BodyLong>{t("message:warning-unknown-statsborgerskap-text2")}</BodyLong>
               </VStack>
@@ -253,10 +253,10 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
         }}
         onModalClose={() => onModalClose()}
       />
-      <VStack gap="4">
+      <VStack gap="space-16">
         {_.isEmpty(statsborgerskaper)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2" paddingInline="4">
+            <Box borderWidth={"1 0"} paddingBlock="space-8" paddingInline="space-16">
               <BodyLong>
                 {t('message:warning-no-satsborgerskap')}
               </BodyLong>
@@ -264,7 +264,7 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
             )
           : (
             <>
-              <Box paddingInline="4">
+              <Box paddingInline="space-16">
                 <Label>
                   {t('label:land')}
                 </Label>
@@ -275,7 +275,7 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
         {_newForm
           ? renderRow(null, -1)
           : (
-            <Box padding="4">
+            <Box padding="space-16">
               <Button
                 variant='tertiary'
                 onClick={() => _setNewForm(true)}

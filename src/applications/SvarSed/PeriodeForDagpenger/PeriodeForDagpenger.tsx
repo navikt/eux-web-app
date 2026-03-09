@@ -212,11 +212,11 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        paddingBlock="2"
-        paddingInline="4"
+        paddingBlock="space-8"
+        paddingInline="space-16"
       >
-        <VStack gap="4">
-          <HGrid columns={"2fr 1fr"} align="start" gap="4">
+        <VStack gap="space-16">
+          <HGrid columns={"2fr 1fr"} align="start" gap="space-16">
             {inEditMode
               ? (
                 <PeriodeInput
@@ -257,7 +257,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
             </HStack>
           </HGrid>
           {inEditMode && (
-            <HGrid columns={2} gap="4">
+            <HGrid columns={2} gap="space-16">
               <Input
                 error={_v[_namespace + '-institusjon-id']?.feilmelding}
                 namespace={_namespace}
@@ -282,14 +282,14 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
         {_.isEmpty(perioder)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-periods')}
               </BodyLong>

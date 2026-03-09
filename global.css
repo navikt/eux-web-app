@@ -1,8 +1,8 @@
 body {
   margin: 0;
   padding: 0;
-  color: var(--a-text-default);
-  background: var(--a-bg-subtle);
+  color: var(--ax-text-neutral);
+  background: var(--ax-bg-neutral-soft);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -11,7 +11,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  --ac-button-secondary-bg: white;
+  --axc-button-secondary-bg: var(--ax-bg-default);
 }
 .nolabel {
   margin-top: 2rem !important;
@@ -26,11 +26,66 @@ body {
   margin-left: -10000px;
 }
 
-#joarkBrowser .navds-button--tertiary:hover, #attachmentsFromRina .navds-button--tertiary:hover {
-  background-color: var(--a-surface-transparent);
+#joarkBrowser .aksel-button--tertiary:hover, #attachmentsFromRina .aksel-button--tertiary:hover {
+  background-color: transparent;
 }
 
 #neessiModal div{
   user-select:text !important;
   cursor: default !important;
+}
+
+.dark .c-countrySelect__select__control {
+  background-color: var(--ax-bg-input);
+  border-color: var(--ax-border-neutral);
+}
+
+.dark .c-countrySelect__select__menu {
+  background-color: var(--ax-bg-input);
+  color: var(--ax-text-neutral);
+}
+
+.dark .c-countrySelect__select__option {
+  background-color: var(--ax-bg-input);
+  color: var(--ax-text-neutral);
+}
+
+.dark .c-countrySelect__select__option:hover,
+.dark .c-countrySelect__select__option--is-focused {
+  background-color: var(--ax-bg-neutral-moderate-hover);
+  color: var(--ax-text-neutral);
+}
+
+.dark .c-countrySelect__select__option--is-selected {
+  background-color: var(--ax-bg-accent-moderate);
+  color: var(--ax-text-neutral);
+}
+
+.dark .c-countrySelect__select__single-value,
+.dark .c-countrySelect__select__input-container,
+.dark .c-countrySelect__select__placeholder {
+  color: var(--ax-text-neutral);
+}
+
+/* @navikt/landvelger still uses old navds- class names internally */
+.navds-label {
+  font-size: var(--ax-font-size-large);
+  font-weight: var(--ax-font-weight-bold);
+  line-height: var(--ax-font-line-height-large);
+}
+
+.navds-error-message,
+.navds-error-message--medium {
+  color: var(--ax-text-danger);
+  font-size: var(--ax-font-size-medium);
+}
+
+/* @navikt/landvelger uses V7 CSS variables in inline styles — alias them to V8 equivalents */
+:root {
+  --a-border-default: var(--ax-border-neutral);
+  --a-surface-default: var(--ax-bg-input);
+  --a-surface-subtle: var(--ax-bg-neutral-soft);
+  --a-surface-danger: var(--ax-bg-danger-strong);
+  --a-surface-action-hover: var(--ax-bg-accent-strong-hover);
+  --a-text-default: var(--ax-text-neutral);
 }

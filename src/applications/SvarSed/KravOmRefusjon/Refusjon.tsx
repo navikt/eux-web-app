@@ -180,9 +180,9 @@ const RefusjonFC: React.FC<MainFormProps> = ({
 
   const renderTotalBeloep = () => {
     return (
-      <Box borderWidth="1" borderColor="border-subtle" padding="4">
-        <VStack gap="4">
-          <HGrid columns={2} gap="4" align="start">
+      <Box borderWidth="1" borderColor="neutral-subtle" padding="space-16">
+        <VStack gap="space-16">
+          <HGrid columns={2} gap="space-16" align="start">
             <Input
               error={validation[namespace + '-totalbeloep']?.feilmelding}
               id= {'totalbeloep'}
@@ -204,7 +204,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
               values={refusjon?.valuta}
             />
           </HGrid>
-          <HGrid columns={2} gap="4" align="start">
+          <HGrid columns={2} gap="space-16" align="start">
             <Input
               error={validation[namespace + '-betalingsreferanse']?.feilmelding}
               id={'betalingsreferanse'}
@@ -224,7 +224,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
           </HGrid>
         </VStack>
       </Box>
-    )
+    );
   }
 
   const renderRefusjonsKrav = (refusjonskrav: RefusjonsKrav | null, index: number) => {
@@ -251,9 +251,9 @@ const RefusjonFC: React.FC<MainFormProps> = ({
     if (inEditMode) {
       return (
         <Box
-          padding="4"
-          background="surface-subtle"
-          borderColor="border-subtle"
+          padding="space-16"
+          background="neutral-soft"
+          borderColor="neutral-subtle"
           borderWidth="1"
           className={classNames(
             styles.refusjonsKravBox,
@@ -263,8 +263,8 @@ const RefusjonFC: React.FC<MainFormProps> = ({
             }
           )}
         >
-          <VStack gap="4">
-            <HGrid columns={2} gap="4" align="start">
+          <VStack gap="space-16">
+            <HGrid columns={2} gap="space-16" align="start">
               <Input
                 error={_v[_namespace + '-beloep']?.feilmelding}
                 id='beloep'
@@ -321,13 +321,13 @@ const RefusjonFC: React.FC<MainFormProps> = ({
             </HStack>
           </VStack>
         </Box>
-      )
+      );
     }
 
     return (
-      <Box padding="4" background="surface-subtle" borderColor="border-subtle" borderWidth="1">
-        <VStack gap="4">
-          <HGrid columns={3} gap="8" align="start">
+      <Box padding="space-16" background="neutral-soft" borderColor="neutral-subtle" borderWidth="1">
+        <VStack gap="space-16">
+          <HGrid columns={3} gap="space-32" align="start">
             <VStack><Label>{t('label:beløp')}</Label>{_refusjonskrav?.beloep} {_refusjonskrav?.valuta}</VStack>
             <VStack>
               <Label>Periode</Label>
@@ -348,7 +348,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
           </VStack>
         </VStack>
       </Box>
-    )
+    );
   }
 
   return (
@@ -362,8 +362,8 @@ const RefusjonFC: React.FC<MainFormProps> = ({
         beloepArray={refusjon?.kravListe}
         resetWarning={!!refusjon?.totalbeloep || !!refusjon?.valuta}
       />
-      <Box padding="4">
-        <VStack gap="4">
+      <Box padding="space-16">
+        <VStack gap="space-16">
           <HStack>
             <Heading size='small'>
               {label}
@@ -385,7 +385,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
             {_.isEmpty(refusjon?.kravListe) && !_newRefusjonsKravForm
               ? (
                 <>
-                  <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle" id={namespace + "-refusjon"}>
+                  <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle" background="neutral-soft" id={namespace + "-refusjon"}>
                     <BodyLong>
                       {t('message:warning-no-refusjonskrav')}
                     </BodyLong>
@@ -415,7 +415,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
         </VStack>
       </Box>
     </>
-  )
+  );
 }
 
 export default RefusjonFC

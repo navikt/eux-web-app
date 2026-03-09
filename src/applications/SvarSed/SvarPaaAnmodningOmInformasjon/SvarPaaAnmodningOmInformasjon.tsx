@@ -84,10 +84,10 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <Box padding="4">
-        <VStack gap="4">
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <HGrid columns="1fr 2fr" gap="4" align="start">
+      <Box padding="space-16">
+        <VStack gap="space-16">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
+            <HGrid columns="1fr 2fr" gap="space-16" align="start">
               <DateField
                 error={validation[namespace + '-kravMottattDato']?.feilmelding}
                 namespace={namespace}
@@ -104,7 +104,7 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
                 onChange={(e: string) => setKravEllerSvarPaaKrav(e)}
                 value={erKravEllerSvarPaaKrav}
               >
-                <HStack gap="4">
+                <HStack gap="space-16">
                   <Radio className={commonStyles.radioPanel} value='krav'>
                     {t('label:krav-eller-svar-paa-krav-nytt_krav')}
                   </Radio>
@@ -115,7 +115,7 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
               </RadioGroup>
             </HGrid>
           </Box>
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <Checkbox
               value="adopsjon"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("adopsjon", e.target.checked)}

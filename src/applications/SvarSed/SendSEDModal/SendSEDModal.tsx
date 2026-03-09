@@ -177,9 +177,9 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
       modal={{
         modalTitle: t('label:lagre-sed'),
         modalContent: (
-          <VStack gap="4" align="stretch" justify="start" minHeight="200px" minWidth="600px">
+          <VStack gap="space-16" align="stretch" justify="start" minHeight="200px" minWidth="600px">
             {alertMessage && alertType && [types.SVARSED_SED_CREATE_FAILURE, types.SVARSED_SED_UPDATE_FAILURE].indexOf(alertType) >= 0 && (
-              <VStack gap="4">
+              <VStack gap="space-16">
                 <Alert variant='error'>{alertMessage}</Alert>
                 <HStack>
                   <Spacer/>
@@ -194,7 +194,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
               </VStack>
             )}
             {alertMessage && alertType && _sendButtonClicked && [types.SVARSED_SED_SEND_SUCCESS, types.SVARSED_SED_SEND_FAILURE].indexOf(alertType) >= 0 && (
-              <VStack gap="4">
+              <VStack gap="space-16">
                 <Alert variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'success'}>
                   {alertMessage}
                 </Alert>
@@ -225,32 +225,32 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
               </Alert>
 
             )}
-            <VStack align="center" width="100%" gap="4">
+            <VStack align="center" width="100%" gap="space-16">
               <HStack justify="center" align="stretch">
-                <VStack align="start" gap="2">
+                <VStack align="start" gap="space-8">
                   <div>
                     {(creatingSvarSed || updatingSvarSed) && (
-                      <HStack gap="2" align="center">
+                      <HStack gap="space-8" align="center">
                         <Loader type='xsmall' />
                         <span>{creatingSvarSed ? t('message:loading-opprette-sed') : t('message:loading-oppdatering-sed')}</span>
                       </HStack>
                     )}
                     {!_.isNil(sedCreatedResponse) && (
-                      <HStack gap="2" align="center">
-                        <CheckmarkCircleFillIcon color='green' />
+                      <HStack gap="space-8" align="center">
+                        <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' />
                         <span>{t('message:loading-sed-lagret')}</span>
                       </HStack>
                     )}
                   </div>
                   <div>
                     {_finished && (
-                      <HStack gap="2" align="center">
-                        <CheckmarkCircleFillIcon color='green' />
+                      <HStack gap="space-8" align="center">
+                        <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' />
                         <span>{_finished}</span>
                       </HStack>
                     )}
                     {_sendingAttachments && (
-                      <HStack gap="2" align="center">
+                      <HStack gap="space-8" align="center">
                         <Loader type='xsmall' />
                         <span>{t('message:loading-sending-vedlegg')}</span>
                       </HStack>
@@ -258,13 +258,13 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   </div>
                   <div>
                     {!_.isNil(sedSendResponse) && _finished && (
-                      <HStack gap="2" align="center">
-                        <CheckmarkCircleFillIcon color='green' />
+                      <HStack gap="space-8" align="center">
+                        <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' />
                         <span>{t('message:loading-sed-sendt')}</span>
                       </HStack>
                     )}
                     {sendingSed && (
-                      <HStack gap="2" align="center">
+                      <HStack gap="space-8" align="center">
                         <Loader type='xsmall' />
                         <span>{t('message:loading-sending-sed')}</span>
                       </HStack>
@@ -274,8 +274,8 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
               </HStack>
               <HStack justify="center" align="stretch">
                 {(_sendingAttachments || _attachmentsSent) && (
-                  <VStack gap="4" align="stretch" justify="center" minHeight="200px" minWidth="600px">
-                    <Box padding="4" background="bg-subtle">
+                  <VStack gap="space-16" align="stretch" justify="center" minHeight="200px" minWidth="600px">
+                    <Box padding="space-16" background="neutral-soft">
                       <SEDAttachmentSender
                         attachmentsError={undefined}
                         payload={{
@@ -292,7 +292,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   </VStack>
                 )}
                 {_finished && (
-                  <HStack gap="4" align="center">
+                  <HStack gap="space-16" align="center">
                     <Button
                       variant='secondary'
                       onClick={closeModal}
@@ -316,7 +316,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
       }}
       onModalClose={onModalClose}
     />
-  )
+  );
 }
 
 export default SendSEDModal

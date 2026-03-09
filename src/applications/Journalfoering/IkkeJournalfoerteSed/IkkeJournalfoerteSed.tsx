@@ -36,8 +36,8 @@ const IkkeJournalfoerteSed = ({ sak, bucer }: IkkeJournalfoerteSedProps) => {
   }
 
   return (
-    <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
-      <VStack gap="4">
+    <Box background="default" padding="space-16" borderWidth="1" borderColor="neutral" borderRadius="2">
+      <VStack gap="space-16">
         <Heading size='small'>
           {t('label:ikke-journalfoerte-dokumenter')}
         </Heading>
@@ -59,7 +59,7 @@ const IkkeJournalfoerteSed = ({ sak, bucer }: IkkeJournalfoerteSedProps) => {
         }
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default IkkeJournalfoerteSed

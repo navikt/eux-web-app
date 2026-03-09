@@ -55,13 +55,13 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
         {CDM_VERSJON === "4.2" &&
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <TextArea
               error={validation[namespace + '-informasjon-om-barnehage']?.feilmelding}
               namespace={namespace}
@@ -75,7 +75,7 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
         }
         {(parseFloat(CDM_VERSJON) >= 4.3) &&
           <>
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <RadioGroup
               legend={t('label:gaar-barnet-i-barnehage')}
               value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.barnehage?.gaarIBarnehage ?? ''}
@@ -83,7 +83,7 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
               id={namespace + '-informasjon-om-barnehage'}
               onChange={(e:string) => setAnnenInformasjonBarnetProperty('barnehage.gaarIBarnehage', e as JaNei)}
             >
-              <HStack gap="4">
+              <HStack gap="space-16">
                 <Radio className={commonStyles.radioPanel} value='ja'>
                   Ja
                 </Radio>
@@ -95,7 +95,7 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
           </Box>
           {(annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.barnehage?.gaarIBarnehage && (annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.barnehage?.gaarIBarnehage === 'ja' &&
             <>
-              <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+              <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
                 <RadioGroup
                   legend={t('label:mottar-barnehagen-offentlig-stoette')}
                   value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.barnehage?.mottarOffentligStoette ?? ''}
@@ -103,7 +103,7 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
                   id='mottar-offentlig-stoette'
                   onChange={(e:string) => setAnnenInformasjonBarnetProperty('barnehage.mottarOffentligStoette', e as JaNei)}
                 >
-                  <HStack gap="4">
+                  <HStack gap="space-16">
                     <Radio className={commonStyles.radioPanel} value='ja'>
                       Ja
                     </Radio>
@@ -113,11 +113,11 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
                   </HStack>
                 </RadioGroup>
               </Box>
-              <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+              <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
                 <Label>
                   Antallet timer barnet går i barnehage
                 </Label>
-                <HGrid gap="2" columns={2}>
+                <HGrid gap="space-8" columns={2}>
                   <Select
                     id={namespace + '-timer-pr'}
                     name={namespace + '-timer-pr'}
@@ -146,7 +146,7 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
         }
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default InformasjonOmBarnehage

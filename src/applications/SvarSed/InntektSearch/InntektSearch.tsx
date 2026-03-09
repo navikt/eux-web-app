@@ -72,7 +72,7 @@ const InntektSearch = ({
   }
 
   return (
-    <HGrid columns={4} gap="4" align="start">
+    <HGrid columns={4} gap="space-16" align="start">
       <Input
         namespace={namespace}
         error={_validation[namespace + '-startdato']?.feilmelding}
@@ -100,7 +100,7 @@ const InntektSearch = ({
         value={_.find(filterOptions, b => b.value === _filter)}
         defaultValue={_.find(filterOptions, b => b.value === _filter)}
       />
-      <Box marginBlock="8">
+      <Box marginBlock="space-32">
         <Button
           variant='secondary'
           disabled={gettingInntekter}

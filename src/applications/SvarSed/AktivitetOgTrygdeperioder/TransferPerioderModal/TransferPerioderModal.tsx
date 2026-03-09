@@ -150,17 +150,17 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
     })
   }
 
-  return(
+  return (
     <Modal
       open={modalOpen}
       description={warnings.length > 0  ? warnings : undefined}
       modal={{
         modalTitle: title,
         modalContent: (
-          <Box borderWidth="1" borderColor="border-subtle" padding="4">
+          <Box borderWidth="1" borderColor="neutral-subtle" padding="space-16">
             {perioder?.map((p, i) => {
               return (
-                <HStack gap="4" align={"center"}>
+                <HStack gap="space-16" align={"center"}>
                   <Checkbox
                     key={getId(p)}
                     checked={!!(_valgtePerioder && _valgtePerioder["periode-" + i])}
@@ -175,11 +175,11 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
                       }}
                     />
                   </Checkbox>
-                  {p.__type && <Tag variant={"warning-moderate"} size="xsmall">{t('label:status-' + p.__type)}</Tag>}
+                  {p.__type && <Tag data-color="warning" variant={"moderate"} size="xsmall">{t('label:status-' + p.__type)}</Tag>}
                   <Spacer/>
                   {periodeType && periodeType === "pensjon" && _valgtePerioder && _valgtePerioder["periode-" + i] &&
                     <RadioGroup legend="Grunnlag" hideLegend={true} onChange={(pensjonsType: string) => onSetPensjonstype(pensjonsType, i)}>
-                      <HStack gap="4">
+                      <HStack gap="space-16">
                         <Radio value="alderspensjon">{t('el:option-trygdeordning-alderspensjon')}</Radio>
                         <Radio value="uførhet">{t('el:option-trygdeordning-uførhet')}</Radio>
                       </HStack>
@@ -187,14 +187,14 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
                   }
                   {periodeType && periodeType === "dekketUdekket" && _valgtePerioder && _valgtePerioder["periode-" + i] &&
                     <RadioGroup legend="Dekket/Udekket" hideLegend={true} onChange={(dekketUdekket: string) => onSetDekketUdekketPeriode(dekketUdekket, i)}>
-                      <HStack gap="4">
+                      <HStack gap="space-16">
                         <Radio value="dekket">{t('el:option-trygdeordning-dekket')}</Radio>
                         <Radio value="udekket">{t('el:option-trygdeordning-udekket')}</Radio>
                       </HStack>
                     </RadioGroup>
                   }
                 </HStack>
-              )
+              );
             })}
           </Box>
         ),
@@ -214,7 +214,7 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
       width="medium"
       onModalClose={() => onModalClose()}
     />
-  )
+  );
 }
 
 export default TransferPerioderModal

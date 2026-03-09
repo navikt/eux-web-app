@@ -167,7 +167,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   }
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {jornalførePdu1Response && (
         <Modal
           open={completeModal}
@@ -221,8 +221,8 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         setReplySed={setPdu1}
         updateReplySed={updatePdu1}
       />
-      <Box borderWidth="1" padding="4" background="bg-default">
-        <VStack gap="4">
+      <Box borderWidth="1" padding="space-16" background="default">
+        <VStack gap="space-16">
           <PreviewPDU1 validation={validation} namespace={namespace} />
           <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
           <Box>
@@ -240,7 +240,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         </VStack>
       </Box>
     </VStack>
-  )
+  );
 }
 
 export default PDU1Edit

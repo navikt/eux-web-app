@@ -140,7 +140,7 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
       modal={{
         modalTitle: "Sender vedlegg",
         modalContent: (
-          <VStack gap="4">
+          <VStack gap="space-16">
             {alertMessage && alertType && [types.ATTACHMENT_SEND_FAILURE].indexOf(alertType) >= 0 && (
               <Alert variant='error'>
                 {alertMessage}
@@ -151,10 +151,10 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
                 {bannerMessage}
               </Alert>
             )}
-            <HStack gap="2" align="center" justify="center">
+            <HStack gap="space-8" align="center" justify="center">
               {(_sendingAttachments || _attachmentsSent) && (
-                <VStack gap="4" align="stretch" justify="center" minHeight="200px" minWidth="600px">
-                  <Box padding="4" background="bg-subtle">
+                <VStack gap="space-16" align="stretch" justify="center" minHeight="200px" minWidth="600px">
+                  <Box padding="space-16" background="neutral-soft">
                     <SEDAttachmentSender
                       attachmentsError={undefined}
                       payload={{
@@ -173,12 +173,12 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
             </HStack>
 
             {_finished && (
-              <VStack gap="4" align="stretch" justify="center" minHeight="200px" minWidth="600px">
-                <HStack gap="2" align="center" justify="center">
-                  <CheckmarkCircleFillIcon color='green' />
+              <VStack gap="space-16" align="stretch" justify="center" minHeight="200px" minWidth="600px">
+                <HStack gap="space-8" align="center" justify="center">
+                  <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' />
                   <span>{_finished}</span>
                 </HStack>
-                <HStack gap="2" align="center" justify="center">
+                <HStack gap="space-8" align="center" justify="center">
                   <Button
                     variant='secondary'
                     onClick={onModalClose}
@@ -192,7 +192,7 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
         )
       }}
     />
-  )
+  );
 }
 
 export default SendAttachmentModal

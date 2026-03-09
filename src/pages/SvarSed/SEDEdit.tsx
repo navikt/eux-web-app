@@ -343,8 +343,8 @@ const SEDEdit = (): JSX.Element => {
 
   return (
     <Page.Block width="2xl">
-      <HGrid columns="80% 20%" gap="8" paddingBlock="12" paddingInline="4">
-        <VStack gap="8">
+      <HGrid columns="80% 20%" gap="space-32" paddingBlock="space-48" paddingInline="space-16">
+        <VStack gap="space-32">
           <SendSEDModal
             fnr={fnr!}
             open={_viewSendSedModal}
@@ -689,15 +689,15 @@ const SEDEdit = (): JSX.Element => {
               }}
             />
           )}
-          <Box padding="4" borderWidth="1" background="bg-default">
-            <VStack gap="4" width="100%">
+          <Box padding="space-16" borderWidth="1" background="default">
+            <VStack gap="space-16" width="100%">
             {!!replySed && isPreviewableSed(replySed!.sedType) && (
               <Box>
                 <PreviewSED replySed={replySed} />
               </Box>
             )}
             <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
-            <HStack gap="4">
+            <HStack gap="space-16">
               <Button
                 variant='primary'
                 onClick={saveReplySed}
@@ -720,7 +720,7 @@ const SEDEdit = (): JSX.Element => {
               </Button>
             </HStack>
             {_sendButtonClicked && alertMessage && alertType === types.SVARSED_SED_SEND_FAILURE && (
-              <HStack gap="2">
+              <HStack gap="space-8">
                 <Alert variant='error'>
                   {alertMessage!}
                 </Alert>
@@ -742,7 +742,7 @@ const SEDEdit = (): JSX.Element => {
         </Box>
       </HGrid>
     </Page.Block>
-  )
+  );
 }
 
 export default SEDEdit

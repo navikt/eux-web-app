@@ -59,12 +59,12 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label} ID: {(replySed as X008Sed)?.kansellerSedId} ({(replySed as X008Sed)?.utstedelsesdato})
         </Heading>
-        <HGrid columns={"2fr 1fr"} gap="4" align="start">
+        <HGrid columns={"2fr 1fr"} gap="space-16" align="start">
           <RadioGroup
             value={(replySed as X008Sed).begrunnelseType}
             data-testid={namespace + '-begrunnelseType'}
@@ -73,7 +73,7 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
             legend={t('label:begrunnelse')}
             onChange={setBegrunnelseType}
           >
-            <VStack gap="1">
+            <VStack gap="space-4">
               <Radio className={commonStyles.radioPanel} value='personen_er_død'>{t('el:option-ugyldiggjøre-01')}</Radio>
               <Radio className={commonStyles.radioPanel} value='saken_ble_feilaktig_sendt_til_dere'>{t('el:option-ugyldiggjøre-02')}</Radio>
               <Radio className={commonStyles.radioPanel} value='feilaktig_informasjon_levert'>{t('el:option-ugyldiggjøre-03')}</Radio>

@@ -3,14 +3,14 @@
 }
 
 .personNotSelected {
-  border: 3px solid red;
+  border: 3px solid var(--ax-border-danger);
 }
 
 .personSelected {
-  border: 3px solid green;
+  border: 3px solid var(--ax-border-success);
 }
 
 .neutral {
-  background: white;
+  background: var(--ax-bg-default);
 }
 

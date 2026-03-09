@@ -28,17 +28,17 @@ describe('components/BannerAlert/BannerAlert', () => {
 
   it('Render: has proper HTML structure as client in OK type', () => {
     const { container } = render(<BannerAlert {...initialMockProps} />)
-    expect(container.querySelector('.navds-alert--success')).toBeInTheDocument()
+    expect(container.querySelector('.aksel-alert--success')).toBeInTheDocument()
   })
 
   it('Render: has proper HTML structure as client in WARNING type', () => {
     const { container } = render(<BannerAlert {...initialMockProps} variant='warning' />)
-    expect(container.querySelector('.navds-alert--warning')).toBeInTheDocument()
+    expect(container.querySelector('.aksel-alert--warning')).toBeInTheDocument()
   })
 
   it('Render: has proper HTML structure as client in ERROR type', () => {
     const { container } = render(<BannerAlert {...initialMockProps} variant='error' />)
-    expect(container.querySelector('.navds-alert--error')).toBeInTheDocument()
+    expect(container.querySelector('.aksel-alert--error')).toBeInTheDocument()
   })
 
   it('Render: Pretty prints a error message', () => {

@@ -60,8 +60,8 @@ export const AdminPage: React.FC = (): JSX.Element => {
   if(gettingSaksbehandler){
     return(
       <TopContainer title="Administrative verktøy">
-        <VStack gap="4" padding="4">
-          <HStack gap="4">
+        <VStack gap="space-16" padding="space-16">
+          <HStack gap="space-16">
             <Loader/>
             Henter saksbehandlerinfo...
           </HStack>
@@ -73,7 +73,7 @@ export const AdminPage: React.FC = (): JSX.Element => {
   if(!featureToggles?.featureAdmin){
     return(
       <TopContainer title="Administrative verktøy">
-        <VStack gap="4" padding="4">
+        <VStack gap="space-16" padding="space-16">
           <Alert variant={"error"}>OBS! Du har ikke tilgang til denne siden</Alert>
         </VStack>
       </TopContainer>
@@ -81,10 +81,10 @@ export const AdminPage: React.FC = (): JSX.Element => {
   }
   return (
     <TopContainer title="Administrative verktøy">
-      <VStack gap="4">
-        <HStack padding="4">
-          <Box padding="4" borderWidth="1">
-            <VStack gap="4">
+      <VStack gap="space-16">
+        <HStack padding="space-16">
+          <Box padding="space-16" borderWidth="1">
+            <VStack gap="space-16">
               <div>
                 <Heading size={"small"}>Publiser SED hendelser</Heading>
                 <BodyLong size="small">

@@ -197,8 +197,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <Box padding="4">
-        <VStack gap="4">
+      <Box padding="space-16">
+        <VStack gap="space-16">
           <Heading size='small'>
             {label}
           </Heading>
@@ -219,7 +219,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               {t('label:sensitivPerson', {gradering: personInfo?.adressebeskyttelse})}
             </Alert>
           }
-          <HGrid columns={3} gap="4" align="start">
+          <HGrid columns={3} gap="space-16" align="start">
             <TextField
               error={validation[namespace + '-fornavn']?.feilmelding}
               id={namespace + '-' + "fornavn"}
@@ -257,7 +257,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
             name={namespace + '-kjoenn'}
             onChange={setKjoenn}
           >
-            <HStack  gap="4" align="center">
+            <HStack  gap="space-16" align="center">
               <Radio className={commonStyles.radioPanel} value='M'>
                 {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
               </Radio>

@@ -216,7 +216,7 @@ const PDU1Search = (): JSX.Element => {
         modal={previewModal}
         onModalClose={handleModalClose}
       />
-      <VStack gap="4" width="100%">
+      <VStack gap="space-16" width="100%">
         <Heading size='medium'>
           {t('app:page-title-pdu1-search')}
         </Heading>
@@ -224,7 +224,7 @@ const PDU1Search = (): JSX.Element => {
           width="100%"
           className={classNames({ error: validation[namespace + '-search'] })}
         >
-          <VStack gap="4">
+          <VStack gap="space-16">
             <PersonSearch
               key={namespace + '-fnr-'}
               alertMessage={alertMessage}
@@ -258,7 +258,7 @@ const PDU1Search = (): JSX.Element => {
             <SakSidebar />
           </VStack>
         </Box>
-        <HStack gap="4" align="center" paddingBlock="4">
+        <HStack gap="space-16" align="center" paddingBlock="space-16">
           <Button
             variant='primary'
             disabled={!validFnr || searchPdu1Mode}
@@ -277,15 +277,15 @@ const PDU1Search = (): JSX.Element => {
           </Button>
         </HStack>
         {newPdu1Mode && (
-          <VStack gap="4" align="center">
+          <VStack gap="space-16" align="center">
             <div className={commonStyles.horizontalLineSeparator} />
-            <Box paddingBlock="4">
-              <VStack gap="4" align="center">
+            <Box paddingBlock="space-16">
+              <VStack gap="space-16" align="center">
                 <Heading size='small'>
                   {t('el:button-start-new-x', { x: 'PD U1' })}
                 </Heading>
                 {!gettingFagsaker &&
-                  <HStack gap="4" align="end">
+                  <HStack gap="space-16" align="end">
                     <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakYear(e.currentTarget.value)}>
                       <option value={currentYear}>{currentYear}</option>
                       <option value={currentYear - 1}>{currentYear - 1}</option>
@@ -308,7 +308,7 @@ const PDU1Search = (): JSX.Element => {
               </VStack>
             </Box>
 
-            <VStack gap="2" width="100%">
+            <VStack gap="space-8" width="100%">
               {gettingFagsaker && (
                 <WaitingPanel />
               )}
@@ -321,21 +321,21 @@ const PDU1Search = (): JSX.Element => {
                 <Box
                   key={f._id}
                   borderWidth="1"
-                  borderColor="border-default"
-                  borderRadius="small"
-                  padding="4"
-                  background="bg-default"
+                  borderColor="neutral"
+                  borderRadius="2"
+                  padding="space-16"
+                  background="default"
                   className={classNames({
                     [styles.new]: createdFagsak === f._id
                   })}
                 >
-                  <HStack gap="4" justify="space-between" align="center">
-                    <VStack gap="1">
-                      <HStack gap="2">
+                  <HStack gap="space-16" justify="space-between" align="center">
+                    <VStack gap="space-4">
+                      <HStack gap="space-8">
                         <Label>{t('label:fagsakNr')}:</Label>
                         <BodyLong>{f.nr}</BodyLong>
                       </HStack>
-                      <HStack gap="2">
+                      <HStack gap="space-8">
                         <Label>{t('label:dato-opprettet')}:</Label>
                         <BodyLong>{moment(f.opprettetTidspunkt).format('DD.MM.YYYY HH:mm')}</BodyLong>
                       </HStack>
@@ -357,9 +357,9 @@ const PDU1Search = (): JSX.Element => {
           </VStack>
         )}
       {searchPdu1Mode && (
-        <VStack gap="2" align="center">
+        <VStack gap="space-8" align="center">
           <div className={commonStyles.horizontalLineSeparator} />
-          <Box paddingBlock="4">
+          <Box paddingBlock="space-16">
             <Heading size='small'>
               {t('el:button-edit-x', { x: 'PD U1' })}
             </Heading>
@@ -367,23 +367,23 @@ const PDU1Search = (): JSX.Element => {
           {fetchingPdu1 && <Loader />}
           {pdu1results?.filter(isPDU1)
             .map((pdu1SearchResult: PDU1SearchResult) => (
-              <Box borderWidth="1" borderColor="border-default" borderRadius="small" padding="4" background="bg-default" width="100%" key={pdu1SearchResult.journalpostId + '-' + pdu1SearchResult.dokumentInfoId}>
-                <HStack gap="4" justify="space-between" align="start">
-                  <VStack gap="1">
-                    <HStack gap="2">
+              <Box borderWidth="1" borderColor="neutral" borderRadius="2" padding="space-16" background="default" width="100%" key={pdu1SearchResult.journalpostId + '-' + pdu1SearchResult.dokumentInfoId}>
+                <HStack gap="space-16" justify="space-between" align="start">
+                  <VStack gap="space-4">
+                    <HStack gap="space-8">
                       <Label>{t('label:fagsakNr')}:</Label>
                       <BodyLong>{pdu1SearchResult.fagsakId}</BodyLong>
                     </HStack>
-                    <HStack gap="2">
+                    <HStack gap="space-8">
                       <Label>{t('label:tittel')}:</Label>
                       <BodyLong>{pdu1SearchResult.tittel}</BodyLong>
                     </HStack>
-                    <HStack gap="2">
+                    <HStack gap="space-8">
                       <Label>{t('label:dato-opprettet')}:</Label>
                       <BodyLong>{moment(pdu1SearchResult.datoOpprettet).format('DD.MM.YYYY HH:mm')}</BodyLong>
                     </HStack>
                   </VStack>
-                  <VStack gap="2">
+                  <VStack gap="space-8">
                     <Button
                       variant='primary'
                       disabled={gettingPdu1 || pdu1SearchResult.dokumentvarianter.indexOf('ORIGINAL') < 0}
@@ -408,7 +408,7 @@ const PDU1Search = (): JSX.Element => {
       )}
       </VStack>
     </VStack>
-  )
+  );
 }
 
 export default PDU1Search

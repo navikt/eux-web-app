@@ -23,7 +23,7 @@ const WaitingPanel: React.FC<WaitingPanelProps> = ({
     <Loader type={size} />
     {message && (
       <>
-        <Box paddingInline="2">
+        <Box paddingInline="space-8">
           <BodyLong
             className={classNames({ [styles.oneLine]: oneLine })}
             data-testid='c-waitingpanel__text-id'

@@ -87,8 +87,8 @@ const AvsenderFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4" key={namespace + '-div'}>
-      <VStack gap="4">
+    <Box padding="space-16" key={namespace + '-div'}>
+      <VStack gap="space-16">
         <Heading size='medium'>
           {t('label:avsender')}
         </Heading>
@@ -108,7 +108,7 @@ const AvsenderFC: React.FC<MainFormProps> = ({
           required
           value={avsender?.navEnhetNavn}
         />
-        <HGrid columns={2} gap="4" align="start">
+        <HGrid columns={2} gap="space-16" align="start">
           <Input
             disabled={!allowEdit}
             error={validation[namespace + '-orgNr']?.feilmelding}
@@ -130,7 +130,7 @@ const AvsenderFC: React.FC<MainFormProps> = ({
             value={avsender?.navTlf}
           />
         </HGrid>
-        <HGrid columns={2} gap="4" align="start">
+        <HGrid columns={2} gap="space-16" align="start">
           <Input
             disabled={!allowEdit}
             error={validation[namespace + '-saksbehandler-navn']?.feilmelding}

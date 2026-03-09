@@ -136,8 +136,8 @@ const Formål: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4" background="bg-default">
-      <VStack gap="4">
+    <Box padding="space-16" background="default">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -159,7 +159,7 @@ const Formål: React.FC<MainFormProps> = ({
         <ErrorLabel error={validation[namespace + '-checkbox']?.feilmelding} />
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default Formål

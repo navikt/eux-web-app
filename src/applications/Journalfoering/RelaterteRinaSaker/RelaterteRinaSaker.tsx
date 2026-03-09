@@ -16,21 +16,20 @@ const RelaterteRinaSaker = ({ sak }: RelaterteRinaSakerProps) => {
   }
 
   return (
-      <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
-        <VStack gap="4">
-          <Heading size='small'>
-            { sak.relaterteRinasakIder && sak.relaterteRinasakIder.length > 1 ? t('label:tilknyttede-saker') : t('label:tilknyttet-sak')}
-          </Heading>
-          <div className={commonStyles.horizontalLineSeparator} />
-          <Box paddingInline="4">
-            {sak.relaterteRinasakIder?.map((sakId) => {
-              return (<><Link href='#' onClick={() => gotoSak(sakId)}>{sakId}</Link><br/></>)
-            })}
-          </Box>
-        </VStack>
-      </Box>
-
-  )
+    <Box background="default" padding="space-16" borderWidth="1" borderColor="neutral" borderRadius="2">
+      <VStack gap="space-16">
+        <Heading size='small'>
+          { sak.relaterteRinasakIder && sak.relaterteRinasakIder.length > 1 ? t('label:tilknyttede-saker') : t('label:tilknyttet-sak')}
+        </Heading>
+        <div className={commonStyles.horizontalLineSeparator} />
+        <Box paddingInline="space-16">
+          {sak.relaterteRinasakIder?.map((sakId) => {
+            return (<><Link href='#' onClick={() => gotoSak(sakId)}>{sakId}</Link><br/></>)
+          })}
+        </Box>
+      </VStack>
+    </Box>
+  );
 }
 
 export default RelaterteRinaSaker

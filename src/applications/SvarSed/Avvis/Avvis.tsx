@@ -59,8 +59,8 @@ const Avvis: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -76,7 +76,7 @@ const Avvis: React.FC<MainFormProps> = ({
             name={namespace + '-begrunnelseType'}
             onChange={setBegrunnelseType}
           >
-            <VStack gap="1" width="75%">
+            <VStack gap="space-4" width="75%">
               <Radio className={commonstyles.radioPanel} value='personen_finnes_ikke_i_våre_registre'>{t('el:option-avvis-01')}</Radio>
               <Radio className={commonstyles.radioPanel} value='ikke_kompetent_institusjon_i_saken_og_ikke_i_stand_til_å_videresende'>{t('el:option-avvis-02')}</Radio>
               <Radio className={commonstyles.radioPanel} value='etterspurt_obligatorisk_informasjon_finnes_ikke'>{t('el:option-avvis-03')}</Radio>

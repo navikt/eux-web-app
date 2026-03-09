@@ -128,8 +128,8 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
   }, [adresser])
 
   return (
-    <VStack gap="4">
-      <HStack gap="4">
+    <VStack gap="space-16">
+      <HStack gap="space-16">
         <Button
           variant='primary'
           disabled={gettingAdresser || _.isNil(fnr) || (singleAdress && selectedAdresser ? selectedAdresser.length > 0 : false)}
@@ -158,12 +158,12 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
         )}
       </HStack>
       {_open && (
-        <Box padding="4" borderWidth="1" background="bg-subtle">
-          <VStack gap="1">
+        <Box padding="space-16" borderWidth="1" background="neutral-soft">
+          <VStack gap="space-4">
             <Label>
               {t('label:pdl-adresse-til', { person: personName })}
             </Label>
-            <Box borderWidth={"1 0 0 0"} paddingBlock="2"/>
+            <Box borderWidth={"1 0 0 0"} paddingBlock="space-8"/>
             <BodyLong size="large">
               {t('label:hvilke-adresser-skal-registreres')}
             </BodyLong>
@@ -187,7 +187,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
         </Box>
       )}
     </VStack>
-  )
+  );
 }
 
 export default AdresseFromPDL

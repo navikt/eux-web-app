@@ -60,13 +60,13 @@ const DenForeldreloesesBarnetsBosted: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
         {CDM_VERSJON === "4.2" &&
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <TextArea
               error={validation[namespace + '-barnet-bosted']?.feilmelding}
               namespace={namespace}
@@ -79,7 +79,7 @@ const DenForeldreloesesBarnetsBosted: React.FC<MainFormProps> = ({
           </Box>
         }
         {(parseFloat(CDM_VERSJON) >= 4.3) &&
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Box padding="space-16" background="neutral-soft" borderWidth="1" borderColor="neutral-subtle">
             <AdresseForm
               type={false}
               required={['by', 'land']}
@@ -94,7 +94,7 @@ const DenForeldreloesesBarnetsBosted: React.FC<MainFormProps> = ({
         }
       </VStack>
     </Box>
-  )
+  );
 }
 
 export default DenForeldreloesesBarnetsBosted

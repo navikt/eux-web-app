@@ -159,9 +159,9 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        padding="4"
+        padding="space-16"
       >
-        <HStack  gap="4" align={inEditMode ? "start" : "center"}>
+        <HStack  gap="space-16" align={inEditMode ? "start" : "center"}>
           {inEditMode
             ? (
               <Box width="30%">
@@ -185,7 +185,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
                 error={_v[_namespace + '-type']?.feilmelding}
                 id={_namespace + '-type'}
               >
-                <HStack gap="2" align="start">
+                <HStack gap="space-8" align="start">
                   <Label>{t('label:type') + ':'}</Label>
                   {_identifikator?.type}
                 </HStack>
@@ -210,7 +210,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
                 error={_v[_namespace + '-id']?.feilmelding}
                 id={_namespace + '-id'}
               >
-                <HStack gap="2" align="start">
+                <HStack gap="space-8" align="start">
                   <Label>{t('label:inst-id') + ':'}</Label>
                   {_identifikator?.id}
                 </HStack>
@@ -241,7 +241,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
     <VStack>
       {_.isEmpty(identifikatorer)
         ? (
-          <Box borderWidth={"1 0"} paddingBlock="2">
+          <Box borderWidth={"1 0"} paddingBlock="space-8">
             <BodyLong>
               {t('message:warning-no-ids')}
             </BodyLong>
@@ -249,7 +249,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
           )
         : identifikatorer?.map(renderRow)}
       {hasError && (
-        <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
+        <div role='alert' aria-live='assertive' className='aksel-error-message aksel-error-message--medium aksel-label'>
           {hasError}
         </div>
       )}

@@ -125,7 +125,7 @@ const SEDView = (): JSX.Element => {
       moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
     )).map((sed: Sed) => (
       <div key={'sed-' + sed.sedId} style={addMargin ? { marginLeft: '4rem' } : {}}>
-        <VStack gap="4">
+        <VStack gap="space-16">
           <SEDPanel
             currentSak={currentSak!}
             sed={sed}
@@ -143,17 +143,17 @@ const SEDView = (): JSX.Element => {
   return (
     <>
       {queryingSaks && !refreshingSaks &&
-        <Box padding="4">
+        <Box padding="space-16">
           <WaitingPanel/>
         </Box>
       }
       <Page.Block width="2xl">
-        <HGrid columns="1fr 2fr 1fr" gap="12" paddingBlock="12" paddingInline="4" align="start">
+        <HGrid columns="1fr 2fr 1fr" gap="space-48" paddingBlock="space-48" paddingInline="space-16" align="start">
           <Sakshandlinger sak={currentSak} />
-          <VStack gap="4">
+          <VStack gap="space-16">
             {getSedPanels(arrayToTree(seds))}
           </VStack>
-          <VStack gap="4">
+          <VStack gap="space-16">
             <Saksopplysninger sak={currentSak} />
             {(!currentSak.ikkeJournalfoerteSed || currentSak.ikkeJournalfoerteSed.length === 0) &&
               <JournalfoeringsOpplysninger sak={currentSak} />

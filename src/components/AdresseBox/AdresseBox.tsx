@@ -33,8 +33,8 @@ const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeT
   return (
     <Box
       borderWidth={border ? "1" : "0"}
-      borderColor="border-default"
-      borderRadius="small"
+      borderColor="neutral"
+      borderRadius="2"
       style={{
         padding: padding + 'rem',
         display: oneLine ? 'inline-flex' : 'flex',
@@ -44,7 +44,7 @@ const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeT
     >
       {seeType && !!adresse.type && (
         <>
-          <Tag size='small' variant='info'>{t('label:' + adresse.type)}</Tag>
+          <Tag data-color="info" size='small' variant="outline">{t('label:' + adresse.type)}</Tag>
           {oneLine && <>&nbsp;&nbsp;</>}
         </>
       )}
@@ -62,7 +62,7 @@ const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeT
         {country ? country.label : countryCodeMap && adresse?.landkode ? countryCodeMap[adresse?.landkode as keyof typeof countryCodeMap] : adresse?.landkode}
       </BodyLong>
     </Box>
-  )
+  );
 }
 
 export default AdresseBox

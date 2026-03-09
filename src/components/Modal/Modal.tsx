@@ -54,8 +54,8 @@ const ModalFC: React.FC<ModalProps> = ({
           )}
         </div>
         {modal?.modalButtons && (
-          <Box padding="4">
-            <HStack justify="center" gap="4">
+          <Box padding="space-16">
+            <HStack justify="center" gap="space-16">
               {modal?.modalButtons.map((button, i) => {
                 if (button.hide) {
                   return null

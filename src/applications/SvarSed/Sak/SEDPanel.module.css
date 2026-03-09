@@ -1,11 +1,11 @@
 .sedBox{
   transition: all 0.15s ease-in-out;
   &.deviation {
-    border-left: 5px solid var(--a-surface-warning);
+    border-left: 5px solid var(--ax-border-warning);
   }
   &:hover {
-    color: var(--a-text-default) !important;
-    background-color: var(--a-surface-action-subtle-hover) !important;
+    color: var(--ax-text-neutral) !important;
+    background-color: var(--ax-bg-accent-moderate-hover) !important;
   }
 }
 
@@ -15,7 +15,7 @@
   margin-top: -1rem;
   margin-bottom: -1rem;
   justify-content: center;
-  background-color: var(--a-surface-subtle);
+  background-color: var(--ax-bg-neutral-soft);
   padding: 1rem;
 }
 
@@ -39,37 +39,37 @@
 }
 
 .deviationHelpText{
-  color: var(--a-surface-warning);
+  color: var(--ax-bg-warning-strong);
   &:hover > svg {
-    color: var(--a-surface-warning);
+    color: var(--ax-bg-warning-strong);
   }
 
   &:focus-visible > svg {
-    color: var(--a-surface-warning);
+    color: var(--ax-bg-warning-strong);
   }
 
-  &:global(.navds-help-text__button):focus-visible {
+  &:global(.aksel-help-text__button):focus-visible {
     outline: 2px solid transparent;
-    box-shadow: 0 0 0 1px var(--a-surface-warning),
-    inset 0 0 0 1px var(--a-surface-warning);
+    box-shadow: 0 0 0 1px var(--ax-bg-warning-strong),
+    inset 0 0 0 1px var(--ax-bg-warning-strong);
   }
 
 
-  &:global(.navds-help-text__button)[aria-expanded="true"] > svg {
-    color: var(--a-surface-warning);
+  &:global(.aksel-help-text__button)[aria-expanded="true"] > svg {
+    color: var(--ax-bg-warning-strong);
   }
 
-  &[aria-expanded="true"] ~ :global(.navds-popover) :global(.navds-popover__content) {
-    background-color: var(--a-surface-warning-moderate);
-    border-radius: var(--a-border-radius-large);
+  &[aria-expanded="true"] ~ :global(.aksel-popover) :global(.aksel-popover__content) {
+    background-color: var(--ax-bg-warning-moderate);
+    border-radius: var(--ax-radius-8);
   }
 
-  &[aria-expanded="true"] ~ :global(.navds-popover) :global(.navds-popover__arrow) {
-    background-color: var(--a-surface-warning-moderate);
-    border-color: var(--a-border-warning);
+  &[aria-expanded="true"] ~ :global(.aksel-popover) :global(.aksel-popover__arrow) {
+    background-color: var(--ax-bg-warning-moderate);
+    border-color: var(--ax-border-warning);
   }
 
-  &[aria-expanded="true"] ~ :global(.navds-popover) {
-    border-color: var(--a-border-warning)
+  &[aria-expanded="true"] ~ :global(.aksel-popover) {
+    border-color: var(--ax-border-warning)
   }
 }

@@ -189,10 +189,10 @@ const SEDPanel = ({
   return (
     <Box
       borderWidth="1"
-      borderRadius="small"
-      borderColor="border-default"
-      padding="4"
-      background="surface-default"
+      borderRadius="2"
+      borderColor="neutral"
+      padding="space-16"
+      background="default"
       className={classNames(styles.sedBox, {
         [styles.deviation]: sed.fagsak && hasDeviatedFagsak
       })}
@@ -202,14 +202,14 @@ const SEDPanel = ({
         modal={attachmentModal}
         onModalClose={() => setAttachmentModal(undefined)}
       />
-      <HStack gap="4" wrap={false}>
+      <HStack gap="space-16" wrap={false}>
         <VStack className={styles.iconDiv} align="center">
-          {sed.status === 'received' && <DownloadIcon color='var(--a-surface-action)' width='32' height='32' />}
-          {sed.status === 'sent' && <PaperplaneIcon color='green' width='32' height='32' />}
-          {sed.status === 'new' && <StarIcon color='orange' width='32' height='32' />}
+          {sed.status === 'received' && <DownloadIcon color='var(--ax-bg-accent-strong)' width='32' height='32' />}
+          {sed.status === 'sent' && <PaperplaneIcon color='var(--ax-bg-success-strong)' width='32' height='32' />}
+          {sed.status === 'new' && <StarIcon color='var(--ax-bg-warning-strong)' width='32' height='32' />}
           {sed.status === 'active' && <PencilIcon width='32' height='32' />}
-          {sed.status === 'cancelled' && <XMarkIcon color='red' width='32' height='32' />}
-          {!sed.status && <QuestionmarkDiamondIcon color='black' width='32' height='32' />}
+          {sed.status === 'cancelled' && <XMarkIcon color='var(--ax-bg-danger-strong)' width='32' height='32' />}
+          {!sed.status && <QuestionmarkDiamondIcon color='var(--ax-bg-neutral-strong)' width='32' height='32' />}
           <div className={styles.iconSpacer}></div>
           <Detail>
             {t('app:status-received-' + (sed.status?.toLowerCase() ?? 'unknown'))}
@@ -218,17 +218,17 @@ const SEDPanel = ({
             {sed.sistEndretDato}
           </Detail>
         </VStack>
-        <VStack gap="2">
+        <VStack gap="space-8">
           {hasDeviatedFagsak && sed.fagsak &&
-            <HStack gap="1">
-              {sed.fagsak.fnr !== currentFagsak?.fnr && <Tag size="xsmall" variant={"warning-moderate"}>{sed.fagsak.fnr}</Tag>}
-              {sed.fagsak.tema !== currentFagsak?.tema && <Tag size="xsmall" variant={"warning-moderate"}>{t('tema:' + sed.fagsak.tema)}</Tag>}
-              {sed.fagsak?.nr && sed.fagsak?.nr !== currentFagsak?.nr && <Tag size="xsmall" variant={"warning-moderate"}>{sed.fagsak?.nr}</Tag>}
-              {!sed.fagsak?.nr && sed.fagsak?.type && sed.fagsak?.type !== currentFagsak?.type && <Tag size="xsmall" variant={"warning-moderate"}>{t('journalfoering:' + sed.fagsak?.type)}</Tag>}
+            <HStack gap="space-4">
+              {sed.fagsak.fnr !== currentFagsak?.fnr && <Tag data-color="warning" size="xsmall" variant={"moderate"}>{sed.fagsak.fnr}</Tag>}
+              {sed.fagsak.tema !== currentFagsak?.tema && <Tag data-color="warning" size="xsmall" variant={"moderate"}>{t('tema:' + sed.fagsak.tema)}</Tag>}
+              {sed.fagsak?.nr && sed.fagsak?.nr !== currentFagsak?.nr && <Tag data-color="warning" size="xsmall" variant={"moderate"}>{sed.fagsak?.nr}</Tag>}
+              {!sed.fagsak?.nr && sed.fagsak?.type && sed.fagsak?.type !== currentFagsak?.type && <Tag data-color="warning" size="xsmall" variant={"moderate"}>{t('journalfoering:' + sed.fagsak?.type)}</Tag>}
               <HelpText className={styles.deviationHelpText} title={t('journalfoering:avvikende-journalfoering')}>
-                <VStack gap="2">
+                <VStack gap="space-8">
                   <Heading size={"xsmall"}>{t('journalfoering:avvikende-journalfoering')}</Heading>
-                  <HStack gap="4">
+                  <HStack gap="space-16">
 
                     <div>
                       <BodyLong size={"small"}>
@@ -272,14 +272,14 @@ const SEDPanel = ({
             >
             </Button>
             {sed.vedlegg && sed.vedlegg.length > 0 && (
-              <div className="navds-button navds-button--tertiary navds-button--small navds-button--icon-only">
+              <div className="aksel-button aksel-button--tertiary aksel-button--small aksel-button--icon-only">
                 <Button className={styles.attachmentButton} variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
                   <PaperclipIcon className={styles.attachmentIcon}/><span>({sed?.vedlegg?.length})</span>
                 </Button>
               </div>
             )}
             {sedHandlingerRINA && sedHandlingerRINA.length > 0 &&
-              <HelpText className={styles.myHelpText} title="Handlinger tilgjengelig i RINA" placement={"right"} wrapperClassName="navds-button navds-button--tertiary navds-button--small navds-button--icon-only">
+              <HelpText className={styles.myHelpText} title="Handlinger tilgjengelig i RINA" placement={"right"} wrapperClassName="aksel-button aksel-button--tertiary aksel-button--small aksel-button--icon-only">
                 <Heading size="xsmall">Handlinger tilgjengelig i RINA</Heading>
                 <ul>
                   {sedHandlingerRINA.map((sedhandling) => {
@@ -292,7 +292,7 @@ const SEDPanel = ({
             }
           </HStack>
 
-          <HStack gap="2">
+          <HStack gap="space-8">
             {showEditButton && (
               <>
                 <Button
@@ -460,7 +460,7 @@ const SEDPanel = ({
         </VStack>
       </HStack>
     </Box>
-  )
+  );
 }
 
 export default SEDPanel

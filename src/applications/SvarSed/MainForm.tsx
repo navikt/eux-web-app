@@ -312,11 +312,11 @@ const MainForm = <T extends StorageTypes>({
             role="button"
             tabIndex={0}
           >
-            <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: selected })}>
+            <HStack wrap={false} gap="space-8" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: selected })}>
               {isValidated
                 ? validationHasErrors
-                  ? <HStack><XMarkOctagonFillIcon height={20} color='red' /></HStack>
-                    : <HStack><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
+                  ? <HStack><XMarkOctagonFillIcon height={20} color='var(--ax-bg-danger-strong)' /></HStack>
+                    : <HStack><CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' height={20} /></HStack>
                 : null
               }
               <BodyLong className={classNames(styles.menuLabelText, { [styles.selected]: selected })}>
@@ -364,11 +364,11 @@ const MainForm = <T extends StorageTypes>({
           role="button"
           tabIndex={0}
         >
-          <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === personId })}>
+          <HStack wrap={false} gap="space-8" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === personId })}>
             {isValidated
               ? validationHasErrors
-                ? <XMarkOctagonFillIcon height={20} color='red' />
-                : <CheckmarkCircleFillIcon color='green' height={20} />
+                ? <XMarkOctagonFillIcon height={20} color='var(--ax-bg-danger-strong)' />
+                : <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' height={20} />
               : null}
             <BodyLong className={styles.menuLabelText}>
               {personName}
@@ -389,7 +389,7 @@ const MainForm = <T extends StorageTypes>({
             {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
           </HStack>
         </div>
-        {open && <Box paddingInline="2"><div className={commonStyles.horizontalLineSeparator} /></Box>}
+        {open && <Box paddingInline="space-8"><div className={commonStyles.horizontalLineSeparator} /></Box>}
         {open && forms
           .filter(o => {
             const _type = (replySed as ReplySed)?.sedType ?? 'PDU1'
@@ -437,7 +437,7 @@ const MainForm = <T extends StorageTypes>({
             const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
             return (
               <HStack
-                gap="2"
+                gap="space-8"
                 align="center"
                 className={classNames(styles.optionDiv, {
                   [styles.selected]: currentMenu === personId && currentMenuOption === o.value,
@@ -450,8 +450,8 @@ const MainForm = <T extends StorageTypes>({
               >
                 {isValidated
                   ? validationHasErrors
-                      ? <XMarkOctagonFillIcon color='red' height={20} />
-                      : <CheckmarkCircleFillIcon color='green' height={20} />
+                      ? <XMarkOctagonFillIcon color='var(--ax-bg-danger-strong)' height={20} />
+                      : <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' height={20} />
                   : <MenuElipsisHorizontalCircleIcon height={20} />}
                 {o.label}
               </HStack>
@@ -518,11 +518,11 @@ const MainForm = <T extends StorageTypes>({
           role="button"
           tabIndex={0}
         >
-          <HStack wrap={false} gap="2" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === menuItem.key })}>
+          <HStack wrap={false} gap="space-8" align="center" className={classNames(styles.nameLabelDiv, { [styles.selected]: focusedMenu === menuItem.key })}>
             {isValidated
               ? validationHasErrors
-                ? <HStack><XMarkOctagonFillIcon height={20} color='red' /></HStack>
-                : <HStack><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
+                ? <HStack><XMarkOctagonFillIcon height={20} color='var(--ax-bg-danger-strong)' /></HStack>
+                : <HStack><CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' height={20} /></HStack>
               : null}
             <BodyLong className={styles.menuLabelText}>
               {menuItem.label}
@@ -533,7 +533,7 @@ const MainForm = <T extends StorageTypes>({
             </HStack>
           </HStack>
         </div>
-        {open && <Box paddingInline="2"><div className={commonStyles.horizontalLineSeparator} /></Box>}
+        {open && <Box paddingInline="space-8"><div className={commonStyles.horizontalLineSeparator} /></Box>}
         {open && forms
           .filter(o => {
             const _type = menuItem.key
@@ -548,7 +548,7 @@ const MainForm = <T extends StorageTypes>({
             const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
             return (
               <HStack
-                gap="2"
+                gap="space-8"
                 align="start"
                 className={classNames(styles.optionWithIconDiv, {
                   [styles.selected]: currentMenu === menuItem.key && currentMenuOption === o.value,
@@ -562,8 +562,8 @@ const MainForm = <T extends StorageTypes>({
                 <div>
                   {isValidated
                     ? validationHasErrors
-                      ? <HStack><XMarkOctagonFillIcon color='red' height={20} /></HStack>
-                      : <HStack><CheckmarkCircleFillIcon color='green' height={20} /></HStack>
+                      ? <HStack><XMarkOctagonFillIcon color='var(--ax-bg-danger-strong)' height={20} /></HStack>
+                      : <HStack><CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' height={20} /></HStack>
                     : <HStack><MenuElipsisHorizontalCircleIcon height={20} /></HStack>
                   }
                 </div>

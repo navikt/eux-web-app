@@ -141,8 +141,8 @@ const Vedlegg: React.FC = (): JSX.Element => {
         <Page.Block width="2xl" as="main">
           <HStack>
             <Spacer/>
-            <VStack paddingBlock="12" width="50%" gap="4">
-              <HGrid columns={2} gap="4" align="start">
+            <VStack paddingBlock="space-48" width="50%" gap="space-16">
+              <HGrid columns={2} gap="space-16" align="start">
                 <TextField
                   id="fnr"
                   error={validation[namespace + '-fnr']?.feilmelding}

@@ -174,10 +174,10 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
         })}
-        paddingBlock="2"
-        paddingInline="4"
+        paddingBlock="space-8"
+        paddingInline="space-16"
       >
-        <HGrid columns={"2fr 1fr"} align="center" gap="4">
+        <HGrid columns={"2fr 1fr"} align="center" gap="space-16">
           {inEditMode
             ? (
               <PeriodeInput
@@ -223,8 +223,8 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -233,7 +233,7 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
         </Detail>
         {_.isEmpty(flyttegrunn?.perioder)
           ? (
-            <Box borderWidth={"1 0"} paddingBlock="2">
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
                 {t('message:warning-no-periods')}
               </BodyLong>
@@ -253,7 +253,7 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
               </Button>
             </Box>
             )}
-        <HGrid columns={{ xs: 1, sm: 2 }} gap="4">
+        <HGrid columns={{ xs: 1, sm: 2 }} gap="space-16">
           <DateField
             error={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
             namespace={namespace}
