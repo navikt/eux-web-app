@@ -40,7 +40,7 @@ const DokumenterVedlagt: React.FC<MainFormProps> = ({
     { label: t('el:option-overfoeringinfo-dokument-krav'), value: 'krav' },
     { label: t('el:option-overfoeringinfo-dokument-medisinsk_dokumentasjon'), value: 'medisinsk_dokumentasjon' },
     { label: t('el:option-overfoeringinfo-dokument-arbeidsattest'), value: 'arbeidsattest' },
-    { label: t('el:option-overfoeringinfo-dokument-foedselsattest'), value: 'foedselsattest' },
+    { label: t('el:option-overfoeringinfo-dokument-foedselsattest'), value: 'fødselsattest' },
     { label: t('el:option-overfoeringinfo-dokument-ekteskapsattest'), value: 'ekteskapsattest' },
     { label: t('el:option-overfoeringinfo-dokument-vitnemaal'), value: 'vitnemål' },
     { label: t('el:option-overfoeringinfo-dokument-medisinsk_rapport'), value: 'medisinsk_rapport' },
