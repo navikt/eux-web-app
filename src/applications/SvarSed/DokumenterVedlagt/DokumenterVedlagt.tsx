@@ -33,8 +33,8 @@ const DokumenterVedlagt: React.FC<MainFormProps> = ({
   const sed = replySed as H065Sed
 
   const dokumenterVedlagtTypeOptions: Options = [
-    { label: t('el:option-overfoeringinfo-dokument-soeknad'), value: 'soeknad' },
-    { label: t('el:option-overfoeringinfo-dokument-doedsattest'), value: 'doedsattest' },
+    { label: t('el:option-overfoeringinfo-dokument-soeknad'), value: 'søknad' },
+    { label: t('el:option-overfoeringinfo-dokument-doedsattest'), value: 'dødsattest' },
     { label: t('el:option-overfoeringinfo-dokument-fakturaer'), value: 'fakturaer' },
     { label: t('el:option-overfoeringinfo-dokument-ligningsattest'), value: 'ligningsattest' },
     { label: t('el:option-overfoeringinfo-dokument-krav'), value: 'krav' },
@@ -42,7 +42,7 @@ const DokumenterVedlagt: React.FC<MainFormProps> = ({
     { label: t('el:option-overfoeringinfo-dokument-arbeidsattest'), value: 'arbeidsattest' },
     { label: t('el:option-overfoeringinfo-dokument-foedselsattest'), value: 'foedselsattest' },
     { label: t('el:option-overfoeringinfo-dokument-ekteskapsattest'), value: 'ekteskapsattest' },
-    { label: t('el:option-overfoeringinfo-dokument-vitnemaal'), value: 'vitnemaal' },
+    { label: t('el:option-overfoeringinfo-dokument-vitnemaal'), value: 'vitnemål' },
     { label: t('el:option-overfoeringinfo-dokument-medisinsk_rapport'), value: 'medisinsk_rapport' },
     { label: t('el:option-overfoeringinfo-dokument-legeattest'), value: 'legeattest' },
     { label: t('el:option-overfoeringinfo-dokument-annet'), value: 'annet' }
