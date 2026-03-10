@@ -145,6 +145,7 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
             namespace={namespace}
             id='informasjonAngaarYtelse-andre'
             label={t('label:annen-ytelse')}
+            maxLength={155}
             onChanged={setInformasjonAngaarYtelseAndre}
             value={sed.overfoeringInfo?.informasjonAngaarYtelse?.andre}
           />
@@ -168,6 +169,7 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
             namespace={namespace}
             id='annenKorrespondanse-andre'
             label={t('label:annen-korrespondanse-detaljer')}
+            maxLength={65}
             onChanged={setAnnenKorrespondanseAndre}
             value={sed.overfoeringInfo?.annenKorrespondanse?.andre}
           />

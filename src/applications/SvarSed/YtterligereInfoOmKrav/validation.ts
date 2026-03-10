@@ -27,7 +27,7 @@ export const validateYtterligereInfoOmKrav = (
 
   hasErrors.push(checkLength(v, {
     needle: sed.overfoeringInfo?.informasjonAngaarYtelse?.andre,
-    max: 500,
+    max: 155,
     id: namespace + '-informasjonAngaarYtelse-andre',
     message: 'validation:textOverX',
     personName
@@ -35,7 +35,7 @@ export const validateYtterligereInfoOmKrav = (
 
   hasErrors.push(checkLength(v, {
     needle: sed.overfoeringInfo?.annenKorrespondanse?.andre,
-    max: 500,
+    max: 65,
     id: namespace + '-annenKorrespondanse-andre',
     message: 'validation:textOverX',
     personName
