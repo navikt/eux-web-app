@@ -149,10 +149,6 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
           />
         )}
 
-        <Heading size='xsmall'>
-          {t('label:annen-korrespondanse')}
-        </Heading>
-
         <Select
           data-testid={namespace + '-annenKorrespondanse-type'}
           error={validation[namespace + '-annenKorrespondanse-type']?.feilmelding}
