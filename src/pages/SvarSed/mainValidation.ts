@@ -11,7 +11,9 @@ import {
   ValidationBeløpNavnOgValutasProps
 } from 'applications/SvarSed/BeløpNavnOgValuta/validation'
 import { validateEndredeForhold, ValidationEndredeForholdProps } from 'applications/SvarSed/EndredeForhold/validation'
-import { validateOverfoeringInfo, ValidationOverfoeringInfoProps } from 'applications/SvarSed/OverfoeringInfo/validation'
+import { validateYtterligereInfoOmKrav, ValidationYtterligereInfoOmKravProps } from 'applications/SvarSed/YtterligereInfoOmKrav/validation'
+import { validateGrunnerForOverfoering, ValidationGrunnerForOverfoeringProps } from 'applications/SvarSed/GrunnerForOverfoering/validation'
+import { validateDokumenterVedlagt, ValidationDokumenterVedlagtProps } from 'applications/SvarSed/DokumenterVedlagt/validation'
 import {
   validateFamilierelasjoner,
   ValidationFamilierelasjonerProps
@@ -412,9 +414,17 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (isH065Sed(replySed)) {
-      hasErrors.push(performValidation<ValidationOverfoeringInfoProps>(v, `svarsed-${personID}-overfoeringinfo`, validateOverfoeringInfo, {
+      hasErrors.push(performValidation<ValidationYtterligereInfoOmKravProps>(v, `svarsed-${personID}-ytterligereinfoomkrav`, validateYtterligereInfoOmKrav, {
         replySed,
-        personName: i18n.t('label:overfoeringsinformasjon').toLowerCase()
+        personName: i18n.t('label:ytterligere-informasjon-om-krav').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationGrunnerForOverfoeringProps>(v, `svarsed-${personID}-grunnerforoverfoering`, validateGrunnerForOverfoering, {
+        replySed,
+        personName: i18n.t('label:grunner-til-overfoering').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationDokumenterVedlagtProps>(v, `svarsed-${personID}-dokumentervedlagt`, validateDokumenterVedlagt, {
+        replySed,
+        personName: i18n.t('label:dokumenter-vedlagt').toLowerCase()
       }, true))
     }
   }
