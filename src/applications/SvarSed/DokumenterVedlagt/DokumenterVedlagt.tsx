@@ -54,7 +54,7 @@ const DokumenterVedlagt: React.FC<MainFormProps> = ({
       clonedvalidation, namespace, validateDokumenterVedlagt, {
         replySed: (replySed as H065Sed),
         personName
-      }
+      }, true
     )
     dispatch(setValidation(clonedvalidation))
   })
@@ -63,6 +63,9 @@ const DokumenterVedlagt: React.FC<MainFormProps> = ({
     const current = sed.overfoeringInfo?.dokumenterVedlagt?.type ?? []
     const updated = checked ? [...current, value] : current.filter(v => v !== value)
     dispatch(updateReplySed('overfoeringInfo.dokumenterVedlagt.type', updated.length > 0 ? updated : undefined))
+    if (value === 'annet' && !checked) {
+      dispatch(updateReplySed('overfoeringInfo.dokumenterVedlagt.annet', undefined))
+    }
     if (validation[namespace + '-dokumenterVedlagt-type']) {
       dispatch(resetValidation(namespace + '-dokumenterVedlagt-type'))
     }

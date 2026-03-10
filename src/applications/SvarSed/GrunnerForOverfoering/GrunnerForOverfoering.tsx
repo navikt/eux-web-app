@@ -36,7 +36,7 @@ const GrunnerForOverfoering: React.FC<MainFormProps> = ({
       clonedvalidation, namespace, validateGrunnerForOverfoering, {
         replySed: (replySed as H065Sed),
         personName
-      }
+      }, true
     )
     dispatch(setValidation(clonedvalidation))
   })

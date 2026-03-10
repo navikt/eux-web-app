@@ -1,6 +1,6 @@
 import { H065Sed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkLength } from 'utils/validation'
+import { checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationYtterligereInfoOmKravProps {
   replySed: ReplySed
@@ -18,6 +18,13 @@ export const validateYtterligereInfoOmKrav = (
   const hasErrors: Array<boolean> = []
   const sed = replySed as H065Sed
 
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: sed.overfoeringInfo?.informasjonAngaarYtelse?.type,
+    id: namespace + '-informasjonAngaarYtelse-type',
+    message: 'validation:noType',
+    personName
+  }))
+
   hasErrors.push(checkLength(v, {
     needle: sed.overfoeringInfo?.informasjonAngaarYtelse?.andre,
     max: 500,
@@ -31,6 +38,13 @@ export const validateYtterligereInfoOmKrav = (
     max: 500,
     id: namespace + '-annenKorrespondanse-andre',
     message: 'validation:textOverX',
+    personName
+  }))
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: sed.overfoeringInfo?.mottaksdato,
+    id: namespace + '-mottaksdato',
+    message: 'validation:noDate',
     personName
   }))
 

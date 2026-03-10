@@ -66,7 +66,7 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
       clonedvalidation, namespace, validateYtterligereInfoOmKrav, {
         replySed: (replySed as H065Sed),
         personName
-      }
+      }, true
     )
     dispatch(setValidation(clonedvalidation))
   })
@@ -134,6 +134,7 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
           menuPortalTarget={document.body}
           onChange={(o: unknown) => setInformasjonAngaarYtelseType((o as Option).value)}
           options={informasjonAngaarYtelseTypeOptions}
+          required
           value={_.find(informasjonAngaarYtelseTypeOptions, o => o.value === sed.overfoeringInfo?.informasjonAngaarYtelse?.type)}
           defaultValue={_.find(informasjonAngaarYtelseTypeOptions, o => o.value === sed.overfoeringInfo?.informasjonAngaarYtelse?.type)}
         />
@@ -179,6 +180,7 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
             namespace={namespace}
             label={t('label:dato-for-mottak')}
             onChanged={setMottaksdato}
+            required
             dateValue={sed.overfoeringInfo?.mottaksdato}
           />
         </HStack>
