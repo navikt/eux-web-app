@@ -63,6 +63,7 @@ const GrunnerForOverfoering: React.FC<MainFormProps> = ({
           maxLength={255}
           onChanged={setGrunnerForOverfoering}
           value={sed.overfoeringInfo?.grunnerForOverfoering}
+          hideLabel={true}
         />
       </VStack>
     </Box>
