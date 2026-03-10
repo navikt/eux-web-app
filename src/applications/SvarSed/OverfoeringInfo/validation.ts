@@ -20,7 +20,7 @@ export const validateOverfoeringInfo = (
 
   hasErrors.push(checkLength(v, {
     needle: sed.overfoeringInfo?.grunnerForOverfoering,
-    max: 500,
+    max: 255,
     id: namespace + '-grunnerForOverfoering',
     message: 'validation:textOverX',
     personName
@@ -38,6 +38,14 @@ export const validateOverfoeringInfo = (
     needle: sed.overfoeringInfo?.annenKorrespondanse?.andre,
     max: 500,
     id: namespace + '-annenKorrespondanse-andre',
+    message: 'validation:textOverX',
+    personName
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: sed.overfoeringInfo?.dokumenterVedlagt?.annet?.[0],
+    max: 255,
+    id: namespace + '-dokumenterVedlagt-annet',
     message: 'validation:textOverX',
     personName
   }))

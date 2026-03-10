@@ -3,7 +3,6 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { validateOverfoeringInfo, ValidationOverfoeringInfoProps } from 'applications/SvarSed/OverfoeringInfo/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import DateField from 'components/DateField/DateField'
-import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import ErrorLabel from 'components/Forms/ErrorLabel'
@@ -35,15 +34,6 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-overfoeringinfo`
   const sed = replySed as H065Sed
-
-  const tilTypeOptions: Options = [
-    { label: t('el:option-overfoeringinfo-til-kompetent_institusjon'), value: 'kompetent_institusjon' },
-    { label: t('el:option-overfoeringinfo-til-kontaktinstitusjon'), value: 'kontaktinstitusjon' },
-    { label: t('el:option-overfoeringinfo-til-samarbeidsorgan'), value: 'samarbeidsorgan' },
-    { label: t('el:option-overfoeringinfo-til-institusjon_paa_oppholdsstedet'), value: 'institusjon_paa_oppholdsstedet' },
-    { label: t('el:option-overfoeringinfo-til-institusjon_paa_bostedet'), value: 'institusjon_paa_bostedet' },
-    { label: t('el:option-overfoeringinfo-til-angitt_institusjon'), value: 'angitt_institusjon' }
-  ]
 
   const informasjonAngaarYtelseTypeOptions: Options = [
     { label: t('el:option-overfoeringinfo-ytelse-lovvalg'), value: 'lovvalg' },
@@ -98,48 +88,6 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedvalidation))
   })
 
-  const setErBrukerSoekeren = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.erBrukerSoekeren', value))
-    if (validation[namespace + '-erBrukerSoekeren']) {
-      dispatch(resetValidation(namespace + '-erBrukerSoekeren'))
-    }
-  }
-
-  const setMottaksdato = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.mottaksdato', value.trim()))
-    if (validation[namespace + '-mottaksdato']) {
-      dispatch(resetValidation(namespace + '-mottaksdato'))
-    }
-  }
-
-  const setGrunnerForOverfoering = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.grunnerForOverfoering', value.trim() || undefined))
-    if (validation[namespace + '-grunnerForOverfoering']) {
-      dispatch(resetValidation(namespace + '-grunnerForOverfoering'))
-    }
-  }
-
-  const setTilType = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.til.type', value.trim()))
-    if (validation[namespace + '-til-type']) {
-      dispatch(resetValidation(namespace + '-til-type'))
-    }
-  }
-
-  const setTilInstitusjonId = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.til.institusjon.id', value.trim()))
-    if (validation[namespace + '-til-institusjon-id']) {
-      dispatch(resetValidation(namespace + '-til-institusjon-id'))
-    }
-  }
-
-  const setTilInstitusjonNavn = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.til.institusjon.navn', value.trim()))
-    if (validation[namespace + '-til-institusjon-navn']) {
-      dispatch(resetValidation(namespace + '-til-institusjon-navn'))
-    }
-  }
-
   const setInformasjonAngaarYtelseType = (value: string) => {
     dispatch(updateReplySed('overfoeringInfo.informasjonAngaarYtelse.type', value.trim()))
     if (value !== 'annen_ytelse') {
@@ -174,6 +122,27 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
     }
   }
 
+  const setMottaksdato = (value: string) => {
+    dispatch(updateReplySed('overfoeringInfo.mottaksdato', value.trim()))
+    if (validation[namespace + '-mottaksdato']) {
+      dispatch(resetValidation(namespace + '-mottaksdato'))
+    }
+  }
+
+  const setErBrukerSoekeren = (value: string) => {
+    dispatch(updateReplySed('overfoeringInfo.erBrukerSoekeren', value))
+    if (validation[namespace + '-erBrukerSoekeren']) {
+      dispatch(resetValidation(namespace + '-erBrukerSoekeren'))
+    }
+  }
+
+  const setGrunnerForOverfoering = (value: string) => {
+    dispatch(updateReplySed('overfoeringInfo.grunnerForOverfoering', value.trim() || undefined))
+    if (validation[namespace + '-grunnerForOverfoering']) {
+      dispatch(resetValidation(namespace + '-grunnerForOverfoering'))
+    }
+  }
+
   const setDokumenterVedlagtType = (value: string, checked: boolean) => {
     const current = sed.overfoeringInfo?.dokumenterVedlagt?.type ?? []
     const updated = checked ? [...current, value] : current.filter(v => v !== value)
@@ -199,83 +168,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
           {label}
         </Heading>
 
-        <RadioGroup
-          value={sed.overfoeringInfo?.erBrukerSoekeren ?? ''}
-          data-no-border
-          data-testid={namespace + '-erBrukerSoekeren'}
-          error={validation[namespace + '-erBrukerSoekeren']?.feilmelding}
-          id={namespace + '-erBrukerSoekeren'}
-          legend={t('label:er-bruker-soekeren')}
-          name={namespace + '-erBrukerSoekeren'}
-          onChange={setErBrukerSoekeren}
-        >
-          <HStack gap="space-16">
-            <Radio className={commonStyles.radioPanel} value='ja'>
-              {t('label:ja')}
-            </Radio>
-            <Radio className={commonStyles.radioPanel} value='nei'>
-              {t('label:nei')}
-            </Radio>
-            <Spacer />
-            <Spacer />
-          </HStack>
-        </RadioGroup>
-
-        <HStack>
-          <DateField
-            error={validation[namespace + '-mottaksdato']?.feilmelding}
-            id='mottaksdato'
-            namespace={namespace}
-            label={t('label:mottaksdato')}
-            onChanged={setMottaksdato}
-            dateValue={sed.overfoeringInfo?.mottaksdato}
-          />
-        </HStack>
-
-        <TextArea
-          error={validation[namespace + '-grunnerForOverfoering']?.feilmelding}
-          namespace={namespace}
-          id='grunnerForOverfoering'
-          label={t('label:grunner-for-overfoering')}
-          onChanged={setGrunnerForOverfoering}
-          value={sed.overfoeringInfo?.grunnerForOverfoering}
-        />
-
-        <Heading size='xsmall'>
-          {t('label:til')}
-        </Heading>
-
-        <Select
-          data-testid={namespace + '-til-type'}
-          error={validation[namespace + '-til-type']?.feilmelding}
-          id={namespace + '-til-type'}
-          label={t('label:til-type')}
-          menuPortalTarget={document.body}
-          onChange={(o: unknown) => setTilType((o as Option).value)}
-          options={tilTypeOptions}
-          value={_.find(tilTypeOptions, o => o.value === sed.overfoeringInfo?.til?.type)}
-          defaultValue={_.find(tilTypeOptions, o => o.value === sed.overfoeringInfo?.til?.type)}
-        />
-
-        <HStack gap="space-16">
-          <Input
-            error={validation[namespace + '-til-institusjon-id']?.feilmelding}
-            namespace={namespace}
-            id='til-institusjon-id'
-            label={t('label:institusjon-id')}
-            onChanged={setTilInstitusjonId}
-            value={sed.overfoeringInfo?.til?.institusjon?.id}
-          />
-          <Input
-            error={validation[namespace + '-til-institusjon-navn']?.feilmelding}
-            namespace={namespace}
-            id='til-institusjon-navn'
-            label={t('label:institusjon-navn')}
-            onChanged={setTilInstitusjonNavn}
-            value={sed.overfoeringInfo?.til?.institusjon?.navn}
-          />
-        </HStack>
-
+        {/* 3.1 Krav/dokumentasjon/informasjon angår */}
         <Heading size='xsmall'>
           {t('label:informasjon-angaar-ytelse')}
         </Heading>
@@ -303,6 +196,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
           />
         )}
 
+        {/* 3.2 Annen korrespondanse */}
         <Heading size='xsmall'>
           {t('label:annen-korrespondanse')}
         </Heading>
@@ -330,6 +224,57 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
           />
         )}
 
+        {/* 3.4 Dato for mottak */}
+        <HStack>
+          <DateField
+            error={validation[namespace + '-mottaksdato']?.feilmelding}
+            id='mottaksdato'
+            namespace={namespace}
+            label={t('label:mottaksdato')}
+            onChanged={setMottaksdato}
+            dateValue={sed.overfoeringInfo?.mottaksdato}
+          />
+        </HStack>
+
+        {/* 3.5 Personen er søkeren */}
+        <RadioGroup
+          value={sed.overfoeringInfo?.erBrukerSoekeren ?? ''}
+          data-no-border
+          data-testid={namespace + '-erBrukerSoekeren'}
+          error={validation[namespace + '-erBrukerSoekeren']?.feilmelding}
+          id={namespace + '-erBrukerSoekeren'}
+          legend={t('label:er-bruker-soekeren')}
+          name={namespace + '-erBrukerSoekeren'}
+          onChange={setErBrukerSoekeren}
+        >
+          <HStack gap="space-16">
+            <Radio className={commonStyles.radioPanel} value='ja'>
+              {t('label:ja')}
+            </Radio>
+            <Radio className={commonStyles.radioPanel} value='nei'>
+              {t('label:nei')}
+            </Radio>
+            <Spacer />
+            <Spacer />
+          </HStack>
+        </RadioGroup>
+
+        {/* 4. Grunner til overføring */}
+        <Heading size='xsmall'>
+          {t('label:grunner-for-overfoering')}
+        </Heading>
+
+        <TextArea
+          error={validation[namespace + '-grunnerForOverfoering']?.feilmelding}
+          namespace={namespace}
+          id='grunnerForOverfoering'
+          label={t('label:grunner-for-overfoering')}
+          maxLength={255}
+          onChanged={setGrunnerForOverfoering}
+          value={sed.overfoeringInfo?.grunnerForOverfoering}
+        />
+
+        {/* 5. Følgende dokument(er) er vedlagt */}
         <Heading size='xsmall'>
           {t('label:dokumenter-vedlagt')}
         </Heading>
@@ -356,6 +301,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
             namespace={namespace}
             id='dokumenterVedlagt-annet'
             label={t('label:dokumenter-vedlagt-annet')}
+            maxLength={255}
             onChanged={setDokumenterVedlagtAnnet}
             value={sed.overfoeringInfo?.dokumenterVedlagt?.annet?.[0] ?? ''}
           />
