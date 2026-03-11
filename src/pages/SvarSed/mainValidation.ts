@@ -394,6 +394,10 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     hasErrors.push(performValidation<ValidationPersonopplysningerProps>(v, `svarsed-${personID}-personopplysninger`, validatePersonopplysninger, {
       personInfo, personName
     }, true))
+    const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
+    hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
+      statsborgerskaper, personName
+    }, true))
     hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
       adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName
     }, true))
