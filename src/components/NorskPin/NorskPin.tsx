@@ -99,7 +99,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
   const { t } = useTranslation()
   return (
     <Box>
-      <HStack gap="space-16" align={!_seeNorskPinForm ? "start" : "end"}>
+      <HStack gap="space-16" align={!_seeNorskPinForm ? "start" : error ? "center" : "end"}>
         {!_seeNorskPinForm
           ? (
             <>

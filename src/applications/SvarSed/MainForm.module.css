@@ -63,10 +63,15 @@
 .optionDiv {
   transition: all 0.2s ease-in-out;
   padding: 0.5rem;
-  white-space: nowrap;
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+
+.optionDiv svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
 }
 
 .optionDiv:hover:not(.selected) {
