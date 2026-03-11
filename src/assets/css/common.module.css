@@ -76,6 +76,7 @@
   };
   &.error {
     background-color: var(--ax-bg-danger-moderate);
+    border: 1px solid var(--ax-border-danger);
   };
   &.original {
     background-color: var(--ax-accent-200);

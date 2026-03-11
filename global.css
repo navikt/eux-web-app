@@ -35,9 +35,13 @@ body {
   cursor: default !important;
 }
 
+.c-countrySelect__select__control{
+  border-radius: 8px !important;
+  --a-surface-danger: var(--ax-border-danger-strong);
+}
+
 .dark .c-countrySelect__select__control {
   background-color: var(--ax-bg-input);
-  border-color: var(--ax-border-neutral);
 }
 
 .dark .c-countrySelect__select__menu {
@@ -76,8 +80,7 @@ body {
 
 .navds-error-message,
 .navds-error-message--medium {
-  color: var(--ax-text-danger);
-  font-size: var(--ax-font-size-medium);
+  color: var(--ax-text-danger-subtle);
 }
 
 /* @navikt/landvelger uses V7 CSS variables in inline styles — alias them to V8 equivalents */
