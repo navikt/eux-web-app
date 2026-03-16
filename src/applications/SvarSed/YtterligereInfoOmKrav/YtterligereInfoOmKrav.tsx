@@ -93,9 +93,6 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
     if (value !== 'annet') {
       dispatch(updateReplySed('overfoeringInfo.annenKorrespondanse.andre', undefined))
     }
-    if (validation[namespace + '-annenKorrespondanse-type']) {
-      dispatch(resetValidation(namespace + '-annenKorrespondanse-type'))
-    }
   }
 
   const setAnnenKorrespondanseAndre = (value: string) => {
@@ -114,9 +111,6 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
 
   const setErBrukerSoekeren = (value: string) => {
     dispatch(updateReplySed('overfoeringInfo.erBrukerSoekeren', value))
-    if (validation[namespace + '-erBrukerSoekeren']) {
-      dispatch(resetValidation(namespace + '-erBrukerSoekeren'))
-    }
   }
 
   return (
@@ -153,7 +147,6 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
 
         <Select
           data-testid={namespace + '-annenKorrespondanse-type'}
-          error={validation[namespace + '-annenKorrespondanse-type']?.feilmelding}
           id={namespace + '-annenKorrespondanse-type'}
           label={t('label:annen-korrespondanse')}
           menuPortalTarget={document.body}
@@ -191,7 +184,6 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
           value={sed.overfoeringInfo?.erBrukerSoekeren ?? ''}
           data-no-border
           data-testid={namespace + '-erBrukerSoekeren'}
-          error={validation[namespace + '-erBrukerSoekeren']?.feilmelding}
           id={namespace + '-erBrukerSoekeren'}
           legend={t('label:personen-er-soekeren')}
           name={namespace + '-erBrukerSoekeren'}
