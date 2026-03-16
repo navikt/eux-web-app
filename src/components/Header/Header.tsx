@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, MoonIcon, StarFillIcon, StarIcon, SunIcon, WrenchIcon } from '@navikt/aksel-icons'
+import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, StarFillIcon, StarIcon, WrenchIcon, ThemeIcon } from '@navikt/aksel-icons'
 import { State } from 'declarations/reducers'
 import {Enhet, Enheter, Saksbehandler} from 'declarations/types'
 import {ActionMenu, BodyShort, Button, Detail, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
@@ -151,8 +151,8 @@ const Header: React.FC<HeaderProps> = ({
         </InternalHeader.Button>
         <InternalHeader.Button onClick={toggleDarkMode}>
           {darkMode
-            ? <SunIcon style={{fontSize: "1.5rem"}} title="Bytt til lyst tema" />
-            : <MoonIcon style={{fontSize: "1.5rem"}} title="Bytt til mørkt tema" />
+            ? <ThemeIcon style={{fontSize: "1.5rem"}} title="Endre til lyst tema" />
+            : <ThemeIcon style={{fontSize: "1.5rem"}} title="Endre til mørkt tema" />
           }
         </InternalHeader.Button>
       </InternalHeader>
