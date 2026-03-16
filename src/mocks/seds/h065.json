@@ -73,7 +73,7 @@
         },
         "dokumenterVedlagt": {
             "type": [
-                "soeknad"
+                "søknad"
             ],
             "annet": [
                 "æøå"
