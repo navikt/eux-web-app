@@ -25,6 +25,15 @@ export const validateYtterligereInfoOmKrav = (
     personName
   }))
 
+  if (sed.overfoeringInfo?.informasjonAngaarYtelse?.type === 'annen_ytelse') {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: sed.overfoeringInfo?.informasjonAngaarYtelse?.andre,
+      id: namespace + '-informasjonAngaarYtelse-andre',
+      message: 'validation:noAnnenYtelse',
+      personName
+    }))
+  }
+
   hasErrors.push(checkLength(v, {
     needle: sed.overfoeringInfo?.informasjonAngaarYtelse?.andre,
     max: 155,

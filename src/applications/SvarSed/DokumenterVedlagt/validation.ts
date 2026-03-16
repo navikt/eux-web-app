@@ -1,6 +1,6 @@
 import { H065Sed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkLength } from 'utils/validation'
+import { checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationDokumenterVedlagtProps {
   replySed: ReplySed
@@ -17,6 +17,17 @@ export const validateDokumenterVedlagt = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const sed = replySed as H065Sed
+
+  const isAnnetSelected = sed.overfoeringInfo?.dokumenterVedlagt?.type?.includes('annet')
+
+  if (isAnnetSelected) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: sed.overfoeringInfo?.dokumenterVedlagt?.annet?.[0],
+      id: namespace + '-dokumenterVedlagt-annet',
+      message: 'validation:noAnnetDokument',
+      personName
+    }))
+  }
 
   hasErrors.push(checkLength(v, {
     needle: sed.overfoeringInfo?.dokumenterVedlagt?.annet?.[0],
