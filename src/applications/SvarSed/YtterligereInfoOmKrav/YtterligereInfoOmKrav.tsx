@@ -47,7 +47,7 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
     { label: t('el:option-overfoeringinfo-ytelse-etterlattepensjon'), value: 'etterlattepensjon' },
     { label: t('el:option-overfoeringinfo-ytelse-gravferdsstoenad'), value: 'gravferdsstønad' },
     { label: t('el:option-overfoeringinfo-ytelse-dagpenger'), value: 'dagpenger' },
-    { label: t('el:option-overfoeringinfo-ytelse-foertidspensjon'), value: 'føtidspensjon' },
+    { label: t('el:option-overfoeringinfo-ytelse-foertidspensjon'), value: 'førtidspensjon' },
     { label: t('el:option-overfoeringinfo-ytelse-familieytelse'), value: 'familieytelse' },
     { label: t('el:option-overfoeringinfo-ytelse-spesiell_innskuddsfri_kontantytelse'), value: 'spesiell_innskuddsfri_kontantytelse' },
     { label: t('el:option-overfoeringinfo-ytelse-annen_ytelse'), value: 'annen_ytelse' }
