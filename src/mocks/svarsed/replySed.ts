@@ -8,6 +8,7 @@ import {
   F027Sed,
   H001Sed,
   H002Sed,
+  H065Sed,
   S040Sed,
   S046Sed,
   U002Sed,
@@ -26,6 +27,7 @@ import f026 from '../seds/f026.json'
 import f027 from '../seds/f027.json'
 import h001 from '../seds/h001.json'
 import h002 from '../seds/h002.json'
+import h065 from '../seds/h065.json'
 import s040 from '../seds/s040.json'
 import s046 from '../seds/s046.json'
 import u002 from '../seds/u002.json'
@@ -45,6 +47,7 @@ const seds: {[k in SedTypes]: ReplySed} = {
   F027: <F027Sed>f027,
   H001: <H001Sed>h001,
   H002: <H002Sed>h002,
+  H065: <H065Sed>h065,
   S040: <S040Sed>s040,
   S046: <S046Sed>s046,
   U002: <U002Sed>u002,

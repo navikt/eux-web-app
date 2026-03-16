@@ -11,6 +11,9 @@ import {
   ValidationBeløpNavnOgValutasProps
 } from 'applications/SvarSed/BeløpNavnOgValuta/validation'
 import { validateEndredeForhold, ValidationEndredeForholdProps } from 'applications/SvarSed/EndredeForhold/validation'
+import { validateYtterligereInfoOmKrav, ValidationYtterligereInfoOmKravProps } from 'applications/SvarSed/YtterligereInfoOmKrav/validation'
+import { validateGrunnerForOverfoering, ValidationGrunnerForOverfoeringProps } from 'applications/SvarSed/GrunnerForOverfoering/validation'
+import { validateDokumenterVedlagt, ValidationDokumenterVedlagtProps } from 'applications/SvarSed/DokumenterVedlagt/validation'
 import {
   validateFamilierelasjoner,
   ValidationFamilierelasjonerProps
@@ -83,6 +86,7 @@ import {
   F026Sed,
   F027Sed,
   H001Sed,
+  H065Sed,
   S040Sed,
   USed,
   U002Sed,
@@ -105,6 +109,7 @@ import {
   isFSed,
   isH001Sed,
   isH002Sed,
+  isH065Sed,
   isHSed,
   isS040Sed,
   isS046Sed,
@@ -389,6 +394,10 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     hasErrors.push(performValidation<ValidationPersonopplysningerProps>(v, `svarsed-${personID}-personopplysninger`, validatePersonopplysninger, {
       personInfo, personName
     }, true))
+    const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
+    hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
+      statsborgerskaper, personName
+    }, true))
     hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
       adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName
     }, true))
@@ -406,6 +415,20 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       hasErrors.push(performValidation<ValidationEndredeForholdProps>(v, `svarsed-${personID}-endredeforhold`, validateEndredeForhold, {
         replySed,
         personName: i18n.t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
+      }, true))
+    }
+    if (isH065Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationYtterligereInfoOmKravProps>(v, `svarsed-${personID}-ytterligereinfoomkrav`, validateYtterligereInfoOmKrav, {
+        replySed,
+        personName: i18n.t('label:ytterligere-informasjon-om-krav').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationGrunnerForOverfoeringProps>(v, `svarsed-${personID}-grunnerforoverfoering`, validateGrunnerForOverfoering, {
+        replySed,
+        personName: i18n.t('label:grunner-til-overfoering').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationDokumenterVedlagtProps>(v, `svarsed-${personID}-dokumentervedlagt`, validateDokumenterVedlagt, {
+        replySed,
+        personName: i18n.t('label:dokumenter-vedlagt').toLowerCase()
       }, true))
     }
   }

@@ -49,6 +49,9 @@ import SvarPåminnelse from 'applications/SvarSed/SvarPåminnelse/SvarPåminnels
 import Trygdeordning from 'applications/SvarSed/Trygdeordning/Trygdeordning'
 import Ugyldiggjøre from 'applications/SvarSed/Ugyldiggjøre/Ugyldiggjøre'
 import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
+import YtterligereInfoOmKrav from 'applications/SvarSed/YtterligereInfoOmKrav/YtterligereInfoOmKrav'
+import GrunnerForOverfoering from 'applications/SvarSed/GrunnerForOverfoering/GrunnerForOverfoering'
+import DokumenterVedlagt from 'applications/SvarSed/DokumenterVedlagt/DokumenterVedlagt'
 import TextArea from 'components/Forms/TextArea'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
@@ -71,6 +74,7 @@ import {
   isF026Sed,
   isF027Sed,
   isH002Sed,
+  isH065Sed,
   isPreviewableSed,
   isS040Sed,
   isS046Sed,
@@ -447,6 +451,9 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' },
                   { label: t('el:option-mainform-anmodning'), value: 'anmodning', component: Anmodning, type: 'H001' },
                   { label: t('el:option-mainform-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' },
+                  { label: t('el:option-mainform-ytterligereinfoomkrav'), value: 'ytterligereinfoomkrav', component: YtterligereInfoOmKrav, type: 'H065' },
+                  { label: t('el:option-mainform-grunnerforoverfoering'), value: 'grunnerforoverfoering', component: GrunnerForOverfoering, type: 'H065' },
+                  { label: t('el:option-mainform-dokumentervedlagt'), value: 'dokumentervedlagt', component: DokumenterVedlagt, type: 'H065' },
                   { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
                   { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
                   { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
@@ -658,7 +665,7 @@ const SEDEdit = (): JSX.Element => {
               />
             </>
           }
-          {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
+          {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isH065Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
             <TextArea
               namespace={namespace}
               error={validation[namespace + '-ytterligereInfo']?.feilmelding}
