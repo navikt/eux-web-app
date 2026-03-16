@@ -1,5 +1,5 @@
 import {BodyLong, Box, Heading, Link, ReadMore, Tooltip, VStack} from '@navikt/ds-react'
-import {createF002Sed, createFSed, createH001Sed, createXSed, deleteSak} from 'actions/svarsed'
+import {createF002Sed, createFSed, createHSed, createXSed, deleteSak} from 'actions/svarsed'
 import commonStyles from 'assets/css/common.module.css'
 import {Sak, Sed} from 'declarations/types'
 import _ from 'lodash'
@@ -46,9 +46,9 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
     dispatch(createXSed(sedType, sak))
   }
 
-  const _createH001Sed = () => {
+  const _createHSed = (sedType: string) => {
     setWaitingForOperation(true)
-    dispatch(createH001Sed(sak))
+    dispatch(createHSed(sedType, sak))
   }
 
   const _createFSed = (sedType: string) => {
@@ -82,8 +82,8 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
       onClickFunction = () => _createXSed(sakshandling);
     } else if (sakshandling === "Delete_Case"){
       onClickFunction = () => deleteCase();
-    } else  if (sakshandling === "H001"){
-      onClickFunction = () => _createH001Sed()
+    } else if (sakshandling.startsWith("H")){
+      onClickFunction = () => _createHSed(sakshandling)
     } else  if (sakshandling === "F026" || sakshandling === "F027"){
       onClickFunction = () => _createFSed(sakshandling)
     } else if (sakshandling === "F002"){
