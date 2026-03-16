@@ -3,7 +3,6 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { validateDokumenterVedlagt, ValidationDokumenterVedlagtProps } from 'applications/SvarSed/DokumenterVedlagt/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
-import ErrorLabel from 'components/Forms/ErrorLabel'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { H065Sed } from 'declarations/sed'
@@ -66,9 +65,6 @@ const DokumenterVedlagt: React.FC<MainFormProps> = ({
     if (value === 'annet' && !checked) {
       dispatch(updateReplySed('overfoeringInfo.dokumenterVedlagt.annet', undefined))
     }
-    if (validation[namespace + '-dokumenterVedlagt-type']) {
-      dispatch(resetValidation(namespace + '-dokumenterVedlagt-type'))
-    }
   }
 
   const setDokumenterVedlagtAnnet = (value: string) => {
@@ -101,7 +97,6 @@ const DokumenterVedlagt: React.FC<MainFormProps> = ({
             </Checkbox>
           ))}
         </Box>
-        <ErrorLabel error={validation[namespace + '-dokumenterVedlagt-type']?.feilmelding} />
 
         {dokumenterVedlagtTypes.indexOf('annet') >= 0 && (
           <TextArea
