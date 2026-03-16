@@ -41,7 +41,7 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
     { label: t('el:option-overfoeringinfo-ytelse-kontantytelse_for_arbeidsulykke_eller_yrkessykdom'), value: 'kontantytelse_for_arbeidsulykke_eller_yrkessykdom' },
     { label: t('el:option-overfoeringinfo-ytelse-naturalytelse_knyttet_til_yrkesskade_eller_yrkessykdom'), value: 'naturalytelse_knyttet_til_yrkesskade_eller_yrkessykdom' },
     { label: t('el:option-overfoeringinfo-ytelse-foreldrepenger_til_mor_far'), value: 'foreldrepenger_til_mor_far' },
-    { label: t('el:option-overfoeringinfo-ytelse-ytelse_til_langvarig_pleie'), value: 'ytelse_til_langvarig_pleie' },
+    { label: t('el:option-overfoeringinfo-ytelse-ytelse_til_langvarig_pleie'), value: 'ytelse_til_langtidspleie' },
     { label: t('el:option-overfoeringinfo-ytelse-ufoerepensjon'), value: 'uførepensjon' },
     { label: t('el:option-overfoeringinfo-ytelse-alderspensjon'), value: 'alderspensjon' },
     { label: t('el:option-overfoeringinfo-ytelse-etterlattepensjon'), value: 'etterlattepensjon' },
