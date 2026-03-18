@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import { Box, HGrid, Heading, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateAnmodningInfo, ValidationAnmodningInfoProps } from 'applications/SvarSed/AnmodningInfo/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -113,7 +113,7 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
         </RadioGroup>
 
         {gjelderArbeidsufoerhet === true && (
-          <HStack gap="space-16">
+          <HGrid columns={2} gap="space-16">
             <DateField
               error={validation[namespace + '-periodeStartdato']?.feilmelding}
               id='periodeStartdato'
@@ -132,7 +132,7 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
               required
               dateValue={sed.anmodningInfo?.periodeSluttdato}
             />
-          </HStack>
+          </HGrid>
         )}
 
         <Select
