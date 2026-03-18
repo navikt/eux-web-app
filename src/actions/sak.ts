@@ -23,7 +23,6 @@ import { usesTypedSedApi } from 'utils/sed'
 // @ts-ignore
 import { sprintf } from 'sprintf-js'
 import mockNavrinasak from "../mocks/app/navrinasak";
-import {SAK_FAGSAKTEMA_UPDATE} from "constants/actionTypes";
 
 export const sakReset: ActionCreator<Action> = (): Action => ({
   type: types.SAK_RESET

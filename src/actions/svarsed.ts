@@ -352,7 +352,7 @@ export const replyToSed = (
   const url = usesTypedSedApi(connectedSed.svarsedType)
     ? sprintf(urls.API_SED_SVARSED_DRAFT_BY_TYPE_URL, {
         rinaSakId: sak.sakId,
-        sedType: connectedSed.svarsedType?.toLowerCase(),
+        sedType: connectedSed.sedType?.toLowerCase(),
         sedId
       })
     : sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
