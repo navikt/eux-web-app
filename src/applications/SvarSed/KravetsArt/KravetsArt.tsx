@@ -93,7 +93,7 @@ const KravetsArt: React.FC<MainFormProps> = ({
         </Heading>
 
         <CheckboxGroup
-          legend={t('label:vi-ber-dere-om-å')}
+          legend={t('label:vi-ber-dere-om-å') + ' *'}
           error={validation[namespace + '-etterspurtHandling']?.feilmelding}
           value={sed.kravetsArt?.etterspurtHandling ?? []}
           onChange={setEtterspurtHandling}
