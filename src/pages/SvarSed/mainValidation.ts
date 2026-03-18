@@ -14,6 +14,11 @@ import { validateEndredeForhold, ValidationEndredeForholdProps } from 'applicati
 import { validateYtterligereInfoOmKrav, ValidationYtterligereInfoOmKravProps } from 'applications/SvarSed/YtterligereInfoOmKrav/validation'
 import { validateGrunnerForOverfoering, ValidationGrunnerForOverfoeringProps } from 'applications/SvarSed/GrunnerForOverfoering/validation'
 import { validateDokumenterVedlagt, ValidationDokumenterVedlagtProps } from 'applications/SvarSed/DokumenterVedlagt/validation'
+import { validateBeroertYtelse, ValidationBeroertYtelseProps } from 'applications/SvarSed/BeroertYtelse/validation'
+import { validateKravetsArt, ValidationKravetsArtProps } from 'applications/SvarSed/KravetsArt/validation'
+import { validateAnmodningInfo, ValidationAnmodningInfoProps } from 'applications/SvarSed/AnmodningInfo/validation'
+import { validateFamilieytelseSpoersmaal, ValidationFamilieytelseSpoersmaalProps } from 'applications/SvarSed/FamilieytelseSpoersmaal/validation'
+import { validateAWODSpoersmaal, ValidationAWODSpoersmaalProps } from 'applications/SvarSed/AWODSpoersmaal/validation'
 import {
   validateFamilierelasjoner,
   ValidationFamilierelasjonerProps
@@ -100,6 +105,7 @@ import {
   X012Sed,
   Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse, VedtakF003, Vedtak
 } from 'declarations/sed'
+import { H120Sed } from 'declarations/h120'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
 import _ from 'lodash'
@@ -110,6 +116,7 @@ import {
   isH001Sed,
   isH002Sed,
   isH065Sed,
+  isH120Sed,
   isHSed,
   isS040Sed,
   isS046Sed,
@@ -430,6 +437,33 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         replySed,
         personName: i18n.t('label:dokumenter-vedlagt').toLowerCase()
       }, true))
+    }
+    if (isH120Sed(replySed)) {
+      const h120Sed = replySed as H120Sed
+      hasErrors.push(performValidation<ValidationBeroertYtelseProps>(v, `svarsed-${personID}-beroertytelse`, validateBeroertYtelse, {
+        replySed,
+        personName: i18n.t('label:berørt-ytelse').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationKravetsArtProps>(v, `svarsed-${personID}-kravetsart`, validateKravetsArt, {
+        replySed,
+        personName: i18n.t('label:kravets-art').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationAnmodningInfoProps>(v, `svarsed-${personID}-anmodninginfo`, validateAnmodningInfo, {
+        replySed,
+        personName: i18n.t('label:informasjon-om-anmodningen').toLowerCase()
+      }, true))
+      if (h120Sed.beroertYtelse === 'familieytelse') {
+        hasErrors.push(performValidation<ValidationFamilieytelseSpoersmaalProps>(v, `svarsed-${personID}-familieytelsespoersmaal`, validateFamilieytelseSpoersmaal, {
+          replySed,
+          personName: i18n.t('label:spoersmaal-kun-for-familieytelser').toLowerCase()
+        }, true))
+      }
+      if (h120Sed.beroertYtelse === 'kontantytelser_ved_yrkesskade_eller_yrkessykdom_som_nevnt_i_artikkel_33_1_nr_987_2009' || h120Sed.beroertYtelse === 'adre_kontantytelser_ved_yrkesskade_eller_yrkessykdom') {
+        hasErrors.push(performValidation<ValidationAWODSpoersmaalProps>(v, `svarsed-${personID}-awodspoersmaal`, validateAWODSpoersmaal, {
+          replySed,
+          personName: i18n.t('label:spoersmaal-kun-for-awod').toLowerCase()
+        }, true))
+      }
     }
   }
 

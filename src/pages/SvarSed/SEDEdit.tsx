@@ -52,12 +52,18 @@ import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
 import YtterligereInfoOmKrav from 'applications/SvarSed/YtterligereInfoOmKrav/YtterligereInfoOmKrav'
 import GrunnerForOverfoering from 'applications/SvarSed/GrunnerForOverfoering/GrunnerForOverfoering'
 import DokumenterVedlagt from 'applications/SvarSed/DokumenterVedlagt/DokumenterVedlagt'
+import BeroertYtelse from 'applications/SvarSed/BeroertYtelse/BeroertYtelse'
+import KravetsArt from 'applications/SvarSed/KravetsArt/KravetsArt'
+import AnmodningInfo from 'applications/SvarSed/AnmodningInfo/AnmodningInfo'
+import FamilieytelseSpoersmaal from 'applications/SvarSed/FamilieytelseSpoersmaal/FamilieytelseSpoersmaal'
+import AWODSpoersmaal from 'applications/SvarSed/AWODSpoersmaal/AWODSpoersmaal'
 import TextArea from 'components/Forms/TextArea'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import {F027Sed, FSed, ReplySed} from 'declarations/sed'
+import { H120Sed } from 'declarations/h120'
 import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -75,6 +81,7 @@ import {
   isF027Sed,
   isH002Sed,
   isH065Sed,
+  isH120Sed,
   isPreviewableSed,
   isS040Sed,
   isS046Sed,
@@ -454,6 +461,11 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-ytterligereinfoomkrav'), value: 'ytterligereinfoomkrav', component: YtterligereInfoOmKrav, type: 'H065' },
                   { label: t('el:option-mainform-grunnerforoverfoering'), value: 'grunnerforoverfoering', component: GrunnerForOverfoering, type: 'H065' },
                   { label: t('el:option-mainform-dokumentervedlagt'), value: 'dokumentervedlagt', component: DokumenterVedlagt, type: 'H065' },
+                  { label: t('el:option-mainform-beroertytelse'), value: 'beroertytelse', component: BeroertYtelse, type: 'H120' },
+                  { label: t('el:option-mainform-kravetsart'), value: 'kravetsart', component: KravetsArt, type: 'H120' },
+                  { label: t('el:option-mainform-anmodninginfo'), value: 'anmodninginfo', component: AnmodningInfo, type: 'H120' },
+                  { label: t('el:option-mainform-familieytelsespoersmaal'), value: 'familieytelsespoersmaal', component: FamilieytelseSpoersmaal, type: 'H120', condition: () => (replySed as H120Sed)?.beroertYtelse === 'familieytelse' },
+                  { label: t('el:option-mainform-awodspoersmaal'), value: 'awodspoersmaal', component: AWODSpoersmaal, type: 'H120', condition: () => (replySed as H120Sed)?.beroertYtelse === 'kontantytelser_ved_yrkesskade_eller_yrkessykdom_som_nevnt_i_artikkel_33_1_nr_987_2009' || (replySed as H120Sed)?.beroertYtelse === 'adre_kontantytelser_ved_yrkesskade_eller_yrkessykdom' },
                   { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
                   { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
                   { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
@@ -665,7 +677,7 @@ const SEDEdit = (): JSX.Element => {
               />
             </>
           }
-          {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isH065Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
+          {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isH065Sed(replySed) || isH120Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
             <TextArea
               namespace={namespace}
               error={validation[namespace + '-ytterligereInfo']?.feilmelding}
@@ -673,6 +685,7 @@ const SEDEdit = (): JSX.Element => {
               label={t('label:ytterligere-informasjon-til-sed')}
               onChanged={setComment}
               value={(replySed as FSed).ytterligereInfo}
+              maxLength={500}
             />
           )}
           {showAttachments && (

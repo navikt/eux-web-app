@@ -18,6 +18,7 @@ import * as urls from 'constants/urls'
 import {FagsakPayload} from "../declarations/pd";
 import mockFagsakGenerell from "../mocks/fagsak_generell";
 import mockFagsakDagpenger from "../mocks/fagsak";
+import { usesTypedSedApi } from 'utils/sed'
 
 // @ts-ignore
 import { sprintf } from 'sprintf-js'
@@ -123,8 +124,12 @@ export const resetFilloutInfo = () => ({
 export const editSed = (
   opprettSak: OpprettetSak, template: any
 ): ActionWithPayload<Array<Kodeverk>> => {
+  const sedType = template.sed?.sedType
+  const url = usesTypedSedApi(sedType)
+    ? sprintf(urls.API_SED_EDIT_BY_TYPE_URL, { rinaSakId: opprettSak.sakId, sedType: sedType?.toLowerCase(), sedId: opprettSak.sedId })
+    : sprintf(urls.API_SED_EDIT_URL, { rinaSakId: opprettSak.sakId, sedId: opprettSak.sedId })
   return call({
-    url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId: opprettSak.sakId, sedId: opprettSak.sedId }),
+    url,
     expectedPayload: mockReplySed(template.sed.sedType),
     context: {
       template

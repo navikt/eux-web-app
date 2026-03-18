@@ -1,0 +1,56 @@
+{
+  "sedType": "H120",
+  "sedVersjon": "4.4",
+  "bruker": {
+    "personInfo": {
+      "fornavn": "Kari",
+      "etternavn": "Nordmann",
+      "kjoenn": "K",
+      "foedselsdato": "1990-01-15",
+      "statsborgerskap": [
+        {
+          "fraDato": "1990-01-15",
+          "landkode": "NOR"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "landkode": "NOR",
+          "sektor": "alle",
+          "identifikator": "12345678901",
+          "institusjonsid": "NO:NAVAT07",
+          "institusjonsnavn": "NAV"
+        }
+      ]
+    },
+    "adresser": [
+      {
+        "type": "bosted",
+        "gate": "Storgata 1",
+        "postnummer": "0101",
+        "by": "Oslo",
+        "land": "NO",
+        "landkode": "NOR"
+      }
+    ]
+  },
+  "beroertYtelse": "sykepenger_som_kontantytelse_i_forbindelse_med_arbeidsuførhet",
+  "kravetsArt": {
+    "etterspurtHandling": [
+      "send_oss_den_medisinske_informasjonen_dokumentasjonen"
+    ],
+    "etterspurtDokumentasjon": [
+      "standard_medisinsk_rapport"
+    ],
+    "annenDokumentasjon": "",
+    "spesielleKravTilDokumentasjon": ""
+  },
+  "anmodningInfo": {
+    "gjelderArbeidsufoerhet": true,
+    "periodeStartdato": "2025-01-01",
+    "periodeSluttdato": "2025-06-30",
+    "dekningKostnader": "ja"
+  },
+  "ytterligereInformasjon": ""
+}

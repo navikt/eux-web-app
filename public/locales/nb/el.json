@@ -383,6 +383,66 @@
   "option-overfoeringinfo-dokument-legeattest": "Legeattest",
   "option-overfoeringinfo-dokument-annet": "Annet",
 
+  "option-mainform-beroertytelse": "Berørt ytelse",
+  "option-mainform-kravetsart": "Kravets art",
+  "option-mainform-anmodninginfo": "Informasjon om anmodningen",
+  "option-mainform-familieytelsespoersmaal": "Spørsmål kun for familieytelser",
+  "option-mainform-awodspoersmaal": "Spørsmål kun for AWOD",
+
+  "option-h120-beroertytelse-sykepenger_som_kontantytelse_i_forbindelse_med_arbeidsuførhet": "(01) Sykepenger som kontantytelse i forbindelse med arbeidsuførhet",
+  "option-h120-beroertytelse-foreldrepenger_til_mor_eller_far": "(02) Foreldrepenger til mor eller far",
+  "option-h120-beroertytelse-kontantytelser_ved_langtidspleie": "(03) Kontantytelser ved langvarig pleie",
+  "option-h120-beroertytelse-uførepensjon": "(04) Uførepensjon",
+  "option-h120-beroertytelse-alderspensjon": "(05) Alderspensjon",
+  "option-h120-beroertytelse-etterlattepensjon": "(06) Etterlattepensjon",
+  "option-h120-beroertytelse-kontantytelser_ved_yrkesskade_eller_yrkessykdom_som_nevnt_i_artikkel_33_1_nr_987_2009": "(07) Kontantytelser ved yrkesskade eller yrkessykdom som nevnt i artikkel 33(1) i forordning (EF) nr. 987/2009",
+  "option-h120-beroertytelse-adre_kontantytelser_ved_yrkesskade_eller_yrkessykdom": "(08) Andre kontantytelser ved yrkesskade eller yrkessykdom",
+  "option-h120-beroertytelse-dagpenger": "(09) Dagpenger",
+  "option-h120-beroertytelse-førtidspensjon": "(10) Førtidspensjon",
+  "option-h120-beroertytelse-familieytelse": "(11) Familieytelse",
+  "option-h120-beroertytelse-spesiell_innskuddsfri_kontantytelse": "(12) Spesiell, innskuddsfri kontantytelse",
+  "option-h120-beroertytelse-sykepenger_kontantytelser": "(13) Sykepenger - naturalytelser",
+
+  "option-h120-etterspurthandling-informer_oss_om_estimerte_kostnader_for_medisinsk_dokumentasjon_legeundersøkelse": "Informer oss om estimerte kostnader for medisinsk dokumentasjon/legeundersøkelse",
+  "option-h120-etterspurthandling-utfør_legeundersøkelse": "Utfør legeundersøkelse",
+  "option-h120-etterspurthandling-send_oss_den_medisinske_informasjonen_dokumentasjonen": "Send oss den medisinske informasjonen/dokumentasjonen",
+
+  "option-h120-etterspurtdokumentasjon-standard_medisinsk_rapport": "Standard medisinsk rapport",
+  "option-h120-etterspurtdokumentasjon-utførlig_medisinsk_rapport": "Utførlig medisinsk rapport",
+  "option-h120-etterspurtdokumentasjon-medisinsk_rapport_angående_familieytelser": "Medisinsk rapport angående familieytelser",
+  "option-h120-etterspurtdokumentasjon-bilateralt_avtalt_medisinsk_rapport": "Bilateralt avtalt medisinsk rapport",
+  "option-h120-etterspurtdokumentasjon-annen_medisinsk_dokumentasjon": "Annen medisinsk dokumentasjon",
+
+  "option-h120-dekningkostnader-ja": "Ja",
+  "option-h120-dekningkostnader-nei": "Nei",
+  "option-h120-dekningkostnader-gjelder_ikke": "Gjelder ikke",
+
+  "option-h120-awodtype-arbeidsulykke": "Arbeidsulykke",
+  "option-h120-awodtype-yrkessykdom": "Yrkessykdom",
+
+  "option-h120-brukerstatus-arbeidstaker": "Arbeidstaker",
+  "option-h120-brukerstatus-selvstendig_næringsdrivende": "Selvstendig næringsdrivende",
+  "option-h120-brukerstatus-offentlig_ansatt": "Offentlig ansatt",
+  "option-h120-brukerstatus-grensearbeider": "Grensearbeider",
+  "option-h120-brukerstatus-annet": "Annet",
+
+  "option-h120-familiedokumentasjon-grad_av_selvhjulpenhet": "Grad av selvhjulpenhet",
+  "option-h120-familiedokumentasjon-grad_av_hjelpebehov": "Grad av hjelpebehov",
+  "option-h120-familiedokumentasjon-årsak_til_uførhet": "Årsak til uførhet",
+  "option-h120-familiedokumentasjon-uføretidspunkt_eller_endring_i_uføregrad": "Uføretidspunkt eller endring i uføregrad",
+  "option-h120-familiedokumentasjon-fysiske_og_mentale_evner": "Fysiske og mentale evner",
+  "option-h120-familiedokumentasjon-grad_av_mentale_og_fysiske_evner": "Grad av mentale og fysiske evner",
+  "option-h120-familiedokumentasjon-dato_når_dette_beløpet_ble_nådd": "Dato når dette beløpet ble nådd",
+  "option-h120-familiedokumentasjon-er_dette_beløpet_permanent": "Er dette beløpet permanent",
+  "option-h120-familiedokumentasjon-trengs_ny_undersøkelse_hvis_ja_når": "Trengs ny undersøkelse, hvis ja, når",
+  "option-h120-familiedokumentasjon-prognose": "Prognose",
+  "option-h120-familiedokumentasjon-grad_av_inntektsevne": "Grad av inntektsevne",
+
+  "option-h120-arbeidsgiveridentifikator-registrering": "Registrering",
+  "option-h120-arbeidsgiveridentifikator-trygd": "Trygd",
+  "option-h120-arbeidsgiveridentifikator-skatt": "Skatt",
+  "option-h120-arbeidsgiveridentifikator-ukjent": "Ukjent",
+
   "placeholder-select-default": "Velg...",
   "placeholder-date-default": "DD.MM.ÅÅÅÅ"
 }
