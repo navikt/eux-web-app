@@ -67,7 +67,7 @@
     "react-select": "5.10.2",
     "redux": "4.2.1",
     "sprintf-js": "1.1.3",
-    "stacktracey": "2.1.8",
+    "stacktracey": "2.2.0",
     "url": "0.11.4",
     "winston": "3.19.0",
     "worker-timers": "8.0.30"
