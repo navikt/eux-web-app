@@ -44,7 +44,7 @@
     "connect-timeout": "1.9.1",
     "core-js": "3.48.0",
     "cross-fetch": "3.2.0",
-    "dayjs": "1.11.19",
+    "dayjs": "1.11.20",
     "eux-schema": "0.4.0",
     "express": "5.2.1",
     "file-saver": "2.0.5",
