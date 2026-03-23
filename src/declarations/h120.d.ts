@@ -31,7 +31,7 @@ export type EtterspurtDokumentasjonType =
   | 'bilateralt_avtalt_medisinsk_rapport'
   | 'annen_medisinsk_dokumentasjon'
 
-export interface H120KravetsArt {
+export interface KravetsArt {
   etterspurtHandling?: Array<EtterspurtHandlingType>
   etterspurtDokumentasjon?: Array<EtterspurtDokumentasjonType>
   annenDokumentasjon?: string
@@ -51,12 +51,12 @@ export type BrukerStatusType =
 
 export type ArbeidsgiverIdentifikatorType = 'registrering' | 'trygd' | 'skatt' | 'ukjent'
 
-export interface H120ArbeidsgiverIdentifikator {
+export interface ArbeidsgiverIdentifikator {
   type?: ArbeidsgiverIdentifikatorType
   id?: string
 }
 
-export interface H120ArbeidsgiverAdresse {
+export interface ArbeidsgiverAdresse {
   gate?: string
   bygning?: string
   postnummer?: string
@@ -65,13 +65,13 @@ export interface H120ArbeidsgiverAdresse {
   landkode?: string
 }
 
-export interface H120Arbeidsgiver {
+export interface Arbeidsgiver {
   navn?: string
-  adresse?: H120ArbeidsgiverAdresse
-  identifikator?: Array<H120ArbeidsgiverIdentifikator>
+  adresse?: ArbeidsgiverAdresse
+  identifikator?: Array<ArbeidsgiverIdentifikator>
 }
 
-export interface H120Arbeidsulykkeyrkessykdom {
+export interface Arbeidsulykkeyrkessykdom {
   type?: AWODType
   dato?: string
   brukerStatus?: BrukerStatusType
@@ -79,14 +79,14 @@ export interface H120Arbeidsulykkeyrkessykdom {
   sykdomKode?: string
   sykdomKodingssystem?: string
   konsekvensEllerBeskrivelse?: string
-  arbeidsgiver?: H120Arbeidsgiver
+  arbeidsgiver?: Arbeidsgiver
 }
 
 // ===== Informasjon om anmodningen (Section 5) =====
 
 export type DekningKostnaderType = 'ja' | 'nei' | 'gjelder_ikke'
 
-export interface H120AnmodningInfo {
+export interface AnmodningInfo {
   gjelderArbeidsufoerhet?: boolean
   periodeStartdato?: string
   periodeSluttdato?: string
@@ -108,7 +108,7 @@ export type FamilieEtterspurtDokumentasjonType =
   | 'prognose'
   | 'grad_av_inntektsevne'
 
-export interface H120Familie {
+export interface Familie {
   etterspurtDokumentasjon?: Array<FamilieEtterspurtDokumentasjonType>
   annenDokumentasjon?: string
 }
@@ -117,8 +117,8 @@ export interface H120Familie {
 
 export interface H120Sed extends HSed {
   beroertYtelse?: BeroertYtelseType
-  kravetsArt?: H120KravetsArt
-  arbeidsulykkeyrkessykdom?: H120Arbeidsulykkeyrkessykdom
-  anmodningInfo?: H120AnmodningInfo
-  familie?: H120Familie
+  kravetsArt?: KravetsArt
+  arbeidsulykkeyrkessykdom?: Arbeidsulykkeyrkessykdom
+  anmodningInfo?: AnmodningInfo
+  familie?: Familie
 }
