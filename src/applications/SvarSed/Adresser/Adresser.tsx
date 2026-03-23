@@ -46,9 +46,10 @@ const Adresser: React.FC<MainFormProps> = ({
   const adresser: Array<Adresse> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser`
   const singleAdress = options && options.singleAdress ? options.singleAdress : false
+  const defaultType = options?.defaultType
   const botidilandetsiden: string | undefined = _.get(replySed, `${personID}.botidilandetsiden`)
 
-  const checkAdresseType: boolean = (!isFSed(replySed) && !isS040Sed(replySed) && !isS046Sed(replySed))
+  const checkAdresseType: boolean = (!isFSed(replySed) && !isS040Sed(replySed) && !isS046Sed(replySed)) && !defaultType
   const fnr = getFnr(replySed, personID)
   const getId = (a: Adresse | null | undefined): string => a ? (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.landkode ?? '') : 'new'
 
@@ -197,7 +198,8 @@ const Adresser: React.FC<MainFormProps> = ({
                 adresse={_adresse}
                 onAdressChanged={(a: Adresse) => setAdresse(a, index)}
                 validation={_v}
-                type={!isS040Sed(replySed) && !isS046Sed(replySed)}
+                type={defaultType ? false : (!isS040Sed(replySed) && !isS046Sed(replySed))}
+                defaultType={defaultType}
               />
               )
             : (

@@ -125,9 +125,9 @@ const SEDPanel = ({
     _setUpdatingSed(true)
     dispatch(editSed(sed, sak))
   }
-  const onDeleteSedClick = (sakId: string, sedId: string) => {
+  const onDeleteSedClick = (sakId: string, sedId: string, sedType?: string) => {
     _setDeletingSed(true)
-    dispatch(deleteSed(sakId, sedId))
+    dispatch(deleteSed(sakId, sedId, sedType))
   }
 
   const onInvalidatingSedClick = (sed: Sed, sak: Sak) => {
@@ -339,7 +339,7 @@ const SEDPanel = ({
                   variant='secondary'
                   disabled={_deletingSed}
                   onClick={(e: any) => {
-                    onDeleteSedClick(currentSak.sakId, sed.sedId)
+                    onDeleteSedClick(currentSak.sakId, sed.sedId, sed.sedType)
                   }}
                 >
                   {_deletingSed

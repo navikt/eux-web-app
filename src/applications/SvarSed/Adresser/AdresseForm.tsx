@@ -3,7 +3,7 @@ import { Adresse, AdresseType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Country } from '@navikt/land-verktoy'
 import _ from 'lodash'
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useTranslation } from 'react-i18next'
 import CountryDropdown from "components/CountryDropdown/CountryDropdown";
 import {HGrid, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
@@ -18,6 +18,7 @@ export interface AdresseFormProps {
   namespace: string
   validation: Validation
   type?: boolean
+  defaultType?: AdresseType
   keyForCity ?: string
   keyforZipCode ?: string
   labelforZipCode ?: string
@@ -32,11 +33,21 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   namespace,
   validation,
   type = true,
+  defaultType,
   keyForCity = 'by',
   keyforZipCode = 'postnummer',
   labelforZipCode = 'postnr',
 }: AdresseFormProps) => {
   const { t } = useTranslation()
+
+  useEffect(() => {
+    if (defaultType && !adresse?.type) {
+      onAdressChanged({
+        ...adresse,
+        type: defaultType
+      }, 'type')
+    }
+  }, [defaultType])
 
   const setType = (type: AdresseType) => {
     onAdressChanged({

@@ -12,6 +12,7 @@ import {validateFnrDnrNpid} from 'utils/fnrValidator'
 import mockPreview from 'mocks/previewFile'
 import _, {cloneDeep} from 'lodash'
 import {JoarkBrowserItem} from "../declarations/attachments";
+import { usesTypedSedApi } from 'utils/sed'
 // @ts-ignore
 import { sprintf } from 'sprintf-js';
 
@@ -56,9 +57,13 @@ export const createSed = (
   delete copyReplySed.sak
   delete copyReplySed.sed
   delete copyReplySed.attachments
+  const sedType = replySed.sedType
+  const url = usesTypedSedApi(sedType)
+    ? sprintf(urls.API_SED_CREATE_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase() })
+    : sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.sak?.sakId })
   return call({
     method: 'POST',
-    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.sak?.sakId }),
+    url,
     cascadeFailureError: true,
     expectedPayload: {
       sedId: '123'
@@ -96,9 +101,13 @@ export const updateSed = (
   delete copyReplySed.sak
   delete copyReplySed.sed
   delete copyReplySed.attachments
+  const sedType = replySed.sedType
+  const url = usesTypedSedApi(sedType)
+    ? sprintf(urls.API_SED_UPDATE_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase(), sedId: replySed.sed?.sedId })
+    : sprintf(urls.API_SED_UPDATE_URL, { rinaSakId: replySed.sak?.sakId, sedId: replySed.sed?.sedId })
   return call({
     method: 'PUT',
-    url: sprintf(urls.API_SED_UPDATE_URL, { rinaSakId: replySed.sak?.sakId, sedId: replySed.sed?.sedId }),
+    url,
     cascadeFailureError: true,
     expectedPayload: {
       sedId: '456'
@@ -288,8 +297,11 @@ rinaSakId: string,
 export const editSed = (
   connectedSed: Sed, sak: Sak
 ): ActionWithPayload<ReplySed> => {
+  const url = usesTypedSedApi(connectedSed.sedType)
+    ? sprintf(urls.API_SED_EDIT_BY_TYPE_URL, { rinaSakId: sak.sakId, sedType: connectedSed.sedType?.toLowerCase(), sedId: connectedSed.sedId })
+    : sprintf(urls.API_SED_EDIT_URL, { rinaSakId: sak.sakId, sedId: connectedSed.sedId })
   return call({
-    url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId: sak.sakId, sedId: connectedSed.sedId }),
+    url,
     expectedPayload: mockReplySed(connectedSed.sedType ?? 'F001'),
     context: {
       sak,
@@ -337,12 +349,20 @@ export const replyToSed = (
     ? connectedSed.sedIdParent
     : connectedSed.sedId
 
+  const url = usesTypedSedApi(connectedSed.sedType)
+    ? sprintf(urls.API_SED_SVARSED_DRAFT_BY_TYPE_URL, {
+        rinaSakId: sak.sakId,
+        sedType: connectedSed.sedType?.toLowerCase(),
+        sedId
+      })
+    : sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
+        rinaSakId: sak.sakId,
+        sedId,
+        sedType: connectedSed.svarsedType
+      })
+
   return call({
-    url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
-      rinaSakId: sak.sakId,
-      sedId,
-      sedType: connectedSed.svarsedType
-    }),
+    url,
     expectedPayload: mockReplySed(connectedSed.svarsedType!),
     context: {
       sak,
@@ -408,10 +428,13 @@ export const removeAttachment: ActionCreator<ActionWithPayload<any>> = (
   payload: attachment
 })
 
-export const deleteSed = (rinaSakId: string, sedId: string) => {
+export const deleteSed = (rinaSakId: string, sedId: string, sedType?: string) => {
+  const url = usesTypedSedApi(sedType)
+    ? sprintf(urls.API_SED_DELETE_BY_TYPE_URL, { rinaSakId, sedType: sedType?.toLowerCase(), sedId })
+    : sprintf(urls.API_SED_DELETE_URL, { rinaSakId, sedId })
   return call({
     method: 'DELETE',
-    url: sprintf(urls.API_SED_DELETE_URL, { rinaSakId, sedId }),
+    url,
     cascadeFailureError: true,
     context: {
       sedId

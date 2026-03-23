@@ -189,5 +189,14 @@
   "requiredTypeForInaktivPerson": "Type inaktivitet må fylles ut",
 
   "requiredAktiviteterForAktivitetStatus": "Aktivitet må legges til for status {{status}}",
-  "requiredPerioderForAktivitet": "Perioder må legges til for aktivitet {{aktivitet}}"
+  "requiredPerioderForAktivitet": "Perioder må legges til for aktivitet {{aktivitet}}",
+
+  "noBeroertYtelse": "Type ytelse må velges",
+  "noEtterspurtHandling": "Minst ett alternativ må velges under «Vi ber dere om å»",
+  "noAnnenMedisinskDokumentasjon": "Annen medisinsk dokumentasjon må fylles ut når «Annen medisinsk dokumentasjon» er valgt",
+  "noGjelderArbeidsufoerhet": "Det må angis om anmodningen gjelder arbeidsuførhet",
+  "noPeriodeStartdato": "Startdato for arbeidsuførhetsperioden må fylles ut",
+  "noPeriodeSluttdato": "Sluttdato for arbeidsuførhetsperioden må fylles ut",
+  "noDekningKostnader": "Det må angis om kostnadene for medisinsk dokumentasjon/undersøkelse dekkes",
+  "noAWODType": "Det må angis om SED-en gjelder arbeidsulykke eller yrkessykdom"
 }
