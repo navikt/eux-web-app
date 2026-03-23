@@ -1,7 +1,7 @@
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { H120Sed } from 'declarations/h120'
-import { checkLength } from 'utils/validation'
+import { checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationFamilieytelseSpoersmaalProps {
   replySed: ReplySed
@@ -18,6 +18,15 @@ export const validateFamilieytelseSpoersmaal = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const sed = replySed as H120Sed
+
+  if (sed.familie?.annenDokumentasjon?.trim()) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: sed.familie?.etterspurtDokumentasjon,
+      id: namespace + '-etterspurtDokumentasjon',
+      message: 'validation:noEtterspurtDokumentasjonFamilieytelser',
+      personName
+    }))
+  }
 
   hasErrors.push(checkLength(v, {
     needle: sed.familie?.annenDokumentasjon,

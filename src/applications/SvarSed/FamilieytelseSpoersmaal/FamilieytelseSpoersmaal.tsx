@@ -1,5 +1,5 @@
 import { Box, Checkbox, CheckboxGroup, Heading, VStack } from '@navikt/ds-react'
-import { setValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
 import { validateFamilieytelseSpoersmaal, ValidationFamilieytelseSpoersmaalProps } from 'applications/SvarSed/FamilieytelseSpoersmaal/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
@@ -57,6 +57,9 @@ const FamilieytelseSpoersmaal: React.FC<MainFormProps> = ({
 
   const setEtterspurtDokumentasjon = (values: string[]) => {
     dispatch(updateReplySed('familie.etterspurtDokumentasjon', values.length > 0 ? values : undefined))
+    if (validation[namespace + '-etterspurtDokumentasjon']) {
+      dispatch(resetValidation(namespace + '-etterspurtDokumentasjon'))
+    }
   }
 
   const setAnnenDokumentasjon = (value: string) => {
@@ -72,6 +75,7 @@ const FamilieytelseSpoersmaal: React.FC<MainFormProps> = ({
 
         <CheckboxGroup
           legend={t('label:etterspurt-dokumentasjon-familieytelser')}
+          error={validation[namespace + '-etterspurtDokumentasjon']?.feilmelding}
           value={sed.familie?.etterspurtDokumentasjon ?? []}
           onChange={setEtterspurtDokumentasjon}
         >
