@@ -58,8 +58,19 @@ const BeroertYtelse: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedvalidation))
   })
 
+  const isAWODYtelse = (ytelse: string) =>
+    ytelse === 'kontantytelser_ved_yrkesskade_eller_yrkessykdom_som_nevnt_i_artikkel_33_1_nr_987_2009' ||
+    ytelse === 'adre_kontantytelser_ved_yrkesskade_eller_yrkessykdom'
+
   const setBeroertYtelse = (value: string) => {
-    dispatch(updateReplySed('beroertYtelse', value.trim()))
+    const trimmed = value.trim()
+    dispatch(updateReplySed('beroertYtelse', trimmed))
+    if (trimmed !== 'familieytelse' && sed.familie) {
+      dispatch(updateReplySed('familie', undefined))
+    }
+    if (!isAWODYtelse(trimmed) && sed.arbeidsulykkeyrkessykdom) {
+      dispatch(updateReplySed('arbeidsulykkeyrkessykdom', undefined))
+    }
     if (validation[namespace + '-beroertYtelse']) {
       dispatch(resetValidation(namespace + '-beroertYtelse'))
     }

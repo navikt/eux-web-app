@@ -349,7 +349,7 @@ export const replyToSed = (
     ? connectedSed.sedIdParent
     : connectedSed.sedId
 
-  const url = usesTypedSedApi(connectedSed.svarsedType)
+  const url = usesTypedSedApi(connectedSed.sedType)
     ? sprintf(urls.API_SED_SVARSED_DRAFT_BY_TYPE_URL, {
         rinaSakId: sak.sakId,
         sedType: connectedSed.sedType?.toLowerCase(),

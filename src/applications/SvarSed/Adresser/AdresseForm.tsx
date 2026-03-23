@@ -3,7 +3,7 @@ import { Adresse, AdresseType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Country } from '@navikt/land-verktoy'
 import _ from 'lodash'
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useTranslation } from 'react-i18next'
 import CountryDropdown from "components/CountryDropdown/CountryDropdown";
 import {HGrid, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
@@ -40,7 +40,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
 }: AdresseFormProps) => {
   const { t } = useTranslation()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (defaultType && !adresse?.type) {
       onAdressChanged({
         ...adresse,
