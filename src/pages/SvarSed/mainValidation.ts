@@ -1,4 +1,4 @@
-import { validateAdresser, ValidationAdresserProps } from 'applications/SvarSed/Adresser/validation'
+import {validateAdresser, validateAnmodningOmAdresse, ValidationAdresserProps} from 'applications/SvarSed/Adresser/validation'
 import { validateAnmodning, ValidationAnmodningProps } from 'applications/SvarSed/Anmodning/validation'
 import {
   validateAnmodningsPerioder, validateKrav,
@@ -415,6 +415,10 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (isH001Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationAnmodningProps>(v, `svarsed-${personID}-anmodningOmAdresse`, validateAnmodningOmAdresse, {
+        replySed,
+        personName: i18n.t('label:anmodning-om-adresse').toLowerCase()
+      }, true))
       hasErrors.push(performValidation<ValidationAnmodningProps>(v, `svarsed-${personID}-anmodning`, validateAnmodning, {
         replySed,
         personName: i18n.t('label:anmodning-om-informasjon').toLowerCase()

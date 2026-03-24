@@ -110,3 +110,9 @@ export const validateAdresser = (
   })
   return hasErrors.find(value => value) !== undefined
 }
+
+export const validateAnmodningOmAdresse = ({}: any): boolean => {
+  const hasErrors: Array<boolean> = []
+
+  return hasErrors.find(value => value) !== undefined
+}

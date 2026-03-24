@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import useUnmount from "../../../hooks/useUnmount";
@@ -7,32 +7,25 @@ import {setValidation} from "../../../actions/validation";
 import {Box, Checkbox, CheckboxGroup, Heading, HStack, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {useTranslation} from "react-i18next";
-import {Adresse, AdresseAnmodning} from "../../../declarations/sed";
-import useLocalValidation from "../../../hooks/useLocalValidation";
+import {AdresseAnmodning} from "../../../declarations/sed";
 import performValidation from "../../../utils/performValidation";
-import {validateAdresser, ValidationAdresserProps} from "./validation";
+import {validateAnmodningOmAdresse} from "./validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const AdresseH001: React.FC<MainFormProps> = ({
-  label,
+const AnmodningOmAdresse: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
-  personName,
   replySed,
   updateReplySed,
-  options
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-${personID}-adresseH001`
-  const namespaceAdresse = `${parentNamespace}-${personID}-adresser`
+  const namespace = `${parentNamespace}-${personID}-adresseAnmodning`
   const target = 'anmodning.adresse'
-  const adresseTarget = `${personID}.adresser`
-  const adresser: Array<Adresse> | undefined = _.get(replySed, adresseTarget)
 
   const getAdresseAnmodning = () => {
     const adresseAnmodning: AdresseAnmodning | undefined = _.get(replySed, target)
@@ -49,8 +42,8 @@ const AdresseH001: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
+    performValidation<any>(clonedValidation, namespace, validateAnmodningOmAdresse, {}, true)
     dispatch(setValidation(clonedValidation))
-
   })
 
   const onAdressetypeChange = (value: any[]) => {
@@ -98,4 +91,4 @@ const AdresseH001: React.FC<MainFormProps> = ({
   );
 }
 
-export default AdresseH001
+export default AnmodningOmAdresse

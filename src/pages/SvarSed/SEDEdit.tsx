@@ -11,7 +11,7 @@ import {
 } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Adresser from 'applications/SvarSed/Adresser/Adresser'
-import AdresseH001 from 'applications/SvarSed/Adresser/AdresseH001'
+import AnmodningOmAdresse from '../../applications/SvarSed/Adresser/AnmodningOmAdresse'
 import Anmodning from 'applications/SvarSed/Anmodning/Anmodning'
 import AnmodningsPeriode from 'applications/SvarSed/AnmodningsPeriode/AnmodningsPeriode'
 import ArbeidsperioderOversikt from 'applications/SvarSed/ArbeidsperioderOversikt/ArbeidsperioderOversikt'
@@ -432,9 +432,9 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
                   { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H', 'S'], adult: true, barn: true },
                   { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true, condition: () => !isH120Sed(replySed) },
-                  { label: t('el:option-mainform-adresse'), value: 'adresse-h120', component: Adresser, type: ['H120'], options: {singleAdress: true, defaultType: 'bosted'}, adult: true },
+                  { label: t('el:option-mainform-adresse'), value: 'adresseH120', component: Adresser, type: ['H120'], options: {singleAdress: true, defaultType: 'bosted'}, adult: true },
                   { label: t('el:option-mainform-adresse'), value: 'adresse', component: Adresser, type: ['S'], options: {singleAdress: true}},
-                  { label: t('el:option-mainform-adresseH001'), value: 'adresseH001', component: AdresseH001, type: ['H001'], adult: true, barn: true, condition: () => CDM_VERSJON >= 4.4 },
+                  { label: t('el:option-mainform-adresseH001'), value: 'adresseAnmodning', component: AnmodningOmAdresse, type: ['H001'], adult: true, barn: true, condition: () => CDM_VERSJON >= 4.4 },
                   { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
                   { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
                   { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F026', 'F027'], adult: true },
