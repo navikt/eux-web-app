@@ -5,7 +5,7 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { H065Sed } from 'declarations/sed'
+import { DokumenterVedlagtType, H065Sed } from 'declarations/h065'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React from 'react'
@@ -58,7 +58,7 @@ const DokumenterVedlagt: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedvalidation))
   })
 
-  const setDokumenterVedlagtType = (value: string, checked: boolean) => {
+  const setDokumenterVedlagtType = (value: DokumenterVedlagtType, checked: boolean) => {
     const current = sed.overfoeringInfo?.dokumenterVedlagt?.type ?? []
     const updated = checked ? [...current, value] : current.filter(v => v !== value)
     dispatch(updateReplySed('overfoeringInfo.dokumenterVedlagt.type', updated.length > 0 ? updated : undefined))
@@ -90,8 +90,8 @@ const DokumenterVedlagt: React.FC<MainFormProps> = ({
           {dokumenterVedlagtTypeOptions.map(f => (
             <Checkbox
               key={f.value}
-              checked={dokumenterVedlagtTypes.indexOf(f.value) >= 0}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDokumenterVedlagtType(f.value, e.target.checked)}
+              checked={dokumenterVedlagtTypes.indexOf(f.value as DokumenterVedlagtType) >= 0}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDokumenterVedlagtType(f.value as DokumenterVedlagtType, e.target.checked)}
             >
               {f.label}
             </Checkbox>

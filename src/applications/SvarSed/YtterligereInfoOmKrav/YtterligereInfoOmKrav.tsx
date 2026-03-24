@@ -7,7 +7,7 @@ import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { H065Sed } from 'declarations/sed'
+import { AnnenKorrespondanseType, H065Sed, InformasjonAngaarYtelseType } from 'declarations/h065'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React from 'react'
@@ -71,8 +71,8 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedvalidation))
   })
 
-  const setInformasjonAngaarYtelseType = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.informasjonAngaarYtelse.type', value.trim()))
+  const setInformasjonAngaarYtelseType = (value: InformasjonAngaarYtelseType) => {
+    dispatch(updateReplySed('overfoeringInfo.informasjonAngaarYtelse.type', value))
     if (value !== 'annen_ytelse') {
       dispatch(updateReplySed('overfoeringInfo.informasjonAngaarYtelse.andre', undefined))
     }
@@ -88,8 +88,8 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
     }
   }
 
-  const setAnnenKorrespondanseType = (value: string) => {
-    dispatch(updateReplySed('overfoeringInfo.annenKorrespondanse.type', value.trim()))
+  const setAnnenKorrespondanseType = (value: AnnenKorrespondanseType) => {
+    dispatch(updateReplySed('overfoeringInfo.annenKorrespondanse.type', value))
     if (value !== 'annet') {
       dispatch(updateReplySed('overfoeringInfo.annenKorrespondanse.andre', undefined))
     }
@@ -126,7 +126,7 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
           id={namespace + '-informasjonAngaarYtelse-type'}
           label={t('label:krav-dokumentasjon-informasjon-angaar')}
           menuPortalTarget={document.body}
-          onChange={(o: unknown) => setInformasjonAngaarYtelseType((o as Option).value)}
+          onChange={(o: unknown) => setInformasjonAngaarYtelseType((o as Option).value as InformasjonAngaarYtelseType)}
           options={informasjonAngaarYtelseTypeOptions}
           required
           value={_.find(informasjonAngaarYtelseTypeOptions, o => o.value === sed.overfoeringInfo?.informasjonAngaarYtelse?.type)}
@@ -150,7 +150,7 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
           id={namespace + '-annenKorrespondanse-type'}
           label={t('label:annen-korrespondanse')}
           menuPortalTarget={document.body}
-          onChange={(o: unknown) => setAnnenKorrespondanseType((o as Option).value)}
+          onChange={(o: unknown) => setAnnenKorrespondanseType((o as Option).value as AnnenKorrespondanseType)}
           options={annenKorrespondanseTypeOptions}
           value={_.find(annenKorrespondanseTypeOptions, o => o.value === sed.overfoeringInfo?.annenKorrespondanse?.type)}
           defaultValue={_.find(annenKorrespondanseTypeOptions, o => o.value === sed.overfoeringInfo?.annenKorrespondanse?.type)}
