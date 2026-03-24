@@ -37,6 +37,7 @@ const Adresser: React.FC<MainFormProps> = ({
   personName,
   replySed,
   updateReplySed,
+  formValue,
   options
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
@@ -44,7 +45,7 @@ const Adresser: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const target = `${personID}.adresser`
   const adresser: Array<Adresse> | undefined = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-adresser`
+  const namespace = `${parentNamespace}-${personID}-${formValue ?? 'adresser'}`
   const singleAdress = options && options.singleAdress ? options.singleAdress : false
   const defaultType = options?.defaultType
   const botidilandetsiden: string | undefined = _.get(replySed, `${personID}.botidilandetsiden`)

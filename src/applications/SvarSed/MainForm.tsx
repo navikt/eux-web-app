@@ -53,6 +53,7 @@ export interface MainFormProps {
   personID?: string | undefined
   personName?: string
   label?: string
+  formValue?: string
   setReplySed: (replySed: ReplySed | PDU1) => ActionWithPayload<ReplySed | PDU1>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   options ?: any
@@ -175,6 +176,7 @@ const MainForm = <T extends StorageTypes>({
           personID={currentMenu!}
           personName={personName}
           label={form.label}
+          formValue={form.value}
           replySed={replySed}
           setReplySed={setReplySed}
           updateReplySed={updateReplySed}
