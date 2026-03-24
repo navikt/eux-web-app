@@ -9,7 +9,7 @@ import TextArea from 'components/Forms/TextArea'
 import ErrorLabel from 'components/Forms/ErrorLabel'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { H065Sed } from 'declarations/sed'
+import { H065DokumenterVedlagtType, H065Sed } from 'declarations/h065'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React from 'react'
@@ -151,7 +151,7 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
     }
   }
 
-  const setDokumenterVedlagtType = (value: string, checked: boolean) => {
+  const setDokumenterVedlagtType = (value: H065DokumenterVedlagtType, checked: boolean) => {
     const current = sed.overfoeringInfo?.dokumenterVedlagt?.type ?? []
     const updated = checked ? [...current, value] : current.filter(v => v !== value)
     dispatch(updateReplySed('overfoeringInfo.dokumenterVedlagt.type', updated.length > 0 ? updated : undefined))
@@ -318,8 +318,8 @@ const OverfoeringInfo: React.FC<MainFormProps> = ({
           {dokumenterVedlagtTypeOptions.map(f => (
             <Checkbox
               key={f.value}
-              checked={dokumenterVedlagtTypes.indexOf(f.value) >= 0}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDokumenterVedlagtType(f.value, e.target.checked)}
+              checked={dokumenterVedlagtTypes.indexOf(f.value as H065DokumenterVedlagtType) >= 0}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDokumenterVedlagtType(f.value as H065DokumenterVedlagtType, e.target.checked)}
             >
               {f.label}
             </Checkbox>

@@ -84,7 +84,6 @@ import {
   F026Sed,
   F027Sed,
   H001Sed,
-  H065Sed,
   S040Sed,
   USed,
   U002Sed,
@@ -98,6 +97,7 @@ import {
   X012Sed,
   Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse, VedtakF003, Vedtak
 } from 'declarations/sed'
+import { H065Sed } from 'declarations/h065'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
 import _ from 'lodash'
