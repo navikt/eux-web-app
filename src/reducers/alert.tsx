@@ -27,6 +27,27 @@ export const initialAlertState: AlertState = {
   type: undefined
 }
 
+/**
+ * Extracts a human-readable error message from an API error payload.
+ * Handles the RINA error format where the root cause is nested under `cause`,
+ * as well as older formats using `error` or `message` fields.
+ */
+function getErrorMessage(payload: any): string | undefined {
+  if (!payload) return undefined
+
+  // New RINA error format: { cause: { title, detail } }
+  if (payload.cause?.title || payload.cause?.detail) {
+    return [payload.cause.title, payload.cause.detail].filter(Boolean).join(': ')
+  }
+
+  // Older formats
+  if (_.isString(payload.error)) return payload.error
+  if (payload.error?.message) return payload.error.message
+  if (payload.message) return payload.message
+
+  return undefined
+}
+
 const alertReducer = (state: AlertState = initialAlertState, action: Action | ActionWithPayload = { type: '' }): AlertState => {
   let stripeMessage: JSX.Element | string | undefined
   let bannerMessage: string | undefined
@@ -86,11 +107,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
       type: action.type,
       bannerMessage,
       bannerStatus,
-      error: (action as ActionWithPayload).payload
-        ? _.isString((action as ActionWithPayload).payload.error)
-            ? (action as ActionWithPayload).payload.error
-            : (action as ActionWithPayload).payload.error?.message
-        : undefined,
+      error: getErrorMessage((action as ActionWithPayload).payload),
       uuid: (action as ActionWithPayload).payload ? (action as ActionWithPayload).payload.uuid : undefined
     }
   }
@@ -153,9 +170,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         } else if ((action as ActionWithPayload).status === 403) {
           stripeMessage = i18n.t('message:error-person-forbidden')
         } else {
-          bannerMessage = _.isString((action as ActionWithPayload).payload.error)
-            ? (action as ActionWithPayload).payload.error
-            : (action as ActionWithPayload).payload.error?.message
+          bannerMessage = getErrorMessage((action as ActionWithPayload).payload)
         }
         break
 
@@ -166,9 +181,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
       case types.JOURNALFOERING_H001_SEND_FAILURE:
       case types.JOURNALFOERING_H_BUC_01_CREATE_FAILURE:
       case types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_FAILURE:
-        bannerMessage = _.isString((action as ActionWithPayload).payload.error)
-          ? (action as ActionWithPayload).payload.error
-          : (action as ActionWithPayload).payload.error?.message
+        bannerMessage = getErrorMessage((action as ActionWithPayload).payload)
         break
 
       default:
@@ -176,13 +189,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         console.log((action as ActionWithPayload).status)
         console.log((action as ActionWithPayload).context)
         console.log((action as ActionWithPayload).payload)
-        if ((action as ActionWithPayload).payload && (action as ActionWithPayload).payload.error) {
-          stripeMessage = _.isString((action as ActionWithPayload).payload.error)
-            ? (action as ActionWithPayload).payload.error
-            : (action as ActionWithPayload).payload.error?.message
-        } else {
-          stripeMessage = i18n.t('label:error')
-        }
+        stripeMessage = getErrorMessage((action as ActionWithPayload).payload) ?? i18n.t('label:error')
         break
     }
 
@@ -193,11 +200,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
       bannerMessage,
       stripeStatus,
       stripeMessage,
-      error: (action as ActionWithPayload).payload
-        ? _.isString((action as ActionWithPayload).payload.error)
-            ? (action as ActionWithPayload).payload.error
-            : (action as ActionWithPayload).payload.error?.message
-        : undefined,
+      error: getErrorMessage((action as ActionWithPayload).payload),
       uuid: (action as ActionWithPayload).payload ? (action as ActionWithPayload).payload.uuid : undefined
     }
   }
