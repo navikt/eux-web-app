@@ -1,5 +1,8 @@
 # Copilot Instructions for eux-web-app (NEESSI)
 
+## NEVER
+- Do not commit and push to main/master directly. Always create a feature branch and open a pull request for code review.
+
 ## Build, Test, and Lint
 
 ```bash

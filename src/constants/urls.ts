@@ -20,12 +20,13 @@ export const API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL = V5_BASE_URL + '/per
 export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = V5_BASE_URL + '/rinasaker/%(rinaSakId)s/oversikt'
 export const API_SAK_SEND_URL = API_BASE_URL + '/rinasak/sed'
 export const API_MOTTAKERE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s/mottakere'
+export const API_SED_SEND_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/send'
+export const API_SED_STATUS_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/status'
+
 export const API_SED_CREATE_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/sed'
 export const API_SED_EDIT_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/sed/%(sedId)s'
 export const API_SED_DELETE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s'
 export const API_SED_UPDATE_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/sed/%(sedId)s'
-export const API_SED_SEND_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/send'
-export const API_SED_STATUS_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/status'
 export const API_RINASAK_SVARSED_QUERY_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
 
 // v1 typed SED endpoints (used for H120 and future SED types)
@@ -34,6 +35,7 @@ export const API_SED_EDIT_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakI
 export const API_SED_DELETE_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/%(sedType)s/%(sedId)s'
 export const API_SED_UPDATE_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/%(sedType)s/%(sedId)s'
 export const API_SED_SVARSED_DRAFT_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/%(sedType)s/%(sedId)s/svarsed'
+
 export const API_PREVIEW_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/utkast/pdf'
 export const API_PDF_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/pdf'
 export const API_SAK_DELETE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s'

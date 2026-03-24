@@ -4,7 +4,7 @@ import { validateGrunnerForOverfoering, ValidationGrunnerForOverfoeringProps } f
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import { State } from 'declarations/reducers'
-import { H065Sed } from 'declarations/sed'
+import { H065Sed } from 'declarations/h065'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React from 'react'

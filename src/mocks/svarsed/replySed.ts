@@ -8,7 +8,6 @@ import {
   F027Sed,
   H001Sed,
   H002Sed,
-  H065Sed,
   S040Sed,
   S046Sed,
   U002Sed,
@@ -20,6 +19,7 @@ import {
   X011Sed,
   X012Sed
 } from 'declarations/sed'
+import { H065Sed } from 'declarations/h065'
 import { H120Sed } from 'declarations/h120'
 import f001 from '../seds/f001.json'
 import f002 from '../seds/f002.json'

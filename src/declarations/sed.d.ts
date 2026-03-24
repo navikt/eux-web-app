@@ -1,4 +1,5 @@
 import { JoarkBrowserItems } from 'declarations/attachments'
+import { H065Sed } from 'declarations/h065'
 import { H120Sed } from 'declarations/h120'
 import { Sak, Sed } from 'declarations/types'
 
@@ -890,43 +891,6 @@ export interface H002Sed extends HSed {
   }
   positivtSvar?: H002Svar
   negativtSvar?: H002Svar
-}
-
-export interface H065OverfoeringInfo {
-  erBrukerSoekeren?: string
-  mottaksdato?: string
-  grunnerForOverfoering?: string
-  til?: H065Til
-  informasjonAngaarYtelse?: H065InformasjonAngaarYtelse
-  annenKorrespondanse?: H065AnnenKorrespondanse
-  dokumenterVedlagt?: H065DokumenterVedlagt
-}
-
-export interface H065Til {
-  type?: string
-  institusjon?: {
-    id?: string
-    navn?: string
-  }
-}
-
-export interface H065InformasjonAngaarYtelse {
-  type?: string
-  andre?: string
-}
-
-export interface H065AnnenKorrespondanse {
-  type?: string
-  andre?: string
-}
-
-export interface H065DokumenterVedlagt {
-  type?: Array<string>
-  annet?: Array<string>
-}
-
-export interface H065Sed extends HSed {
-  overfoeringInfo?: H065OverfoeringInfo
 }
 
 export interface S040Sed extends BaseReplySed {

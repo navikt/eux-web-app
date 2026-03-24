@@ -44,7 +44,7 @@ import {
   validateKontoopplysning,
   ValidationKontoopplysningProps
 } from 'applications/SvarSed/Kontoopplysning/validation'
-import {validateKravOmRefusjon, validateRefusjon, ValidationKravOmRefusjonProps, ValidationRefusjonProps, ValidationRefusjonsKravProps} from 'applications/SvarSed/KravOmRefusjon/validation'
+import {validateKravOmRefusjon, validateRefusjon, ValidationKravOmRefusjonProps, ValidationRefusjonProps} from 'applications/SvarSed/KravOmRefusjon/validation'
 import { validateMotregninger, ValidationMotregningerProps } from 'applications/SvarSed/Motregninger/validation'
 import { validateNasjonaliteter, ValidationNasjonaliteterProps } from 'applications/SvarSed/Nasjonaliteter/validation'
 import {
@@ -91,7 +91,6 @@ import {
   F026Sed,
   F027Sed,
   H001Sed,
-  H065Sed,
   S040Sed,
   USed,
   U002Sed,
