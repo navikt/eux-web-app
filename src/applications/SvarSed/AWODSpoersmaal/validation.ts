@@ -122,6 +122,14 @@ export const validateAWODSpoersmaal = (
       message: 'validation:noIdentifikatorId',
       personName
     }))
+
+    hasErrors.push(checkLength(v, {
+      needle: identifikator?.id,
+      max: 25,
+      id: namespace + '-identifikatorId',
+      message: 'validation:textOverX',
+      personName
+    }))
   }
 
   return hasErrors.find(value => value) !== undefined
