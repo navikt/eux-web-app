@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "13.3.0-TEN-1555-TYPED-SED-API-H065",
+  "version": "13.3.0",
   "private": true,
   "type": "module",
   "scripts": {
