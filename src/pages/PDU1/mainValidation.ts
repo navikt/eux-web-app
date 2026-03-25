@@ -1,6 +1,7 @@
 import { validateDagpengerPerioder, ValidationDagpengerPerioderProps } from 'applications/PDU1/Dagpenger/validation'
 import { validateAllePDPerioder, ValidateAllePDPerioderProps } from 'applications/PDU1/Perioder/validation'
 import { validateRettTilDagpenger, ValidationRettTilDagpengerProps } from 'applications/PDU1/RettTilDagpenger/validation'
+import { validateCoverLetter, ValidationCoverLetterProps } from 'applications/PDU1/CoverLetter/validation'
 import {Pdu1Person, PDU1, Etterbetalinger, PDPeriode, Avsender, Oppsigelsesgrunn, RettTilDagpenger, IkkeRettTilDagpenger} from 'declarations/pd'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
@@ -53,6 +54,10 @@ export const validatePDU1Edit = (v: Validation, namespace: string, {
   const avsender: Avsender = _.get(pdu1, 'avsender')
   hasErrors.push(performValidation<ValidationAvsenderProps>(v,
     `${namespace}-avsender`, validateAvsender, { avsender, keyForCity: 'poststed', keyforZipCode: 'postnr' }, true))
+
+  const info: string | undefined = _.get(pdu1, 'info')
+  hasErrors.push(performValidation<ValidationCoverLetterProps>(v,
+    `${namespace}-coverletter`, validateCoverLetter, { info }, true))
 
   return hasErrors.find(value => value) !== undefined
 }
