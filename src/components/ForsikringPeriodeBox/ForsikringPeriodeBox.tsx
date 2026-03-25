@@ -431,7 +431,8 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
               namespace={namespace}
               error={{
                 startdato: _v[namespace + '-startdato']?.feilmelding,
-                sluttdato: _v[namespace + '-sluttdato']?.feilmelding
+                sluttdato: _v[namespace + '-sluttdato']?.feilmelding,
+                aapenPeriodeType: _v[namespace + '-aapenPeriodeType']?.feilmelding
               }}
               hideLabel={false}
               setPeriode={setPeriode}

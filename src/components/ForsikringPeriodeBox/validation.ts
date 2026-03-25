@@ -1,5 +1,6 @@
 import { validateAdresse } from 'applications/SvarSed/Adresser/validation'
 import { validateInntektOgTimer } from 'components/ForsikringPeriodeBox/InntektOgTimer/validation'
+import { validatePeriode } from 'components/Forms/validation'
 import {
   ForsikringPeriode,
   PeriodeAnnenForsikring, PeriodeFerieForsikring,
@@ -7,7 +8,7 @@ import {
   PeriodeUtenForsikring
 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import {checkIfNotDate, checkIfNotEmpty, checkIfNotNumber, checkLength, checkValidDateFormat} from 'utils/validation'
+import {checkIfNotEmpty, checkIfNotNumber, checkLength} from 'utils/validation'
 import _ from "lodash";
 
 export interface ValidationForsikringPeriodeBoxProps {
@@ -37,34 +38,8 @@ export const validateForsikringPeriodeBox = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: forsikringPeriode?.startdato,
-    id: namespace + (nsIndex ?? '') + '-startdato',
-    message: 'validation:noDate'
-  }))
-
-  hasErrors.push(checkIfNotDate(v, {
-    needle: forsikringPeriode?.startdato,
-    id: namespace + (nsIndex ?? '') + '-startdato',
-    message: 'validation:invalidDate'
-  }))
-
-  hasErrors.push(checkValidDateFormat(v, {
-    needle: forsikringPeriode?.startdato,
-    id: namespace + (nsIndex ?? '') + '-startdato',
-    message: 'validation:invalidDateFormat'
-  }))
-
-  hasErrors.push(checkIfNotDate(v, {
-    needle: forsikringPeriode?.sluttdato,
-    id: namespace + (nsIndex ?? '') + '-sluttdato',
-    message: 'validation:invalidDate'
-  }))
-
-  hasErrors.push(checkValidDateFormat(v, {
-    needle: forsikringPeriode?.sluttdato,
-    id: namespace + (nsIndex ?? '') + '-sluttdato',
-    message: 'validation:invalidDateFormat'
+  hasErrors.push(validatePeriode(v, namespace + (nsIndex ?? ''), {
+    periode: forsikringPeriode ?? undefined
   }))
 
   if (showArbeidsgiver) {
