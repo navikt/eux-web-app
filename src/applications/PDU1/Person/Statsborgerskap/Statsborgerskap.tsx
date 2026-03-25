@@ -10,7 +10,6 @@ import FormText from 'components/Forms/FormText'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
-import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,8 +18,6 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import {
   validateStatsborgerskap,
-  validateStatsborgerskaper,
-  ValidationStatsborgerskaperProps,
   ValidationStatsborgerskapProps
 } from './validation'
 import Modal from "../../../../components/Modal/Modal";
@@ -64,17 +61,6 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationStatsborgerskapProps>(validateStatsborgerskap, namespace)
 
   const [_showStatborgerskapMissingModal, _setShowStatsborgerskapMissingModal] = useState<boolean>(false)
-
-  useUnmount(() => {
-    const clonedvalidation = _.cloneDeep(validation)
-    const filteredStatsborgerskaper = statsborgerskaper ? statsborgerskaper?.filter(s => s) : statsborgerskaper // Remove NULL values from array
-    performValidation<ValidationStatsborgerskaperProps>(
-      clonedvalidation, namespace, validateStatsborgerskaper, {
-        statsborgerskaper: filteredStatsborgerskaper
-      }, true
-    )
-    dispatch(setValidation(clonedvalidation))
-  })
 
   useEffect(() => {
     if(!statsborgerskapModalShown && statsborgerskaper?.some((s) => s === null)){
