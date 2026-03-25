@@ -2,8 +2,8 @@ import { Periode, PeriodeInputType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
-import {addError, checkIfNotDate, checkIfNotEmpty, checkValidDateFormat} from 'utils/validation'
-import {isDateValidFormat} from "../DateField/DateField";
+import {addError, checkIfNotEmpty, checkValidDateFormat} from 'utils/validation'
+import {isDateValidFormat, toDateFormat} from "../DateField/DateField";
 import moment from 'moment'
 
 export interface ValidationPeriodeProps {
@@ -41,13 +41,6 @@ export const validatePeriode = (
     }))
   }
 
-  hasErrors.push(checkIfNotDate(v, {
-    needle: periode?.startdato,
-    id: namespace + idx + '-startdato',
-    message: 'validation:invalidDate',
-    personName
-  }))
-
   hasErrors.push(checkValidDateFormat(v, {
     needle: periode?.startdato,
     id: namespace + idx + '-startdato',
@@ -64,13 +57,6 @@ export const validatePeriode = (
     }))
   }
 
-  hasErrors.push(checkIfNotDate(v, {
-    needle: periode?.sluttdato,
-    id: namespace + idx + '-sluttdato',
-    message: 'validation:invalidDate',
-    personName
-  }))
-
   hasErrors.push(checkValidDateFormat(v, {
     needle: periode?.sluttdato,
     id: namespace + idx + '-sluttdato',
@@ -80,7 +66,7 @@ export const validatePeriode = (
 
   if (!_.isEmpty(periode?.startdato?.trim()) && !_.isEmpty(periode?.sluttdato?.trim()) &&
     (isDateValidFormat(periode!.startdato) && isDateValidFormat(periode!.sluttdato)) &&
-    moment(periode!.startdato.trim(), 'YYYY-MM-DD').isAfter(moment(periode!.sluttdato?.trim(), 'YYYY-MM-DD'))) {
+    moment(toDateFormat(periode!.startdato, 'YYYY-MM-DD'), 'YYYY-MM-DD').isAfter(moment(toDateFormat(periode!.sluttdato, 'YYYY-MM-DD'), 'YYYY-MM-DD'))) {
       hasErrors.push(addError(v, {
         id: namespace + idx + '-sluttdato',
         message: 'validation:endDateBeforeStartDate',

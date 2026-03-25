@@ -1,6 +1,7 @@
 import { validateDagpengerPerioder, ValidationDagpengerPerioderProps } from 'applications/PDU1/Dagpenger/validation'
 import { validateAllePDPerioder, ValidateAllePDPerioderProps } from 'applications/PDU1/Perioder/validation'
-import {Pdu1Person, PDU1, Etterbetalinger, PDPeriode, Avsender, Oppsigelsesgrunn} from 'declarations/pd'
+import { validateRettTilDagpenger, ValidationRettTilDagpengerProps } from 'applications/PDU1/RettTilDagpenger/validation'
+import {Pdu1Person, PDU1, Etterbetalinger, PDPeriode, Avsender, Oppsigelsesgrunn, RettTilDagpenger, IkkeRettTilDagpenger} from 'declarations/pd'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { validatePerson, ValidationPersonProps } from 'applications/PDU1/Person/validation'
@@ -44,6 +45,11 @@ export const validatePDU1Edit = (v: Validation, namespace: string, {
   const dagpenger: Array<PDPeriode> | undefined = _.get(pdu1, 'perioderDagpengerMottatt')
   hasErrors.push(performValidation<ValidationDagpengerPerioderProps>(v,
     `${namespace}-${personID}-dagpenger`, validateDagpengerPerioder, { dagpenger }, true))
+
+  const rettTilDagpenger: RettTilDagpenger | undefined = _.get(pdu1, 'rettTilDagpenger')
+  const ikkeRettTilDagpenger: IkkeRettTilDagpenger | undefined = _.get(pdu1, 'ikkeRettTilDagpenger')
+  hasErrors.push(performValidation<ValidationRettTilDagpengerProps>(v,
+    `${namespace}-${personID}-retttildagpenger`, validateRettTilDagpenger, { rettTilDagpenger, ikkeRettTilDagpenger }, true))
 
   const avsender: Avsender = _.get(pdu1, 'avsender')
   hasErrors.push(performValidation<ValidationAvsenderProps>(v,

@@ -1,6 +1,7 @@
 import { IkkeRettTilDagpenger, RettTilDagpenger } from 'declarations/pd'
 import { Validation } from 'declarations/types'
-import {checkValidDateFormat} from "../../../utils/validation";
+import {validatePeriode} from "components/Forms/validation";
+import {Periode} from "declarations/sed";
 
 export interface ValidationRettTilDagpengerProps {
   rettTilDagpenger: RettTilDagpenger | undefined
@@ -11,29 +12,16 @@ export const validateRettTilDagpenger = (
   v: Validation,
   namespace: string,
   {
-    rettTilDagpenger,
-    ikkeRettTilDagpenger
+    rettTilDagpenger
   }: ValidationRettTilDagpengerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  if(rettTilDagpenger && rettTilDagpenger.startdato){
-    hasErrors.push(checkValidDateFormat(v, {
-      needle: rettTilDagpenger.startdato,
-      id: namespace + '-startdato',
-      message: 'validation:invalidDateFormat',
+  if(rettTilDagpenger){
+    hasErrors.push(validatePeriode(v, namespace, {
+      periode: (rettTilDagpenger as Periode) ?? undefined
     }))
   }
-
-  if(rettTilDagpenger && rettTilDagpenger.sluttdato){
-    hasErrors.push(checkValidDateFormat(v, {
-      needle: rettTilDagpenger.sluttdato,
-      id: namespace + '-sluttdato',
-      message: 'validation:invalidDateFormat',
-    }))
-  }
-
-  console.log(ikkeRettTilDagpenger)
 
   return hasErrors.find(value => value) !== undefined
 }

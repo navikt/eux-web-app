@@ -2,6 +2,7 @@ import { PDPeriode, PDU1 } from 'declarations/pd.d'
 import { Validation } from 'declarations/types'
 import { getNSIdx } from 'utils/namespace'
 import { checkIfNotEmpty } from 'utils/validation'
+import {validatePeriode} from "../../../components/Forms/validation";
 
 export interface ValidationPDPeriodeProps {
   periode: PDPeriode | undefined
@@ -33,10 +34,8 @@ export const validatePDPeriode = (
     message: 'validation:noType'
   }))
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: periode?.startdato,
-    id: namespace + (nsIndex ?? '') + '-startdato',
-    message: 'validation:noStartdato'
+  hasErrors.push(validatePeriode(v, namespace + (nsIndex ?? ''), {
+    periode: periode ?? undefined
   }))
 
   return hasErrors.find(value => value) !== undefined
