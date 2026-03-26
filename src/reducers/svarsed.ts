@@ -75,6 +75,28 @@ export const initialSvarsedState: SvarsedState = {
   searchedFromFrontpage: false
 }
 
+async function logStream(stream: ReadableStream<Uint8Array>) {
+  const reader = stream.getReader();
+  const decoder = new TextDecoder();
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      console.log(decoder.decode(value, { stream: true }));
+    }
+  } finally {
+    reader.releaseLock();
+  }
+}
+
+async function logFullStream(stream: ReadableStream<Uint8Array>) {
+  const response = new Response(stream);
+  const text = await response.text();
+  console.log(text);
+}
+
 const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
   const personInfo = {
     fornavn: sak.fornavn,
@@ -349,6 +371,12 @@ const svarsedReducer = (
     case types.SVARSED_SAKS_REFRESH_FAILURE:
     case types.SVARSED_SAKS_TIMER_REFRESH_FAILURE:
       console.log(JSON.stringify((action as ActionWithPayload).payload))
+      try {
+        logFullStream((action as ActionWithPayload).payload.error.response.body)
+      } catch (e) {
+        console.log("Failed to log stream")
+        // Do nothing
+      }
 
       return {
         ...state,
