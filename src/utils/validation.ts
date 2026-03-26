@@ -67,7 +67,6 @@ export const checkIfFilledOut = (v: Validation, { needle, id, personName, messag
 
 export const checkIfNotEmpty = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams): boolean => {
   if (_.isEmpty(_.isString(needle) ? needle.trim() : needle)) {
-    console.log(`Validation failed for ${id} with value ${needle}`)
     return addError(v, { id, personName, message, extra })
   }
   return false
