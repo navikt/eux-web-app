@@ -29,15 +29,15 @@ export const initialAlertState: AlertState = {
 
 /**
  * Extracts a human-readable error message from an API error payload.
- * Handles the RINA error format where the root cause is nested under `cause`,
+ * Handles the RINA error format where the root cause is nested under `stackTrace`,
  * as well as older formats using `error` or `message` fields.
  */
 function getErrorMessage(payload: any): string | undefined {
   if (!payload) return undefined
 
-  // New RINA error format: { cause: { title, detail } }
-  if (payload.cause?.title || payload.cause?.detail) {
-    return [payload.cause.title, payload.cause.detail].filter(Boolean).join(': ')
+  // RINA error format: { error: { stackTrace: { title, detail } } }
+  if (payload.error?.stackTrace?.title || payload.error?.stackTrace?.detail) {
+    return [payload.error.stackTrace.title, payload.error.stackTrace.detail].filter(Boolean).join(': ')
   }
 
   // Older formats
