@@ -31,7 +31,7 @@ function getErrorMessage(payload: any): string | undefined {
   if (!payload) return undefined
 
   if (payload.error?.stackTrace?.title || payload.error?.stackTrace?.detail) {
-    return [payload.error.stackTrace.title, payload.error.stackTrace.detail].filter(Boolean).join(': ')
+    return [payload.error.message, payload.error.stackTrace.title, payload.error.stackTrace.detail].filter(Boolean).join(': ')
   }
 
   if (_.isString(payload.error)) return payload.error
