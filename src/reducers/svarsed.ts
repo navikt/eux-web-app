@@ -348,6 +348,8 @@ const svarsedReducer = (
     case types.SVARSED_SAKS_FAILURE:
     case types.SVARSED_SAKS_REFRESH_FAILURE:
     case types.SVARSED_SAKS_TIMER_REFRESH_FAILURE:
+      console.log(JSON.stringify((action as ActionWithPayload).payload))
+
       return {
         ...state,
         saks: null,
