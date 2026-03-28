@@ -1,8 +1,9 @@
 import { PDPeriode } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
+import { addError, checkLength } from 'utils/validation'
 import i18n from 'i18n'
+import {validatePeriode} from "../../../components/Forms/validation";
 
 export interface ValidationDagpengerPeriodeProps {
   periode: PDPeriode |undefined
@@ -24,17 +25,11 @@ export const validateDagpengerPeriode = (
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: periode?.startdato,
-    id: namespace + idx + '-startdato',
-    message: 'validation:noStartdato'
+  hasErrors.push(validatePeriode(v, namespace + idx, {
+    periode: periode ?? undefined,
+    mandatorySluttdato: true
   }))
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: periode?.sluttdato,
-    id: namespace + idx + '-sluttdato',
-    message: 'validation:noSluttdato'
-  }))
 
   hasErrors.push(checkLength(v, {
     needle: periode?.info,

@@ -196,6 +196,8 @@ const Dagpenger: React.FC<MainFormProps> = ({
                   value={_periode}
                   finalFormat='DD.MM.YYYY'
                   uiFormat='DD.MM.YYYY'
+                  periodeType="simple"
+                  requiredSluttDato={true}
                 />
                 <HStack>
                   <Spacer/>
