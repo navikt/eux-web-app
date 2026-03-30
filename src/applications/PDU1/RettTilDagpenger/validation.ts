@@ -1,11 +1,10 @@
-import { IkkeRettTilDagpenger, RettTilDagpenger } from 'declarations/pd'
+import { RettTilDagpenger } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import {validatePeriode} from "components/Forms/validation";
 import {Periode} from "declarations/sed";
 
 export interface ValidationRettTilDagpengerProps {
   rettTilDagpenger: RettTilDagpenger | undefined
-  ikkeRettTilDagpenger: IkkeRettTilDagpenger |undefined
 }
 
 export const validateRettTilDagpenger = (
@@ -19,7 +18,7 @@ export const validateRettTilDagpenger = (
 
   if(rettTilDagpenger){
     hasErrors.push(validatePeriode(v, namespace, {
-      periode: (rettTilDagpenger as Periode) ?? undefined
+      periode: rettTilDagpenger as Periode
     }))
   }
 

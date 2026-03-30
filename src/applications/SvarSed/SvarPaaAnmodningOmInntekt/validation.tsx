@@ -46,7 +46,9 @@ export const validateInntekt = (
   if(svarInntekt?.periode && (svarInntekt?.periode.startdato || svarInntekt?.periode.sluttdato)) {
     hasErrors.push(validatePeriode(v, namespace + '-periode', {
       periode: svarInntekt.periode,
-      periodeType: 'simple'
+      periodeType: 'simple',
+      mandatoryStartdato: false,
+      mandatorySluttdatoIfStartdato: true
     }))
   }
 
