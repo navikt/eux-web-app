@@ -214,7 +214,7 @@ verify_build() {
   ok "Dependencies installed"
 
   info "Running build: $BUILD_CMD"
-  if $BUILD_CMD; then
+  if eval "$BUILD_CMD"; then
     print ""
     ok "Build passed!"
   else
