@@ -213,6 +213,13 @@ verify_build() {
   npm install --quiet 2>/dev/null
   ok "Dependencies installed"
 
+  # Commit any lock file changes from npm install
+  if [[ -n "$(git status --porcelain package-lock.json package.json 2>/dev/null)" ]]; then
+    git add package-lock.json package.json
+    git commit -m "chore: update package-lock.json after combined install" --quiet
+    ok "Committed updated lock file"
+  fi
+
   info "Running build: $BUILD_CMD"
   if eval "$BUILD_CMD"; then
     print ""
