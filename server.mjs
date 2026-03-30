@@ -214,7 +214,10 @@ app.use('/v5',
 
 // app.use('/websocket', socketProxy)
 
-app.use('{*splat}', express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, "build")));
+app.use('/{*splat}', (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 // start express server on port 8080
 app.listen(8080, () => {
