@@ -36,7 +36,7 @@
     "@navikt/fnrvalidator": "2.2.1",
     "@navikt/land-verktoy": "11.0.21",
     "@navikt/landvelger": "11.0.21",
-    "@navikt/tabell": "14.0.6",
+    "@navikt/tabell": "14.8.0",
     "@reduxjs/toolkit": "1.9.7",
     "ansi-to-html": "0.7.2",
     "bytes": "3.1.2",
