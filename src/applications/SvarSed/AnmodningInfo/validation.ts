@@ -2,6 +2,7 @@ import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { H120Sed } from 'declarations/h120'
 import { checkIfNotEmpty } from 'utils/validation'
+import { validatePeriode } from 'components/Forms/validation'
 
 export interface ValidationAnmodningInfoProps {
   replySed: ReplySed
@@ -29,18 +30,14 @@ export const validateAnmodningInfo = (
   }
 
   if (sed.anmodningInfo?.gjelderArbeidsufoerhet === true) {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: sed.anmodningInfo?.periodeStartdato,
-      id: namespace + '-periodeStartdato',
-      message: 'validation:noPeriodeStartdato',
-      personName
-    }))
-
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: sed.anmodningInfo?.periodeSluttdato,
-      id: namespace + '-periodeSluttdato',
-      message: 'validation:noPeriodeSluttdato',
-      personName
+    hasErrors.push(validatePeriode(v, namespace, {
+      periode: {
+        startdato: sed.anmodningInfo?.periodeStartdato ?? '',
+        sluttdato: sed.anmodningInfo?.periodeSluttdato ?? ''
+      },
+      mandatoryStartdato: true,
+      mandatorySluttdato: true,
+      periodeType: 'simple'
     }))
   }
 

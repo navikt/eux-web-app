@@ -6,7 +6,6 @@ import { getIdx, getNSIdx } from 'utils/namespace'
 import {
   addError,
   checkIfDuplicate,
-  checkIfNotDate,
   checkIfNotEmpty,
   checkLength,
   checkValidDateFormat
@@ -146,13 +145,6 @@ export const validateVedtak = (
     needle: vedtak?.vedtaksdato,
     id: namespace + '-vedtaksdato',
     message: 'validation:noDate',
-    personName: formalName
-  }))
-
-  hasErrors.push(checkIfNotDate(v, {
-    needle: vedtak?.vedtaksdato,
-    id: namespace + '-vedtaksdato',
-    message: 'validation:invalidDate',
     personName: formalName
   }))
 

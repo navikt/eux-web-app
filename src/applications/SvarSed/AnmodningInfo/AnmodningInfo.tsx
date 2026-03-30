@@ -64,15 +64,15 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
 
   const setPeriodeStartdato = (value: string) => {
     dispatch(updateReplySed('anmodningInfo.periodeStartdato', value.trim()))
-    if (validation[namespace + '-periodeStartdato']) {
-      dispatch(resetValidation(namespace + '-periodeStartdato'))
+    if (validation[namespace + '-startdato']) {
+      dispatch(resetValidation(namespace + '-startdato'))
     }
   }
 
   const setPeriodeSluttdato = (value: string) => {
     dispatch(updateReplySed('anmodningInfo.periodeSluttdato', value.trim()))
-    if (validation[namespace + '-periodeSluttdato']) {
-      dispatch(resetValidation(namespace + '-periodeSluttdato'))
+    if (validation[namespace + '-sluttdato']) {
+      dispatch(resetValidation(namespace + '-sluttdato'))
     }
   }
 
@@ -113,10 +113,10 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
         </RadioGroup>
 
         {gjelderArbeidsufoerhet === true && (
-          <HGrid columns={2} gap="space-16">
+          <HGrid columns={2} gap="space-16" align="start">
             <DateField
-              error={validation[namespace + '-periodeStartdato']?.feilmelding}
-              id='periodeStartdato'
+              error={validation[namespace + '-startdato']?.feilmelding}
+              id='startdato'
               namespace={namespace}
               label={t('label:startdato-arbeidsufoerhet')}
               onChanged={setPeriodeStartdato}
@@ -124,8 +124,8 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
               dateValue={sed.anmodningInfo?.periodeStartdato}
             />
             <DateField
-              error={validation[namespace + '-periodeSluttdato']?.feilmelding}
-              id='periodeSluttdato'
+              error={validation[namespace + '-sluttdato']?.feilmelding}
+              id='sluttdato'
               namespace={namespace}
               label={t('label:sluttdato-arbeidsufoerhet')}
               onChanged={setPeriodeSluttdato}

@@ -1,7 +1,7 @@
 import { H065Sed } from 'declarations/h065'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkIfNotEmpty, checkLength } from 'utils/validation'
+import { checkIfNotEmpty, checkLength, checkValidDateFormat } from 'utils/validation'
 
 export interface ValidationYtterligereInfoOmKravProps {
   replySed: ReplySed
@@ -55,6 +55,13 @@ export const validateYtterligereInfoOmKrav = (
     needle: sed.overfoeringInfo?.mottaksdato,
     id: namespace + '-mottaksdato',
     message: 'validation:noDate',
+    personName
+  }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: sed.overfoeringInfo?.mottaksdato,
+    id: namespace + '-mottaksdato',
+    message: 'validation:invalidDateFormat',
     personName
   }))
 

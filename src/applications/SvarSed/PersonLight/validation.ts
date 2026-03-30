@@ -1,7 +1,7 @@
 import { PersonLight, Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import {addError, checkIfNotDate, checkIfNotEmpty, checkValidDateFormat} from 'utils/validation'
+import {addError, checkIfNotEmpty, checkValidDateFormat} from 'utils/validation'
 import {validateFnrDnrNpid} from "../../../utils/fnrValidator";
 
 export interface ValidationPersonLightProps {
@@ -35,13 +35,6 @@ export const validatePersonLight = (
     needle: personLight?.foedselsdato?.trim(),
     id: namespace + '-foedselsdato',
     message: 'validation:noFoedselsdato',
-    personName
-  }))
-
-  hasErrors.push(checkIfNotDate(v, {
-    needle: personLight?.foedselsdato?.trim(),
-    id: namespace + '-foedselsdato',
-    message: 'validation:invalidFoedselsdato',
     personName
   }))
 

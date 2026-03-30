@@ -1,5 +1,5 @@
 import { Validation } from 'declarations/types'
-import {checkIfNotEmpty} from "../../../utils/validation";
+import {checkIfNotEmpty, checkValidDateFormat} from "../../../utils/validation";
 
 export interface ValidationInformasjonOmUtbetalingProps {
   informasjonOmUtbetaling: any | undefined
@@ -32,6 +32,12 @@ export const validateInformasjonOmUtbetaling = (
     needle: informasjonOmUtbetaling?.forespoerselomperiode?.startdato,
     id: namespace + '-forespoerselomperiode-startdato',
     message: 'validation:noStartdato'
+  }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: informasjonOmUtbetaling?.forespoerselomperiode?.startdato,
+    id: namespace + '-forespoerselomperiode-startdato',
+    message: 'validation:invalidDateFormat'
   }))
 
   return hasErrors.find(value => value) !== undefined

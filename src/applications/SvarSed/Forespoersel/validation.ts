@@ -1,5 +1,5 @@
 import { Validation } from 'declarations/types'
-import {checkIfNotEmpty} from "../../../utils/validation";
+import {checkIfNotEmpty, checkValidDateFormat} from "../../../utils/validation";
 
 export interface ValidationForespoerselProps {
   sykdom: any | undefined
@@ -32,6 +32,12 @@ export const validateForespoersel = (
     needle: sykdom?.forespoerselomperiode?.startdato,
     id: namespace + '-forespoerselomperiode-startdato',
     message: 'validation:noStartdato'
+  }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: sykdom?.forespoerselomperiode?.startdato,
+    id: namespace + '-forespoerselomperiode-startdato',
+    message: 'validation:invalidDateFormat'
   }))
 
   return hasErrors.find(value => value) !== undefined
