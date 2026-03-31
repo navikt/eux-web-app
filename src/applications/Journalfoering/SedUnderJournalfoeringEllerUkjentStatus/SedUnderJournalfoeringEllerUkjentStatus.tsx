@@ -1,12 +1,12 @@
 import {Box, Heading, HStack, Loader, Spacer, VStack} from '@navikt/ds-react'
 import {Sak} from 'declarations/types'
-import React, {useEffect} from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import commonStyles from 'assets/css/common.module.css'
-import {querySaks} from "../../../actions/svarsed";
-import {useAppDispatch, useAppSelector} from "../../../store";
-import {State} from "../../../declarations/reducers";
+import {useAppSelector} from "store"
+import {State} from "declarations/reducers"
+import useSakEvents from "hooks/useSakEvents"
 
 interface SedUnderJournalfoeringEllerUkjentStatusProps {
   sak: Sak
@@ -16,39 +16,14 @@ interface SedUnderJournalfoeringEllerUkjentStatusSelector {
   refreshingSaks: boolean
 }
 
-const mapState = (state: State) => ({
+const mapState = (state: State): SedUnderJournalfoeringEllerUkjentStatusSelector => ({
   refreshingSaks: state.loading.refreshingSaks
 })
 
 const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoeringEllerUkjentStatusProps) => {
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
-  const { refreshingSaks }: SedUnderJournalfoeringEllerUkjentStatusSelector = useAppSelector(mapState)
-
-  useEffect(() => {
-    let controller = new AbortController();
-    const signal = controller.signal;
-
-    let interval: string | number | NodeJS.Timeout | undefined
-    let runs = 0
-    interval = setInterval(() => {
-      runs += 1
-      if(runs === 60){
-        clearInterval(interval)
-        return
-      } else if (sak.sedUnderJournalfoeringEllerUkjentStatus && (runs === 5 || runs === 10 || runs === 59)) {
-        dispatch(querySaks(sak?.sakId, 'timer', runs >= 2, signal))
-      }
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-      if(controller){
-        controller.abort();
-      }
-    }
-  }, [])
-
+  const { refreshingSaks } = useAppSelector(mapState)
+  const sseStatus = useSakEvents(sak?.sakId)
 
   return (
     <Box background="default" padding="space-16" borderWidth="1" borderColor="neutral" borderRadius="2">
@@ -59,12 +34,12 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
         <div className={commonStyles.horizontalLineSeparator} />
         {sak.sedUnderJournalfoeringEllerUkjentStatus && sak.sedUnderJournalfoeringEllerUkjentStatus.length > 0 &&
           <ul>
-            {sak.sedUnderJournalfoeringEllerUkjentStatus.map((sedTitle) => {
-              return (<li>{sedTitle}</li>)
+            {sak.sedUnderJournalfoeringEllerUkjentStatus.map((sedTitle, index) => {
+              return (<li key={index}>{sedTitle}</li>)
             })}
           </ul>
         }
-        {refreshingSaks &&
+        {(refreshingSaks || sseStatus === 'connecting') &&
           <HStack>
             <Spacer/>
             {t('label:sjekker-status')} &nbsp; <Loader/>

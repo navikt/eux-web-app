@@ -27,6 +27,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@microsoft/fetch-event-source": "^2.0.1",
     "@navikt/aksel-icons": "8.8.0",
     "@navikt/ds-css": "8.8.0",
     "@navikt/ds-react": "8.8.0",

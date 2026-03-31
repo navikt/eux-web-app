@@ -186,6 +186,28 @@ app.get(["/oauth2/login"], async (req, res) => {
   });
 });
 
+// SSE proxy — before general /api proxy, exempt from timeout
+app.use('/api/sse',
+  apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
+  createProxyMiddleware({
+    target: process.env.VITE_NEESSI_BACKEND_URL,
+    logLevel: 'silent',
+    changeOrigin: true,
+    xfwd: true,
+    onProxyReq: function onProxyReq(proxyReq, req, res) {
+      proxyReq.setHeader("Authorization", res.locals.on_behalf_of_authorization)
+      proxyReq.removeHeader('io.nais.wonderwall.session')
+      proxyReq.removeHeader('JSESSIONID')
+      proxyReq.removeHeader('cookie')
+    },
+    onProxyRes: function onProxyRes(proxyRes, req, res) {
+      proxyRes.headers['X-Accel-Buffering'] = 'no'
+      proxyRes.headers['Cache-Control'] = 'no-cache'
+      proxyRes.headers['Connection'] = 'keep-alive'
+    }
+  })
+);
+
 app.use('/api',
   timedOut,
   apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
