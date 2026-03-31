@@ -65,7 +65,6 @@ const useSakEvents = (rinaSakId: string | undefined): SseConnectionStatus => {
 
     return () => {
       controller.abort()
-      setStatus('disconnected')
     }
   }, [rinaSakId, dispatch])
 
