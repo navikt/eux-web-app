@@ -1,27 +1,32 @@
-import {Box, Heading, HStack, Loader, Spacer, VStack} from '@navikt/ds-react'
+import {Box, Heading, HStack, Tag, VStack} from '@navikt/ds-react'
 import {Sak} from 'declarations/types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { JournalfoeringStatus } from 'hooks/useSakEvents'
 
 import commonStyles from 'assets/css/common.module.css'
-import {useAppSelector} from "store"
-import {State} from "declarations/reducers"
 
 interface SedUnderJournalfoeringEllerUkjentStatusProps {
   sak: Sak
+  journalfoeringStatus?: JournalfoeringStatus
 }
 
-interface SedUnderJournalfoeringEllerUkjentStatusSelector {
-  refreshingSaks: boolean
+const getStatusTagVariant = (status: JournalfoeringStatus): 'info' | 'success' | 'warning' | 'neutral' => {
+  switch (status) {
+    case 'JOURNALFOERT':
+    case 'FERDIGSTILT':
+      return 'success'
+    case 'MANUELL_JOURNALFOERING':
+      return 'warning'
+    case 'UNDER_JOURNALFOERING':
+      return 'info'
+    default:
+      return 'neutral'
+  }
 }
 
-const mapState = (state: State): SedUnderJournalfoeringEllerUkjentStatusSelector => ({
-  refreshingSaks: state.loading.refreshingSaks
-})
-
-const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoeringEllerUkjentStatusProps) => {
+const SedUnderJournalfoeringEllerUkjentStatus = ({ sak, journalfoeringStatus }: SedUnderJournalfoeringEllerUkjentStatusProps) => {
   const { t } = useTranslation()
-  const { refreshingSaks } = useAppSelector(mapState)
 
   return (
     <Box background="default" padding="space-16" borderWidth="1" borderColor="neutral" borderRadius="2">
@@ -37,11 +42,11 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
             })}
           </ul>
         }
-        {refreshingSaks &&
-          <HStack>
-            <Spacer/>
-            {t('label:sjekker-status')} &nbsp; <Loader/>
-            <Spacer/>
+        {journalfoeringStatus &&
+          <HStack justify="end">
+            <Tag variant={getStatusTagVariant(journalfoeringStatus)} size="small">
+              {t(`label:journalfoering-status-${journalfoeringStatus}`)}
+            </Tag>
           </HStack>
         }
       </VStack>

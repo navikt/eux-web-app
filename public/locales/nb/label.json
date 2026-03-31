@@ -266,6 +266,12 @@
   "journalfoert-paa" : "Journalført på",
   "journalposter-ble-ikke-journalfoert": "Journalposter ble ikke journalført",
   "journalposter-ble-ikke-journalfoert-og-maa-behandles-manuelt": "Følgende journalposter ble ikke journalført og må behandles manuelt:",
+  "journalfoering-status-SED_MOTTATT": "SED mottatt",
+  "journalfoering-status-SED_SENDT": "SED sendt",
+  "journalfoering-status-UNDER_JOURNALFOERING": "Journalføring pågår",
+  "journalfoering-status-JOURNALFOERT": "Journalført",
+  "journalfoering-status-MANUELL_JOURNALFOERING": "Manuell journalføring",
+  "journalfoering-status-FERDIGSTILT": "Ferdigstilt",
 
   "kjønn" : "Kjønn",
   "klarkjør-sed": "Presiser SED innhold",

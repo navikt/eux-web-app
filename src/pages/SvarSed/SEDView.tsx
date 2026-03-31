@@ -42,7 +42,7 @@ const SEDView = (): JSX.Element => {
   const { currentSak, deletedSed, fagsakUpdated, queryingSaks, refreshingSaks, bucer }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
-  useSakEvents(currentSak?.sakId ?? sakId)
+  const { journalfoeringStatus } = useSakEvents(currentSak?.sakId ?? sakId)
 
   let seds: Array<Sed> | undefined
   if (currentSak) {
@@ -164,7 +164,7 @@ const SEDView = (): JSX.Element => {
               <IkkeJournalfoerteSed sak={currentSak} bucer={bucer}/>
             }
             {!_.isEmpty(currentSak.sedUnderJournalfoeringEllerUkjentStatus) &&
-              <SedUnderJournalfoeringEllerUkjentStatus sak={currentSak}/>
+              <SedUnderJournalfoeringEllerUkjentStatus sak={currentSak} journalfoeringStatus={journalfoeringStatus}/>
             }
             {currentSak.relaterteRinasakIder && currentSak.relaterteRinasakIder.length > 0 &&
               <RelaterteRinaSaker sak={currentSak} />
