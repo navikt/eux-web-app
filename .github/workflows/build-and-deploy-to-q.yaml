@@ -22,6 +22,8 @@ on:
           - 'q2-experimental'
           - 'q1-parallel'
           - 'q2-parallel'
+          - 'q1-odin'
+          - 'q2-odin'
       version:
         description: 'New version number, leave blank for auto increment.'
         required: false
