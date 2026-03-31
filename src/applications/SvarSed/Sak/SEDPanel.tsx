@@ -29,7 +29,7 @@ import moment from 'moment'
 import classNames from "classnames";
 import styles from './SEDPanel.module.css'
 
-import {JournalfoeringStatus, SedJournalstatus} from 'hooks/useSakEvents'
+import {SedJournalstatus} from 'hooks/useSakEvents'
 
 interface SEDPanelSelector {
   replySed: ReplySed | null | undefined
@@ -200,8 +200,6 @@ const SEDPanel = ({
       className={classNames(styles.sedBox, {
         [styles.deviation]: sed.fagsak && hasDeviatedFagsak,
         [styles.journalfoering]: !!journalfoeringStatus,
-        [styles.journalfoert]: journalfoeringStatus === 'JOURNALFOERT' || journalfoeringStatus === 'FERDIGSTILT',
-        [styles.manuell]: journalfoeringStatus === 'MANUELL_JOURNALFOERING',
         [styles.ikkeJournalfoert]: journalfoeringStatus === 'IKKE_JOURNALFOERT',
       })}
     >
@@ -258,22 +256,10 @@ const SEDPanel = ({
               </HelpText>
             </HStack>
           }
-          <HStack align="center" gap="space-8">
+          <HStack align="center">
             <Heading size='small'>
               {sed.sedType} - {sed.sedTittel}
             </Heading>
-            {journalfoeringStatus &&
-              <Tag
-                size="xsmall"
-                variant="moderate"
-                data-color={
-                  journalfoeringStatus === 'JOURNALFOERT' || journalfoeringStatus === 'FERDIGSTILT' ? 'success' :
-                  journalfoeringStatus === 'MANUELL_JOURNALFOERING' || journalfoeringStatus === 'IKKE_JOURNALFOERT' ? 'warning' : 'info'
-                }
-              >
-                {t(`label:journalfoering-status-${journalfoeringStatus}`)}
-              </Tag>
-            }
             <PreviewSED
               short
               size='small'
@@ -311,6 +297,16 @@ const SEDPanel = ({
               </HelpText>
             }
           </HStack>
+
+          {journalfoeringStatus &&
+            <Tag
+              size="xsmall"
+              variant="moderate"
+              data-color={journalfoeringStatus === 'IKKE_JOURNALFOERT' ? 'warning' : 'info'}
+            >
+              {t(`label:journalfoering-status-${journalfoeringStatus}`)}
+            </Tag>
+          }
 
           <HStack gap="space-8">
             {showEditButton && (

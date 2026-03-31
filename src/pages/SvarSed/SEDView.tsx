@@ -41,7 +41,7 @@ const SEDView = (): JSX.Element => {
   const { currentSak, deletedSed, fagsakUpdated, queryingSaks, refreshingSaks, bucer }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
-  const { journalfoeringStatus } = useSakEvents(currentSak?.sakId ?? sakId)
+  useSakEvents(currentSak?.sakId ?? sakId)
 
   const getSedJournalstatus = (sed: Sed): SedJournalstatus | undefined => {
     const sedTitle = `${sed.sedType} - ${sed.sedTittel}`
@@ -49,7 +49,7 @@ const SEDView = (): JSX.Element => {
       return 'IKKE_JOURNALFOERT'
     }
     if (currentSak?.sedUnderJournalfoeringEllerUkjentStatus?.includes(sedTitle)) {
-      return journalfoeringStatus ?? 'UNDER_JOURNALFOERING'
+      return 'UNDER_JOURNALFOERING'
     }
     return undefined
   }
