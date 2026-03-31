@@ -11,12 +11,11 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import { useNavigate } from 'react-router-dom'
-import SedUnderJournalfoeringEllerUkjentStatus from "../../applications/Journalfoering/SedUnderJournalfoeringEllerUkjentStatus/SedUnderJournalfoeringEllerUkjentStatus";
 import RelaterteRinaSaker from "../../applications/Journalfoering/RelaterteRinaSaker/RelaterteRinaSaker";
 import IkkeJournalfoerteSed from "../../applications/Journalfoering/IkkeJournalfoerteSed/IkkeJournalfoerteSed";
 import JournalfoeringsOpplysninger from "../../applications/SvarSed/JournalfoeringsOpplysninger/JornalfoeringsOpplysninger";
 import {Box, HGrid, Page, VStack} from "@navikt/ds-react";
-import useSakEvents from "hooks/useSakEvents"
+import useSakEvents, {SedJournalstatus} from "hooks/useSakEvents"
 
 interface SEDViewSelector {
   currentSak: Sak | undefined
@@ -43,6 +42,17 @@ const SEDView = (): JSX.Element => {
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
   const { journalfoeringStatus } = useSakEvents(currentSak?.sakId ?? sakId)
+
+  const getSedJournalstatus = (sed: Sed): SedJournalstatus | undefined => {
+    const sedTitle = `${sed.sedType} - ${sed.sedTittel}`
+    if (currentSak?.ikkeJournalfoerteSed?.includes(sedTitle)) {
+      return 'IKKE_JOURNALFOERT'
+    }
+    if (currentSak?.sedUnderJournalfoeringEllerUkjentStatus?.includes(sedTitle)) {
+      return journalfoeringStatus ?? 'UNDER_JOURNALFOERING'
+    }
+    return undefined
+  }
 
   let seds: Array<Sed> | undefined
   if (currentSak) {
@@ -131,6 +141,7 @@ const SEDView = (): JSX.Element => {
           <SEDPanel
             currentSak={currentSak!}
             sed={sed}
+            journalfoeringStatus={getSedJournalstatus(sed)}
           />
           {sed.children ? getSedPanels(sed.children, true) : undefined}
         </VStack>
@@ -162,9 +173,6 @@ const SEDView = (): JSX.Element => {
             }
             {currentSak.ikkeJournalfoerteSed && currentSak.ikkeJournalfoerteSed.length > 0 &&
               <IkkeJournalfoerteSed sak={currentSak} bucer={bucer}/>
-            }
-            {!_.isEmpty(currentSak.sedUnderJournalfoeringEllerUkjentStatus) &&
-              <SedUnderJournalfoeringEllerUkjentStatus sak={currentSak} journalfoeringStatus={journalfoeringStatus}/>
             }
             {currentSak.relaterteRinasakIder && currentSak.relaterteRinasakIder.length > 0 &&
               <RelaterteRinaSaker sak={currentSak} />

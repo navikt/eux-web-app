@@ -3,6 +3,18 @@
   &.deviation {
     border-left: 5px solid var(--ax-border-warning);
   }
+  &.journalfoering {
+    border-left: 5px solid var(--ax-border-info);
+    &.journalfoert {
+      border-left-color: var(--ax-border-success);
+    }
+    &.manuell {
+      border-left-color: var(--ax-border-warning);
+    }
+    &.ikkeJournalfoert {
+      border-left-color: var(--ax-border-warning);
+    }
+  }
   &:hover {
     color: var(--ax-text-neutral) !important;
     background-color: var(--ax-bg-accent-moderate-hover) !important;

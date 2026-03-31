@@ -272,6 +272,7 @@
   "journalfoering-status-JOURNALFOERT": "Journalført",
   "journalfoering-status-MANUELL_JOURNALFOERING": "Manuell journalføring",
   "journalfoering-status-FERDIGSTILT": "Ferdigstilt",
+  "journalfoering-status-IKKE_JOURNALFOERT": "Ikke journalført",
 
   "kjønn" : "Kjønn",
   "klarkjør-sed": "Presiser SED innhold",

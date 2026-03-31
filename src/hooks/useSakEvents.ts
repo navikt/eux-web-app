@@ -13,6 +13,8 @@ export type JournalfoeringStatus =
   | 'MANUELL_JOURNALFOERING'
   | 'FERDIGSTILT'
 
+export type SedJournalstatus = JournalfoeringStatus | 'IKKE_JOURNALFOERT'
+
 interface SakEventData {
   eventType: string
   rinaSakId: string

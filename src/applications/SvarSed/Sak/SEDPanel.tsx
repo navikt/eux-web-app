@@ -29,6 +29,8 @@ import moment from 'moment'
 import classNames from "classnames";
 import styles from './SEDPanel.module.css'
 
+import {JournalfoeringStatus, SedJournalstatus} from 'hooks/useSakEvents'
+
 interface SEDPanelSelector {
   replySed: ReplySed | null | undefined
   deletedSed: boolean | null | undefined
@@ -40,6 +42,7 @@ interface SEDPanelSelector {
 interface SEDPanelProps {
   currentSak: Sak
   sed: Sed
+  journalfoeringStatus?: SedJournalstatus
 }
 
 const mapState = (state: State): SEDPanelSelector => ({
@@ -52,7 +55,8 @@ const mapState = (state: State): SEDPanelSelector => ({
 
 const SEDPanel = ({
   currentSak,
-  sed
+  sed,
+  journalfoeringStatus
 }: SEDPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -194,7 +198,11 @@ const SEDPanel = ({
       padding="space-16"
       background="default"
       className={classNames(styles.sedBox, {
-        [styles.deviation]: sed.fagsak && hasDeviatedFagsak
+        [styles.deviation]: sed.fagsak && hasDeviatedFagsak,
+        [styles.journalfoering]: !!journalfoeringStatus,
+        [styles.journalfoert]: journalfoeringStatus === 'JOURNALFOERT' || journalfoeringStatus === 'FERDIGSTILT',
+        [styles.manuell]: journalfoeringStatus === 'MANUELL_JOURNALFOERING',
+        [styles.ikkeJournalfoert]: journalfoeringStatus === 'IKKE_JOURNALFOERT',
       })}
     >
       <Modal
@@ -250,10 +258,22 @@ const SEDPanel = ({
               </HelpText>
             </HStack>
           }
-          <HStack align="center">
+          <HStack align="center" gap="space-8">
             <Heading size='small'>
               {sed.sedType} - {sed.sedTittel}
             </Heading>
+            {journalfoeringStatus &&
+              <Tag
+                size="xsmall"
+                variant="moderate"
+                data-color={
+                  journalfoeringStatus === 'JOURNALFOERT' || journalfoeringStatus === 'FERDIGSTILT' ? 'success' :
+                  journalfoeringStatus === 'MANUELL_JOURNALFOERING' || journalfoeringStatus === 'IKKE_JOURNALFOERT' ? 'warning' : 'info'
+                }
+              >
+                {t(`label:journalfoering-status-${journalfoeringStatus}`)}
+              </Tag>
+            }
             <PreviewSED
               short
               size='small'
