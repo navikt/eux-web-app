@@ -13,6 +13,7 @@ import JournalfoerPanel from "./JournalfoerPanel";
 import InnhentMerInfoPanel from "./InnhentMerInfoPanel";
 import FeilregistrerJournalposterPanel from "./FeilregistrerJournalposterPanel";
 import {appReset} from "../../actions/app";
+import useSakEvents from "hooks/useSakEvents";
 import {Box, HGrid, Page, VStack} from "@navikt/ds-react"
 import styles from './Journalfoering.module.css'
 
@@ -33,6 +34,7 @@ export const Journalfoering: React.FC<JournalfoeringProps> = ({}: Journalfoering
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
   const { currentSak }: JournalfoeringSelector = useAppSelector(mapState)
+  useSakEvents(currentSak?.sakId ?? sakId)
 
   const goBack = () => {
     const params: URLSearchParams = new URLSearchParams(window.location.search)

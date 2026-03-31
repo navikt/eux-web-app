@@ -16,6 +16,7 @@ import RelaterteRinaSaker from "../../applications/Journalfoering/RelaterteRinaS
 import IkkeJournalfoerteSed from "../../applications/Journalfoering/IkkeJournalfoerteSed/IkkeJournalfoerteSed";
 import JournalfoeringsOpplysninger from "../../applications/SvarSed/JournalfoeringsOpplysninger/JornalfoeringsOpplysninger";
 import {Box, HGrid, Page, VStack} from "@navikt/ds-react";
+import useSakEvents from "hooks/useSakEvents"
 
 interface SEDViewSelector {
   currentSak: Sak | undefined
@@ -41,6 +42,7 @@ const SEDView = (): JSX.Element => {
   const { currentSak, deletedSed, fagsakUpdated, queryingSaks, refreshingSaks, bucer }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
+  useSakEvents(currentSak?.sakId ?? sakId)
 
   let seds: Array<Sed> | undefined
   if (currentSak) {

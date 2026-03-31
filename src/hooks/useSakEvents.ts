@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { fetchEventSource } from '@microsoft/fetch-event-source'
 import { useAppDispatch } from 'store'
-import * as types from 'constants/actionTypes'
+import { querySaks } from 'actions/svarsed'
 
 type SseConnectionStatus = 'connecting' | 'connected' | 'disconnected' | 'error'
 
@@ -33,18 +33,8 @@ const useSakEvents = (rinaSakId: string | undefined): SseConnectionStatus => {
 
       onmessage: (event) => {
         if (event.event === 'sak-update') {
-          try {
-            const payload = JSON.parse(event.data)
-            dispatch({
-              type: types.SVARSED_SAKS_TIMER_REFRESH_SUCCESS,
-              payload: payload.data,
-              context: { searchedFromFrontpage: false }
-            })
-          } catch (e) {
-            console.error('Failed to parse SSE event:', e)
-          }
+          dispatch(querySaks(rinaSakId, 'timer'))
         }
-        // heartbeat events are handled automatically (keep-alive)
       },
 
       onclose: () => {
@@ -58,7 +48,6 @@ const useSakEvents = (rinaSakId: string | undefined): SseConnectionStatus => {
           throw err // stop retrying
         }
         setStatus('connecting')
-        // Return retry interval in ms (exponential backoff)
         return Math.min(1000 * Math.pow(2, retryCountRef.current), 30000)
       },
     })

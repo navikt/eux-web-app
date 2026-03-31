@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import commonStyles from 'assets/css/common.module.css'
 import {useAppSelector} from "store"
 import {State} from "declarations/reducers"
-import useSakEvents from "hooks/useSakEvents"
 
 interface SedUnderJournalfoeringEllerUkjentStatusProps {
   sak: Sak
@@ -23,7 +22,6 @@ const mapState = (state: State): SedUnderJournalfoeringEllerUkjentStatusSelector
 const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoeringEllerUkjentStatusProps) => {
   const { t } = useTranslation()
   const { refreshingSaks } = useAppSelector(mapState)
-  const sseStatus = useSakEvents(sak?.sakId)
 
   return (
     <Box background="default" padding="space-16" borderWidth="1" borderColor="neutral" borderRadius="2">
@@ -39,7 +37,7 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
             })}
           </ul>
         }
-        {(refreshingSaks || sseStatus === 'connecting') &&
+        {refreshingSaks &&
           <HStack>
             <Spacer/>
             {t('label:sjekker-status')} &nbsp; <Loader/>
