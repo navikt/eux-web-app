@@ -10,11 +10,29 @@ import mockSaks2 from 'mocks/svarsed/saks_2'
 import { Action, ActionCreator } from 'redux'
 import {validateFnrDnrNpid} from 'utils/fnrValidator'
 import mockPreview from 'mocks/previewFile'
-import _, {cloneDeep} from 'lodash'
+import _ from 'lodash'
 import {JoarkBrowserItem} from "../declarations/attachments";
 import { usesTypedSedApi } from 'utils/sed'
 // @ts-ignore
 import { sprintf } from 'sprintf-js';
+
+const INTERNAL_PROPS = ['__index', '__type', 'undefined']
+
+const stripInternalProps = (obj: any): any => {
+  if (Array.isArray(obj)) {
+    return obj.map(stripInternalProps)
+  }
+  if (obj !== null && typeof obj === 'object') {
+    const result: Record<string, any> = {}
+    for (const key of Object.keys(obj)) {
+      if (!INTERNAL_PROPS.includes(key)) {
+        result[key] = stripInternalProps(obj[key])
+      }
+    }
+    return result
+  }
+  return obj
+}
 
 export const addMottakere = (
   rinaSakId: string, mottakere: Array<{id: string, name: string}>
@@ -53,7 +71,7 @@ export const resetSaks = ():Action => ({
 export const createSed = (
   replySed: ReplySed
 ): ActionWithPayload => {
-  const copyReplySed = _.cloneDeep(replySed)
+  const copyReplySed = stripInternalProps(_.cloneDeep(replySed))
   delete copyReplySed.sak
   delete copyReplySed.sed
   delete copyReplySed.attachments
@@ -97,7 +115,7 @@ export const deleteSak = (rinaSakId: string) => {
 export const updateSed = (
   replySed: ReplySed
 ): ActionWithPayload => {
-  const copyReplySed = _.cloneDeep(replySed)
+  const copyReplySed = stripInternalProps(_.cloneDeep(replySed))
   delete copyReplySed.sak
   delete copyReplySed.sed
   delete copyReplySed.attachments
