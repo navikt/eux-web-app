@@ -9,12 +9,14 @@ const useSakEvents = (rinaSakId: string | undefined): SseConnectionStatus => {
   const dispatch = useAppDispatch()
   const [status, setStatus] = useState<SseConnectionStatus>('disconnected')
   const retryCountRef = useRef(0)
+  const isMountedRef = useRef(true)
   const maxRetries = 5
 
   useEffect(() => {
     if (!rinaSakId) return
 
     const controller = new AbortController()
+    isMountedRef.current = true
     setStatus('connecting')
     retryCountRef.current = 0
 
@@ -23,10 +25,10 @@ const useSakEvents = (rinaSakId: string | undefined): SseConnectionStatus => {
 
       onopen: async (response) => {
         if (response.ok) {
-          setStatus('connected')
+          if (isMountedRef.current) setStatus('connected')
           retryCountRef.current = 0
         } else {
-          setStatus('error')
+          if (isMountedRef.current) setStatus('error')
           throw new Error(`SSE connection failed: ${response.status}`)
         }
       },
@@ -38,21 +40,22 @@ const useSakEvents = (rinaSakId: string | undefined): SseConnectionStatus => {
       },
 
       onclose: () => {
-        setStatus('disconnected')
+        if (isMountedRef.current) setStatus('disconnected')
       },
 
       onerror: (err) => {
         retryCountRef.current += 1
         if (retryCountRef.current >= maxRetries) {
-          setStatus('error')
+          if (isMountedRef.current) setStatus('error')
           throw err // stop retrying
         }
-        setStatus('connecting')
+        if (isMountedRef.current) setStatus('connecting')
         return Math.min(1000 * Math.pow(2, retryCountRef.current), 30000)
       },
     })
 
     return () => {
+      isMountedRef.current = false
       controller.abort()
     }
   }, [rinaSakId, dispatch])
