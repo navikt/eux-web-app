@@ -8,6 +8,9 @@
     &.ikkeJournalfoert, &.manuell {
       border-left-color: var(--ax-border-warning);
     }
+    &.journalfoert {
+      border-left-color: var(--ax-border-success);
+    }
   }
   &:hover {
     color: var(--ax-text-neutral) !important;

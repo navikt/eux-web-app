@@ -33,18 +33,17 @@ const STATUSES_TRIGGERING_REFRESH: ReadonlyArray<JournalfoeringStatus> = [
   'JOURNALFOERT', 'MANUELL_JOURNALFOERING', 'FERDIGSTILT'
 ]
 
-const COMPLETION_STATUSES: ReadonlyArray<JournalfoeringStatus> = [
-  'JOURNALFOERT', 'FERDIGSTILT'
-]
-
 const DISPLAY_STATUSES: ReadonlyArray<JournalfoeringStatus> = [
-  'UNDER_JOURNALFOERING', 'MANUELL_JOURNALFOERING'
+  'UNDER_JOURNALFOERING', 'MANUELL_JOURNALFOERING',
+  'JOURNALFOERT', 'FERDIGSTILT'
 ]
 
 const VALID_STATUSES: ReadonlyArray<string> = [
   'SED_MOTTATT', 'SED_SENDT', 'UNDER_JOURNALFOERING',
   'JOURNALFOERT', 'MANUELL_JOURNALFOERING', 'FERDIGSTILT'
 ]
+
+const AUTO_CLEAR_DELAY = 5000
 
 const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
   const dispatch = useAppDispatch()
@@ -53,6 +52,7 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
   const retryCountRef = useRef(0)
   const isMountedRef = useRef(true)
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const clearTimersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
   const maxRetries = 5
 
   useEffect(() => {
@@ -95,12 +95,26 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
           if (status && sedId?.trim()) {
             if (DISPLAY_STATUSES.includes(status)) {
               setSedStatuses(prev => ({ ...prev, [sedId!]: status! }))
-            } else if (COMPLETION_STATUSES.includes(status)) {
-              setSedStatuses(prev => {
-                const next = { ...prev }
-                delete next[sedId!]
-                return next
-              })
+
+              // Clear any existing auto-clear timer for this SED
+              if (clearTimersRef.current[sedId]) {
+                clearTimeout(clearTimersRef.current[sedId])
+                delete clearTimersRef.current[sedId]
+              }
+
+              // Auto-clear completion statuses after delay
+              if (STATUSES_TRIGGERING_REFRESH.includes(status)) {
+                clearTimersRef.current[sedId] = setTimeout(() => {
+                  if (isMountedRef.current) {
+                    setSedStatuses(prev => {
+                      const next = { ...prev }
+                      delete next[sedId!]
+                      return next
+                    })
+                  }
+                  delete clearTimersRef.current[sedId!]
+                }, AUTO_CLEAR_DELAY)
+              }
             }
           }
 
@@ -136,6 +150,7 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
       isMountedRef.current = false
       controller.abort()
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current)
+      Object.values(clearTimersRef.current).forEach(clearTimeout)
     }
   }, [rinaSakId, dispatch])
 

@@ -202,6 +202,7 @@ const SEDPanel = ({
         [styles.journalfoering]: !!journalfoeringStatus,
         [styles.ikkeJournalfoert]: journalfoeringStatus === 'IKKE_JOURNALFOERT',
         [styles.manuell]: journalfoeringStatus === 'MANUELL_JOURNALFOERING',
+        [styles.journalfoert]: journalfoeringStatus === 'JOURNALFOERT' || journalfoeringStatus === 'FERDIGSTILT',
       })}
     >
       <Modal
@@ -303,7 +304,11 @@ const SEDPanel = ({
             <Tag
               size="xsmall"
               variant="moderate"
-              data-color={journalfoeringStatus === 'UNDER_JOURNALFOERING' ? 'info' : 'warning'}
+              data-color={
+                journalfoeringStatus === 'UNDER_JOURNALFOERING' ? 'info'
+                : journalfoeringStatus === 'JOURNALFOERT' || journalfoeringStatus === 'FERDIGSTILT' ? 'success'
+                : 'warning'
+              }
             >
               {t(`label:journalfoering-status-${journalfoeringStatus}`)}
             </Tag>
