@@ -40,13 +40,14 @@ const SEDView = (): JSX.Element => {
   const { sedStatuses } = useSakEvents(currentSak?.sakId ?? sakId)
 
   const getSedJournalstatus = (sed: Sed): SedJournalstatus | undefined => {
-    // SSE provides per-SED real-time status (keyed by sedId)
+    // SSE provides real-time per-SED status (keyed by extracted document ID)
     const sseStatus = sedStatuses[sed.sedId]
     if (sseStatus) return sseStatus
 
     // Fall back to API data for baseline status
     const sedTitle = `${sed.sedType} - ${sed.sedTittel}`
-    if (currentSak?.ikkeJournalfoerteSed?.includes(sedTitle)) {
+    if (currentSak?.ikkeJournalfoerteSed?.includes(sedTitle) ||
+        currentSak?.sedUnderJournalfoeringEllerUkjentStatus?.includes(sedTitle)) {
       return 'IKKE_JOURNALFOERT'
     }
     return undefined

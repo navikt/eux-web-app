@@ -45,6 +45,13 @@ const VALID_STATUSES: ReadonlyArray<string> = [
 
 const AUTO_CLEAR_DELAY = 5000
 
+// SSE sedId format: "rinaSakId_documentId_version" (e.g. "1455997_3426b91a..._1")
+// API sedId format: "documentId" (e.g. "3426b91a...")
+const extractDocumentId = (sseSedId: string): string => {
+  const parts = sseSedId.split('_')
+  return parts.length >= 3 ? parts.slice(1, -1).join('_') : sseSedId
+}
+
 const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
   const dispatch = useAppDispatch()
   const [connectionStatus, setConnectionStatus] = useState<SseConnectionStatus>('disconnected')
@@ -80,11 +87,13 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
       onmessage: (event) => {
         if (event.event === 'sak-update' && isMountedRef.current) {
           let status: JournalfoeringStatus | undefined
-          let sedId: string | undefined
+          let documentId: string | undefined
 
           try {
             const data: SakEventData = JSON.parse(event.data)
-            sedId = data.sedId
+            if (data.sedId?.trim()) {
+              documentId = extractDocumentId(data.sedId)
+            }
             if (data.status && VALID_STATUSES.includes(data.status)) {
               status = data.status as JournalfoeringStatus
             }
@@ -92,27 +101,26 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
             // data not parseable — fall through to trigger refresh
           }
 
-          if (status && sedId?.trim()) {
+          if (status && documentId) {
             if (DISPLAY_STATUSES.includes(status)) {
-              setSedStatuses(prev => ({ ...prev, [sedId!]: status! }))
+              setSedStatuses(prev => ({ ...prev, [documentId!]: status! }))
 
-              // Clear any existing auto-clear timer for this SED
-              if (clearTimersRef.current[sedId]) {
-                clearTimeout(clearTimersRef.current[sedId])
-                delete clearTimersRef.current[sedId]
+              if (clearTimersRef.current[documentId]) {
+                clearTimeout(clearTimersRef.current[documentId])
+                delete clearTimersRef.current[documentId]
               }
 
               // Auto-clear completion statuses after delay
               if (STATUSES_TRIGGERING_REFRESH.includes(status)) {
-                clearTimersRef.current[sedId] = setTimeout(() => {
+                clearTimersRef.current[documentId] = setTimeout(() => {
                   if (isMountedRef.current) {
                     setSedStatuses(prev => {
                       const next = { ...prev }
-                      delete next[sedId!]
+                      delete next[documentId!]
                       return next
                     })
                   }
-                  delete clearTimersRef.current[sedId!]
+                  delete clearTimersRef.current[documentId!]
                 }, AUTO_CLEAR_DELAY)
               }
             }
