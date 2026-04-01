@@ -27,6 +27,7 @@ export type SedStatuses = Record<string, JournalfoeringStatus>
 export interface UseSakEventsResult {
   connectionStatus: SseConnectionStatus
   sedStatuses: SedStatuses
+  completedSedIds: ReadonlySet<string>
 }
 
 const STATUSES_TRIGGERING_REFRESH: ReadonlyArray<JournalfoeringStatus> = [
@@ -43,7 +44,12 @@ const VALID_STATUSES: ReadonlyArray<string> = [
   'JOURNALFOERT', 'MANUELL_JOURNALFOERING', 'FERDIGSTILT'
 ]
 
+const COMPLETION_STATUSES: ReadonlyArray<JournalfoeringStatus> = [
+  'JOURNALFOERT', 'FERDIGSTILT'
+]
+
 const AUTO_CLEAR_DELAY = 5000
+const POST_CLEAR_REFRESH_DELAY = 2000
 
 // SSE sedId format: "rinaSakId_documentId_version" (e.g. "1455997_3426b91a..._1")
 // API sedId format: "documentId" (e.g. "3426b91a...")
@@ -56,6 +62,7 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
   const dispatch = useAppDispatch()
   const [connectionStatus, setConnectionStatus] = useState<SseConnectionStatus>('disconnected')
   const [sedStatuses, setSedStatuses] = useState<SedStatuses>({})
+  const [completedSedIds, setCompletedSedIds] = useState<Set<string>>(new Set())
   const retryCountRef = useRef(0)
   const isMountedRef = useRef(true)
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -69,6 +76,7 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
     isMountedRef.current = true
     setConnectionStatus('connecting')
     setSedStatuses({})
+    setCompletedSedIds(new Set())
     retryCountRef.current = 0
 
     fetchEventSource(`/api/sse/rinasak/${rinaSakId}`, {
@@ -112,6 +120,11 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
 
               // Auto-clear completion statuses after delay
               if (STATUSES_TRIGGERING_REFRESH.includes(status)) {
+                // Track completed SEDs so we don't fall back to stale API data
+                if (COMPLETION_STATUSES.includes(status)) {
+                  setCompletedSedIds(prev => new Set(prev).add(documentId!))
+                }
+
                 clearTimersRef.current[documentId] = setTimeout(() => {
                   if (isMountedRef.current) {
                     setSedStatuses(prev => {
@@ -119,6 +132,12 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
                       delete next[documentId!]
                       return next
                     })
+                    // Schedule a delayed refresh after clearing to get fresh API data
+                    setTimeout(() => {
+                      if (isMountedRef.current) {
+                        dispatch(querySaks(rinaSakId, 'timer'))
+                      }
+                    }, POST_CLEAR_REFRESH_DELAY)
                   }
                   delete clearTimersRef.current[documentId!]
                 }, AUTO_CLEAR_DELAY)
@@ -162,7 +181,7 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
     }
   }, [rinaSakId, dispatch])
 
-  return { connectionStatus, sedStatuses }
+  return { connectionStatus, sedStatuses, completedSedIds }
 }
 
 export default useSakEvents

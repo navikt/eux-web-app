@@ -37,12 +37,15 @@ const SEDView = (): JSX.Element => {
   const { currentSak, deletedSed, fagsakUpdated, bucer }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
-  const { sedStatuses } = useSakEvents(currentSak?.sakId ?? sakId)
+  const { sedStatuses, completedSedIds } = useSakEvents(currentSak?.sakId ?? sakId)
 
   const getSedJournalstatus = (sed: Sed): SedJournalstatus | undefined => {
     // SSE provides real-time per-SED status (keyed by extracted document ID)
     const sseStatus = sedStatuses[sed.sedId]
     if (sseStatus) return sseStatus
+
+    // If SSE already confirmed this SED as completed, don't fall back to stale API data
+    if (completedSedIds.has(sed.sedId)) return undefined
 
     // Per-SED journalfoert field from API (precise, per-SED)
     if (sed.journalfoert === false) {
