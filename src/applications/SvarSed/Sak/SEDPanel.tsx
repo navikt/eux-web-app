@@ -201,6 +201,7 @@ const SEDPanel = ({
         [styles.deviation]: sed.fagsak && hasDeviatedFagsak,
         [styles.journalfoering]: !!journalfoeringStatus,
         [styles.ikkeJournalfoert]: journalfoeringStatus === 'IKKE_JOURNALFOERT',
+        [styles.manuell]: journalfoeringStatus === 'MANUELL_JOURNALFOERING',
       })}
     >
       <Modal
@@ -302,7 +303,7 @@ const SEDPanel = ({
             <Tag
               size="xsmall"
               variant="moderate"
-              data-color={journalfoeringStatus === 'IKKE_JOURNALFOERT' ? 'warning' : 'info'}
+              data-color={journalfoeringStatus === 'UNDER_JOURNALFOERING' ? 'info' : 'warning'}
             >
               {t(`label:journalfoering-status-${journalfoeringStatus}`)}
             </Tag>

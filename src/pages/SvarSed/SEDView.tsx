@@ -14,15 +14,13 @@ import { useNavigate } from 'react-router-dom'
 import RelaterteRinaSaker from "../../applications/Journalfoering/RelaterteRinaSaker/RelaterteRinaSaker";
 import IkkeJournalfoerteSed from "../../applications/Journalfoering/IkkeJournalfoerteSed/IkkeJournalfoerteSed";
 import JournalfoeringsOpplysninger from "../../applications/SvarSed/JournalfoeringsOpplysninger/JornalfoeringsOpplysninger";
-import {Box, HGrid, Page, VStack} from "@navikt/ds-react";
+import {HGrid, Page, VStack} from "@navikt/ds-react";
 import useSakEvents, {SedJournalstatus} from "hooks/useSakEvents"
 
 interface SEDViewSelector {
   currentSak: Sak | undefined
   deletedSed: Boolean | undefined | null
   fagsakUpdated: boolean | undefined
-  queryingSaks: boolean
-  refreshingSaks: boolean
   bucer: Array<string> | undefined | null
 }
 
@@ -30,26 +28,26 @@ const mapState = (state: State) => ({
   currentSak: state.svarsed.currentSak,
   deletedSed: state.svarsed.deletedSed,
   fagsakUpdated: state.svarsed.fagsakUpdated,
-  queryingSaks: state.loading.queryingSaks,
-  refreshingSaks: state.loading.refreshingSaks,
   bucer: state.app.saksbehandlerBucer
 })
 
 const SEDView = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
-  const { currentSak, deletedSed, fagsakUpdated, queryingSaks, refreshingSaks, bucer }: SEDViewSelector = useAppSelector(mapState)
+  const { currentSak, deletedSed, fagsakUpdated, bucer }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
-  useSakEvents(currentSak?.sakId ?? sakId)
+  const { sedStatuses } = useSakEvents(currentSak?.sakId ?? sakId)
 
   const getSedJournalstatus = (sed: Sed): SedJournalstatus | undefined => {
+    // SSE provides per-SED real-time status (keyed by sedId)
+    const sseStatus = sedStatuses[sed.sedId]
+    if (sseStatus) return sseStatus
+
+    // Fall back to API data for baseline status
     const sedTitle = `${sed.sedType} - ${sed.sedTittel}`
     if (currentSak?.ikkeJournalfoerteSed?.includes(sedTitle)) {
       return 'IKKE_JOURNALFOERT'
-    }
-    if (currentSak?.sedUnderJournalfoeringEllerUkjentStatus?.includes(sedTitle)) {
-      return 'UNDER_JOURNALFOERING'
     }
     return undefined
   }
@@ -155,11 +153,6 @@ const SEDView = (): JSX.Element => {
 
   return (
     <>
-      {queryingSaks && !refreshingSaks &&
-        <Box padding="space-16">
-          <WaitingPanel/>
-        </Box>
-      }
       <Page.Block width="2xl">
         <HGrid columns="1fr 2fr 1fr" gap="space-48" paddingBlock="space-48" paddingInline="space-16" align="start">
           <Sakshandlinger sak={currentSak} />

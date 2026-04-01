@@ -5,7 +5,7 @@
   }
   &.journalfoering {
     border-left: 5px solid var(--ax-border-info);
-    &.ikkeJournalfoert {
+    &.ikkeJournalfoert, &.manuell {
       border-left-color: var(--ax-border-warning);
     }
   }
