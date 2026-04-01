@@ -67,6 +67,7 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
   const isMountedRef = useRef(true)
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const clearTimersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
+  const postClearRefreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const maxRetries = 5
 
   useEffect(() => {
@@ -133,10 +134,11 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
                       return next
                     })
                     // Schedule a delayed refresh after clearing to get fresh API data
-                    setTimeout(() => {
+                    postClearRefreshTimerRef.current = setTimeout(() => {
                       if (isMountedRef.current) {
                         dispatch(querySaks(rinaSakId, 'timer'))
                       }
+                      postClearRefreshTimerRef.current = null
                     }, POST_CLEAR_REFRESH_DELAY)
                   }
                   delete clearTimersRef.current[documentId!]
@@ -177,6 +179,7 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
       isMountedRef.current = false
       controller.abort()
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current)
+      if (postClearRefreshTimerRef.current) clearTimeout(postClearRefreshTimerRef.current)
       Object.values(clearTimersRef.current).forEach(clearTimeout)
     }
   }, [rinaSakId, dispatch])
