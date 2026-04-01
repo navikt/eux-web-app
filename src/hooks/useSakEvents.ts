@@ -92,7 +92,7 @@ const useSakEvents = (rinaSakId: string | undefined): UseSakEventsResult => {
             // data not parseable — fall through to trigger refresh
           }
 
-          if (status && sedId) {
+          if (status && sedId?.trim()) {
             if (DISPLAY_STATUSES.includes(status)) {
               setSedStatuses(prev => ({ ...prev, [sedId!]: status! }))
             } else if (COMPLETION_STATUSES.includes(status)) {
