@@ -31,6 +31,7 @@ import React, {useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
+import { sanitizeAmount } from 'utils/amount'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import InntektOgTimerFC from './InntektOgTimer/InntektOgTimer'
 import { validateForsikringPeriodeBox, ValidationForsikringPeriodeBoxProps } from './validation'
@@ -249,7 +250,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   }
 
   const setBeløp = (newBeløp: string) => {
-    const beloep = parseFloat(newBeløp?.trim().replace(",", ".")).toFixed(2)
+    const beloep = sanitizeAmount(newBeløp)
     if (newMode) {
       _setNewForsikringPeriode({
         ..._newForsikringPeriode,

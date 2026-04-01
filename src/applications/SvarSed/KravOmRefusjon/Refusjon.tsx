@@ -3,6 +3,7 @@ import { resetValidation, setValidation } from 'actions/validation'
 import {validateRefusjon, validateRefusjonsKrav, ValidationRefusjonProps, ValidationRefusjonsKravProps} from 'applications/SvarSed/KravOmRefusjon/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import {F002Sed, Refusjon, RefusjonsKrav, ReplySed} from 'declarations/sed'
+import {sanitizeAmount} from 'utils/amount'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, {useState} from 'react'
@@ -188,7 +189,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
               id= {'totalbeloep'}
               label={t('label:totalbeloep')}
               namespace={namespace}
-              onChanged={(value: string) => setRefusjonProp("totalbeloep", value)}
+              onChanged={(value: string) => setRefusjonProp("totalbeloep", sanitizeAmount(value))}
               value={refusjon?.totalbeloep || ''}
             />
             <CountrySelect
@@ -271,7 +272,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
                 label={t('label:beløp')}
                 namespace={_namespace}
                 required={true}
-                onChanged={(value: string) => setRefusjonsKravProp("beloep", value, index)}
+                onChanged={(value: string) => setRefusjonsKravProp("beloep", sanitizeAmount(value), index)}
                 value={_refusjonskrav?.beloep}
               />
               <CountrySelect

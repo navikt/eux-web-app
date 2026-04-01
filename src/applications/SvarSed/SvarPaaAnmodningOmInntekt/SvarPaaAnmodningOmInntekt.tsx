@@ -6,6 +6,7 @@ import React from 'react'
 import { useAppDispatch, useAppSelector } from 'store'
 import TextArea from "../../../components/Forms/TextArea";
 import {SvarInntekt} from "../../../declarations/sed";
+import {sanitizeAmount} from "../../../utils/amount";
 import {useTranslation} from "react-i18next";
 import Input from "../../../components/Forms/Input";
 import DateField from "../../../components/DateField/DateField";
@@ -112,7 +113,7 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
                 namespace={namespace}
                 id='aarlig-beloep'
                 label={t('label:beløp')}
-                onChanged={(v) => setInntektProperty('aarlig.beloep', v)}
+                onChanged={(v) => setInntektProperty('aarlig.beloep', sanitizeAmount(v))}
                 value={svarInntekt?.aarlig?.beloep}
               />
               <CountrySelect

@@ -7,6 +7,7 @@ import {useTranslation} from "react-i18next";
 import {useAppDispatch} from "../../../../store";
 import {updateReplySed} from "../../../../actions/svarsed";
 import dayjs from "dayjs";
+import {sanitizeAmount} from "../../../../utils/amount";
 
 export interface TransferBeloepToTotalModalProps {
   namespace: string
@@ -99,7 +100,7 @@ const TransferBeloepToTotalModal: React.FC<TransferBeloepToTotalModalProps> = ({
         modalContent: (
           <Box borderWidth="1" borderColor="neutral-subtle" padding="space-16">
             {beloepArray?.map((item, i) => {
-              let totalBeloep = parseFloat(item.beloep)
+              let totalBeloep = parseFloat(sanitizeAmount(item.beloep))
               const fomDato = _.isString(item.startdato) ?
                 dayjs(item.startdato, 'YYYY-MM-DD') :
                 dayjs(item.startdato)
@@ -111,7 +112,7 @@ const TransferBeloepToTotalModal: React.FC<TransferBeloepToTotalModalProps> = ({
               const months = tomDatoPlusOneDay.diff(fomDato, 'month')
 
               if("utbetalingshyppighet" in item) {
-                totalBeloep = item.utbetalingshyppighet === 'Årlig' ? parseFloat(item.beloep) / 12 * months : parseFloat(item.beloep) * months
+                totalBeloep = item.utbetalingshyppighet === 'Årlig' ? parseFloat(sanitizeAmount(item.beloep)) / 12 * months : parseFloat(sanitizeAmount(item.beloep)) * months
               }
 
               return (
