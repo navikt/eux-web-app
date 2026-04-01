@@ -44,10 +44,8 @@ const SEDView = (): JSX.Element => {
     const sseStatus = sedStatuses[sed.sedId]
     if (sseStatus) return sseStatus
 
-    // Fall back to API data for baseline status
-    const sedTitle = `${sed.sedType} - ${sed.sedTittel}`
-    if (currentSak?.ikkeJournalfoerteSed?.includes(sedTitle) ||
-        currentSak?.sedUnderJournalfoeringEllerUkjentStatus?.includes(sedTitle)) {
+    // Per-SED journalfoert field from API (precise, per-SED)
+    if (sed.journalfoert === false) {
       return 'IKKE_JOURNALFOERT'
     }
     return undefined

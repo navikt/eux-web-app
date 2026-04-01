@@ -78,6 +78,7 @@ export interface Sed {
   children ?: Array<Sed>,
   manglerInformasjonOmEktefelleEllerAnnenPerson? : boolean
   fagsak?: Fagsak | null
+  journalfoert?: boolean
 }
 
 export interface Attachment {

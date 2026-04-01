@@ -258,10 +258,23 @@ const SEDPanel = ({
               </HelpText>
             </HStack>
           }
-          <HStack align="center">
+          <HStack align="center" gap="space-4">
             <Heading size='small'>
               {sed.sedType} - {sed.sedTittel}
             </Heading>
+            {journalfoeringStatus &&
+              <Tag
+                size="xsmall"
+                variant="moderate"
+                data-color={
+                  journalfoeringStatus === 'UNDER_JOURNALFOERING' ? 'info'
+                  : journalfoeringStatus === 'JOURNALFOERT' || journalfoeringStatus === 'FERDIGSTILT' ? 'success'
+                  : 'warning'
+                }
+              >
+                {t(`label:journalfoering-status-${journalfoeringStatus}`)}
+              </Tag>
+            }
             <PreviewSED
               short
               size='small'
@@ -299,20 +312,6 @@ const SEDPanel = ({
               </HelpText>
             }
           </HStack>
-
-          {journalfoeringStatus &&
-            <Tag
-              size="xsmall"
-              variant="moderate"
-              data-color={
-                journalfoeringStatus === 'UNDER_JOURNALFOERING' ? 'info'
-                : journalfoeringStatus === 'JOURNALFOERT' || journalfoeringStatus === 'FERDIGSTILT' ? 'success'
-                : 'warning'
-              }
-            >
-              {t(`label:journalfoering-status-${journalfoeringStatus}`)}
-            </Tag>
-          }
 
           <HStack gap="space-8">
             {showEditButton && (
