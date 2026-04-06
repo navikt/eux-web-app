@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@navikt/aksel-icons": "8.8.0",
-    "@navikt/ds-css": "8.8.0",
+    "@navikt/ds-css": "8.9.0",
     "@navikt/ds-react": "8.8.0",
     "@navikt/eessi-kodeverk": "2.4.1",
     "@navikt/fetch": "6.0.24",
