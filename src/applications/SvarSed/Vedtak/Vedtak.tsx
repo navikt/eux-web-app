@@ -101,6 +101,21 @@ const VedtakFC: React.FC<MainFormProps> = ({
   })
 
   useEffect(() => {
+    // skalYtelseUtbetales is only valid for Art68 periods. Data loaded from F001
+    // (other countries) or old drafts may have it on Art58 periods — clean the store.
+    const hasStaleArt58 = ['primaerkompetanseArt58', 'sekundaerkompetanseArt58']
+      .some(key => (_.get(vedtak, key) as Array<KompetansePeriode> | undefined)
+        ?.some((p: KompetansePeriode) => p.skalYtelseUtbetales !== undefined))
+    if (hasStaleArt58) {
+      const cleanVedtak = _.cloneDeep(vedtak) as Vedtak
+      ;['primaerkompetanseArt58', 'sekundaerkompetanseArt58'].forEach(key => {
+        (_.get(cleanVedtak, key) as Array<KompetansePeriode> | undefined)
+          ?.forEach((p: KompetansePeriode) => delete p.skalYtelseUtbetales)
+      })
+      dispatch(updateReplySed(target, cleanVedtak))
+      return
+    }
+
     const allKompetansePeriods: Array<KompetansePeriode> = []
     vedtak?.primaerkompetanseArt58?.forEach((p: KompetansePeriode, i: number) => allKompetansePeriods.push({ ...p, periode: { ...p.periode, __index: i, __type: 'primaerkompetanseArt58' } }))
     vedtak?.sekundaerkompetanseArt58?.forEach((p: KompetansePeriode, i: number) => allKompetansePeriods.push({ ...p, periode: { ...p.periode, __index: i, __type: 'sekundaerkompetanseArt58' } }))
@@ -330,9 +345,12 @@ const VedtakFC: React.FC<MainFormProps> = ({
       delete __editKompetansePeriode.periode.__type
       delete __editKompetansePeriode.periode.__index
 
-      if (type !== _editKompetansePeriode?.periode?.__type) {
+      const targetType = _editKompetansePeriode?.periode?.__type
+
+      if (type !== targetType) {
+        if (!targetType) return
         const oldPeriods: Array<KompetansePeriode> = _.cloneDeep(_.get(vedtak, type))
-        let newPeriods: Array<KompetansePeriode> | undefined = _.cloneDeep(_.get(vedtak, _editKompetansePeriode?.periode?.__type!))
+        let newPeriods: Array<KompetansePeriode> | undefined = _.cloneDeep(_.get(vedtak, targetType))
 
         oldPeriods.splice(index, 1)
 
@@ -345,7 +363,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
 
         const newVedtak: Vedtak = _.cloneDeep(vedtak) as Vedtak
         _.set(newVedtak, type, oldPeriods)
-        _.set(newVedtak, _editKompetansePeriode.periode.__type!, newPeriods)
+        _.set(newVedtak, targetType, newPeriods)
         dispatch(updateReplySed(target, newVedtak))
       } else {
         dispatch(updateReplySed(`${target}[${type}][${index}]`, __editKompetansePeriode))
@@ -394,7 +412,8 @@ const VedtakFC: React.FC<MainFormProps> = ({
       formalName: personName
     })
     if (!!_newKompetansePeriode && valid) {
-      const type: string = _newKompetansePeriode.periode.__type as string
+      const type: string | undefined = _newKompetansePeriode.periode.__type
+      if (!type) return
       let newPerioder: Array<KompetansePeriode> | undefined = _.cloneDeep(_.get(vedtak, type))
       if (_.isNil(newPerioder)) {
         newPerioder = []
