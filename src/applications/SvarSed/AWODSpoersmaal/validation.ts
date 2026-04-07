@@ -1,7 +1,7 @@
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { H120Sed } from 'declarations/h120'
-import { checkIfNotEmpty, checkLength } from 'utils/validation'
+import { checkIfNotEmpty, checkLength, checkValidDateFormat } from 'utils/validation'
 
 export interface ValidationAWODSpoersmaalProps {
   replySed: ReplySed
@@ -81,6 +81,13 @@ export const validateAWODSpoersmaal = (
       needle: awod?.dato,
       id: namespace + '-dato',
       message: 'validation:noAWODDato',
+      personName
+    }))
+
+    hasErrors.push(checkValidDateFormat(v, {
+      needle: awod?.dato,
+      id: namespace + '-dato',
+      message: 'validation:invalidDateFormat',
       personName
     }))
 

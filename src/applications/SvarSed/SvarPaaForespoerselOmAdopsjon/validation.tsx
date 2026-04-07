@@ -1,6 +1,6 @@
 import { Validation } from 'declarations/types'
 import {SvarAdopsjon} from "../../../declarations/sed";
-import {checkIfFilledOut, checkLength} from "../../../utils/validation";
+import {checkIfFilledOut, checkLength, checkValidDateFormat} from "../../../utils/validation";
 
 export interface ValidationAdopsjonProps {
   svarAdopsjon: SvarAdopsjon | undefined,
@@ -25,6 +25,18 @@ export const validateAdopsjon = (
     extra: {
       type: label?.toLowerCase()
     }
+  }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: svarAdopsjon?.adoptivforeldreOmsorgFradato,
+    id: namespace + '-adoptivforeldreOmsorgFradato',
+    message: 'validation:invalidDateFormat'
+  }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: svarAdopsjon?.bevillingRegistreringsdato,
+    id: namespace + '-bevillingRegistreringsdato',
+    message: 'validation:invalidDateFormat'
   }))
 
   hasErrors.push(checkLength(v, {

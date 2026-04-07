@@ -1,6 +1,7 @@
 import { Validation } from 'declarations/types'
 import {SvarInntekt} from "../../../declarations/sed";
 import {checkIfFilledOut, checkIfNotEmpty, checkLength} from "../../../utils/validation";
+import {validatePeriode} from "components/Forms/validation";
 
 export interface ValidationInntektProps {
   svarInntekt: SvarInntekt | undefined,
@@ -42,19 +43,12 @@ export const validateInntekt = (
     }))
   }
 
-  if(svarInntekt?.periode && svarInntekt?.periode.startdato) {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: svarInntekt.periode.sluttdato,
-      id: namespace + '-periode-sluttdato',
-      message: 'validation:noSluttdato'
-    }))
-  }
-
-  if(svarInntekt?.periode && svarInntekt?.periode.sluttdato) {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: svarInntekt.periode.startdato,
-      id: namespace + '-periode-startdato',
-      message: 'validation:noStartdato'
+  if(svarInntekt?.periode && (svarInntekt?.periode.startdato || svarInntekt?.periode.sluttdato)) {
+    hasErrors.push(validatePeriode(v, namespace + '-periode', {
+      periode: svarInntekt.periode,
+      periodeType: 'simple',
+      mandatoryStartdato: false,
+      mandatorySluttdatoIfStartdato: true
     }))
   }
 

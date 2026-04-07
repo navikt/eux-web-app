@@ -2,7 +2,7 @@ import { validateUtenlandskPin } from 'components/UtenlandskPins/validation'
 import {Foedested, PersonInfo, Pin} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import {addError, checkIfNotDate, checkIfNotEmpty, checkLength, checkValidDateFormat} from 'utils/validation'
+import {addError, checkIfNotEmpty, checkLength, checkValidDateFormat} from 'utils/validation'
 import {validateFnrDnrNpid} from "../../../utils/fnrValidator";
 import {validateFoedested} from "../../../components/Foedested/validation";
 
@@ -51,13 +51,6 @@ export const validatePersonopplysninger = (
     needle: personInfo?.foedselsdato?.trim(),
     id: namespace + '-foedselsdato',
     message: 'validation:noFoedselsdato',
-    personName
-  }))
-
-  hasErrors.push(checkIfNotDate(v, {
-    needle: personInfo?.foedselsdato?.trim(),
-    id: namespace + '-foedselsdato',
-    message: 'validation:invalidFoedselsdato',
     personName
   }))
 

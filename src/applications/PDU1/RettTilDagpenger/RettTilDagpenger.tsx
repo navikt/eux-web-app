@@ -44,8 +44,7 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
     const clonedvalidation = _.cloneDeep(validation)
     performValidation<ValidationRettTilDagpengerProps>(
       clonedvalidation, namespace, validateRettTilDagpenger, {
-        rettTilDagpenger,
-        ikkeRettTilDagpenger
+        rettTilDagpenger
       }, true
     )
     dispatch(setValidation(clonedvalidation))
@@ -77,8 +76,8 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
     setRettTilDagpengerRadio('rettTilDagpenger')
     _.set(newReplySed, 'rettTilDagpenger.startdato', newStartdato.trim())
     dispatch(setReplySed!(newReplySed))
-    if (validation[namespace + '-rettTilDagpenger-startdato']) {
-      dispatch(resetValidation(namespace + '-rettTilDagpenger-startdato'))
+    if (validation[namespace + '-startdato']) {
+      dispatch(resetValidation(namespace + '-startdato'))
     }
   }
 
@@ -88,8 +87,8 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
     setRettTilDagpengerRadio('rettTilDagpenger')
     _.set(newReplySed, 'rettTilDagpenger.sluttdato', newSluttdato.trim())
     dispatch(setReplySed!(newReplySed))
-    if (validation[namespace + '-rettTilDagpenger-sluttdato']) {
-      dispatch(resetValidation(namespace + '-rettTilDagpenger-sluttdato'))
+    if (validation[namespace + '-sluttdato']) {
+      dispatch(resetValidation(namespace + '-sluttdato'))
     }
   }
 
@@ -99,8 +98,8 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
     setRettTilDagpengerRadio('rettTilDagpenger')
     _.set(newReplySed, 'rettTilDagpenger.ihhTilArtikkel64', ihhTilArtikkel64 ? 'ja' : 'nei')
     dispatch(setReplySed!(newReplySed))
-    if (validation[namespace + '-rettTilDagpenger-ihhTilArtikkel64']) {
-      dispatch(resetValidation(namespace + '-rettTilDagpenger-ihhTilArtikkel64'))
+    if (validation[namespace + '-ihhTilArtikkel64']) {
+      dispatch(resetValidation(namespace + '-ihhTilArtikkel64'))
     }
   }
 
@@ -110,8 +109,8 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
     setRettTilDagpengerRadio('rettTilDagpenger')
     _.set(newReplySed, 'rettTilDagpenger.ihhTilArtikkel65', ihhTilArtikkel65 ? 'ja' : 'nei')
     dispatch(setReplySed!(newReplySed))
-    if (validation[namespace + '-rettTilDagpenger-ihhTilArtikkel65']) {
-      dispatch(resetValidation(namespace + '-rettTilDagpenger-ihhTilArtikkel65'))
+    if (validation[namespace + '-ihhTilArtikkel65']) {
+      dispatch(resetValidation(namespace + '-ihhTilArtikkel65'))
     }
   }
 
@@ -123,8 +122,8 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
     setRettTilDagpengerRadio('ikkeRettTilDagpenger')
     _.set(newReplySed, 'ikkeRettTilDagpenger.ihhTilLovgivning', ihhTilLovgivning ? 'ja' : 'nei')
     dispatch(setReplySed!(newReplySed))
-    if (validation[namespace + '-rettTilDagpenger-ihhTilLovgivning']) {
-      dispatch(resetValidation(namespace + '-rettTilDagpenger-ihhTilLovgivning'))
+    if (validation[namespace + '-ihhTilLovgivning']) {
+      dispatch(resetValidation(namespace + '-ihhTilLovgivning'))
     }
   }
 
@@ -134,8 +133,8 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
     setRettTilDagpengerRadio('ikkeRettTilDagpenger')
     _.set(newReplySed, 'ikkeRettTilDagpenger.ikkeSoekt', ikkeSoekt ? 'ja' : 'nei')
     dispatch(setReplySed!(newReplySed))
-    if (validation[namespace + '-rettTilDagpenger-ikkeSoekt']) {
-      dispatch(resetValidation(namespace + '-rettTilDagpenger-ikkeSoekt'))
+    if (validation[namespace + '-ikkeSoekt']) {
+      dispatch(resetValidation(namespace + '-ikkeSoekt'))
     }
   }
 

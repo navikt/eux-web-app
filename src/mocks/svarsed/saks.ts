@@ -4,7 +4,7 @@ import _ from 'lodash'
 export default (saksnummer: string, type: string) => {
   const saks: Array<Sak> = [
     {
-      cdmVersjon:'4.2',
+      cdmVersjon:'4.3',
       fornavn: 'Ola',
       etternavn: 'Nordmenn',
       kjoenn: 'M',

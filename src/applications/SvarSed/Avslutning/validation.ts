@@ -1,6 +1,6 @@
 import { X001Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkIfNotEmpty, checkLength } from 'utils/validation'
+import { checkIfNotEmpty, checkLength, checkValidDateFormat } from 'utils/validation'
 
 export interface ValidationAvslutningProps {
   replySed: X001Sed
@@ -21,6 +21,13 @@ export const validateAvslutning = (
     needle: replySed.avslutningDato,
     id: namespace + '-avslutningDato',
     message: 'validation:noDate',
+    personName
+  }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: replySed.avslutningDato,
+    id: namespace + '-avslutningDato',
+    message: 'validation:invalidDateFormat',
     personName
   }))
 

@@ -1,6 +1,6 @@
 import {PersonInfo} from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import {checkIfNotDate, checkIfNotEmpty, checkLength, checkValidDateFormat} from 'utils/validation'
+import {checkIfNotEmpty, checkLength, checkValidDateFormat} from 'utils/validation'
 
 export interface ValidationPersonBasicProps {
   personInfo: PersonInfo | undefined
@@ -47,13 +47,6 @@ export const validatePersonBasic = (
     needle: personInfo?.foedselsdato?.trim(),
     id: namespace + '-foedselsdato',
     message: 'validation:noFoedselsdato',
-    personName
-  }))
-
-  hasErrors.push(checkIfNotDate(v, {
-    needle: personInfo?.foedselsdato?.trim(),
-    id: namespace + '-foedselsdato',
-    message: 'validation:invalidFoedselsdato',
     personName
   }))
 

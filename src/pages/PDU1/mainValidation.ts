@@ -1,6 +1,8 @@
 import { validateDagpengerPerioder, ValidationDagpengerPerioderProps } from 'applications/PDU1/Dagpenger/validation'
 import { validateAllePDPerioder, ValidateAllePDPerioderProps } from 'applications/PDU1/Perioder/validation'
-import {Pdu1Person, PDU1, Etterbetalinger, PDPeriode, Avsender, Oppsigelsesgrunn} from 'declarations/pd'
+import { validateRettTilDagpenger, ValidationRettTilDagpengerProps } from 'applications/PDU1/RettTilDagpenger/validation'
+import { validateCoverLetter, ValidationCoverLetterProps } from 'applications/PDU1/CoverLetter/validation'
+import {Pdu1Person, PDU1, Etterbetalinger, PDPeriode, Avsender, Oppsigelsesgrunn, RettTilDagpenger} from 'declarations/pd'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { validatePerson, ValidationPersonProps } from 'applications/PDU1/Person/validation'
@@ -25,29 +27,36 @@ export const validatePDU1Edit = (v: Validation, namespace: string, {
 }: ValidationPDU1EditProps): boolean => {
   const hasErrors: Array<boolean> = []
 
-  const personID = 'bruker'
-  const person : Pdu1Person = _.get(pdu1, personID)
+  const person : Pdu1Person = _.get(pdu1, 'bruker')
   hasErrors.push(performValidation<ValidationPersonProps>(v,
-    `${namespace}-${personID}-person`, validatePerson, { person }, true))
+    `${namespace}-person`, validatePerson, { person }, true))
 
   hasErrors.push(performValidation<ValidateAllePDPerioderProps>(v,
-    `${namespace}-${personID}-perioder`, validateAllePDPerioder, { pdu1 }, true))
+    `${namespace}-perioder`, validateAllePDPerioder, { pdu1 }, true))
 
   const oppsigelsesGrunn: Oppsigelsesgrunn | undefined = _.get(pdu1, 'oppsigelsesgrunn')
   hasErrors.push(performValidation<ValidationOppsigelsesGrunnProps>(v,
-    `${namespace}-${personID}-sisteansettelseinfo`, validateOppsigelsesGrunn, { oppsigelsesGrunn }, true))
+    `${namespace}-oppsigelsesgrunn`, validateOppsigelsesGrunn, { oppsigelsesGrunn }, true))
 
   const etterbetalinger: Etterbetalinger | undefined = _.get(pdu1, 'etterbetalinger')
   hasErrors.push(performValidation<ValidationUtbetalingProps>(v,
-    `${namespace}-${personID}-utbetaling`, validateEtterbetalinger, { etterbetalinger: etterbetalinger }, true))
+    `${namespace}-etterbetalinger`, validateEtterbetalinger, { etterbetalinger: etterbetalinger }, true))
 
   const dagpenger: Array<PDPeriode> | undefined = _.get(pdu1, 'perioderDagpengerMottatt')
   hasErrors.push(performValidation<ValidationDagpengerPerioderProps>(v,
-    `${namespace}-${personID}-dagpenger`, validateDagpengerPerioder, { dagpenger }, true))
+    `${namespace}-dagpenger`, validateDagpengerPerioder, { dagpenger }, true))
+
+  const rettTilDagpenger: RettTilDagpenger | undefined = _.get(pdu1, 'rettTilDagpenger')
+  hasErrors.push(performValidation<ValidationRettTilDagpengerProps>(v,
+    `${namespace}-retttildagpenger`, validateRettTilDagpenger, { rettTilDagpenger }, true))
 
   const avsender: Avsender = _.get(pdu1, 'avsender')
   hasErrors.push(performValidation<ValidationAvsenderProps>(v,
-    `${namespace}-${personID}-avsender`, validateAvsender, { avsender, keyForCity: 'poststed', keyforZipCode: 'postnr' }, true))
+    `${namespace}-avsender`, validateAvsender, { avsender, keyForCity: 'poststed', keyforZipCode: 'postnr' }, true))
+
+  const info: string | undefined = _.get(pdu1, 'info')
+  hasErrors.push(performValidation<ValidationCoverLetterProps>(v,
+    `${namespace}-coverletter`, validateCoverLetter, { info }, true))
 
   return hasErrors.find(value => value) !== undefined
 }
