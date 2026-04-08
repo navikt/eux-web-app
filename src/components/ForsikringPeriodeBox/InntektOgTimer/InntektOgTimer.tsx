@@ -10,6 +10,7 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import { InntektOgTime, Periode } from 'declarations/sed'
+import { sanitizeAmount } from 'utils/amount'
 import commonStyles from 'assets/css/common.module.css'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -83,7 +84,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   }
 
   const setBruttoinntekt = (newBeløp: string, index: number) => {
-    const bruttoinntekt = parseFloat(newBeløp.trim().replace(",", ".")).toFixed(2)
+    const bruttoinntekt = sanitizeAmount(newBeløp)
     if (index < 0) {
       _setNewInntektOgTime({
         ..._newInntektOgTime,

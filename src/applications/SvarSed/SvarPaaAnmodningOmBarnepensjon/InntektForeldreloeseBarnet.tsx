@@ -6,6 +6,7 @@ import {useAppDispatch, useAppSelector} from "../../../store";
 import {useTranslation} from "react-i18next";
 import _ from "lodash";
 import {State} from "../../../declarations/reducers";
+import {sanitizeAmount} from "../../../utils/amount";
 import {SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from "../../../declarations/sed";
 import Input from "../../../components/Forms/Input";
 import CountrySelect from "@navikt/landvelger";
@@ -78,7 +79,7 @@ const InntektForeldreloeseBarnet: React.FC<MainFormProps> = ({
                 id='beloep'
                 label={t('label:beløp')}
                 namespace={namespace}
-                onChanged={(v) => setYtelseTilForeldreloeseProperty('inntekt.beloep', v)}
+                onChanged={(v) => setYtelseTilForeldreloeseProperty('inntekt.beloep', sanitizeAmount(v))}
                 value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.barnet?.inntekt?.beloep ?? ''}
               />
               <CountrySelect

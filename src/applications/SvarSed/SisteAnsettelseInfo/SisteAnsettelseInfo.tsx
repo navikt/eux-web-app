@@ -11,6 +11,7 @@ import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
 import { State } from 'declarations/reducers'
+import { sanitizeAmount } from 'utils/amount'
 import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -72,7 +73,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewUtbetaling({
         ..._newUtbetaling,
-        beloep: newBeløp.trim(),
+        beloep: sanitizeAmount(newBeløp),
         valuta: _.isNil(_newUtbetaling?.valuta) ? 'NOK' : _newUtbetaling?.valuta
       } as Utbetaling)
       _resetValidation([namespace + '-beloep', namespace + '-valuta'])
@@ -80,7 +81,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
     }
     _setEditUtbetaling({
       ..._editUtbetaling,
-      beloep: newBeløp.trim(),
+      beloep: sanitizeAmount(newBeløp),
       valuta: _.isNil(_editUtbetaling?.valuta) ? 'NOK' : _editUtbetaling?.valuta
     } as Utbetaling)
     dispatch(resetValidation([namespace + getIdx(index) + '-beloep', namespace + getIdx(index) + '-valuta']))

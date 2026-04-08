@@ -9,6 +9,7 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Inntekt } from 'declarations/sed'
+import { sanitizeAmount } from 'utils/amount'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -87,7 +88,7 @@ const Inntekter: React.FC<any> = ({
   }
 
   const setBeløp = (newBeløp: string, index: number) => {
-    const beloep = parseFloat(newBeløp.trim().replace(",", ".")).toFixed(2)
+    const beloep = sanitizeAmount(newBeløp)
     if (index < 0) {
       _setNewInntekt({
         ..._newInntekt,

@@ -5,6 +5,7 @@ import {useTranslation} from "react-i18next";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
 import {Barn, BarnYtelse, F001Sed, Motregning, Motregninger, ReplySed} from "../../../declarations/sed";
+import {sanitizeAmount} from "../../../utils/amount";
 import {isF001Sed, isF002Sed} from "../../../utils/sed";
 import PeriodeText from "../../../components/Forms/PeriodeText";
 import DateField, {toDateFormat} from "../../../components/DateField/DateField";
@@ -414,7 +415,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 label={t('label:beløp')}
                 namespace={_namespace}
                 required={true}
-                onChanged={(value: string) => setMotregningProp("beloep", value, index)}
+                onChanged={(value: string) => setMotregningProp("beloep", sanitizeAmount(value), index)}
                 value={_motregning?.beloep}
               />
               <CountrySelect

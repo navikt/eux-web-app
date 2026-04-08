@@ -11,6 +11,7 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
+import { sanitizeAmount } from 'utils/amount'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -128,7 +129,7 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
     if (!etterbetalinger?._kompensasjonForFeriedagerCheckbox) {
       setKompensasjonForFeriedagerCheckbox(true)
     }
-    dispatch(updateReplySed(`${target}.kompensasjonForFeriedager.beloep`, beloep.trim()))
+    dispatch(updateReplySed(`${target}.kompensasjonForFeriedager.beloep`, sanitizeAmount(beloep)))
     if (validation[namespace + '-kompensasjonForFeriedager-beloep']) {
       dispatch(resetValidation(namespace + '-kompensasjonForFeriedager-beloep'))
     }
