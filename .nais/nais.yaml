@@ -20,7 +20,6 @@ spec:
       enabled: true
       claims:
         groups:
-          - id: "{{ aad.groups.basis }}"
           - id: "{{ aad.groups.yrkesskade }}"
           - id: "{{ aad.groups.aap }}"
           - id: "{{ aad.groups.sykepenger }}"
@@ -30,13 +29,14 @@ spec:
           - id: "{{ aad.groups.tilbakekreving }}"
           - id: "{{ aad.groups.diverse }}"
           - id: "{{ aad.groups.familie }}"
-          - id: "{{ aad.groups.clerk }}"
           - id: "{{ aad.groups.arbeidsledighet }}"
           - id: "{{ aad.groups.horisontal }}"
           - id: "{{ aad.groups.sammenlegging }}"
           - id: "{{ aad.groups.sykemelding }}"
           - id: "{{ aad.groups.lovvalg }}"
-          - id: "{{ aad.groups.kode6 }}"
+#          - id: "{{ aad.groups.kode6 }}"
+#          - id: "{{ aad.groups.basis }}"
+#          - id: "{{ aad.groups.clerk }}"
         extra:
           - NAVident
   accessPolicy:
