@@ -95,7 +95,7 @@ export default {
     "grunnSelvstendig": "Fikk nok"
   },
   "etterbetalinger": {
-    "utbetalingEtterEndtArbeidsforhold": "100 NOK",
+    "utbetalingEtterEndtArbeidsforhold": "2024-01-15",
     "kompensasjonForEndtArbeidsforhold": "100 NOK",
     "kompensasjonForFeriedager": {
       "antallDager": 5,

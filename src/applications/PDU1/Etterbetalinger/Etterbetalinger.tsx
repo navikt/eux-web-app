@@ -3,6 +3,7 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { validateEtterbetalinger, ValidationUtbetalingProps } from 'applications/PDU1/Etterbetalinger/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
+import DateField from 'components/DateField/DateField'
 import { Etterbetalinger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import useUnmount from 'hooks/useUnmount'
@@ -190,14 +191,14 @@ const EtterbetalingerFC: React.FC<MainFormProps> = ({
         >
           <HStack gap="space-8" align="start" wrap={false}>
             {t('el:checkbox-pdu1-4.1')}
-            <Input
+            <DateField
               error={validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
               namespace={namespace}
               id='utbetalingEtterEndtArbeidsforhold'
               label=''
               hideLabel
               onChanged={setUtbetalingEtterEndtArbeidsforhold}
-              value={etterbetalinger?.utbetalingEtterEndtArbeidsforhold}
+              dateValue={etterbetalinger?.utbetalingEtterEndtArbeidsforhold}
             />
           </HStack>
         </Checkbox>

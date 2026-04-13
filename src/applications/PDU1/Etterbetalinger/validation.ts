@@ -1,7 +1,7 @@
 import { Etterbetalinger } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { addError } from 'utils/validation'
+import { addError, checkValidDateFormat } from 'utils/validation'
 
 export interface ValidationUtbetalingProps {
   etterbetalinger: Etterbetalinger | undefined
@@ -22,6 +22,12 @@ export const validateEtterbetalinger = (
       message: 'validation:emptyField'
     }))
   }
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: etterbetalinger?.utbetalingEtterEndtArbeidsforhold,
+    id: namespace + '-utbetalingEtterEndtArbeidsforhold',
+    message: 'validation:invalidDateFormat'
+  }))
 
   if (etterbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox && _.isEmpty(etterbetalinger?.kompensasjonForEndtArbeidsforhold)) {
     hasErrors.push(addError(v, {
