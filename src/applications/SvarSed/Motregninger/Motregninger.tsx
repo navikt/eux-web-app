@@ -550,7 +550,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               id= {target + '-totalbeloep'}
               label={t('label:totalbeloep')}
               namespace={namespace}
-              onChanged={(value: string) => setOppsummeringProp("totalbeloep", value, type)}
+              onChanged={(value: string) => setOppsummeringProp("totalbeloep", sanitizeAmount(value), type)}
               value={(motregninger as any)?.[target]?.totalbeloep || ''}
             />
             <CountrySelect
