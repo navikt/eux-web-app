@@ -28,6 +28,7 @@ RESET='\033[0m'
 
 # -- State tracking -----------------------------------------------------------
 typeset -a PR_NUMBERS PR_TITLES PR_BRANCHES PR_DEPS PR_FROM PR_TO MERGE_STATUS
+typeset -a PR_BUMP PR_RISK PR_RISK_NOTES
 MERGED_COUNT=0
 TOTAL_COUNT=0
 
@@ -59,6 +60,108 @@ parse_pr_title() {
 
   # To version: after " to "
   PR_TO_VER="${body##*to }"
+}
+
+# -- Semver / risk helpers ----------------------------------------------------
+
+# Compare semver: echoes -1 if a < b, 0 if a == b, 1 if a > b
+semver_cmp() {
+  local -a a b
+  a=(${(s:.:)${1#v}})
+  b=(${(s:.:)${2#v}})
+  for i in 1 2 3; do
+    (( ${a[$i]:-0} < ${b[$i]:-0} )) && { echo "-1"; return }
+    (( ${a[$i]:-0} > ${b[$i]:-0} )) && { echo "1"; return }
+  done
+  echo "0"
+}
+
+# Determine semver bump type (major, minor, patch)
+get_bump_type() {
+  local -a fv tv
+  fv=(${(s:.:)${1#v}})
+  tv=(${(s:.:)${2#v}})
+  (( ${tv[1]:-0} > ${fv[1]:-0} )) && { echo "major"; return }
+  (( ${tv[2]:-0} > ${fv[2]:-0} )) && { echo "minor"; return }
+  echo "patch"
+}
+
+# Assess breaking-change risk for a dependency upgrade.
+# Checks: semver bump type, peer dep changes, deprecation, GitHub release notes.
+# Output: bump_type|risk_label|notes
+assess_risk() {
+  local dep="$1" from_ver="$2" to_ver="$3"
+  local bump notes=""
+  bump=$(get_bump_type "$from_ver" "$to_ver")
+
+  # Major bump: always flag
+  if [[ "$bump" == "major" ]]; then
+    echo "major|⚠️ Major|Review changelog for breaking changes"
+    return
+  fi
+
+  # Fetch package metadata for both versions
+  local from_json to_json
+  from_json=$(npm view "$dep@$from_ver" --json 2>/dev/null || echo "{}")
+  to_json=$(npm view "$dep@$to_ver" --json 2>/dev/null || echo "{}")
+
+  # Check peer dependency changes
+  local old_peers new_peers
+  old_peers=$(echo "$from_json" | jq -Sc '.peerDependencies // {}' 2>/dev/null || echo "{}")
+  new_peers=$(echo "$to_json" | jq -Sc '.peerDependencies // {}' 2>/dev/null || echo "{}")
+  [[ "$old_peers" != "$new_peers" ]] && notes="Peer deps changed"
+
+  # Check deprecation
+  local deprecated
+  deprecated=$(echo "$to_json" | jq -r '.deprecated // empty' 2>/dev/null || echo "")
+  [[ -n "$deprecated" ]] && notes="${notes:+$notes; }Deprecated"
+
+  # Check GitHub release notes for "breaking" in version range
+  local repo_url repo_slug
+  repo_url=$(echo "$to_json" | jq -r 'if .repository | type == "object" then .repository.url // empty else empty end' 2>/dev/null || echo "")
+  if [[ -n "$repo_url" ]]; then
+    repo_slug=$(echo "$repo_url" | sed -E 's|.*github\.com[:/]||; s|\.git$||; s|#.*||; s|/$||')
+
+    if [[ -n "$repo_slug" ]]; then
+      # Find releases that mention "breaking" in their body
+      local breaking_tags
+      breaking_tags=$(gh api "repos/$repo_slug/releases" --per-page 50 \
+        --jq '.[] | select(.body != null and (.body | test("\\bbreaking\\b"; "i"))) | .tag_name' \
+        2>/dev/null) || true
+
+      if [[ -n "$breaking_tags" ]]; then
+        local has_breaking=false
+        while IFS= read -r tag; do
+          # Extract version from tag (handles v1.2.3 and @scope/pkg@1.2.3)
+          local ver="${tag##*@}"
+          ver="${ver#v}"
+          ver="${ver%%[-+]*}"
+          [[ "$ver" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || continue
+
+          # Check if this version falls in the upgrade range (from, to]
+          if [[ $(semver_cmp "$ver" "$from_ver") == "1" ]] && \
+             [[ $(semver_cmp "$ver" "$to_ver") != "1" ]]; then
+            has_breaking=true
+            break
+          fi
+        done <<< "$breaking_tags"
+
+        $has_breaking && notes="${notes:+$notes; }Changelog mentions breaking changes"
+      fi
+    fi
+  fi
+
+  # Determine risk label
+  local label
+  if [[ -n "$notes" ]]; then
+    label="⚠️ Check"
+  elif [[ "$bump" == "minor" ]]; then
+    label="✅ Minor"
+  else
+    label="✅ Patch"
+  fi
+
+  echo "$bump|$label|$notes"
 }
 
 # =============================================================================
@@ -141,10 +244,63 @@ find_dependabot_prs() {
 }
 
 # =============================================================================
-# Step 3: Create combined branch and merge all PR branches
+# Step 3: Check for breaking changes
+# =============================================================================
+check_breaking_changes() {
+  header "Step 3: Checking for breaking changes"
+
+  local warnings_count=0
+
+  for i in $(seq 1 $TOTAL_COUNT); do
+    local dep="${PR_DEPS[$i]}"
+    local from="${PR_FROM[$i]}"
+    local to="${PR_TO[$i]}"
+
+    info "Checking $dep ($from → $to)..."
+
+    local result
+    result=$(assess_risk "$dep" "$from" "$to")
+
+    PR_BUMP+=("${result%%|*}")
+    local rest="${result#*|}"
+    PR_RISK+=("${rest%%|*}")
+    PR_RISK_NOTES+=("${rest#*|}")
+
+    local risk="${rest%%|*}"
+    local risk_notes="${rest#*|}"
+
+    if [[ "$risk" == *"⚠️"* ]]; then
+      warnings_count=$((warnings_count + 1))
+      if [[ -n "$risk_notes" ]]; then
+        warn "$dep: $risk — $risk_notes"
+      else
+        warn "$dep: $risk"
+      fi
+    else
+      ok "$dep: $risk"
+    fi
+  done
+
+  print ""
+
+  if [[ $warnings_count -gt 0 ]]; then
+    warn "${BOLD}$warnings_count package(s) flagged for review.${RESET}"
+    print -n "Continue with merge? [y/N] "
+    read -r confirm
+    if [[ "$confirm" != [yY] && "$confirm" != [yY][eE][sS] ]]; then
+      die "Aborted by user."
+    fi
+    ok "Continuing..."
+  else
+    ok "No breaking changes detected"
+  fi
+}
+
+# =============================================================================
+# Step 4: Create combined branch and merge all PR branches
 # =============================================================================
 merge_branches() {
-  header "Step 3: Creating combined branch and merging"
+  header "Step 4: Creating combined branch and merging"
 
   # Delete existing combined branch if present
   git branch -D "$COMBINED_BRANCH" 2>/dev/null && \
@@ -204,10 +360,10 @@ merge_branches() {
 }
 
 # =============================================================================
-# Step 4: Verify the build
+# Step 5: Verify the build
 # =============================================================================
 verify_build() {
-  header "Step 4: Verifying build"
+  header "Step 5: Verifying build"
 
   info "Installing dependencies..."
   npm install --quiet 2>/dev/null
@@ -235,10 +391,10 @@ verify_build() {
 }
 
 # =============================================================================
-# Step 5: Push and create PR
+# Step 6: Push and create PR
 # =============================================================================
 push_and_create_pr() {
-  header "Step 5: Pushing and creating PR"
+  header "Step 6: Pushing and creating PR"
 
   info "Pushing $COMBINED_BRANCH to origin..."
   git push origin "$COMBINED_BRANCH" --force --quiet
@@ -251,11 +407,13 @@ This PR combines $TOTAL_COUNT open Dependabot PRs into a single update. Build ha
 
 ### Summary
 
-| PR # | Dependency | From Version | To Version | PR Title |
-|------|-----------|-------------|-----------|----------|"
+| PR # | Dependency | From Version | To Version | Risk | PR Title |
+|------|-----------|-------------|-----------|------|----------|"
 
   for i in $(seq 1 $TOTAL_COUNT); do
-    pr_body+="\n| #${PR_NUMBERS[$i]} | ${PR_DEPS[$i]} | ${PR_FROM[$i]} | ${PR_TO[$i]} | ${PR_TITLES[$i]} |"
+    local risk_cell="${PR_RISK[$i]:-n/a}"
+    [[ -n "${PR_RISK_NOTES[$i]}" ]] && risk_cell+=" — ${PR_RISK_NOTES[$i]}"
+    pr_body+="\n| #${PR_NUMBERS[$i]} | ${PR_DEPS[$i]} | ${PR_FROM[$i]} | ${PR_TO[$i]} | $risk_cell | ${PR_TITLES[$i]} |"
   done
 
   # Add original PR references
@@ -280,10 +438,10 @@ This PR combines $TOTAL_COUNT open Dependabot PRs into a single update. Build ha
 }
 
 # =============================================================================
-# Step 6: Merge the PR (with confirmation)
+# Step 7: Merge the PR (with confirmation)
 # =============================================================================
 merge_pr() {
-  header "Step 6: Merge to $DEFAULT_BRANCH"
+  header "Step 7: Merge to $DEFAULT_BRANCH"
 
   print -P "${BOLD}Ready to merge the combined PR to $DEFAULT_BRANCH.${RESET}"
   print -n "Proceed? [y/N] "
@@ -325,7 +483,7 @@ merge_pr() {
 }
 
 # =============================================================================
-# Step 7: Summary table
+# Step 8: Summary table
 # =============================================================================
 print_summary() {
   local status="${1:-merged}"
@@ -333,16 +491,18 @@ print_summary() {
   header "Summary"
 
   # Print table
-  printf "%-6s  %-35s  %-14s  %-14s  %s\n" "PR #" "Dependency" "From" "To" "Title"
-  printf "%-6s  %-35s  %-14s  %-14s  %s\n" "------" "-----------------------------------" "--------------" "--------------" "-----"
+  printf "%-6s  %-35s  %-14s  %-14s  %s\n" "PR #" "Dependency" "From" "To" "Risk"
+  printf "%-6s  %-35s  %-14s  %-14s  %s\n" "------" "-----------------------------------" "--------------" "--------------" "-------------------------"
 
   for i in $(seq 1 $TOTAL_COUNT); do
+    local risk_display="${PR_RISK[$i]:-n/a}"
+    [[ -n "${PR_RISK_NOTES[$i]}" ]] && risk_display+=" — ${PR_RISK_NOTES[$i]}"
     printf "#%-5s  %-35s  %-14s  %-14s  %s\n" \
       "${PR_NUMBERS[$i]}" \
       "${PR_DEPS[$i]}" \
       "${PR_FROM[$i]}" \
       "${PR_TO[$i]}" \
-      "${PR_TITLES[$i]}"
+      "$risk_display"
   done
 
   print ""
@@ -367,6 +527,7 @@ main() {
 
   preflight
   find_dependabot_prs
+  check_breaking_changes
   merge_branches
   verify_build
   push_and_create_pr
