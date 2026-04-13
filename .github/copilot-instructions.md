@@ -2,6 +2,7 @@
 
 ## NEVER
 - Do not commit and push to main/master directly. Always create a feature branch and open a pull request for code review.
+- If we are on master/main, always ask before committing and pushing. We want to avoid accidental commits to main.
 
 ## Build, Test, and Lint
 
