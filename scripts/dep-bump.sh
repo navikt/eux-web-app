@@ -407,13 +407,11 @@ This PR combines $TOTAL_COUNT open Dependabot PRs into a single update. Build ha
 
 ### Summary
 
-| PR # | Dependency | From Version | To Version | Risk | PR Title |
-|------|-----------|-------------|-----------|------|----------|"
+| PR # | Dependency | From Version | To Version | Risk | Notes | PR Title |
+|------|-----------|-------------|-----------|------|-------|----------|"
 
   for i in $(seq 1 $TOTAL_COUNT); do
-    local risk_cell="${PR_RISK[$i]:-n/a}"
-    [[ -n "${PR_RISK_NOTES[$i]}" ]] && risk_cell+=" — ${PR_RISK_NOTES[$i]}"
-    pr_body+="\n| #${PR_NUMBERS[$i]} | ${PR_DEPS[$i]} | ${PR_FROM[$i]} | ${PR_TO[$i]} | $risk_cell | ${PR_TITLES[$i]} |"
+    pr_body+="\n| #${PR_NUMBERS[$i]} | ${PR_DEPS[$i]} | ${PR_FROM[$i]} | ${PR_TO[$i]} | ${PR_RISK[$i]:-n/a} | ${PR_RISK_NOTES[$i]} | ${PR_TITLES[$i]} |"
   done
 
   # Add original PR references
@@ -491,18 +489,17 @@ print_summary() {
   header "Summary"
 
   # Print table
-  printf "%-6s  %-35s  %-14s  %-14s  %s\n" "PR #" "Dependency" "From" "To" "Risk"
-  printf "%-6s  %-35s  %-14s  %-14s  %s\n" "------" "-----------------------------------" "--------------" "--------------" "-------------------------"
+  printf "%-6s  %-35s  %-14s  %-14s  %-12s  %s\n" "PR #" "Dependency" "From" "To" "Risk" "Notes"
+  printf "%-6s  %-35s  %-14s  %-14s  %-12s  %s\n" "------" "-----------------------------------" "--------------" "--------------" "------------" "-------------------------"
 
   for i in $(seq 1 $TOTAL_COUNT); do
-    local risk_display="${PR_RISK[$i]:-n/a}"
-    [[ -n "${PR_RISK_NOTES[$i]}" ]] && risk_display+=" — ${PR_RISK_NOTES[$i]}"
-    printf "#%-5s  %-35s  %-14s  %-14s  %s\n" \
+    printf "#%-5s  %-35s  %-14s  %-14s  %-12s  %s\n" \
       "${PR_NUMBERS[$i]}" \
       "${PR_DEPS[$i]}" \
       "${PR_FROM[$i]}" \
       "${PR_TO[$i]}" \
-      "$risk_display"
+      "${PR_RISK[$i]:-n/a}" \
+      "${PR_RISK_NOTES[$i]}"
   done
 
   print ""
