@@ -4,6 +4,7 @@ import {
   Kjoenn,
   ReplySed,
   X001Sed,
+  X002Sed,
   X008Sed,
   X010Sed,
   X011Sed,
@@ -495,6 +496,13 @@ const svarsedReducer = (
 
       if (sedType === 'X001') {
         (replySed as X001Sed).avslutningDato = moment(new Date()).format('YYYY-MM-DD')
+      }
+
+      if (sedType === 'X002') {
+        const x002 = replySed as unknown as X002Sed
+        x002.arbeidsgiver = {}
+        x002.refusjonskrav = {}
+        x002.gjenaapning = {}
       }
 
       return {

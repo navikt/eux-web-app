@@ -18,9 +18,9 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjem' | 'mobil'
 
-export type ReplySed = F001Sed | F002Sed | F003Sed | F026Sed | F027Sed | H001Sed | H002Sed | H065Sed | H120Sed | S040Sed | U002Sed | U004Sed | U017Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
+export type ReplySed = F001Sed | F002Sed | F003Sed | F026Sed | F027Sed | H001Sed | H002Sed | H065Sed | H120Sed | S040Sed | U002Sed | U004Sed | U017Sed | X002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
-export type SedTypes = 'F001' | 'F002' | 'F003' | 'F026' | 'F027' |'H001' | 'H002' | 'H065' | 'H120' | 'S040'| 'S046'| 'U002' | 'U004' | 'U017' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
+export type SedTypes = 'F001' | 'F002' | 'F003' | 'F026' | 'F027' |'H001' | 'H002' | 'H065' | 'H120' | 'S040'| 'S046'| 'U002' | 'U004' | 'U017' | 'X002' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -935,6 +935,42 @@ export interface X001Sed extends XSed {
   avslutningType: AvslutningsType
   begrunnelseType: string
   begrunnelseAnnen?: string
+}
+
+export interface X002ArbeidsgiverAdresse {
+  bygning?: string
+  gate?: string
+  by?: string
+  postnummer?: string
+  region?: string
+  landkode?: string
+}
+
+export interface X002ArbeidsgiverIdentifikator {
+  type?: string
+  id?: string
+}
+
+export interface X002Arbeidsgiver {
+  navn?: string
+  adresse?: X002ArbeidsgiverAdresse
+  identifikatorer?: Array<X002ArbeidsgiverIdentifikator>
+}
+
+export interface X002Refusjonskrav {
+  antallkrav?: string
+  id?: string
+}
+
+export interface X002Gjenaapning {
+  aarsakType?: string
+  aarsakAnnet?: string
+}
+
+export interface X002Sed extends XSed {
+  arbeidsgiver?: X002Arbeidsgiver
+  refusjonskrav?: X002Refusjonskrav
+  gjenaapning?: X002Gjenaapning
 }
 
 export interface X008Sed extends XSed {

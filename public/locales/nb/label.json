@@ -623,5 +623,11 @@
   "arbeidsgiver-navn": "Navn på arbeidsgiver",
   "arbeidsgiver-adresse": "Adresse til arbeidsgiver",
   "arbeidsgiver-identifikator-type": "Type identifikator",
-  "arbeidsgiver-identifikator-id": "Identifikasjonsnummer"
+  "arbeidsgiver-identifikator-id": "Identifikasjonsnummer",
+
+  "gjenaapning-aarsak": "Årsak til anmodning om gjenåpning",
+  "gjenaapning-aarsak-annet": "Begrunnelse for gjenåpning",
+  "refusjonskrav": "Refusjonskrav",
+  "refusjonskrav-antallkrav": "Antall krav",
+  "refusjonskrav-id": "ID"
 }
