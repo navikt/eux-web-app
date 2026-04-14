@@ -12,7 +12,7 @@ import {validateFnrDnrNpid} from 'utils/fnrValidator'
 import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
 import {JoarkBrowserItem} from "../declarations/attachments";
-import { usesTypedSedApi } from 'utils/sed'
+import { usesTypedSedApi, usesSvarSedTypedApi } from 'utils/sed'
 // @ts-ignore
 import { sprintf } from 'sprintf-js';
 
@@ -72,13 +72,27 @@ export const createSed = (
   replySed: ReplySed
 ): ActionWithPayload => {
   const copyReplySed = stripInternalProps(_.cloneDeep(replySed))
+  const parentSedId = copyReplySed._parentSedId
   delete copyReplySed.sak
   delete copyReplySed.sed
   delete copyReplySed.attachments
+  delete copyReplySed._parentSedId
   const sedType = replySed.sedType
-  const url = usesTypedSedApi(sedType)
-    ? sprintf(urls.API_SED_CREATE_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase() })
-    : sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.sak?.sakId })
+  let url: string
+  if (usesSvarSedTypedApi(sedType)) {
+    if (!parentSedId) {
+      throw new Error(`createSed: parentSedId is required for svarSed type ${sedType}`)
+    }
+    url = sprintf(urls.API_SED_CREATE_SVARSED_BY_TYPE_URL, {
+      rinaSakId: replySed.sak?.sakId,
+      svarSedType: sedType?.toLowerCase(),
+      parentSedId
+    })
+  } else if (usesTypedSedApi(sedType)) {
+    url = sprintf(urls.API_SED_CREATE_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase() })
+  } else {
+    url = sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.sak?.sakId })
+  }
   return call({
     method: 'POST',
     url,
@@ -119,6 +133,7 @@ export const updateSed = (
   delete copyReplySed.sak
   delete copyReplySed.sed
   delete copyReplySed.attachments
+  delete copyReplySed._parentSedId
   const sedType = replySed.sedType
   const url = usesTypedSedApi(sedType)
     ? sprintf(urls.API_SED_UPDATE_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase(), sedId: replySed.sed?.sedId })
@@ -367,24 +382,31 @@ export const replyToSed = (
     ? connectedSed.sedIdParent
     : connectedSed.sedId
 
-  const url = usesTypedSedApi(connectedSed.sedType)
-    ? sprintf(urls.API_SED_SVARSED_DRAFT_BY_TYPE_URL, {
+  const url = usesSvarSedTypedApi(connectedSed.svarsedType)
+    ? sprintf(urls.API_SED_SVARSED_UTKAST_BY_TYPE_URL, {
         rinaSakId: sak.sakId,
-        sedType: connectedSed.sedType?.toLowerCase(),
-        sedId
+        svarSedType: connectedSed.svarsedType?.toLowerCase(),
+        parentSedId: sedId
       })
-    : sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
-        rinaSakId: sak.sakId,
-        sedId,
-        sedType: connectedSed.svarsedType
-      })
+    : usesTypedSedApi(connectedSed.sedType)
+      ? sprintf(urls.API_SED_SVARSED_DRAFT_BY_TYPE_URL, {
+          rinaSakId: sak.sakId,
+          sedType: connectedSed.sedType?.toLowerCase(),
+          sedId
+        })
+      : sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
+          rinaSakId: sak.sakId,
+          sedId,
+          sedType: connectedSed.svarsedType
+        })
 
   return call({
     url,
     expectedPayload: mockReplySed(connectedSed.svarsedType!),
     context: {
       sak,
-      sed: undefined
+      sed: undefined,
+      parentSedId: usesSvarSedTypedApi(connectedSed.svarsedType) ? sedId : undefined
     },
     type: {
       request: types.SVARSED_REPLYTOSED_REQUEST,

@@ -19,6 +19,7 @@ import {
   X011Sed,
   X012Sed
 } from 'declarations/sed'
+import { H021Sed } from 'declarations/h021'
 import { H065Sed } from 'declarations/h065'
 import { H120Sed } from 'declarations/h120'
 import f001 from '../seds/f001.json'
@@ -28,6 +29,7 @@ import f026 from '../seds/f026.json'
 import f027 from '../seds/f027.json'
 import h001 from '../seds/h001.json'
 import h002 from '../seds/h002.json'
+import h021 from '../seds/h021.json'
 import h065 from '../seds/h065.json'
 import h120 from '../seds/h120.json'
 import s040 from '../seds/s040.json'
@@ -49,6 +51,7 @@ const seds: {[k in SedTypes]: ReplySed} = {
   F027: <F027Sed>f027,
   H001: <H001Sed>h001,
   H002: <H002Sed>h002,
+  H021: <H021Sed>h021,
   H065: <H065Sed>h065,
   H120: <H120Sed>h120,
   S040: <S040Sed>s040,

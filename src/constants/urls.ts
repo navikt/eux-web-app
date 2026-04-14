@@ -36,6 +36,10 @@ export const API_SED_DELETE_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSa
 export const API_SED_UPDATE_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/%(sedType)s/%(sedId)s'
 export const API_SED_SVARSED_DRAFT_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/%(sedType)s/%(sedId)s/svarsed'
 
+// v1 typed svarSed endpoints (H021+) — reply SED type in path, parent SED ID as parameter
+export const API_SED_SVARSED_UTKAST_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/%(svarSedType)s/utkast/%(parentSedId)s'
+export const API_SED_CREATE_SVARSED_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/%(svarSedType)s/%(parentSedId)s'
+
 export const API_PREVIEW_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/utkast/pdf'
 export const API_PDF_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/pdf'
 export const API_SAK_DELETE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s'
