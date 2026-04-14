@@ -10,6 +10,7 @@ import AttachmentsFromRinaTable from "./AttachmentsFromRinaTable";
 import {Barn, F001Sed, PersonTypeF001, ReplySed} from "../../../declarations/sed";
 import {getFnr} from "../../../utils/fnr";
 import {isFSed} from "../../../utils/sed";
+import {validateFnrDnrNpid} from "../../../utils/fnrValidator";
 
 export interface AttachmentsProps {
   replySed: ReplySed | null | undefined
@@ -46,6 +47,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
 
   const [_fnr, setFnr] = useState<string | undefined>(bFnr ? bFnr : eFnr ? eFnr : aFnr ? aFnr : apFnr ? apFnr : undefined)
   const [_fnrField, setFnrField] = useState<string | undefined>(undefined)
+  const [_fnrError, setFnrError] = useState<string | undefined>(undefined)
 
   const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
     if (b.type === 'joark' && a.type === 'sed') return -1
@@ -178,7 +180,39 @@ const Attachments: React.FC<AttachmentsProps> = ({
   const fnrSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFnr(e.currentTarget.value);
     setFnrField("")
+    setFnrError(undefined)
   }
+
+  const FnrTextField = () => (
+    <TextField
+      id='fnr'
+      label={t('label:fnr')}
+      hideLabel={false}
+      error={_fnrError}
+      onChange={(e) => {
+        setFnrField(e.target.value)
+        setFnr(undefined)
+        setFnrError(undefined)
+      }}
+      onBlur={(e) => {
+        const value = e.target.value.trim()
+        if (!value) {
+          setFnr(undefined)
+          setFnrError(undefined)
+          return
+        }
+        const result = validateFnrDnrNpid(value)
+        if (result.status === 'valid') {
+          setFnr(value)
+          setFnrError(undefined)
+        } else {
+          setFnr(undefined)
+          setFnrError(t('validation:invalidFnr'))
+        }
+      }}
+      value={_fnrField}
+    />
+  )
 
   return (
     <Box padding="space-16" borderWidth="1" background="default">
@@ -207,14 +241,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
                 {isFSed(replySed) &&
                   <>
                     <span style={{display: 'flex', alignItems: 'center', paddingTop: '1.5rem'}}>evt.</span>
-                    <TextField
-                      id='fnr'
-                      label={t('label:fnr')}
-                      hideLabel={false}
-                      onChange={(e) => setFnrField(e.target.value)}
-                      onBlur={(e) => setFnr(e.target.value)}
-                      value={_fnrField}
-                    />
+                    <FnrTextField/>
                   </>
                 }
                 <div className='nolabel'>
@@ -246,14 +273,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
                 {isFSed(replySed) &&
                   <>
                     <span style={{display: 'flex', alignItems: 'center', paddingTop: '1.5rem'}}>evt.</span>
-                    <TextField
-                      id='fnr'
-                      label={t('label:fnr')}
-                      hideLabel={false}
-                      onChange={(e) => setFnrField(e.target.value)}
-                      onBlur={(e) => setFnr(e.target.value)}
-                      value={_fnrField}
-                    />
+                    <FnrTextField/>
                   </>
                 }
                 <div className='nolabel'>

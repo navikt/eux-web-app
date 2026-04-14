@@ -19,6 +19,7 @@ import {JoarkBrowserItem, JoarkBrowserItems} from "declarations/attachments";
 import JoarkBrowser from "applications/Vedlegg/JoarkBrowser/JoarkBrowser";
 import {alertReset} from "actions/alert";
 import {propertySet, resetVedlegg} from "actions/vedlegg";
+import {validateFnrDnrNpid} from "utils/fnrValidator";
 
 export interface VedleggSelector {
   alertMessage: JSX.Element | string | undefined
@@ -45,17 +46,36 @@ const Vedlegg: React.FC = (): JSX.Element => {
   const { alertMessage, alertType, rinasaksnummer, rinadokumentID, vedleggResponse, validation }: VedleggSelector = useAppSelector(mapState)
 
   const [_fnr, setFnr] = useState<string | undefined>(undefined)
+  const [_fnrField, setFnrField] = useState<string>('')
+  const [_fnrError, setFnrError] = useState<string | undefined>(undefined)
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
   const [_items, setItems] = useState<JoarkBrowserItems>([])
   const [_viewSendVedleggModal, setViewSendVedleggModal] = useState<boolean>(false)
 
+  const validateAndSetFnr = (value: string) => {
+    if (!value || value.trim() === '') {
+      setFnr(undefined)
+      setFnrError(undefined)
+      return
+    }
+    const trimmed = value.trim()
+    const result = validateFnrDnrNpid(trimmed)
+    if (result.status === 'valid') {
+      setFnr(trimmed)
+      setFnrError(undefined)
+    } else {
+      setFnr(undefined)
+      setFnrError(t('validation:invalidFnr'))
+    }
+  }
 
   useEffect(() => {
     const params: URLSearchParams = new URLSearchParams(window.location.search)
     const rinasaksnummer = params.get('rinasaksnummer')
     const fnr = params.get('fnr')
     if(fnr){
-      setFnr(fnr)
+      setFnrField(fnr)
+      validateAndSetFnr(fnr)
     }
     if (rinasaksnummer) {
       dispatch(vedleggActions.propertySet('rinasaksnummer', rinasaksnummer))
@@ -110,7 +130,9 @@ const Vedlegg: React.FC = (): JSX.Element => {
   }
 
   const resetAndClose = () => {
-    setFnr("")
+    setFnrField('')
+    setFnr(undefined)
+    setFnrError(undefined)
     setItems([])
     dispatch(alertReset())
     dispatch(resetVedlegg())
@@ -145,15 +167,20 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <HGrid columns={2} gap="space-16" align="start">
                 <TextField
                   id="fnr"
-                  error={validation[namespace + '-fnr']?.feilmelding}
+                  error={_fnrError ?? validation[namespace + '-fnr']?.feilmelding}
                   label="Fødselsnummer"
-                  onChange={(e) => setFnr(e.target.value)}
-                  value={_fnr}
+                  onChange={(e) => {
+                    setFnrField(e.target.value)
+                    setFnr(undefined)
+                    setFnrError(undefined)
+                  }}
+                  onBlur={(e) => validateAndSetFnr(e.target.value)}
+                  value={_fnrField}
                 />
                 <div className='nolabel'>
                   <Button
                     variant='secondary'
-                    disabled={_.isNil(_fnr) || _fnr === ''}
+                    disabled={!_fnr}
                     onClick={() => {
                       setAttachmentsTableVisible(!_attachmentsTableVisible)
                     }}
