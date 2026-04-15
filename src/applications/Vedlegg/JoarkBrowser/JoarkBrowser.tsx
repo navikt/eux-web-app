@@ -319,7 +319,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }, [existingItems, list, mode])
 
   useEffect(() => {
-    if (mode === "select" && fnr && !gettingJoarkList) {
+    if (mode === "select" && fnr && /^\d{11}$/.test(fnr) && !gettingJoarkList) {
       dispatch(listJoarkItems(fnr, ''))
     }
   }, [fnr])

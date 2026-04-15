@@ -1,6 +1,7 @@
-import {BodyLong, Box, Button, Heading, HStack, Select, TextField, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Heading, HStack, Select, VStack} from '@navikt/ds-react'
 import { JoarkBrowser } from 'applications/Vedlegg/JoarkBrowser/JoarkBrowser'
 import SEDAttachmentModal from 'applications/Vedlegg/SEDAttachmentModal/SEDAttachmentModal'
+import FnrTextField from 'components/FnrTextField/FnrTextField'
 import { JoarkBrowserItem, JoarkBrowserItems } from 'declarations/attachments'
 import _ from 'lodash'
 import React, {useEffect, useState} from 'react'
@@ -202,18 +203,15 @@ const Attachments: React.FC<AttachmentsProps> = ({
                   {t('message:warning-no-attachments')}
                 </BodyLong>
               </Box>
-              <HStack gap="space-16">
+              <HStack gap="space-16" align="start">
                 <FNRSelectColumn/>
                 {isFSed(replySed) &&
                   <>
-                    <span style={{display: 'flex', alignItems: 'center', paddingTop: '1.5rem'}}>evt.</span>
-                    <TextField
-                      id='fnr'
-                      label={t('label:fnr')}
-                      hideLabel={false}
-                      onChange={(e) => setFnrField(e.target.value)}
-                      onBlur={(e) => setFnr(e.target.value)}
+                    <span style={{display: 'flex', alignItems: 'center', paddingTop: '2.5rem'}}>evt.</span>
+                    <FnrTextField
                       value={_fnrField}
+                      onChange={(raw) => setFnrField(raw)}
+                      onValidFnr={setFnr}
                     />
                   </>
                 }
@@ -241,18 +239,15 @@ const Attachments: React.FC<AttachmentsProps> = ({
                 tableId='vedlegg-view'
                 onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
               />
-              <HStack gap="space-16">
+              <HStack gap="space-16" align="start">
                 <FNRSelectColumn/>
                 {isFSed(replySed) &&
                   <>
-                    <span style={{display: 'flex', alignItems: 'center', paddingTop: '1.5rem'}}>evt.</span>
-                    <TextField
-                      id='fnr'
-                      label={t('label:fnr')}
-                      hideLabel={false}
-                      onChange={(e) => setFnrField(e.target.value)}
-                      onBlur={(e) => setFnr(e.target.value)}
+                    <span style={{display: 'flex', alignItems: 'center', paddingTop: '2.5rem'}}>evt.</span>
+                    <FnrTextField
                       value={_fnrField}
+                      onChange={(raw) => setFnrField(raw)}
+                      onValidFnr={setFnr}
                     />
                   </>
                 }

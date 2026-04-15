@@ -1,9 +1,10 @@
-import {Alert, Box, Button, HGrid, HStack, Link, Page, Spacer, TextField, VStack} from '@navikt/ds-react'
+import {Alert, Box, Button, HGrid, HStack, Link, Page, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
 import TopContainer from 'components/TopContainer/TopContainer'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
+import FnrTextField from 'components/FnrTextField/FnrTextField'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Validation, VedleggSendResponse } from 'declarations/types'
@@ -19,6 +20,7 @@ import {JoarkBrowserItem, JoarkBrowserItems} from "declarations/attachments";
 import JoarkBrowser from "applications/Vedlegg/JoarkBrowser/JoarkBrowser";
 import {alertReset} from "actions/alert";
 import {propertySet, resetVedlegg} from "actions/vedlegg";
+import {validateFnrDnrNpid} from "utils/fnrValidator";
 
 export interface VedleggSelector {
   alertMessage: JSX.Element | string | undefined
@@ -45,17 +47,21 @@ const Vedlegg: React.FC = (): JSX.Element => {
   const { alertMessage, alertType, rinasaksnummer, rinadokumentID, vedleggResponse, validation }: VedleggSelector = useAppSelector(mapState)
 
   const [_fnr, setFnr] = useState<string | undefined>(undefined)
+  const [_fnrField, setFnrField] = useState<string>('')
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
   const [_items, setItems] = useState<JoarkBrowserItems>([])
   const [_viewSendVedleggModal, setViewSendVedleggModal] = useState<boolean>(false)
-
 
   useEffect(() => {
     const params: URLSearchParams = new URLSearchParams(window.location.search)
     const rinasaksnummer = params.get('rinasaksnummer')
     const fnr = params.get('fnr')
     if(fnr){
-      setFnr(fnr)
+      setFnrField(fnr)
+      const result = validateFnrDnrNpid(fnr.trim())
+      if (result.status === 'valid') {
+        setFnr(fnr.trim())
+      }
     }
     if (rinasaksnummer) {
       dispatch(vedleggActions.propertySet('rinasaksnummer', rinasaksnummer))
@@ -110,7 +116,8 @@ const Vedlegg: React.FC = (): JSX.Element => {
   }
 
   const resetAndClose = () => {
-    setFnr("")
+    setFnrField('')
+    setFnr(undefined)
     setItems([])
     dispatch(alertReset())
     dispatch(resetVedlegg())
@@ -143,17 +150,17 @@ const Vedlegg: React.FC = (): JSX.Element => {
             <Spacer/>
             <VStack paddingBlock="space-48" width="50%" gap="space-16">
               <HGrid columns={2} gap="space-16" align="start">
-                <TextField
-                  id="fnr"
-                  error={validation[namespace + '-fnr']?.feilmelding}
+                <FnrTextField
                   label="Fødselsnummer"
-                  onChange={(e) => setFnr(e.target.value)}
-                  value={_fnr}
+                  value={_fnrField}
+                  onChange={setFnrField}
+                  onValidFnr={setFnr}
+                  error={validation[namespace + '-fnr']?.feilmelding}
                 />
                 <div className='nolabel'>
                   <Button
                     variant='secondary'
-                    disabled={_.isNil(_fnr) || _fnr === ''}
+                    disabled={!_fnr}
                     onClick={() => {
                       setAttachmentsTableVisible(!_attachmentsTableVisible)
                     }}
