@@ -15,7 +15,7 @@ import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
-import {Alert, Box, Button, HStack, Loader, Spacer, VStack} from '@navikt/ds-react'
+import {Alert, Box, Button, HStack, List, Loader, Spacer, VStack} from '@navikt/ds-react'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -81,6 +81,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   const [_sedSent, setSedSent] = useState<boolean>(false)
   const [_finished, setFinished] = useState<string | undefined>(undefined)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
+  const [_skippedAttachments, setSkippedAttachments] = useState<JoarkBrowserItems>([])
 
   const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
     if (b.type === 'joark' && a.type === 'sed') return -1
@@ -158,6 +159,13 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
         _onFinished(t('message:success-no-attachments-to-save'))
         return
       }
+
+      if (!sedCreatedResponse?.sedId) {
+        setSkippedAttachments(joarksToUpload)
+        _onFinished(t('message:warning-x-attachments-skipped-missing-dokument-id', { skipped: joarksToUpload.length }))
+        return
+      }
+
       // attachments to send -> start a savingAttachmentsJob
       setSendingAttachments(true)
       dispatch(createSavingAttachmentJob(joarksToUpload))
@@ -270,6 +278,16 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       </HStack>
                     )}
                   </div>
+                  {!_.isEmpty(_skippedAttachments) && (
+                    <Alert variant='warning' size='small'>
+                      {t('message:warning-x-attachments-skipped-missing-dokument-id', { skipped: _skippedAttachments.length })}
+                      <List size='small'>
+                        {_skippedAttachments.map((att) => (
+                          <List.Item key={att.key}>{att.title}</List.Item>
+                        ))}
+                      </List>
+                    </Alert>
+                  )}
                 </VStack>
               </HStack>
               <HStack justify="center" align="stretch">

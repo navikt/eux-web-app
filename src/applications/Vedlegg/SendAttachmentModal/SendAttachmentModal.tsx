@@ -14,7 +14,7 @@ import {createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed} fro
 import {useTranslation} from "react-i18next";
 import {alertReset} from "../../../actions/alert";
 import SEDAttachmentSender from "../SEDAttachmentSender/SEDAttachmentSender";
-import {Alert, Box, Button, HStack, VStack} from "@navikt/ds-react";
+import {Alert, Box, Button, HStack, List, VStack} from "@navikt/ds-react";
 import * as types from "../../../constants/actionTypes";
 import {CheckmarkCircleFillIcon} from "@navikt/aksel-icons";
 
@@ -66,6 +66,7 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
   const [_attachmentsSent, setAttachmentsSent] = useState<boolean>(false)
   const [_sendingAttachments, setSendingAttachments] = useState<boolean>(initialSendingAttachments)
   const [_finished, setFinished] = useState<string | undefined>(undefined)
+  const [_skippedAttachments, setSkippedAttachments] = useState<JoarkBrowserItems>([])
 
   const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
     if (b.type === 'joark' && a.type === 'sed') return -1
@@ -120,6 +121,13 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
         _onFinished(t('message:success-no-attachments-to-save'))
         return
       }
+
+      if (!rinaDokumentId) {
+        setSkippedAttachments(joarksToUpload)
+        _onFinished(t('message:warning-x-attachments-skipped-missing-dokument-id', { skipped: joarksToUpload.length }))
+        return
+      }
+
       // attachments to send -> start a savingAttachmentsJob
       setSendingAttachments(true)
       dispatch(createSavingAttachmentJob(joarksToUpload))
@@ -178,6 +186,16 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
                   <CheckmarkCircleFillIcon color='var(--ax-bg-success-strong)' />
                   <span>{_finished}</span>
                 </HStack>
+                {!_.isEmpty(_skippedAttachments) && (
+                  <Alert variant='warning' size='small'>
+                    {t('message:warning-x-attachments-skipped-missing-dokument-id', { skipped: _skippedAttachments.length })}
+                    <List size='small'>
+                      {_skippedAttachments.map((att) => (
+                        <List.Item key={att.key}>{att.title}</List.Item>
+                      ))}
+                    </List>
+                  </Alert>
+                )}
                 <HStack gap="space-8" align="center" justify="center">
                   <Button
                     variant='secondary'
