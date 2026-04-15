@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "13.4.1-TEN-1604-VALIDATE-FNR-VEDLEGG",
+  "version": "13.4.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -207,5 +207,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@13.4.1-TEN-1604-VALIDATE-FNR-VEDLEGG"
+  "_id": "neessi@13.4.1"
 }
