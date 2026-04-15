@@ -203,11 +203,11 @@ const Attachments: React.FC<AttachmentsProps> = ({
                   {t('message:warning-no-attachments')}
                 </BodyLong>
               </Box>
-              <HStack gap="space-16">
+              <HStack gap="space-16" align="start">
                 <FNRSelectColumn/>
                 {isFSed(replySed) &&
                   <>
-                    <span style={{display: 'flex', alignItems: 'center', paddingTop: '1.5rem'}}>evt.</span>
+                    <span style={{display: 'flex', alignItems: 'center', paddingTop: '2.5rem'}}>evt.</span>
                     <FnrTextField
                       value={_fnrField}
                       onChange={(raw) => setFnrField(raw)}
@@ -239,11 +239,11 @@ const Attachments: React.FC<AttachmentsProps> = ({
                 tableId='vedlegg-view'
                 onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
               />
-              <HStack gap="space-16">
+              <HStack gap="space-16" align="start">
                 <FNRSelectColumn/>
                 {isFSed(replySed) &&
                   <>
-                    <span style={{display: 'flex', alignItems: 'center', paddingTop: '1.5rem'}}>evt.</span>
+                    <span style={{display: 'flex', alignItems: 'center', paddingTop: '2.5rem'}}>evt.</span>
                     <FnrTextField
                       value={_fnrField}
                       onChange={(raw) => setFnrField(raw)}
