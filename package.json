@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "13.4.1",
+  "version": "13.4.2-TEN-1603-UNDEFINED-RINADOKUMENTID",
   "private": true,
   "type": "module",
   "scripts": {
@@ -207,5 +207,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@13.4.1"
+  "_id": "neessi@13.4.2-TEN-1603-UNDEFINED-RINADOKUMENTID"
 }

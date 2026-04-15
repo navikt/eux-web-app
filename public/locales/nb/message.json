@@ -81,6 +81,7 @@
   "warning-no-address": "Ingen adresser er registrert",
   "warning-no-arbeidsgiver-found": "Ingen arbeidsperioder funnet",
   "warning-no-attachments": "Ingen vedlegg er valgt",
+  "warning-x-attachments-skipped-missing-dokument-id": "{{skipped}} vedlegg ble ikke sendt (mangler dokument-ID):",
   "warning-no-barn": "Ingen barn",
   "warning-no-email": "Ingen e-post adresser",
   "warning-no-dokument": "Ingen dokumenter",

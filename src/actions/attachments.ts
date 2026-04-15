@@ -64,6 +64,13 @@ export const resetSedAttachments: ActionCreator<Action> = (): Action => ({
 export const sendAttachmentToSed = (
   params: SEDAttachmentPayloadWithFile, joarkBrowserItem: JoarkBrowserItem
 ): Action => {
+  if (!params.rinaDokumentId) {
+    return {
+      type: types.ATTACHMENT_SEND_FAILURE,
+      error: 'rinaDokumentId is undefined — cannot send attachment'
+    } as unknown as Action
+  }
+
   params = {
     ...params,
     filnavn: encodeURIComponent(params.filnavn)
