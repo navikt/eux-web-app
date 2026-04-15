@@ -573,6 +573,8 @@ export interface BaseReplySed {
   // this will identify if we will create the ReplySed (if undefined) or edit the ReplySed
   sed?: Sed | undefined
   attachments?: JoarkBrowserItems | undefined
+  // parent SED ID for reply SEDs that need to be created related to a parent (e.g., X002 → X001)
+  parentSedId?: string | undefined
 }
 
 export interface LokaleSakId {

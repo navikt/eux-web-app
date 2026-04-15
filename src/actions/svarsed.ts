@@ -75,10 +75,13 @@ export const createSed = (
   delete copyReplySed.sak
   delete copyReplySed.sed
   delete copyReplySed.attachments
+  delete copyReplySed.parentSedId
   const sedType = replySed.sedType
-  const url = usesTypedSedApi(sedType)
-    ? sprintf(urls.API_SED_CREATE_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase() })
-    : sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.sak?.sakId })
+  const url = sedType === 'X002' && replySed.parentSedId
+    ? sprintf(urls.API_SED_CREATE_RELATED_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase(), parentSedId: replySed.parentSedId })
+    : usesTypedSedApi(sedType)
+      ? sprintf(urls.API_SED_CREATE_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase() })
+      : sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.sak?.sakId })
   return call({
     method: 'POST',
     url,
@@ -367,24 +370,30 @@ export const replyToSed = (
     ? connectedSed.sedIdParent
     : connectedSed.sedId
 
-  const url = usesTypedSedApi(connectedSed.sedType)
-    ? sprintf(urls.API_SED_SVARSED_DRAFT_BY_TYPE_URL, {
+  const url = connectedSed.svarsedType === 'X002'
+    ? sprintf(urls.API_SED_X002_DRAFT_URL, {
         rinaSakId: sak.sakId,
-        sedType: connectedSed.sedType?.toLowerCase(),
         sedId
       })
-    : sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
-        rinaSakId: sak.sakId,
-        sedId,
-        sedType: connectedSed.svarsedType
-      })
+    : usesTypedSedApi(connectedSed.sedType)
+      ? sprintf(urls.API_SED_SVARSED_DRAFT_BY_TYPE_URL, {
+          rinaSakId: sak.sakId,
+          sedType: connectedSed.sedType?.toLowerCase(),
+          sedId
+        })
+      : sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
+          rinaSakId: sak.sakId,
+          sedId,
+          sedType: connectedSed.svarsedType
+        })
 
   return call({
     url,
     expectedPayload: mockReplySed(connectedSed.svarsedType!),
     context: {
       sak,
-      sed: undefined
+      sed: undefined,
+      parentSedId: connectedSed.sedId
     },
     type: {
       request: types.SVARSED_REPLYTOSED_REQUEST,

@@ -4,7 +4,6 @@ import {
   Kjoenn,
   ReplySed,
   X001Sed,
-  X002Sed,
   X008Sed,
   X010Sed,
   X011Sed,
@@ -204,7 +203,8 @@ const svarsedReducer = (
         bruker,
         ...(lokaleSakIder && { lokaleSakIder }),
         sak: (action as ActionWithPayload).context.sak,
-        sed: undefined // so we can signal this SED as a SED that needs to be created, not updated
+        sed: undefined, // so we can signal this SED as a SED that needs to be created, not updated
+        parentSedId: (action as ActionWithPayload).context.parentSedId
       }
 
       return {
@@ -496,13 +496,6 @@ const svarsedReducer = (
 
       if (sedType === 'X001') {
         (replySed as X001Sed).avslutningDato = moment(new Date()).format('YYYY-MM-DD')
-      }
-
-      if (sedType === 'X002') {
-        const x002 = replySed as unknown as X002Sed
-        x002.arbeidsgiver = {}
-        x002.refusjonskrav = {}
-        x002.gjenaapning = {}
       }
 
       return {
