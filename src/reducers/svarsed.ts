@@ -203,8 +203,7 @@ const svarsedReducer = (
         bruker,
         ...(lokaleSakIder && { lokaleSakIder }),
         sak: (action as ActionWithPayload).context.sak,
-        sed: undefined, // so we can signal this SED as a SED that needs to be created, not updated
-        parentSedId: (action as ActionWithPayload).context.parentSedId
+        sed: undefined // so we can signal this SED as a SED that needs to be created, not updated
       }
 
       return {

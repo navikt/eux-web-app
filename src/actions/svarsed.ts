@@ -75,13 +75,10 @@ export const createSed = (
   delete copyReplySed.sak
   delete copyReplySed.sed
   delete copyReplySed.attachments
-  delete copyReplySed.parentSedId
   const sedType = replySed.sedType
-  const url = sedType === 'X002' && replySed.parentSedId
-    ? sprintf(urls.API_SED_CREATE_RELATED_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase(), parentSedId: replySed.parentSedId })
-    : usesTypedSedApi(sedType)
-      ? sprintf(urls.API_SED_CREATE_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase() })
-      : sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.sak?.sakId })
+  const url = usesTypedSedApi(sedType)
+    ? sprintf(urls.API_SED_CREATE_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase() })
+    : sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.sak?.sakId })
   return call({
     method: 'POST',
     url,
@@ -392,8 +389,7 @@ export const replyToSed = (
     expectedPayload: mockReplySed(connectedSed.svarsedType!),
     context: {
       sak,
-      sed: undefined,
-      parentSedId: connectedSed.sedId
+      sed: undefined
     },
     type: {
       request: types.SVARSED_REPLYTOSED_REQUEST,
