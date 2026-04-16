@@ -55,20 +55,17 @@ const Gjenaapning: React.FC<MainFormProps> = ({
 
   const setKontekstType = (type: KontekstType) => {
     if (type === kontekstType) return
-    // Clear the previously selected context — XSD allows only one
-    if (kontekstType === 'bruker') {
-      dispatch(updateReplySed('bruker', undefined))
-    } else if (kontekstType === 'arbeidsgiver') {
-      dispatch(updateReplySed('arbeidsgiver', undefined))
-    } else if (kontekstType === 'refusjonskrav') {
-      dispatch(updateReplySed('refusjonskrav', undefined))
-    }
-    // Initialize the new context with an empty object
+    // Clear the non-selected contexts — XSD allows only one.
+    // Never clear bruker here — it's needed by the MainForm menu.
+    // bruker is stripped at submit time in cleanReplySed when another context is active.
     if (type === 'bruker') {
-      dispatch(updateReplySed('bruker', {}))
+      dispatch(updateReplySed('arbeidsgiver', undefined))
+      dispatch(updateReplySed('refusjonskrav', undefined))
     } else if (type === 'arbeidsgiver') {
+      dispatch(updateReplySed('refusjonskrav', undefined))
       dispatch(updateReplySed('arbeidsgiver', {}))
     } else if (type === 'refusjonskrav') {
+      dispatch(updateReplySed('arbeidsgiver', undefined))
       dispatch(updateReplySed('refusjonskrav', {}))
     }
     setKontekstTypeState(type)
@@ -115,50 +112,6 @@ const Gjenaapning: React.FC<MainFormProps> = ({
             <Radio className={commonStyles.radioPanel} value='refusjonskrav'>{t('label:gjenaapning-kontekst-refusjonskrav')}</Radio>
           </VStack>
         </RadioGroup>
-
-        {kontekstType === 'bruker' && (
-          <>
-            <Heading size='xsmall'>
-              {t('label:personopplysninger')}
-            </Heading>
-            <HGrid columns={2} gap="space-16">
-              <Input
-                error={undefined}
-                namespace={namespace}
-                id='bruker-fornavn'
-                label={t('label:fornavn')}
-                onChanged={(val: string) => dispatch(updateReplySed('bruker.fornavn', val.trim()))}
-                value={sed.bruker?.fornavn}
-              />
-              <Input
-                error={undefined}
-                namespace={namespace}
-                id='bruker-etternavn'
-                label={t('label:etternavn')}
-                onChanged={(val: string) => dispatch(updateReplySed('bruker.etternavn', val.trim()))}
-                value={sed.bruker?.etternavn}
-              />
-            </HGrid>
-            <HGrid columns={2} gap="space-16">
-              <Input
-                error={undefined}
-                namespace={namespace}
-                id='bruker-foedselsdato'
-                label={t('label:fødselsdato')}
-                onChanged={(val: string) => dispatch(updateReplySed('bruker.foedselsdato', val.trim()))}
-                value={sed.bruker?.foedselsdato}
-              />
-              <Input
-                error={undefined}
-                namespace={namespace}
-                id='bruker-kjoenn'
-                label={t('label:kjønn')}
-                onChanged={(val: string) => dispatch(updateReplySed('bruker.kjoenn', val.trim()))}
-                value={sed.bruker?.kjoenn}
-              />
-            </HGrid>
-          </>
-        )}
 
         {kontekstType === 'arbeidsgiver' && (
           <>

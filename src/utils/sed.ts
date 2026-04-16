@@ -1,5 +1,5 @@
 import { PDU1 } from 'declarations/pd'
-import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
+import { Barn, F002Sed, FSed, ReplySed, X002Sed } from 'declarations/sed'
 import _ from 'lodash'
 
 export const isSed = (replySed: ReplySed | PDU1 | null | undefined): boolean => !!(replySed as ReplySed)?.sedType
@@ -75,5 +75,23 @@ export const cleanReplySed = (replySed: ReplySed): ReplySed => {
       }
     })
   }
+
+  // X002 XSD choice: only one of bruker/arbeidsgiver/refusjonskrav may be set.
+  // Backend priority: bruker > arbeidsgiver > refusjonskrav.
+  // Strip bruker when another context is active so the backend uses the intended one.
+  if (isX002Sed(newReplySed)) {
+    const x002 = newReplySed as X002Sed
+    if (x002.arbeidsgiver && (x002.arbeidsgiver.navn || x002.arbeidsgiver.adresse)) {
+      delete (newReplySed as any).bruker
+      delete (newReplySed as any).refusjonskrav
+    } else if (x002.refusjonskrav && (x002.refusjonskrav.antallkrav || x002.refusjonskrav.id)) {
+      delete (newReplySed as any).bruker
+      delete (newReplySed as any).arbeidsgiver
+    } else {
+      delete (newReplySed as any).arbeidsgiver
+      delete (newReplySed as any).refusjonskrav
+    }
+  }
+
   return newReplySed
 }
