@@ -5,27 +5,6 @@
     "kjoenn": "M",
     "foedselsdato": "2002-02-02"
   },
-  "arbeidsgiver": {
-    "navn": "æøå",
-    "adresse": {
-      "bygning": "æøå",
-      "gate": "æøå",
-      "by": "æøå",
-      "postnummer": "æøå",
-      "region": "æøå",
-      "landkode": "NOR"
-    },
-    "identifikatorer": [
-      {
-        "type": "registrering",
-        "id": "æøå"
-      }
-    ]
-  },
-  "refusjonskrav": {
-    "antallkrav": "æøå",
-    "id": "æøå"
-  },
   "gjenaapning": {
     "aarsakType": "ny_informasjon_ble_tilgjengelig",
     "aarsakAnnet": ""
