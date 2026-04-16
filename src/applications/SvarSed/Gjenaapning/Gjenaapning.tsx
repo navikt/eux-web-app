@@ -8,7 +8,7 @@ import { State } from 'declarations/reducers'
 import { X002Sed } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
@@ -40,7 +40,7 @@ const Gjenaapning: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-gjenaapning`
   const sed = replySed as X002Sed
-  const kontekstType = getKontekstType(sed)
+  const [kontekstType, setKontekstTypeState] = useState<KontekstType>(() => getKontekstType(sed))
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -71,6 +71,7 @@ const Gjenaapning: React.FC<MainFormProps> = ({
     } else if (type === 'refusjonskrav') {
       dispatch(updateReplySed('refusjonskrav', {}))
     }
+    setKontekstTypeState(type)
   }
 
   const setAarsakType = (aarsakType: string) => {
