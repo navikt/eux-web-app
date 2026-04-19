@@ -88,6 +88,7 @@ import {
   isS040Sed,
   isS046Sed,
   isSed,
+  isX002Sed,
   isXSed
 } from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
@@ -431,7 +432,7 @@ const SEDEdit = (): JSX.Element => {
                 deselectedMenuOption={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menuOption : undefined}
                 forms={[
                   { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H', 'S'], adult: true, barn: true },
-                  { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
+                  { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X', condition: () => !isX002Sed(replySed) },
                   { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H', 'S'], adult: true, barn: true },
                   { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true, condition: () => !isH120Sed(replySed) },
                   { label: t('el:option-mainform-adresse'), value: 'adresseH120', component: Adresser, type: ['H120'], options: {singleAdress: true, defaultType: 'bosted'}, adult: true },

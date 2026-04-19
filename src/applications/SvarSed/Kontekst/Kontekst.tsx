@@ -1,6 +1,7 @@
-import { Box, Heading, HGrid, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import { Box, Heading, HGrid, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
+import DateField from 'components/DateField/DateField'
 import CountryDropdown from 'components/CountryDropdown/CountryDropdown'
 import { Country } from '@navikt/land-verktoy'
 import { State } from 'declarations/reducers'
@@ -74,6 +75,55 @@ const Kontekst: React.FC<MainFormProps> = ({
             <Radio className={commonStyles.radioPanel} value='refusjonskrav'>{t('label:gjenaapning-kontekst-refusjonskrav')}</Radio>
           </VStack>
         </RadioGroup>
+
+        {kontekstType === 'bruker' && (
+          <>
+            <Heading size='xsmall'>
+              {t('label:personopplysninger')}
+            </Heading>
+            <HGrid columns={3} gap="space-16">
+              <Input
+                error={undefined}
+                namespace={namespace}
+                id='bruker-fornavn'
+                label={t('label:fornavn')}
+                onChanged={(val: string) => dispatch(updateReplySed('bruker.fornavn', val.trim()))}
+                value={sed.bruker?.fornavn ?? ''}
+              />
+              <Input
+                error={undefined}
+                namespace={namespace}
+                id='bruker-etternavn'
+                label={t('label:etternavn')}
+                onChanged={(val: string) => dispatch(updateReplySed('bruker.etternavn', val.trim()))}
+                value={sed.bruker?.etternavn ?? ''}
+              />
+              <DateField
+                error={undefined}
+                id='bruker-foedselsdato'
+                label={t('label:fødselsdato')}
+                namespace={namespace}
+                onChanged={(val: string) => dispatch(updateReplySed('bruker.foedselsdato', val.trim()))}
+                dateValue={sed.bruker?.foedselsdato ?? ''}
+              />
+            </HGrid>
+            <RadioGroup
+              value={sed.bruker?.kjoenn}
+              data-no-border
+              data-testid={namespace + '-bruker-kjoenn'}
+              id={namespace + '-bruker-kjoenn'}
+              legend={t('label:kjønn')}
+              name={namespace + '-bruker-kjoenn'}
+              onChange={(val: string) => dispatch(updateReplySed('bruker.kjoenn', val.trim()))}
+            >
+              <HGrid columns={3} gap="space-16">
+                <Radio className={commonStyles.radioPanel} value='M'>{t('label:mann')}</Radio>
+                <Radio className={commonStyles.radioPanel} value='K'>{t('label:kvinne')}</Radio>
+                <Radio className={commonStyles.radioPanel} value='U'>{t('label:ukjent')}</Radio>
+              </HGrid>
+            </RadioGroup>
+          </>
+        )}
 
         {kontekstType === 'arbeidsgiver' && (
           <>
