@@ -421,7 +421,7 @@ const SEDEdit = (): JSX.Element => {
               />
             </>
           )}
-          {showMainForm() && (
+          {showMainForm() && !isX002Sed(replySed) && (
             <>
               <MainForm<ReplySed>
                 CDM_VERSION={CDM_VERSJON}
@@ -432,7 +432,7 @@ const SEDEdit = (): JSX.Element => {
                 deselectedMenuOption={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menuOption : undefined}
                 forms={[
                   { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H', 'S'], adult: true, barn: true },
-                  { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X', condition: () => !isX002Sed(replySed) },
+                  { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
                   { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H', 'S'], adult: true, barn: true },
                   { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true, condition: () => !isH120Sed(replySed) },
                   { label: t('el:option-mainform-adresse'), value: 'adresseH120', component: Adresser, type: ['H120'], options: {singleAdress: true, defaultType: 'bosted'}, adult: true },
@@ -471,13 +471,28 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-familieytelsespoersmaal'), value: 'familieytelsespoersmaal', component: FamilieytelseSpoersmaal, type: 'H120', condition: () => (replySed as H120Sed)?.beroertYtelse === 'familieytelse' },
                   { label: t('el:option-mainform-awodspoersmaal'), value: 'awodspoersmaal', component: AWODSpoersmaal, type: 'H120', condition: () => (replySed as H120Sed)?.beroertYtelse === 'kontantytelser_ved_yrkesskade_eller_yrkessykdom_som_nevnt_i_artikkel_33_1_nr_987_2009' || (replySed as H120Sed)?.beroertYtelse === 'adre_kontantytelser_ved_yrkesskade_eller_yrkessykdom' },
                   { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
-                  { label: t('el:option-mainform-kontekst'), value: 'kontekst', component: Kontekst, type: 'X002' },
-                  { label: t('el:option-mainform-gjenaapning'), value: 'gjenaapning', component: Gjenaapning, type: 'X002' },
                   { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
                   { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
                   { label: t('el:option-mainform-svarpåminnelse'), value: 'svarpåminnelse', component: SvarPåminnelse, type: 'X010' },
                   { label: t('el:option-mainform-avvis'), value: 'avvis', component: Avvis, type: 'X011' },
                   { label: t('el:option-mainform-klargjør'), value: 'klargjør', component: Klargjør, type: 'X012' }
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
+              />
+            </>
+          )}
+          {isX002Sed(replySed) && (
+            <>
+              <MainForm<ReplySed>
+                CDM_VERSION={CDM_VERSJON}
+                type='onelevel'
+                namespace='svarsed'
+                loggingNamespace='x002manager'
+                forms={[
+                  { label: t('el:option-mainform-kontekst'), value: 'kontekst', component: Kontekst },
+                  { label: t('el:option-mainform-gjenaapning'), value: 'gjenaapning', component: Gjenaapning }
                 ]}
                 replySed={replySed}
                 updateReplySed={updateReplySed}

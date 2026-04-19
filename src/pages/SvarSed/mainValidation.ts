@@ -485,12 +485,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (isX002Sed(replySed)) {
-      hasErrors.push(performValidation<ValidationKontekstProps>(v, `svarsed-${personID}-kontekst`, validateKontekst, {
-        replySed: (replySed as X002Sed), personName
-      }, true))
-      hasErrors.push(performValidation<ValidationGjenaapningProps>(v, `svarsed-${personID}-gjenaapning`, validateGjenaapning, {
-        replySed: (replySed as X002Sed), personName
-      }, true))
+      // X002 uses its own onelevel MainForm — validation handled in validateSEDEdit
     }
     if (isX008Sed(replySed)) {
       hasErrors.push(performValidation<ValidationUgyldiggjøreProps>(v, `svarsed-${personID}-ugyldiggjøre`, validateUgyldiggjøre, {
@@ -535,6 +530,15 @@ export const validateSEDEdit = (
 
   // this is common to all seds
   hasErrors.push(validateMainForm(v, replySed, 'bruker'))
+
+  if (isX002Sed(replySed)) {
+    hasErrors.push(performValidation<ValidationKontekstProps>(v, 'svarsed-kontekst-kontekst', validateKontekst, {
+      replySed: (replySed as X002Sed)
+    }, true))
+    hasErrors.push(performValidation<ValidationGjenaapningProps>(v, 'svarsed-gjenaapning-gjenaapning', validateGjenaapning, {
+      replySed: (replySed as X002Sed)
+    }, true))
+  }
 
   if (isF001Sed(replySed) || isF002Sed(replySed)) {
     hasErrors.push(performValidation<ValidationFormålProps>(v, 'formål1-formål', validateFormål, {
