@@ -19,6 +19,7 @@ import Avslutning from 'applications/SvarSed/Avslutning/Avslutning'
 import Avvis from 'applications/SvarSed/Avvis/Avvis'
 import BeløpNavnOgValuta from 'applications/SvarSed/BeløpNavnOgValuta/BeløpNavnOgValuta'
 import Gjenaapning from 'applications/SvarSed/Gjenaapning/Gjenaapning'
+import Kontekst from 'applications/SvarSed/Kontekst/Kontekst'
 import EndredeForhold from 'applications/SvarSed/EndredeForhold/EndredeForhold'
 import Familierelasjon from 'applications/SvarSed/Familierelasjon/Familierelasjon'
 import Formål from 'applications/SvarSed/Formål/Formål'
@@ -469,6 +470,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-familieytelsespoersmaal'), value: 'familieytelsespoersmaal', component: FamilieytelseSpoersmaal, type: 'H120', condition: () => (replySed as H120Sed)?.beroertYtelse === 'familieytelse' },
                   { label: t('el:option-mainform-awodspoersmaal'), value: 'awodspoersmaal', component: AWODSpoersmaal, type: 'H120', condition: () => (replySed as H120Sed)?.beroertYtelse === 'kontantytelser_ved_yrkesskade_eller_yrkessykdom_som_nevnt_i_artikkel_33_1_nr_987_2009' || (replySed as H120Sed)?.beroertYtelse === 'adre_kontantytelser_ved_yrkesskade_eller_yrkessykdom' },
                   { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
+                  { label: t('el:option-mainform-kontekst'), value: 'kontekst', component: Kontekst, type: 'X002' },
                   { label: t('el:option-mainform-gjenaapning'), value: 'gjenaapning', component: Gjenaapning, type: 'X002' },
                   { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
                   { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
