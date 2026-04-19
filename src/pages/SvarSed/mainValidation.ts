@@ -7,6 +7,7 @@ import {
 import { validateAvslutning, ValidationAvslutningProps } from 'applications/SvarSed/Avslutning/validation'
 import { validateAvvis, ValidationAvvisProps } from 'applications/SvarSed/Avvis/validation'
 import { validateGjenaapning, ValidationGjenaapningProps } from 'applications/SvarSed/Gjenaapning/validation'
+import { validateKontekst, ValidationKontekstProps } from 'applications/SvarSed/Kontekst/validation'
 import {
   validateBeløpNavnOgValutas,
   ValidationBeløpNavnOgValutasProps
@@ -484,6 +485,9 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (isX002Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationKontekstProps>(v, `svarsed-${personID}-kontekst`, validateKontekst, {
+        replySed: (replySed as X002Sed), personName
+      }, true))
       hasErrors.push(performValidation<ValidationGjenaapningProps>(v, `svarsed-${personID}-gjenaapning`, validateGjenaapning, {
         replySed: (replySed as X002Sed), personName
       }, true))

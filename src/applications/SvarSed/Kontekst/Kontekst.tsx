@@ -1,14 +1,19 @@
 import { Box, Heading, HGrid, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import { setValidation } from 'actions/validation'
 import Input from 'components/Forms/Input'
 import DateField from 'components/DateField/DateField'
 import CountryDropdown from 'components/CountryDropdown/CountryDropdown'
 import { Country } from '@navikt/land-verktoy'
 import { State } from 'declarations/reducers'
 import { X002Sed } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
+import { validateKontekst, ValidationKontekstProps } from './validation'
 import commonStyles from 'assets/css/common.module.css'
 
 type KontekstType = 'bruker' | 'arbeidsgiver' | 'refusjonskrav'
@@ -27,14 +32,27 @@ const Kontekst: React.FC<MainFormProps> = ({
   label,
   parentNamespace,
   personID,
+  personName,
   replySed,
   updateReplySed
 }:MainFormProps): JSX.Element => {
+  const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-kontekst`
   const sed = replySed as X002Sed
   const [kontekstType, setKontekstTypeState] = useState<KontekstType>(() => getKontekstType(sed))
+
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationKontekstProps>(
+      clonedValidation, namespace, validateKontekst, {
+        replySed: sed,
+        personName
+      }
+    )
+    dispatch(setValidation(clonedValidation))
+  })
 
   const setKontekstType = (type: KontekstType) => {
     if (type === kontekstType) return
@@ -212,7 +230,7 @@ const Kontekst: React.FC<MainFormProps> = ({
             </Heading>
             <HGrid columns={2} gap="space-16">
               <Input
-                error={undefined}
+                error={validation[namespace + '-refusjonskrav-antallkrav']?.feilmelding}
                 namespace={namespace}
                 id='refusjonskrav-antallkrav'
                 label={t('label:refusjonskrav-antallkrav')}
