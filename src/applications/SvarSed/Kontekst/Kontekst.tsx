@@ -54,6 +54,8 @@ const Kontekst: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedValidation))
   })
 
+  const isBrukerEmpty = !sed.bruker?.fornavn && !sed.bruker?.etternavn && !sed.bruker?.foedselsdato && !sed.bruker?.kjoenn
+
   const setKontekstType = (type: KontekstType) => {
     if (type === kontekstType) return
     // Clear the non-selected contexts — XSD allows only one.
@@ -62,6 +64,15 @@ const Kontekst: React.FC<MainFormProps> = ({
     if (type === 'bruker') {
       dispatch(updateReplySed('arbeidsgiver', undefined))
       dispatch(updateReplySed('refusjonskrav', undefined))
+      // Pre-fill bruker from RinaSak person data if empty
+      if (isBrukerEmpty && sed.sak) {
+        dispatch(updateReplySed('bruker', {
+          fornavn: sed.sak.fornavn ?? '',
+          etternavn: sed.sak.etternavn ?? '',
+          foedselsdato: sed.sak.foedselsdato ?? '',
+          kjoenn: sed.sak.kjoenn ?? ''
+        }))
+      }
     } else if (type === 'arbeidsgiver') {
       dispatch(updateReplySed('refusjonskrav', undefined))
       dispatch(updateReplySed('arbeidsgiver', {}))
