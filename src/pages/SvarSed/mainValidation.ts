@@ -474,7 +474,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     }
   }
 
-  if (isXSed(replySed)) {
+  if (isXSed(replySed) && !isX002Sed(replySed)) {
     hasErrors.push(performValidation<ValidationPersonLightProps>(v, `svarsed-${personID}-personlight`, validatePersonLight, {
       personLight: (replySed as X001Sed).bruker, personName
     }, true))
@@ -528,8 +528,10 @@ export const validateSEDEdit = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  // this is common to all seds
-  hasErrors.push(validateMainForm(v, replySed, 'bruker'))
+  // this is common to all seds (except X002 which has its own validation)
+  if (!isX002Sed(replySed)) {
+    hasErrors.push(validateMainForm(v, replySed, 'bruker'))
+  }
 
   if (isX002Sed(replySed)) {
     hasErrors.push(performValidation<ValidationKontekstProps>(v, 'svarsed-kontekst-kontekst', validateKontekst, {
