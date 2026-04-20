@@ -967,7 +967,8 @@ export interface X002Gjenaapning {
   aarsakAnnet?: string
 }
 
-export interface X002Sed extends XSed {
+export interface X002Sed extends Omit<XSed, 'bruker'> {
+  bruker?: PersonLight
   arbeidsgiver?: X002Arbeidsgiver
   refusjonskrav?: X002Refusjonskrav
   gjenaapning?: X002Gjenaapning

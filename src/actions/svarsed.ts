@@ -405,16 +405,16 @@ export const replyToSed = (
     : connectedSed.sedId
 
   const url = usesTypedSedApi(connectedSed.sedType)
-      ? sprintf(urls.API_SED_SVARSED_DRAFT_BY_TYPE_URL, {
-          rinaSakId: sak.sakId,
-          sedType: connectedSed.sedType?.toLowerCase(),
-          sedId
-        })
-      : sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
-          rinaSakId: sak.sakId,
-          sedId,
-          sedType: connectedSed.svarsedType
-        })
+    ? sprintf(urls.API_SED_SVARSED_DRAFT_BY_TYPE_URL, {
+        rinaSakId: sak.sakId,
+        sedType: connectedSed.sedType?.toLowerCase(),
+        sedId
+      })
+    : sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
+        rinaSakId: sak.sakId,
+        sedId,
+        sedType: connectedSed.svarsedType
+      })
 
   return call({
     url,

@@ -1,4 +1,4 @@
-import { Box, Heading, HGrid, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import { Box, Heading, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
@@ -66,25 +66,22 @@ const Gjenaapning: React.FC<MainFormProps> = ({
           {label}
         </Heading>
 
-        <HGrid columns={"2fr 1fr"} gap="space-16" align="start">
-          <RadioGroup
-            value={sed.gjenaapning?.aarsakType ?? ''}
-            data-testid={namespace + '-aarsakType'}
-            error={validation[namespace + '-aarsakType']?.feilmelding}
-            id={namespace + '-aarsakType'}
-            legend={t('label:gjenaapning-aarsak')}
-            hideLegend
-            onChange={setAarsakType}
-          >
-            <VStack gap="space-4">
-              <Radio className={commonStyles.radioPanel} value='ny_informasjon_ble_tilgjengelig'>{t('el:option-gjenaapning-01')}</Radio>
-              <Radio className={commonStyles.radioPanel} value='feilaktig_informasjon_levert'>{t('el:option-gjenaapning-02')}</Radio>
-              <Radio className={commonStyles.radioPanel} value='saken_ble_utilsiktet_avsluttet'>{t('el:option-gjenaapning-03')}</Radio>
-              <Radio className={commonStyles.radioPanel} value='annet'>{t('el:option-gjenaapning-99')}</Radio>
-            </VStack>
-          </RadioGroup>
-          <div />
-        </HGrid>
+        <RadioGroup
+          value={sed.gjenaapning?.aarsakType ?? ''}
+          data-testid={namespace + '-aarsakType'}
+          error={validation[namespace + '-aarsakType']?.feilmelding}
+          id={namespace + '-aarsakType'}
+          legend={t('label:gjenaapning-aarsak')}
+          hideLegend
+          onChange={setAarsakType}
+        >
+          <VStack gap="space-4">
+            <Radio className={commonStyles.radioPanel} value='ny_informasjon_ble_tilgjengelig'>{t('el:option-gjenaapning-01')}</Radio>
+            <Radio className={commonStyles.radioPanel} value='feilaktig_informasjon_levert'>{t('el:option-gjenaapning-02')}</Radio>
+            <Radio className={commonStyles.radioPanel} value='saken_ble_utilsiktet_avsluttet'>{t('el:option-gjenaapning-03')}</Radio>
+            <Radio className={commonStyles.radioPanel} value='annet'>{t('el:option-gjenaapning-99')}</Radio>
+          </VStack>
+        </RadioGroup>
 
         {sed.gjenaapning?.aarsakType === 'annet' && (
           <Input

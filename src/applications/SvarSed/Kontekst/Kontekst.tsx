@@ -54,10 +54,21 @@ const Kontekst: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedValidation))
   })
 
+  // Note: isBrukerEmpty is intentionally not reset when switching away from bruker,
+  // because bruker is kept in Redux for the MainForm menu. This means prefill only
+  // triggers the first time the user switches to Person while it's still empty.
   const isBrukerEmpty = !sed.bruker?.fornavn && !sed.bruker?.etternavn && !sed.bruker?.foedselsdato && !sed.bruker?.kjoenn
 
   const setKontekstType = (type: KontekstType) => {
     if (type === kontekstType) return
+    // Clear stale validation errors from the previous context
+    const clonedValidation = _.cloneDeep(validation)
+    Object.keys(clonedValidation).forEach(key => {
+      if (key.startsWith(namespace + '-')) {
+        delete clonedValidation[key]
+      }
+    })
+    dispatch(setValidation(clonedValidation))
     // Clear the non-selected contexts — XSD allows only one.
     // Never clear bruker here — it's needed by the MainForm menu.
     // bruker is stripped at submit time in stripX002Context when another context is active.
