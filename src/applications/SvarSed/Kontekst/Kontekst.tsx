@@ -1,4 +1,4 @@
-import { Box, Heading, HGrid, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import { Box, Heading, HGrid, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { setValidation } from 'actions/validation'
 import Input from 'components/Forms/Input'
