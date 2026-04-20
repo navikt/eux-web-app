@@ -112,23 +112,25 @@ const Kontekst: React.FC<MainFormProps> = ({
             </Heading>
             <HGrid columns={3} gap="space-16">
               <Input
-                error={undefined}
+                error={validation[namespace + '-bruker-fornavn']?.feilmelding}
                 namespace={namespace}
                 id='bruker-fornavn'
                 label={t('label:fornavn')}
                 onChanged={(val: string) => dispatch(updateReplySed('bruker.fornavn', val.trim()))}
+                required
                 value={sed.bruker?.fornavn ?? ''}
               />
               <Input
-                error={undefined}
+                error={validation[namespace + '-bruker-etternavn']?.feilmelding}
                 namespace={namespace}
                 id='bruker-etternavn'
                 label={t('label:etternavn')}
                 onChanged={(val: string) => dispatch(updateReplySed('bruker.etternavn', val.trim()))}
+                required
                 value={sed.bruker?.etternavn ?? ''}
               />
               <DateField
-                error={undefined}
+                error={validation[namespace + '-bruker-foedselsdato']?.feilmelding}
                 id='bruker-foedselsdato'
                 label={t('label:fødselsdato')}
                 namespace={namespace}
@@ -140,6 +142,7 @@ const Kontekst: React.FC<MainFormProps> = ({
               value={sed.bruker?.kjoenn}
               data-no-border
               data-testid={namespace + '-bruker-kjoenn'}
+              error={validation[namespace + '-bruker-kjoenn']?.feilmelding}
               id={namespace + '-bruker-kjoenn'}
               legend={t('label:kjønn')}
               name={namespace + '-bruker-kjoenn'}
@@ -161,11 +164,12 @@ const Kontekst: React.FC<MainFormProps> = ({
             </Heading>
             <HGrid columns={2} gap="space-16">
               <Input
-                error={undefined}
+                error={validation[namespace + '-arbeidsgiver-navn']?.feilmelding}
                 namespace={namespace}
                 id='arbeidsgiver-navn'
                 label={t('label:arbeidsgiver-navn')}
                 onChanged={(val: string) => dispatch(updateReplySed('arbeidsgiver.navn', val.trim()))}
+                required
                 value={sed.arbeidsgiver?.navn}
               />
             </HGrid>
@@ -193,7 +197,7 @@ const Kontekst: React.FC<MainFormProps> = ({
             </HGrid>
             <HGrid columns={2} gap="space-16">
               <Input
-                error={undefined}
+                error={validation[namespace + '-arbeidsgiver-by']?.feilmelding}
                 namespace={namespace}
                 id='arbeidsgiver-by'
                 label={t('label:by')}
@@ -223,6 +227,7 @@ const Kontekst: React.FC<MainFormProps> = ({
                   closeMenuOnSelect
                   data-testid={namespace + '-arbeidsgiver-landkode'}
                   countryCodeListName="verdensLand"
+                  error={validation[namespace + '-arbeidsgiver-landkode']?.feilmelding}
                   flagWave
                   id={namespace + '-arbeidsgiver-landkode'}
                   label={t('label:land')}
@@ -246,14 +251,16 @@ const Kontekst: React.FC<MainFormProps> = ({
                 id='refusjonskrav-antallkrav'
                 label={t('label:refusjonskrav-antallkrav')}
                 onChanged={(val: string) => dispatch(updateReplySed('refusjonskrav.antallkrav', val.trim()))}
+                required
                 value={sed.refusjonskrav?.antallkrav}
               />
               <Input
-                error={undefined}
+                error={validation[namespace + '-refusjonskrav-id']?.feilmelding}
                 namespace={namespace}
                 id='refusjonskrav-id'
                 label={t('label:refusjonskrav-id')}
                 onChanged={(val: string) => dispatch(updateReplySed('refusjonskrav.id', val.trim()))}
+                required
                 value={sed.refusjonskrav?.id}
               />
             </HGrid>
