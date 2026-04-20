@@ -19,8 +19,8 @@ import commonStyles from 'assets/css/common.module.css'
 type KontekstType = 'bruker' | 'arbeidsgiver' | 'refusjonskrav'
 
 const getKontekstType = (sed: X002Sed): KontekstType => {
-  if (sed.arbeidsgiver && (sed.arbeidsgiver.navn || sed.arbeidsgiver.adresse || sed.arbeidsgiver.identifikatorer?.length)) return 'arbeidsgiver'
-  if (sed.refusjonskrav && (sed.refusjonskrav.antallkrav || sed.refusjonskrav.id)) return 'refusjonskrav'
+  if (sed.arbeidsgiver !== undefined) return 'arbeidsgiver'
+  if (sed.refusjonskrav !== undefined) return 'refusjonskrav'
   return 'bruker'
 }
 

@@ -17,11 +17,10 @@ export const validateKontekst = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  const hasBruker = !replySed.arbeidsgiver?.navn && !replySed.refusjonskrav?.antallkrav && !replySed.refusjonskrav?.id
-  const hasArbeidsgiver = !!(replySed.arbeidsgiver && (replySed.arbeidsgiver.navn || replySed.arbeidsgiver.adresse || replySed.arbeidsgiver.identifikatorer?.length))
-  const hasRefusjonskrav = !!(replySed.refusjonskrav && (replySed.refusjonskrav.antallkrav || replySed.refusjonskrav.id))
+  const hasArbeidsgiver = replySed.arbeidsgiver !== undefined
+  const hasRefusjonskrav = replySed.refusjonskrav !== undefined
 
-  if (hasBruker && !hasArbeidsgiver && !hasRefusjonskrav) {
+  if (!hasArbeidsgiver && !hasRefusjonskrav) {
     // Person context: all four fields required per XSD
     hasErrors.push(checkIfNotEmpty(v, {
       needle: replySed.bruker?.fornavn,

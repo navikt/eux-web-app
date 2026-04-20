@@ -39,10 +39,10 @@ const stripInternalProps = (obj: any): any => {
 // Strip non-selected contexts so the backend receives the intended one.
 const stripX002Context = (sed: any): void => {
   if (!isX002Sed(sed)) return
-  if (sed.arbeidsgiver && (sed.arbeidsgiver.navn || sed.arbeidsgiver.adresse)) {
+  if (sed.arbeidsgiver !== undefined) {
     delete sed.bruker
     delete sed.refusjonskrav
-  } else if (sed.refusjonskrav && (sed.refusjonskrav.antallkrav || sed.refusjonskrav.id)) {
+  } else if (sed.refusjonskrav !== undefined) {
     delete sed.bruker
     delete sed.arbeidsgiver
   } else {
