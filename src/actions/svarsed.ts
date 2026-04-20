@@ -243,6 +243,24 @@ export const createXSed = (
   payload: { sedType, sak }
 })
 
+export const createX002Sed = (
+  sak: Sak
+): ActionWithPayload<ReplySed> => {
+  return call({
+    url: sprintf(urls.API_SED_X002_DRAFT_URL, { rinaSakId: sak.sakId }),
+    expectedPayload: mockReplySed('X002'),
+    context: {
+      sak,
+      sed: undefined
+    },
+    type: {
+      request: types.SVARSED_REPLYTOSED_REQUEST,
+      success: types.SVARSED_REPLYTOSED_SUCCESS,
+      failure: types.SVARSED_REPLYTOSED_FAILURE
+    }
+  })
+}
+
 export const createHSed = (
   sedType: string, sak: Sak
 ): ActionWithPayload<any> => ({
@@ -386,12 +404,7 @@ export const replyToSed = (
     ? connectedSed.sedIdParent
     : connectedSed.sedId
 
-  const url = connectedSed.svarsedType === 'X002'
-    ? sprintf(urls.API_SED_X002_DRAFT_URL, {
-        rinaSakId: sak.sakId,
-        sedId
-      })
-    : usesTypedSedApi(connectedSed.sedType)
+  const url = usesTypedSedApi(connectedSed.sedType)
       ? sprintf(urls.API_SED_SVARSED_DRAFT_BY_TYPE_URL, {
           rinaSakId: sak.sakId,
           sedType: connectedSed.sedType?.toLowerCase(),
