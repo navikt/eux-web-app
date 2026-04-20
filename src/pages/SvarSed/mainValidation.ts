@@ -484,9 +484,6 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         replySed: (replySed as X001Sed), personName
       }, true))
     }
-    if (isX002Sed(replySed)) {
-      // X002 uses its own onelevel MainForm — validation handled in validateSEDEdit
-    }
     if (isX008Sed(replySed)) {
       hasErrors.push(performValidation<ValidationUgyldiggjøreProps>(v, `svarsed-${personID}-ugyldiggjøre`, validateUgyldiggjøre, {
         replySed: (replySed as X008Sed), personName
