@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "13.4.4-TEN-1657-PREVIEW-URL",
+  "version": "13.4.4",
   "private": true,
   "type": "module",
   "scripts": {
@@ -207,5 +207,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@13.4.3"
+  "_id": "neessi@13.4.4"
 }
