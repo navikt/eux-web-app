@@ -35,6 +35,7 @@ export const API_SED_EDIT_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakI
 export const API_SED_DELETE_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/%(sedType)s/%(sedId)s'
 export const API_SED_UPDATE_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/%(sedType)s/%(sedId)s'
 export const API_SED_SVARSED_DRAFT_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/%(sedType)s/%(sedId)s/svarsed'
+export const API_SED_PREVIEW_BY_TYPE_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/%(sedType)s/pdf'
 
 export const API_PREVIEW_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/utkast/pdf'
 export const API_PDF_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/pdf'

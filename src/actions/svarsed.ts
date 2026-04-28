@@ -15,6 +15,7 @@ import {JoarkBrowserItem} from "../declarations/attachments";
 import { usesTypedSedApi } from 'utils/sed'
 // @ts-ignore
 import { sprintf } from 'sprintf-js';
+import {API_SED_PREVIEW_BY_TYPE_URL} from "constants/urls";
 
 const INTERNAL_PROPS = ['__index', '__type', 'undefined']
 
@@ -158,9 +159,13 @@ export const getFagsaker = (
 }
 
 export const getPreviewFile = (rinaSakId: string, replySed: ReplySed): ActionWithPayload => {
+  const sedType = replySed.sedType
+  const url = usesTypedSedApi(sedType)
+    ? sprintf(urls.API_SED_PREVIEW_BY_TYPE_URL, { rinaSakId, sedType: sedType?.toLowerCase() })
+    : sprintf(urls.API_PREVIEW_URL, { rinaSakId })
   return call({
     method: 'POST',
-    url: sprintf(urls.API_PREVIEW_URL, { rinaSakId }),
+    url,
     expectedPayload: mockPreview,
     responseType: 'pdf',
     type: {
