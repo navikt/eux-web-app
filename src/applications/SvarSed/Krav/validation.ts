@@ -9,7 +9,7 @@ export interface ValidationRefusjonItemProps {
   formalName?: string
 }
 
-export interface ValidationH021RefusjonProps {
+export interface ValidationKravProps {
   replySed: ReplySed
   formalName?: string
 }
@@ -119,13 +119,13 @@ export const validateRefusjonItem = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateH021Refusjon = (
+export const validateKrav = (
   v: Validation,
   namespace: string,
   {
     replySed,
     formalName
-  }: ValidationH021RefusjonProps
+  }: ValidationKravProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const sed = replySed as H021Sed

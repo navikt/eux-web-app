@@ -2,11 +2,11 @@ import { BodyLong, Box, Button, Heading, HGrid, HStack, Label, Spacer, VStack } 
 import { PlusCircleIcon } from '@navikt/aksel-icons'
 import { resetValidation, setValidation } from 'actions/validation'
 import {
-  validateH021Refusjon,
+  validateKrav,
   validateRefusjonItem,
   ValidationRefusjonItemProps,
-  ValidationH021RefusjonProps
-} from 'applications/SvarSed/H021Refusjon/validation'
+  ValidationKravProps
+} from 'applications/SvarSed/Krav/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import DateField from 'components/DateField/DateField'
 import Input from 'components/Forms/Input'
@@ -32,7 +32,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import classNames from 'classnames'
 
-const H021Refusjon: React.FC<MainFormProps> = ({
+const Krav: React.FC<MainFormProps> = ({
   label,
   parentNamespace,
   personID,
@@ -46,7 +46,7 @@ const H021Refusjon: React.FC<MainFormProps> = ({
   const target = 'refusjonskrav.refusjoner'
   const sed = replySed as H021Sed
   const refusjoner: Array<RefusjonItem> | undefined = sed.refusjonskrav?.refusjoner
-  const namespace = `${parentNamespace}-${personID}-h021refusjon`
+  const namespace = `${parentNamespace}-${personID}-krav`
 
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationRefusjonItemProps>(validateRefusjonItem, namespace)
 
@@ -57,8 +57,8 @@ const H021Refusjon: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
-    performValidation<ValidationH021RefusjonProps>(
-      clonedValidation, namespace, validateH021Refusjon, {
+    performValidation<ValidationKravProps>(
+      clonedValidation, namespace, validateKrav, {
         replySed: _.cloneDeep(replySed as ReplySed),
         formalName: personName
       }, true
@@ -455,4 +455,4 @@ const H021Refusjon: React.FC<MainFormProps> = ({
   )
 }
 
-export default H021Refusjon
+export default Krav

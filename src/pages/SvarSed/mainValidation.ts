@@ -20,7 +20,7 @@ import { validateAnmodningInfo, ValidationAnmodningInfoProps } from 'application
 import { validateFamilieytelseSpoersmaal, ValidationFamilieytelseSpoersmaalProps } from 'applications/SvarSed/FamilieytelseSpoersmaal/validation'
 import { validateAWODSpoersmaal, ValidationAWODSpoersmaalProps } from 'applications/SvarSed/AWODSpoersmaal/validation'
 import { validateGlobaltKrav, ValidationGlobaltKravProps } from 'applications/SvarSed/GlobaltKrav/validation'
-import { validateH021Refusjon, ValidationH021RefusjonProps } from 'applications/SvarSed/H021Refusjon/validation'
+import { validateKrav as validateH021Krav, ValidationKravProps as ValidationH021KravProps } from 'applications/SvarSed/Krav/validation'
 import {
   validateFamilierelasjoner,
   ValidationFamilierelasjonerProps
@@ -407,7 +407,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       replySed,
       personName: i18n.t('label:globalt-krav').toLowerCase()
     }, true))
-    hasErrors.push(performValidation<ValidationH021RefusjonProps>(v, `svarsed-${personID}-h021refusjon`, validateH021Refusjon, {
+    hasErrors.push(performValidation<ValidationH021KravProps>(v, `svarsed-${personID}-krav`, validateH021Krav, {
       replySed,
       formalName: i18n.t('label:refusjon').toLowerCase()
     }, true))

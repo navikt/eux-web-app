@@ -100,7 +100,7 @@ import EtterspurtInformasjon from "applications/SvarSed/EtterspurtInformasjon/Et
 import SvarPaaAnmodningOmInformasjon from "applications/SvarSed/SvarPaaAnmodningOmInformasjon/SvarPaaAnmodningOmInformasjon";
 import SvarPaaForespoerselOmAdopsjon from "applications/SvarSed/SvarPaaForespoerselOmAdopsjon/SvarPaaForespoerselOmAdopsjon";
 import GlobaltKrav from "applications/SvarSed/GlobaltKrav/GlobaltKrav";
-import H021Refusjon from "applications/SvarSed/H021Refusjon/H021Refusjon";
+import Krav from "applications/SvarSed/Krav/Krav";
 import SvarPaaAnmodningOmInntekt from "applications/SvarSed/SvarPaaAnmodningOmInntekt/SvarPaaAnmodningOmInntekt";
 import IdentifiseringAvDenAvdoede from "applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/IdentifiseringAvDenAvdoede";
 import IdentifiseringAvDeBeroerteBarna
@@ -492,7 +492,7 @@ const SEDEdit = (): JSX.Element => {
                 namespace='h021krav'
                 forms={[
                   { label: t('el:option-mainform-globaltkrav'), value: 'globaltkrav', component: GlobaltKrav },
-                  { label: t('el:option-mainform-h021refusjon'), value: 'h021refusjon', component: H021Refusjon }
+                  { label: t('el:option-mainform-krav'), value: 'krav', component: Krav }
                 ]}
                 replySed={replySed}
                 updateReplySed={updateReplySed}

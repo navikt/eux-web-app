@@ -401,7 +401,7 @@
   "placeholder-date-default": "DD.MM.ÅÅÅÅ",
   "option-mainform-h021personopplysninger": "Personopplysninger",
   "option-mainform-globaltkrav": "Globalt krav",
-  "option-mainform-h021refusjon": "Krav",
+  "option-mainform-krav": "Krav",
   "option-h021-henvisning-anmodning_om_administrativ_kontroll": "Anmodning om administrativ kontroll",
   "option-h021-henvisning-anmodning_om_legeundersøkelse": "Anmodning om legeundersøkelse",
   "option-h021-avslag-ikke_avslag": "Ikke avslag",
