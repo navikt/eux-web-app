@@ -19,6 +19,9 @@ import { validateKravetsArt, ValidationKravetsArtProps } from 'applications/Svar
 import { validateAnmodningInfo, ValidationAnmodningInfoProps } from 'applications/SvarSed/AnmodningInfo/validation'
 import { validateFamilieytelseSpoersmaal, ValidationFamilieytelseSpoersmaalProps } from 'applications/SvarSed/FamilieytelseSpoersmaal/validation'
 import { validateAWODSpoersmaal, ValidationAWODSpoersmaalProps } from 'applications/SvarSed/AWODSpoersmaal/validation'
+import { validateH021Personopplysninger, ValidationH021PersonopplysningerProps } from 'applications/SvarSed/H021Personopplysninger/validation'
+import { validateGlobaltKrav, ValidationGlobaltKravProps } from 'applications/SvarSed/GlobaltKrav/validation'
+import { validateH021Refusjon, ValidationH021RefusjonProps } from 'applications/SvarSed/H021Refusjon/validation'
 import {
   validateFamilierelasjoner,
   ValidationFamilierelasjonerProps
@@ -114,6 +117,7 @@ import {
   isFSed,
   isH001Sed,
   isH002Sed,
+  isH021Sed,
   isH065Sed,
   isH120Sed,
   isHSed,
@@ -396,7 +400,22 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     }
   }
 
-  if (isHSed(replySed)) {
+  if (isH021Sed(replySed)) {
+    hasErrors.push(performValidation<ValidationH021PersonopplysningerProps>(v, `svarsed-${personID}-h021personopplysninger`, validateH021Personopplysninger, {
+      replySed,
+      personName
+    }, true))
+    hasErrors.push(performValidation<ValidationGlobaltKravProps>(v, `svarsed-${personID}-globaltkrav`, validateGlobaltKrav, {
+      replySed,
+      personName: i18n.t('label:globalt-krav').toLowerCase()
+    }, true))
+    hasErrors.push(performValidation<ValidationH021RefusjonProps>(v, `svarsed-${personID}-h021refusjon`, validateH021Refusjon, {
+      replySed,
+      formalName: i18n.t('label:refusjon').toLowerCase()
+    }, true))
+  }
+
+  if (isHSed(replySed) && !isH021Sed(replySed)) {
     hasErrors.push(performValidation<ValidationPersonopplysningerProps>(v, `svarsed-${personID}-personopplysninger`, validatePersonopplysninger, {
       personInfo, personName
     }, true))
