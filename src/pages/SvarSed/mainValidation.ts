@@ -19,7 +19,6 @@ import { validateKravetsArt, ValidationKravetsArtProps } from 'applications/Svar
 import { validateAnmodningInfo, ValidationAnmodningInfoProps } from 'applications/SvarSed/AnmodningInfo/validation'
 import { validateFamilieytelseSpoersmaal, ValidationFamilieytelseSpoersmaalProps } from 'applications/SvarSed/FamilieytelseSpoersmaal/validation'
 import { validateAWODSpoersmaal, ValidationAWODSpoersmaalProps } from 'applications/SvarSed/AWODSpoersmaal/validation'
-import { validateH021Personopplysninger, ValidationH021PersonopplysningerProps } from 'applications/SvarSed/H021Personopplysninger/validation'
 import { validateGlobaltKrav, ValidationGlobaltKravProps } from 'applications/SvarSed/GlobaltKrav/validation'
 import { validateH021Refusjon, ValidationH021RefusjonProps } from 'applications/SvarSed/H021Refusjon/validation'
 import {
@@ -401,9 +400,8 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
   }
 
   if (isH021Sed(replySed)) {
-    hasErrors.push(performValidation<ValidationH021PersonopplysningerProps>(v, `svarsed-${personID}-h021personopplysninger`, validateH021Personopplysninger, {
-      replySed,
-      personName
+    hasErrors.push(performValidation<ValidationPersonopplysningerProps>(v, `svarsed-${personID}-personopplysninger`, validatePersonopplysninger, {
+      personInfo, personName, validateH021Pins: true
     }, true))
     hasErrors.push(performValidation<ValidationGlobaltKravProps>(v, `svarsed-${personID}-globaltkrav`, validateGlobaltKrav, {
       replySed,

@@ -100,7 +100,6 @@ import EtterspurtInformasjon from "applications/SvarSed/EtterspurtInformasjon/Et
 import SvarPaaAnmodningOmInformasjon from "applications/SvarSed/SvarPaaAnmodningOmInformasjon/SvarPaaAnmodningOmInformasjon";
 import SvarPaaForespoerselOmAdopsjon from "applications/SvarSed/SvarPaaForespoerselOmAdopsjon/SvarPaaForespoerselOmAdopsjon";
 import GlobaltKrav from "applications/SvarSed/GlobaltKrav/GlobaltKrav";
-import H021Personopplysninger from "applications/SvarSed/H021Personopplysninger/H021Personopplysninger";
 import H021Refusjon from "applications/SvarSed/H021Refusjon/H021Refusjon";
 import SvarPaaAnmodningOmInntekt from "applications/SvarSed/SvarPaaAnmodningOmInntekt/SvarPaaAnmodningOmInntekt";
 import IdentifiseringAvDenAvdoede from "applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/IdentifiseringAvDenAvdoede";
@@ -429,10 +428,11 @@ const SEDEdit = (): JSX.Element => {
                 type='twolevel'
                 namespace='svarsed'
                 loggingNamespace='personmanager'
-                firstForm={isXSed(replySed) ? 'personlight' : isH021Sed(replySed) ? 'h021personopplysninger' : 'personopplysninger'}
+                firstForm={isXSed(replySed) ? 'personlight' : isH021Sed(replySed) ? 'personopplysningerH021' : 'personopplysninger'}
                 deselectedMenuOption={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menuOption : undefined}
                 forms={[
                   { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H', 'S'], adult: true, barn: true, condition: () => !isH021Sed(replySed) },
+                  { label: t('el:option-mainform-personopplyninger'), value: 'personopplysningerH021', component: PersonOpplysninger, type: 'H021', options: { showFoedested: false, showUtenlandskPin: false, showH021Pins: true } },
                   { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
                   { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H', 'S'], adult: true, barn: true, condition: () => !isH021Sed(replySed) },
                   { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true, condition: () => !isH120Sed(replySed) && !isH021Sed(replySed) },
@@ -471,9 +471,6 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-anmodninginfo'), value: 'anmodninginfo', component: AnmodningInfo, type: 'H120' },
                   { label: t('el:option-mainform-familieytelsespoersmaal'), value: 'familieytelsespoersmaal', component: FamilieytelseSpoersmaal, type: 'H120', condition: () => (replySed as H120Sed)?.beroertYtelse === 'familieytelse' },
                   { label: t('el:option-mainform-awodspoersmaal'), value: 'awodspoersmaal', component: AWODSpoersmaal, type: 'H120', condition: () => (replySed as H120Sed)?.beroertYtelse === 'kontantytelser_ved_yrkesskade_eller_yrkessykdom_som_nevnt_i_artikkel_33_1_nr_987_2009' || (replySed as H120Sed)?.beroertYtelse === 'adre_kontantytelser_ved_yrkesskade_eller_yrkessykdom' },
-                  { label: t('el:option-mainform-h021personopplysninger'), value: 'h021personopplysninger', component: H021Personopplysninger, type: 'H021' },
-                  { label: t('el:option-mainform-globaltkrav'), value: 'globaltkrav', component: GlobaltKrav, type: 'H021' },
-                  { label: t('el:option-mainform-h021refusjon'), value: 'h021refusjon', component: H021Refusjon, type: 'H021' },
                   { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
                   { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
                   { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
@@ -487,6 +484,23 @@ const SEDEdit = (): JSX.Element => {
               />
             </>
           )}
+          {isH021Sed(replySed) &&
+            <>
+              <MainForm
+                CDM_VERSION={CDM_VERSJON}
+                type='onelevel'
+                namespace='h021krav'
+                forms={[
+                  { label: t('el:option-mainform-globaltkrav'), value: 'globaltkrav', component: GlobaltKrav },
+                  { label: t('el:option-mainform-h021refusjon'), value: 'h021refusjon', component: H021Refusjon }
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
+                loggingNamespace='h021kravmanager'
+              />
+            </>
+          }
           {(isF001Sed(replySed) || isF002Sed(replySed))&& (
             <>
               <MainForm

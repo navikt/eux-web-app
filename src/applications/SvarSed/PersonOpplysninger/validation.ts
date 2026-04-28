@@ -9,6 +9,7 @@ import {validateFoedested} from "../../../components/Foedested/validation";
 export interface ValidationPersonopplysningerProps {
   personInfo: PersonInfo | undefined
   personName?: string
+  validateH021Pins?: boolean
 }
 
 export const validatePersonopplysninger = (
@@ -16,7 +17,8 @@ export const validatePersonopplysninger = (
   namespace: string,
   {
     personInfo,
-    personName
+    personName,
+    validateH021Pins
   }: ValidationPersonopplysningerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -98,5 +100,29 @@ export const validatePersonopplysninger = (
       personName
     }))
   }
+
+  if (validateH021Pins) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: personInfo?.pinKompetentLand?.trim(),
+      id: namespace + '-pinKompetentLand',
+      message: 'validation:noPIN',
+      personName
+    }))
+    hasErrors.push(checkLength(v, {
+      needle: personInfo?.pinKompetentLand?.trim(),
+      max: 65,
+      id: namespace + '-pinKompetentLand',
+      message: 'validation:textOverX',
+      personName
+    }))
+    hasErrors.push(checkLength(v, {
+      needle: personInfo?.pinOppholdLand?.trim(),
+      max: 65,
+      id: namespace + '-pinOppholdLand',
+      message: 'validation:textOverX',
+      personName
+    }))
+  }
+
   return hasErrors.find(value => value) !== undefined
 }

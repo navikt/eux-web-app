@@ -1,21 +1,9 @@
-import { BaseReplySed } from 'declarations/sed'
+import { BaseReplySed, PersonInfo } from 'declarations/sed'
 
-// ===== H021 Person (simplified — flat PINs, no addresses/nationality/birthplace) =====
-
-export interface H021PersonInfo {
-  etternavn: string
-  fornavn: string
-  foedselsdato: string
-  kjoenn: 'M' | 'K' | 'U'
-  etternavnVedFoedsel?: string
-  fornavnVedFoedsel?: string
-  pinKompetentLand: string
-  pinOppholdLand?: string
-  adressebeskyttelsesgrad?: string
-}
+// ===== H021 Person (uses standard PersonInfo with H021-specific PIN fields) =====
 
 export interface H021Bruker {
-  personInfo?: H021PersonInfo
+  personInfo?: PersonInfo
 }
 
 // ===== BeloepValuta =====
