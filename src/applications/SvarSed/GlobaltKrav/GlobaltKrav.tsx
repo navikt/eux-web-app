@@ -6,7 +6,8 @@ import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
 import { H021Sed } from 'declarations/h021'
 import CountrySelect from '@navikt/landvelger'
-import { Currency, CountryFilter } from '@navikt/land-verktoy'
+import { Currency } from '@navikt/land-verktoy'
+import { ALLOWED_CURRENCIES } from 'constants/currencies'
 import { sanitizeAmount } from 'utils/amount'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -166,7 +167,7 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
             menuPortalTarget={document.body}
             onOptionSelected={(currency: Currency) => setBeloepValuta('kravTotalbeloep', 'valuta', currency.value)}
             type='currency'
-            includeList={CountryFilter.EU_CURRENCY}
+            includeList={ALLOWED_CURRENCIES}
             required
             values={sed.refusjonskrav?.kreditorinstitusjon?.kravTotalbeloep?.valuta}
           />
@@ -191,7 +192,7 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
             menuPortalTarget={document.body}
             onOptionSelected={(currency: Currency) => setBeloepValuta('avvistKravTotalbeloep', 'valuta', currency.value)}
             type='currency'
-            includeList={CountryFilter.EU_CURRENCY}
+            includeList={ALLOWED_CURRENCIES}
             values={sed.refusjonskrav?.kreditorinstitusjon?.avvistKravTotalbeloep?.valuta}
           />
         </HGrid>
@@ -216,7 +217,7 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
             menuPortalTarget={document.body}
             onOptionSelected={(currency: Currency) => setBeloepValuta('utbetalingTotalbeloep', 'valuta', currency.value)}
             type='currency'
-            includeList={CountryFilter.EU_CURRENCY}
+            includeList={ALLOWED_CURRENCIES}
             required
             values={sed.refusjonskrav?.kreditorinstitusjon?.utbetalingTotalbeloep?.valuta}
           />

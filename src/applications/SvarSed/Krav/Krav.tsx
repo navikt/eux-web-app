@@ -15,7 +15,8 @@ import TextArea from 'components/Forms/TextArea'
 import ErrorLabel from 'components/Forms/ErrorLabel'
 import AddRemove from 'components/AddRemovePanel/AddRemove'
 import CountrySelect from '@navikt/landvelger'
-import { Currency, CountryFilter } from '@navikt/land-verktoy'
+import { Currency } from '@navikt/land-verktoy'
+import { ALLOWED_CURRENCIES } from 'constants/currencies'
 import { Option, Options } from 'declarations/app'
 import { H021Sed, RefusjonItem, AvslagType } from 'declarations/h021'
 import { ReplySed } from 'declarations/sed'
@@ -278,7 +279,7 @@ const Krav: React.FC<MainFormProps> = ({
                 menuPortalTarget={document.body}
                 onOptionSelected={(currency: Currency) => setItemNestedProp('fakturabeloep.valuta', currency.value, index)}
                 type='currency'
-                includeList={CountryFilter.EU_CURRENCY}
+                includeList={ALLOWED_CURRENCIES}
                 required
                 values={_item?.fakturabeloep?.valuta}
               />
@@ -324,7 +325,7 @@ const Krav: React.FC<MainFormProps> = ({
                       menuPortalTarget={document.body}
                       onOptionSelected={(currency: Currency) => setItemNestedProp('avslagDetaljer.avvistBeloep.valuta', currency.value, index)}
                       type='currency'
-                      includeList={CountryFilter.EU_CURRENCY}
+                      includeList={ALLOWED_CURRENCIES}
                       required
                       values={_item?.avslagDetaljer?.avvistBeloep?.valuta}
                     />
