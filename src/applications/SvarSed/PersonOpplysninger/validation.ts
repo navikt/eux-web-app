@@ -102,21 +102,22 @@ export const validatePersonopplysninger = (
   }
 
   if (validateH021Pins) {
+    const h021Info = personInfo as (PersonInfo & { pinKompetentLand?: string; pinOppholdLand?: string }) | undefined
     hasErrors.push(checkIfNotEmpty(v, {
-      needle: personInfo?.pinKompetentLand?.trim(),
+      needle: h021Info?.pinKompetentLand?.trim(),
       id: namespace + '-pinKompetentLand',
       message: 'validation:noPIN',
       personName
     }))
     hasErrors.push(checkLength(v, {
-      needle: personInfo?.pinKompetentLand?.trim(),
+      needle: h021Info?.pinKompetentLand?.trim(),
       max: 65,
       id: namespace + '-pinKompetentLand',
       message: 'validation:textOverX',
       personName
     }))
     hasErrors.push(checkLength(v, {
-      needle: personInfo?.pinOppholdLand?.trim(),
+      needle: h021Info?.pinOppholdLand?.trim(),
       max: 65,
       id: namespace + '-pinOppholdLand',
       message: 'validation:textOverX',

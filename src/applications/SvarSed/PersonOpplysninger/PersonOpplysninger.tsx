@@ -316,7 +316,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setPinKompetentLand(e.target.value)
                 }}
-                value={personInfo?.pinKompetentLand ?? ''}
+                value={(personInfo as PersonInfo & { pinKompetentLand?: string })?.pinKompetentLand ?? ''}
               />
               <TextField
                 error={validation[namespace + '-pinOppholdLand']?.feilmelding}
@@ -325,7 +325,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setPinOppholdLand(e.target.value)
                 }}
-                value={personInfo?.pinOppholdLand ?? ''}
+                value={(personInfo as PersonInfo & { pinOppholdLand?: string })?.pinOppholdLand ?? ''}
               />
             </HGrid>
           )}

@@ -1,9 +1,14 @@
 import { BaseReplySed, PersonInfo } from 'declarations/sed'
 
-// ===== H021 Person (uses standard PersonInfo with H021-specific PIN fields) =====
+// ===== H021 Person — extends standard PersonInfo with H021-specific PIN fields =====
 
-export interface H021Bruker {
-  personInfo?: PersonInfo
+export interface BrukerPersonInfo extends PersonInfo {
+  pinKompetentLand?: string
+  pinOppholdLand?: string
+}
+
+export interface Bruker {
+  personInfo?: BrukerPersonInfo
 }
 
 // ===== BeloepValuta =====
@@ -57,7 +62,7 @@ export interface AvslagDetaljer {
 
 // ===== Refusjon (single entry) =====
 
-export interface H021RefusjonItem {
+export interface RefusjonItem {
   henvisningTil?: HenvisningTilType
   utstedelsesdato?: string
   fakturanummer?: string
@@ -68,16 +73,16 @@ export interface H021RefusjonItem {
 
 // ===== Refusjonskrav (top-level) =====
 
-export interface H021Refusjonskrav {
+export interface Refusjonskrav {
   kreditorinstitusjon?: KreditorInstitusjon
   debitorinstitusjon?: DebitorInstitusjon
-  refusjoner?: Array<H021RefusjonItem>
+  refusjoner?: Array<RefusjonItem>
   totaltAntallFakturaer?: string
 }
 
 // ===== H021 SED =====
 
 export interface H021Sed extends BaseReplySed {
-  bruker?: H021Bruker
-  refusjonskrav?: H021Refusjonskrav
+  bruker?: Bruker
+  refusjonskrav?: Refusjonskrav
 }

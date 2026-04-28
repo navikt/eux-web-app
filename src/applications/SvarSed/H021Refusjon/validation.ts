@@ -1,10 +1,10 @@
-import { H021Sed, H021RefusjonItem } from 'declarations/h021'
+import { H021Sed, RefusjonItem } from 'declarations/h021'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { checkIfNotEmpty, checkLength, checkValidDateFormat } from 'utils/validation'
 
-export interface ValidationH021RefusjonItemProps {
-  refusjonItem: H021RefusjonItem | undefined
+export interface ValidationRefusjonItemProps {
+  refusjonItem: RefusjonItem | undefined
   nsIndex?: number
   formalName?: string
 }
@@ -14,14 +14,14 @@ export interface ValidationH021RefusjonProps {
   formalName?: string
 }
 
-export const validateH021RefusjonItem = (
+export const validateRefusjonItem = (
   v: Validation,
   namespace: string,
   {
     refusjonItem,
     nsIndex,
     formalName
-  }: ValidationH021RefusjonItemProps
+  }: ValidationRefusjonItemProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = nsIndex !== undefined ? `[${nsIndex}]` : ''
@@ -140,7 +140,7 @@ export const validateH021Refusjon = (
     }))
   } else {
     refusjoner.forEach((item, index) => {
-      hasErrors.push(validateH021RefusjonItem(v, namespace, {
+      hasErrors.push(validateRefusjonItem(v, namespace, {
         refusjonItem: item,
         nsIndex: index,
         formalName

@@ -189,9 +189,6 @@ export interface PersonInfo {
   statsborgerskap?: Array<Statsborgerskap>
   adressebeskyttelse?: string
   pin?: Array<Pin>
-  // H021 specific PIN fields (flat, separate from `pin` array)
-  pinKompetentLand?: string
-  pinOppholdLand?: string
   pinMangler?: {
     foedested: Foedested
     far: {

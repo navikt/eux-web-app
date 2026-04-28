@@ -3,8 +3,8 @@ import { PlusCircleIcon } from '@navikt/aksel-icons'
 import { resetValidation, setValidation } from 'actions/validation'
 import {
   validateH021Refusjon,
-  validateH021RefusjonItem,
-  ValidationH021RefusjonItemProps,
+  validateRefusjonItem,
+  ValidationRefusjonItemProps,
   ValidationH021RefusjonProps
 } from 'applications/SvarSed/H021Refusjon/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
@@ -17,7 +17,7 @@ import AddRemove from 'components/AddRemovePanel/AddRemove'
 import CountrySelect from '@navikt/landvelger'
 import { Currency } from '@navikt/land-verktoy'
 import { Option, Options } from 'declarations/app'
-import { H021Sed, H021RefusjonItem, AvslagType } from 'declarations/h021'
+import { H021Sed, RefusjonItem, AvslagType } from 'declarations/h021'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { sanitizeAmount } from 'utils/amount'
@@ -45,13 +45,13 @@ const H021Refusjon: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const target = 'refusjonskrav.refusjoner'
   const sed = replySed as H021Sed
-  const refusjoner: Array<H021RefusjonItem> | undefined = sed.refusjonskrav?.refusjoner
+  const refusjoner: Array<RefusjonItem> | undefined = sed.refusjonskrav?.refusjoner
   const namespace = `${parentNamespace}-${personID}-h021refusjon`
 
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationH021RefusjonItemProps>(validateH021RefusjonItem, namespace)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationRefusjonItemProps>(validateRefusjonItem, namespace)
 
-  const [_newItem, _setNewItem] = useState<H021RefusjonItem | undefined>(undefined)
-  const [_editItem, _setEditItem] = useState<H021RefusjonItem | undefined>(undefined)
+  const [_newItem, _setNewItem] = useState<RefusjonItem | undefined>(undefined)
+  const [_editItem, _setEditItem] = useState<RefusjonItem | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
 
@@ -87,23 +87,23 @@ const H021Refusjon: React.FC<MainFormProps> = ({
 
   const setItemProp = (prop: string, value: any, index: number) => {
     if (index < 0) {
-      _setNewItem({ ..._newItem, [prop]: value } as H021RefusjonItem)
+      _setNewItem({ ..._newItem, [prop]: value } as RefusjonItem)
       _resetValidation(namespace + '-' + prop)
       return
     }
-    _setEditItem({ ..._editItem, [prop]: value } as H021RefusjonItem)
+    _setEditItem({ ..._editItem, [prop]: value } as RefusjonItem)
     dispatch(resetValidation(namespace + '[' + index + ']-' + prop))
   }
 
   const setItemNestedProp = (path: string, value: any, index: number) => {
     if (index < 0) {
-      const updated = _.cloneDeep(_newItem || {} as H021RefusjonItem)
+      const updated = _.cloneDeep(_newItem || {} as RefusjonItem)
       _.set(updated, path, value)
       _setNewItem(updated)
       _resetValidation(namespace + '-' + path.replace(/\./g, '-'))
       return
     }
-    const updated = _.cloneDeep(_editItem || {} as H021RefusjonItem)
+    const updated = _.cloneDeep(_editItem || {} as RefusjonItem)
     _.set(updated, path, value)
     _setEditItem(updated)
     dispatch(resetValidation(namespace + '[' + index + ']-' + path.replace(/\./g, '-')))
@@ -111,7 +111,7 @@ const H021Refusjon: React.FC<MainFormProps> = ({
 
   const setAvslag = (value: AvslagType, index: number) => {
     if (index < 0) {
-      const updated = _.cloneDeep(_newItem || {} as H021RefusjonItem)
+      const updated = _.cloneDeep(_newItem || {} as RefusjonItem)
       updated.avslag = value
       if (value === 'ikke_avslag') {
         updated.avslagDetaljer = undefined
@@ -120,7 +120,7 @@ const H021Refusjon: React.FC<MainFormProps> = ({
       _resetValidation(namespace + '-avslag')
       return
     }
-    const updated = _.cloneDeep(_editItem || {} as H021RefusjonItem)
+    const updated = _.cloneDeep(_editItem || {} as RefusjonItem)
     updated.avslag = value
     if (value === 'ikke_avslag') {
       updated.avslagDetaljer = undefined
@@ -136,7 +136,7 @@ const H021Refusjon: React.FC<MainFormProps> = ({
     })
 
     if (!!_newItem && valid) {
-      let newRefusjoner: Array<H021RefusjonItem> = _.cloneDeep(refusjoner) || []
+      let newRefusjoner: Array<RefusjonItem> = _.cloneDeep(refusjoner) || []
       newRefusjoner.push(_.cloneDeep(_newItem))
       dispatch(updateReplySed(target, newRefusjoner))
       onCloseNew()
@@ -150,12 +150,12 @@ const H021Refusjon: React.FC<MainFormProps> = ({
   }
 
   const onRemove = (index: number) => {
-    let newRefusjoner: Array<H021RefusjonItem> = _.cloneDeep(refusjoner) || []
+    let newRefusjoner: Array<RefusjonItem> = _.cloneDeep(refusjoner) || []
     newRefusjoner.splice(index, 1)
     dispatch(updateReplySed(target, newRefusjoner))
   }
 
-  const onStartEdit = (item: H021RefusjonItem, index: number) => {
+  const onStartEdit = (item: RefusjonItem, index: number) => {
     if (_editIndex !== undefined) {
       dispatch(resetValidation(namespace + _editIndex))
     }
@@ -171,15 +171,15 @@ const H021Refusjon: React.FC<MainFormProps> = ({
 
   const onSaveEdit = (index: number) => {
     const clonedValidation = _.cloneDeep(validation)
-    const hasErrors = performValidation<ValidationH021RefusjonItemProps>(
-      clonedValidation, namespace, validateH021RefusjonItem, {
+    const hasErrors = performValidation<ValidationRefusjonItemProps>(
+      clonedValidation, namespace, validateRefusjonItem, {
         refusjonItem: _editItem,
         nsIndex: _editIndex,
         formalName: personName
       })
 
     if (!!_editItem && !hasErrors) {
-      let newRefusjoner: Array<H021RefusjonItem> = _.cloneDeep(refusjoner) || []
+      let newRefusjoner: Array<RefusjonItem> = _.cloneDeep(refusjoner) || []
       newRefusjoner.splice(index, 1, _.cloneDeep(_editItem))
       dispatch(updateReplySed(target, newRefusjoner))
       onCloseEdit(namespace)
@@ -188,7 +188,7 @@ const H021Refusjon: React.FC<MainFormProps> = ({
     }
   }
 
-  const renderRefusjonItem = (item: H021RefusjonItem | null, index: number) => {
+  const renderRefusjonItem = (item: RefusjonItem | null, index: number) => {
     const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
@@ -197,14 +197,14 @@ const H021Refusjon: React.FC<MainFormProps> = ({
     const showAvslagDetaljer = _item?.avslag === 'delvis_avslag' || _item?.avslag === 'totalt_avslag'
 
     const addRemove = (
-      <AddRemove<H021RefusjonItem>
+      <AddRemove<RefusjonItem>
         item={item}
         index={index}
         inEditMode={inEditMode}
         onRemove={() => onRemove(index)}
         onAddNew={() => onAddNew()}
         onCancelNew={() => onCloseNew()}
-        onStartEdit={(i: H021RefusjonItem) => onStartEdit(i, index)}
+        onStartEdit={(i: RefusjonItem) => onStartEdit(i, index)}
         onConfirmEdit={() => onSaveEdit(index)}
         onCancelEdit={() => onCloseEdit(_namespace)}
         labels={{ remove: t('el:button-remove-x', { x: t('label:refusjon').toLowerCase() }) }}
@@ -432,7 +432,7 @@ const H021Refusjon: React.FC<MainFormProps> = ({
               <ErrorLabel error={validation[namespace + '-refusjoner']?.feilmelding} />
             </>
           )
-          : refusjoner?.map((item: H021RefusjonItem, i: number) => renderRefusjonItem(item, i))
+          : refusjoner?.map((item: RefusjonItem, i: number) => renderRefusjonItem(item, i))
         }
 
         {_newForm
