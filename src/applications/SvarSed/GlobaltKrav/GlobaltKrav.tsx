@@ -133,20 +133,21 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
           />
         </HGrid>
 
-        <Input
-          error={validation[namespace + '-totaltAntallFakturaer']?.feilmelding}
-          id='totaltAntallFakturaer'
-          label={t('label:totalt-antall-fakturaer')}
-          namespace={namespace}
-          onChanged={setTotaltAntallFakturaer}
-          required
-          value={sed.refusjonskrav?.totaltAntallFakturaer || ''}
-        />
-
+        <HGrid columns={2} gap="space-16" align="start">
+          <Input
+            error={validation[namespace + '-totaltAntallFakturaer']?.feilmelding}
+            id='totaltAntallFakturaer'
+            label={t('label:totalt-antall-fakturaer')}
+            namespace={namespace}
+            onChanged={setTotaltAntallFakturaer}
+            required
+            value={sed.refusjonskrav?.totaltAntallFakturaer || ''}
+          />
+        </HGrid>
+        <div/>
         <Heading size='xsmall'>
           {t('label:utbetaling')} ({t('label:i-kreditorens-valuta')})
         </Heading>
-
         <HGrid columns={2} gap="space-16" align="start">
           <Input
             error={validation[namespace + '-kravTotalbeloep-beloep']?.feilmelding}
