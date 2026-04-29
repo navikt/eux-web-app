@@ -13,7 +13,6 @@ export const ALLOWED_CURRENCIES: Array<string> = [
   'DKK', // Dansk krone
   'EUR', // Euro
   'GBP', // Britisk pund
-  'HRK', // Kroatisk kuna
   'HUF', // Ungarsk forint
   'ISK', // Islandsk krone
   'NOK', // Norsk krone
