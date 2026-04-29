@@ -144,7 +144,7 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
         />
 
         <Heading size='xsmall'>
-          {t('label:utbetaling')}
+          {t('label:utbetaling')} ({t('label:i-kreditorens-valuta')})
         </Heading>
 
         <HGrid columns={2} gap="space-16" align="start">

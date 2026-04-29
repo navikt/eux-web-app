@@ -8,7 +8,7 @@ import {
   ValidationKravProps
 } from 'applications/SvarSed/Krav/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
-import DateField from 'components/DateField/DateField'
+import DateField, {toDateFormat} from 'components/DateField/DateField'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
@@ -399,7 +399,7 @@ const Krav: React.FC<MainFormProps> = ({
           <HGrid columns={3} gap="space-32" align="start">
             <VStack>
               <Label>{t('label:utstedelsesdato')}</Label>
-              {item?.utstedelsesdato}
+              {toDateFormat(item?.utstedelsesdato, "DD.MM.YYYY")}
             </VStack>
             <VStack>
               <Label>{t('label:fakturabeloep')}</Label>
