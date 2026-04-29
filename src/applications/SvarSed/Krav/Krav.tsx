@@ -32,6 +32,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import classNames from 'classnames'
+import commonStyles from 'assets/css/common.module.css'
 
 const Krav: React.FC<MainFormProps> = ({
   label,
@@ -220,8 +221,9 @@ const Krav: React.FC<MainFormProps> = ({
           background="neutral-soft"
           borderColor="neutral-subtle"
           borderWidth="1"
-          className={classNames({
-            error: hasNamespaceWithErrors(_v, _namespace),
+          className={classNames(commonStyles.repeatableBox, {
+            [commonStyles.new]: index < 0,
+            [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace),
           })}
         >
           <VStack gap="space-16">
@@ -372,7 +374,16 @@ const Krav: React.FC<MainFormProps> = ({
 
     // Read-only view
     return (
-      <Box key={index} padding="space-16" background="neutral-soft" borderColor="neutral-subtle" borderWidth="1">
+      <Box
+        key={index}
+        padding="space-16"
+        background="neutral-soft"
+        borderColor="neutral-subtle"
+        borderWidth="1"
+        className={classNames(commonStyles.repeatableBox, {
+          [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace),
+        })}
+      >
         <VStack gap="space-16">
           <HGrid columns={3} gap="space-32" align="start">
             <VStack>
