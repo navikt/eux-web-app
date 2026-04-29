@@ -1,7 +1,7 @@
 import { H021Sed } from 'declarations/h021'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkIfNotEmpty, checkLength, checkIfInteger } from 'utils/validation'
+import { checkIfNotEmpty, checkIfNotNumber, checkLength, checkIfInteger } from 'utils/validation'
 
 export interface ValidationGlobaltKravProps {
   replySed: ReplySed
@@ -85,6 +85,13 @@ export const validateGlobaltKrav = (
     personName
   }))
 
+  hasErrors.push(checkIfNotNumber(v, {
+    needle: sed.refusjonskrav?.kreditorinstitusjon?.kravTotalbeloep?.beloep,
+    id: namespace + '-kravTotalbeloep-beloep',
+    message: 'validation:invalidBeloep',
+    personName
+  }))
+
   hasErrors.push(checkIfNotEmpty(v, {
     needle: sed.refusjonskrav?.kreditorinstitusjon?.kravTotalbeloep?.valuta,
     id: namespace + '-kravTotalbeloep-valuta',
@@ -97,6 +104,13 @@ export const validateGlobaltKrav = (
     needle: sed.refusjonskrav?.kreditorinstitusjon?.utbetalingTotalbeloep?.beloep,
     id: namespace + '-utbetalingTotalbeloep-beloep',
     message: 'validation:noBeloep',
+    personName
+  }))
+
+  hasErrors.push(checkIfNotNumber(v, {
+    needle: sed.refusjonskrav?.kreditorinstitusjon?.utbetalingTotalbeloep?.beloep,
+    id: namespace + '-utbetalingTotalbeloep-beloep',
+    message: 'validation:invalidBeloep',
     personName
   }))
 
@@ -126,6 +140,13 @@ export const validateGlobaltKrav = (
       personName
     }))
   }
+
+  hasErrors.push(checkIfNotNumber(v, {
+    needle: avvistBeloep,
+    id: namespace + '-avvistKravTotalbeloep-beloep',
+    message: 'validation:invalidBeloep',
+    personName
+  }))
 
   hasErrors.push(checkLength(v, {
     needle: sed.refusjonskrav?.kreditorinstitusjon?.betalingsreferanse,

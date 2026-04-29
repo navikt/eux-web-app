@@ -181,6 +181,7 @@
   "noTotaltAntallFakturaer": "Totalt antall fakturaer er påkrevd",
   "kunTall": "Kun tall er tillatt",
   "noBeloep": "Beløp er påkrevd",
+  "invalidBeloep": "Ugyldig beløp",
   "noPIN": "PIN er påkrevd",
   "noHenvisningTil": "Henvisning er påkrevd",
   "noFakturanummer": "Fakturanummer er påkrevd",

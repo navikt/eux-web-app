@@ -1,7 +1,7 @@
 import { H021Sed, RefusjonItem } from 'declarations/h021'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkIfNotEmpty, checkLength, checkValidDateFormat } from 'utils/validation'
+import { checkIfNotEmpty, checkIfNotNumber, checkLength, checkValidDateFormat } from 'utils/validation'
 
 export interface ValidationRefusjonItemProps {
   refusjonItem: RefusjonItem | undefined
@@ -62,6 +62,13 @@ export const validateRefusjonItem = (
     personName: formalName
   }))
 
+  hasErrors.push(checkIfNotNumber(v, {
+    needle: refusjonItem?.fakturabeloep?.beloep,
+    id: ns + '-fakturabeloep-beloep',
+    message: 'validation:invalidBeloep',
+    personName: formalName
+  }))
+
   hasErrors.push(checkIfNotEmpty(v, {
     needle: refusjonItem?.fakturabeloep?.valuta,
     id: ns + '-fakturabeloep-valuta',
@@ -81,6 +88,13 @@ export const validateRefusjonItem = (
       needle: refusjonItem?.avslagDetaljer?.avvistBeloep?.beloep,
       id: ns + '-avslagDetaljer-avvistBeloep-beloep',
       message: 'validation:noBeloep',
+      personName: formalName
+    }))
+
+    hasErrors.push(checkIfNotNumber(v, {
+      needle: refusjonItem?.avslagDetaljer?.avvistBeloep?.beloep,
+      id: ns + '-avslagDetaljer-avvistBeloep-beloep',
+      message: 'validation:invalidBeloep',
       personName: formalName
     }))
 
