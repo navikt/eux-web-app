@@ -403,11 +403,11 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     hasErrors.push(performValidation<ValidationPersonopplysningerProps>(v, `svarsed-${personID}-personopplysninger`, validatePersonopplysninger, {
       personInfo, personName, validateH021Pins: true
     }, true))
-    hasErrors.push(performValidation<ValidationGlobaltKravProps>(v, `svarsed-${personID}-globaltkrav`, validateGlobaltKrav, {
+    hasErrors.push(performValidation<ValidationGlobaltKravProps>(v, `h021krav-globaltkrav-globaltkrav`, validateGlobaltKrav, {
       replySed,
       personName: i18n.t('label:globalt-krav').toLowerCase()
     }, true))
-    hasErrors.push(performValidation<ValidationH021KravProps>(v, `svarsed-${personID}-krav`, validateH021Krav, {
+    hasErrors.push(performValidation<ValidationH021KravProps>(v, `h021krav-krav-krav`, validateH021Krav, {
       replySed,
       formalName: i18n.t('label:refusjon').toLowerCase()
     }, true))
