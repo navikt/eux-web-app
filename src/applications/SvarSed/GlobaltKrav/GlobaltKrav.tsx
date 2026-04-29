@@ -168,6 +168,7 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
             onOptionSelected={(currency: Currency) => setBeloepValuta('kravTotalbeloep', 'valuta', currency.value)}
             type='currency'
             includeList={ALLOWED_CURRENCIES}
+            sort={"noeuFirst"}
             required
             values={sed.refusjonskrav?.kreditorinstitusjon?.kravTotalbeloep?.valuta}
           />
@@ -193,6 +194,7 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
             onOptionSelected={(currency: Currency) => setBeloepValuta('avvistKravTotalbeloep', 'valuta', currency.value)}
             type='currency'
             includeList={ALLOWED_CURRENCIES}
+            sort={"noeuFirst"}
             values={sed.refusjonskrav?.kreditorinstitusjon?.avvistKravTotalbeloep?.valuta}
           />
         </HGrid>
@@ -218,6 +220,7 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
             onOptionSelected={(currency: Currency) => setBeloepValuta('utbetalingTotalbeloep', 'valuta', currency.value)}
             type='currency'
             includeList={ALLOWED_CURRENCIES}
+            sort={"noeuFirst"}
             required
             values={sed.refusjonskrav?.kreditorinstitusjon?.utbetalingTotalbeloep?.valuta}
           />
