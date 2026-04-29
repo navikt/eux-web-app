@@ -6,7 +6,7 @@
  *
  * TODO: Erstatt med dynamisk liste hentet fra RINA/neessi-backend (se TEN-1662).
  */
-export const ALLOWED_CURRENCIES: Array<string> = [
+export const ALLOWED_EU_CURRENCIES: Array<string> = [
   'BGN', // Bulgarsk lev
   'CHF', // Sveitsiske franc
   'CZK', // Tsjekkisk koruna
