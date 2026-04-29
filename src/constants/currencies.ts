@@ -15,6 +15,9 @@ export const ALLOWED_EU_CURRENCIES: Array<string> = [
   'GBP', // Britisk pund
   'HUF', // Ungarsk forint
   'ISK', // Islandsk krone
+  'HRK', // Kroatisk kuna
+  'LTL', // Litauisk litas
+  'LVL', // Latvisk lat
   'NOK', // Norsk krone
   'PLN', // Polsk zloty
   'RON', // Rumensk ny leu
