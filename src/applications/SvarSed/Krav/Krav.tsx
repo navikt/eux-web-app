@@ -281,6 +281,7 @@ const Krav: React.FC<MainFormProps> = ({
                 menuPortalTarget={document.body}
                 onOptionSelected={(currency: Currency) => setItemNestedProp('fakturabeloep.valuta', currency.value, index)}
                 type='currency'
+                includeHistoricCurrencies
                 includeList={ALLOWED_EU_CURRENCIES}
                 sort={"noeuFirst"}
                 required
@@ -328,6 +329,7 @@ const Krav: React.FC<MainFormProps> = ({
                       menuPortalTarget={document.body}
                       onOptionSelected={(currency: Currency) => setItemNestedProp('avslagDetaljer.avvistBeloep.valuta', currency.value, index)}
                       type='currency'
+                      includeHistoricCurrencies
                       includeList={ALLOWED_EU_CURRENCIES}
                       sort={"noeuFirst"}
                       required
