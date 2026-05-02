@@ -626,12 +626,5 @@
   "arbeidsgiver-identifikator-id": "Identifikasjonsnummer",
 
   "gjenaapning-aarsak": "Årsak til anmodning om gjenåpning",
-  "gjenaapning-aarsak-annet": "Begrunnelse for gjenåpning",
-  "gjenaapning-kontekst": "Sakskontekst",
-  "gjenaapning-kontekst-bruker": "Person",
-  "gjenaapning-kontekst-arbeidsgiver": "Arbeidsgiver",
-  "gjenaapning-kontekst-refusjonskrav": "Refusjonskrav",
-  "refusjonskrav": "Refusjonskrav",
-  "refusjonskrav-antallkrav": "Antall krav",
-  "refusjonskrav-id": "ID"
+  "gjenaapning-aarsak-annet": "Begrunnelse for gjenåpning"
 }

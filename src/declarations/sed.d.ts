@@ -1,6 +1,7 @@
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { H065Sed } from 'declarations/h065'
 import { H120Sed } from 'declarations/h120'
+import { X002Sed } from 'declarations/x002'
 import { Sak, Sed } from 'declarations/types'
 
 export type AapenPeriodeType = 'ukjent_sluttdato' | 'åpen_sluttdato'
@@ -935,43 +936,6 @@ export interface X001Sed extends XSed {
   avslutningType: AvslutningsType
   begrunnelseType: string
   begrunnelseAnnen?: string
-}
-
-export interface X002ArbeidsgiverAdresse {
-  bygning?: string
-  gate?: string
-  by?: string
-  postnummer?: string
-  region?: string
-  landkode?: string
-}
-
-export interface X002ArbeidsgiverIdentifikator {
-  type?: string
-  id?: string
-}
-
-export interface X002Arbeidsgiver {
-  navn?: string
-  adresse?: X002ArbeidsgiverAdresse
-  identifikatorer?: Array<X002ArbeidsgiverIdentifikator>
-}
-
-export interface X002Refusjonskrav {
-  antallkrav?: string
-  id?: string
-}
-
-export interface X002Gjenaapning {
-  aarsakType?: string
-  aarsakAnnet?: string
-}
-
-export interface X002Sed extends Omit<XSed, 'bruker'> {
-  bruker?: PersonLight
-  arbeidsgiver?: X002Arbeidsgiver
-  refusjonskrav?: X002Refusjonskrav
-  gjenaapning?: X002Gjenaapning
 }
 
 export interface X008Sed extends XSed {

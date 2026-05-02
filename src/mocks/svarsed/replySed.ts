@@ -17,11 +17,11 @@ import {
   X009Sed,
   X010Sed,
   X011Sed,
-  X012Sed,
-  X002Sed
+  X012Sed
 } from 'declarations/sed'
 import { H065Sed } from 'declarations/h065'
 import { H120Sed } from 'declarations/h120'
+import { X002Sed } from 'declarations/x002'
 import f001 from '../seds/f001.json'
 import f002 from '../seds/f002.json'
 import f003 from '../seds/f003.json'

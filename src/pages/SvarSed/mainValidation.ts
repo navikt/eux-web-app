@@ -7,7 +7,6 @@ import {
 import { validateAvslutning, ValidationAvslutningProps } from 'applications/SvarSed/Avslutning/validation'
 import { validateAvvis, ValidationAvvisProps } from 'applications/SvarSed/Avvis/validation'
 import { validateGjenaapning, ValidationGjenaapningProps } from 'applications/SvarSed/Gjenaapning/validation'
-import { validateKontekst, ValidationKontekstProps } from 'applications/SvarSed/Kontekst/validation'
 import {
   validateBeløpNavnOgValutas,
   ValidationBeløpNavnOgValutasProps
@@ -99,7 +98,6 @@ import {
   U004Sed,
   U017Sed,
   X001Sed,
-  X002Sed,
   X008Sed,
   X009Sed,
   X010Sed,
@@ -108,6 +106,7 @@ import {
   Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse, VedtakF003, Vedtak
 } from 'declarations/sed'
 import { H120Sed } from 'declarations/h120'
+import { X002Sed } from 'declarations/x002'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
 import _ from 'lodash'
@@ -474,7 +473,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     }
   }
 
-  if (isXSed(replySed) && !isX002Sed(replySed)) {
+  if (isXSed(replySed)) {
     hasErrors.push(performValidation<ValidationPersonLightProps>(v, `svarsed-${personID}-personlight`, validatePersonLight, {
       personLight: (replySed as X001Sed).bruker, personName
     }, true))
@@ -482,6 +481,11 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     if (isX001Sed(replySed)) {
       hasErrors.push(performValidation<ValidationAvslutningProps>(v, `svarsed-${personID}-avslutning`, validateAvslutning, {
         replySed: (replySed as X001Sed), personName
+      }, true))
+    }
+    if (isX002Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationGjenaapningProps>(v, `svarsed-${personID}-gjenaapning`, validateGjenaapning, {
+        replySed: (replySed as X002Sed), personName
       }, true))
     }
     if (isX008Sed(replySed)) {
@@ -525,19 +529,8 @@ export const validateSEDEdit = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  // this is common to all seds (except X002 which has its own validation)
-  if (!isX002Sed(replySed)) {
-    hasErrors.push(validateMainForm(v, replySed, 'bruker'))
-  }
-
-  if (isX002Sed(replySed)) {
-    hasErrors.push(performValidation<ValidationKontekstProps>(v, 'svarsed-kontekst-kontekst', validateKontekst, {
-      replySed: (replySed as X002Sed)
-    }, true))
-    hasErrors.push(performValidation<ValidationGjenaapningProps>(v, 'svarsed-gjenaapning-gjenaapning', validateGjenaapning, {
-      replySed: (replySed as X002Sed)
-    }, true))
-  }
+  // this is common to all seds
+  hasErrors.push(validateMainForm(v, replySed, 'bruker'))
 
   if (isF001Sed(replySed) || isF002Sed(replySed)) {
     hasErrors.push(performValidation<ValidationFormålProps>(v, 'formål1-formål', validateFormål, {

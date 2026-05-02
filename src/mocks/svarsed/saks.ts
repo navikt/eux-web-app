@@ -45,7 +45,7 @@ export default (saksnummer: string, type: string) => {
         "fnr": "12345678901"
       },
       sakshandlinger: [
-        'H001', 'F002', 'F026', 'F027', 'X001', 'X002', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case', 'singleParticipant', 'Delete_Case'
+        'H001', 'F002', 'F026', 'F027', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case', 'singleParticipant', 'Delete_Case'
       ],
       sedListe: [
         {
@@ -54,7 +54,8 @@ export default (saksnummer: string, type: string) => {
           sedId: 'x001_mock_id',
           status: 'received',
           sistEndretDato: '2025-04-15',
-          sedHandlinger: ['X008', 'Read']
+          svarsedType: 'X002',
+          sedHandlinger: ['X002', 'X008', 'Read']
         }, {
           sedTittel: 'Påminnelse',
           sedType: 'X009',

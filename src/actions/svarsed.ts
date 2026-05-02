@@ -12,7 +12,7 @@ import {validateFnrDnrNpid} from 'utils/fnrValidator'
 import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
 import {JoarkBrowserItem} from "../declarations/attachments";
-import { usesTypedSedApi, isX002Sed } from 'utils/sed'
+import { usesTypedSedApi } from 'utils/sed'
 // @ts-ignore
 import { sprintf } from 'sprintf-js';
 
@@ -32,23 +32,6 @@ const stripInternalProps = (obj: any): any => {
     return result
   }
   return obj
-}
-
-// X002 XSD choice: only one of bruker/arbeidsgiver/refusjonskrav may be set.
-// Backend priority: bruker > arbeidsgiver > refusjonskrav.
-// Strip non-selected contexts so the backend receives the intended one.
-const stripX002Context = (sed: any): void => {
-  if (!isX002Sed(sed)) return
-  if (sed.arbeidsgiver !== undefined) {
-    delete sed.bruker
-    delete sed.refusjonskrav
-  } else if (sed.refusjonskrav !== undefined) {
-    delete sed.bruker
-    delete sed.arbeidsgiver
-  } else {
-    delete sed.arbeidsgiver
-    delete sed.refusjonskrav
-  }
 }
 
 export const addMottakere = (
@@ -92,7 +75,6 @@ export const createSed = (
   delete copyReplySed.sak
   delete copyReplySed.sed
   delete copyReplySed.attachments
-  stripX002Context(copyReplySed)
   const sedType = replySed.sedType
   const url = usesTypedSedApi(sedType)
     ? sprintf(urls.API_SED_CREATE_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase() })
@@ -137,7 +119,6 @@ export const updateSed = (
   delete copyReplySed.sak
   delete copyReplySed.sed
   delete copyReplySed.attachments
-  stripX002Context(copyReplySed)
   const sedType = replySed.sedType
   const url = usesTypedSedApi(sedType)
     ? sprintf(urls.API_SED_UPDATE_BY_TYPE_URL, { rinaSakId: replySed.sak?.sakId, sedType: sedType?.toLowerCase(), sedId: replySed.sed?.sedId })
@@ -242,24 +223,6 @@ export const createXSed = (
   type: types.SVARSED_XSED_CREATE,
   payload: { sedType, sak }
 })
-
-export const createX002Sed = (
-  sak: Sak
-): ActionWithPayload<ReplySed> => {
-  return call({
-    url: sprintf(urls.API_SED_X002_DRAFT_URL, { rinaSakId: sak.sakId }),
-    expectedPayload: mockReplySed('X002'),
-    context: {
-      sak,
-      sed: undefined
-    },
-    type: {
-      request: types.SVARSED_REPLYTOSED_REQUEST,
-      success: types.SVARSED_REPLYTOSED_SUCCESS,
-      failure: types.SVARSED_REPLYTOSED_FAILURE
-    }
-  })
-}
 
 export const createHSed = (
   sedType: string, sak: Sak

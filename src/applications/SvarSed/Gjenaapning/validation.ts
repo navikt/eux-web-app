@@ -1,4 +1,4 @@
-import { X002Sed } from 'declarations/sed'
+import { X002Sed } from 'declarations/x002'
 import { Validation } from 'declarations/types'
 import { checkIfNotEmpty, checkLength } from 'utils/validation'
 
