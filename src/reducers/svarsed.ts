@@ -19,7 +19,7 @@ import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import moment from 'moment'
 import { AnyAction } from 'redux'
-import {isUSed} from "../utils/sed";
+import {isUSed, isX002Sed} from "../utils/sed";
 
 export interface SvarsedState {
   fagsaker: Fagsaker | null | undefined
@@ -231,16 +231,29 @@ const svarsedReducer = (
 
     case types.SVARSED_EDIT_SUCCESS: {
       const payload = (action as ActionWithPayload).payload
+      const sak: Sak | undefined = (action as ActionWithPayload).context.sak
 
       // trim fnr - might contain whitespace if entered in RINA
       let bruker = trimPin(payload.bruker)
+
+      // X002: if the existing SED has no person context (because it has arbeidsgiver
+      // or refusjonskrav instead), prefill bruker from the Sak so the Person form is editable.
+      if (isX002Sed(payload) && _.isEmpty(bruker) && sak) {
+        bruker = {
+          fornavn: sak.fornavn,
+          etternavn: sak.etternavn,
+          foedselsdato: sak.foedselsdato,
+          kjoenn: sak.kjoenn,
+          ...(sak.fnr && { pin: [{ land: 'NO', identifikator: sak.fnr }] })
+        } as any
+      }
 
       const newReplySed = {
         ...payload,
         bruker: {
           ...bruker,
         },
-        sak: (action as ActionWithPayload).context.sak,
+        sak,
         sed: (action as ActionWithPayload).context.sed
       }
 
