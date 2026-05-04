@@ -492,7 +492,7 @@ const SEDEdit = (): JSX.Element => {
                 namespace='h021krav'
                 forms={[
                   { label: t('el:option-mainform-globaltkrav'), value: 'globaltkrav', component: GlobaltKrav },
-                  { label: t('el:option-mainform-krav'), value: 'krav', component: Krav }
+                  { label: t('el:option-mainform-krav-refusjon'), value: 'krav', component: Krav }
                 ]}
                 replySed={replySed}
                 updateReplySed={updateReplySed}

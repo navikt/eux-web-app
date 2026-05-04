@@ -1,4 +1,4 @@
-import { BodyLong, Box, Button, Heading, HGrid, HStack, Label, Spacer, VStack } from '@navikt/ds-react'
+import { BodyLong, Box, Button, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, VStack } from '@navikt/ds-react'
 import { PlusCircleIcon } from '@navikt/aksel-icons'
 import { resetValidation, setValidation } from 'actions/validation'
 import {
@@ -227,18 +227,22 @@ const Krav: React.FC<MainFormProps> = ({
           })}
         >
           <VStack gap="space-16">
-            <Select
+            <RadioGroup
               data-testid={_namespace + '-henvisningTil'}
               error={_v[_namespace + '-henvisningTil']?.feilmelding}
               id={_namespace + '-henvisningTil'}
-              label={t('label:med-henvisning-til')}
-              menuPortalTarget={document.body}
-              onChange={(o: unknown) => setItemProp('henvisningTil', (o as Option).value, index)}
-              options={henvisningTilOptions}
-              required
-              value={_.find(henvisningTilOptions, o => o.value === _item?.henvisningTil)}
-              defaultValue={_.find(henvisningTilOptions, o => o.value === _item?.henvisningTil)}
-            />
+              legend={t('label:med-henvisning-til')}
+              onChange={(value: string | number | boolean) => setItemProp('henvisningTil', value as string, index)}
+              value={_item?.henvisningTil ?? ''}
+            >
+              <HStack gap="space-16">
+                {henvisningTilOptions.map((o: Option) => (
+                  <Radio key={o.value} className={commonStyles.radioPanel} value={o.value}>
+                    {o.label}
+                  </Radio>
+                ))}
+              </HStack>
+            </RadioGroup>
 
             <HGrid columns={2} gap="space-16" align="start">
               <DateField
@@ -289,18 +293,22 @@ const Krav: React.FC<MainFormProps> = ({
               />
             </HGrid>
 
-            <Select
+            <RadioGroup
               data-testid={_namespace + '-avslag'}
               error={_v[_namespace + '-avslag']?.feilmelding}
               id={_namespace + '-avslag'}
-              label={t('label:avslag')}
-              menuPortalTarget={document.body}
-              onChange={(o: unknown) => setAvslag((o as Option).value as AvslagType, index)}
-              options={avslagOptions}
-              required
-              value={_.find(avslagOptions, o => o.value === _item?.avslag)}
-              defaultValue={_.find(avslagOptions, o => o.value === _item?.avslag)}
-            />
+              legend={t('label:avslag')}
+              onChange={(value: string | number | boolean) => setAvslag(value as AvslagType, index)}
+              value={_item?.avslag ?? ''}
+            >
+              <HStack gap="space-16">
+                {avslagOptions.map((o: Option) => (
+                  <Radio key={o.value} className={commonStyles.radioPanel} value={o.value}>
+                    {o.label}
+                  </Radio>
+                ))}
+              </HStack>
+            </RadioGroup>
 
             {showAvslagDetaljer && (
               <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle">
