@@ -1,4 +1,5 @@
-import {Box, Heading, Radio, RadioGroup, VStack} from '@navikt/ds-react'
+import {Box, Heading, RadioGroup, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
@@ -11,8 +12,6 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validateAvvis, ValidationAvvisProps } from './validation'
-import commonstyles from "assets/css/common.module.css"
-
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -77,10 +76,10 @@ const Avvis: React.FC<MainFormProps> = ({
             onChange={setBegrunnelseType}
           >
             <VStack gap="space-4" width="75%">
-              <Radio className={commonstyles.radioPanel} value='personen_finnes_ikke_i_våre_registre'>{t('el:option-avvis-01')}</Radio>
-              <Radio className={commonstyles.radioPanel} value='ikke_kompetent_institusjon_i_saken_og_ikke_i_stand_til_å_videresende'>{t('el:option-avvis-02')}</Radio>
-              <Radio className={commonstyles.radioPanel} value='etterspurt_obligatorisk_informasjon_finnes_ikke'>{t('el:option-avvis-03')}</Radio>
-              <Radio className={commonstyles.radioPanel} value='annet'>{t('el:option-avvis-99')}</Radio>
+              <RadioPanel value='personen_finnes_ikke_i_våre_registre'>{t('el:option-avvis-01')}</RadioPanel>
+              <RadioPanel value='ikke_kompetent_institusjon_i_saken_og_ikke_i_stand_til_å_videresende'>{t('el:option-avvis-02')}</RadioPanel>
+              <RadioPanel value='etterspurt_obligatorisk_informasjon_finnes_ikke'>{t('el:option-avvis-03')}</RadioPanel>
+              <RadioPanel value='annet'>{t('el:option-avvis-99')}</RadioPanel>
             </VStack>
           </RadioGroup>
         {(replySed as X011Sed).begrunnelseType === 'annet' && (

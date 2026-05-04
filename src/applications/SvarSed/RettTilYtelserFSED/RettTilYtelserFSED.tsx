@@ -1,4 +1,5 @@
-import {BodyLong, Box, Button, Heading, HGrid, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import {resetValidation, setValidation} from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
@@ -264,8 +265,8 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
             onChange={(e: string) => setRettTilFamilieYtelser(e as JaNei)}
           >
             <HStack gap="space-16">
-              <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
-              <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
+              <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+              <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
             </HStack>
           </RadioGroup>
           <Spacer />
@@ -324,9 +325,9 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
                 onChange={setIkkeRettTilFamilieYtelser}
               >
                 <HStack gap="space-16">
-                  {isF026Sed(replySed) && <Radio className={commonStyles.radioPanel} value='krav_ikke_framsatt'>{t('label:krav-ikke-framsatt')}</Radio>}
-                  <Radio className={commonStyles.radioPanel} value='for_høy_inntekt'>{t('label:for-hoy-inntekt')}</Radio>
-                  <Radio className={commonStyles.radioPanel} value='annen_grunn'>{t('label:annet')}</Radio>
+                  {isF026Sed(replySed) && <RadioPanel value='krav_ikke_framsatt'>{t('label:krav-ikke-framsatt')}</RadioPanel>}
+                  <RadioPanel value='for_høy_inntekt'>{t('label:for-hoy-inntekt')}</RadioPanel>
+                  <RadioPanel value='annen_grunn'>{t('label:annet')}</RadioPanel>
                 </HStack>
               </RadioGroup>
               <Spacer/>

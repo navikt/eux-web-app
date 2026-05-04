@@ -11,7 +11,8 @@ import {
   SvarYtelseTilForeldreloese_V43
 } from "../../../../declarations/sed";
 import _ from "lodash";
-import {BodyLong, Box, Button, Heading, VStack, HGrid, Select, Label, HStack, Radio, RadioGroup, Spacer} from "@navikt/ds-react";
+import {BodyLong, Box, Button, Heading, VStack, HGrid, Select, Label, HStack, RadioGroup, Spacer} from "@navikt/ds-react";
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import TextArea from "../../../../components/Forms/TextArea";
 import {PlusCircleIcon} from "@navikt/aksel-icons";
 import {getIdx} from "../../../../utils/namespace";
@@ -216,20 +217,20 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                   >
                     <VStack gap="space-8">
                       <HStack gap="space-16">
-                        <Radio className={commonStyles.radioPanel} value='soeker'>
+                        <RadioPanel value='soeker'>
                           {t('el:option-relasjonbarn-relasjontilperson-soeker')}
-                        </Radio>
-                        <Radio className={commonStyles.radioPanel} value='ektefelle_partner'>
+                        </RadioPanel>
+                        <RadioPanel value='ektefelle_partner'>
                           {t('el:option-relasjonbarn-relasjontilperson-ektefelle_partner')}
-                        </Radio>
+                        </RadioPanel>
                       </HStack>
                       <HStack gap="space-16">
-                        <Radio className={commonStyles.radioPanel} value='avdoed'>
+                        <RadioPanel value='avdoed'>
                           {t('el:option-relasjonbarn-relasjontilperson-avdoed')}
-                        </Radio>
-                        <Radio className={commonStyles.radioPanel} value='annen_person'>
+                        </RadioPanel>
+                        <RadioPanel value='annen_person'>
                           {t('el:option-relasjonbarn-relasjontilperson-annen_person')}
-                        </Radio>
+                        </RadioPanel>
                       </HStack>
                     </VStack>
                   </RadioGroup>
@@ -272,12 +273,12 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     onChange={(e:string) => setRelasjonProperty("fellesOmsorg",  e as JaNei,"felles-omsorg", index)}
                   >
                     <HStack gap="space-16">
-                      <Radio className={commonStyles.radioPanel} value='ja'>
+                      <RadioPanel value='ja'>
                         Ja
-                      </Radio>
-                      <Radio className={commonStyles.radioPanel} value='nei'>
+                      </RadioPanel>
+                      <RadioPanel value='nei'>
                         Nei
-                      </Radio>
+                      </RadioPanel>
                     </HStack>
                   </RadioGroup>
                   <RadioGroup
@@ -289,12 +290,12 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomKravstiller",  e as JaNei,"bor-i-samme-hustand-som-kravstiller", index)}
                   >
                     <HStack gap="space-16">
-                      <Radio className={commonStyles.radioPanel} value='ja'>
+                      <RadioPanel value='ja'>
                         Ja
-                      </Radio>
-                      <Radio className={commonStyles.radioPanel} value='nei'>
+                      </RadioPanel>
+                      <RadioPanel value='nei'>
                         Nei
-                      </Radio>
+                      </RadioPanel>
                     </HStack>
                   </RadioGroup>
                   <RadioGroup
@@ -306,12 +307,12 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomEktefelle",  e as JaNei,"bor-i-samme-hustand-som-ektefelle", index)}
                   >
                     <HStack gap="space-16">
-                      <Radio className={commonStyles.radioPanel} value='ja'>
+                      <RadioPanel value='ja'>
                         Ja
-                      </Radio>
-                      <Radio className={commonStyles.radioPanel} value='nei'>
+                      </RadioPanel>
+                      <RadioPanel value='nei'>
                         Nei
-                      </Radio>
+                      </RadioPanel>
                     </HStack>
                   </RadioGroup>
                   <RadioGroup
@@ -323,12 +324,12 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomAnnenPerson",  e as JaNei,"bor-i-samme-hustand-som-annen-person", index)}
                   >
                     <HStack gap="space-16">
-                      <Radio className={commonStyles.radioPanel} value='ja'>
+                      <RadioPanel value='ja'>
                         Ja
-                      </Radio>
-                      <Radio className={commonStyles.radioPanel} value='nei'>
+                      </RadioPanel>
+                      <RadioPanel value='nei'>
                         Nei
-                      </Radio>
+                      </RadioPanel>
                     </HStack>
                   </RadioGroup>
                   <RadioGroup
@@ -340,12 +341,12 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     onChange={(e:string) => setRelasjonProperty("borPaaInstitusjon",  e as JaNei,"bor-paa-institusjon", index)}
                   >
                     <HStack gap="space-16">
-                      <Radio className={commonStyles.radioPanel} value='ja'>
+                      <RadioPanel value='ja'>
                         Ja
-                      </Radio>
-                      <Radio className={commonStyles.radioPanel} value='nei'>
+                      </RadioPanel>
+                      <RadioPanel value='nei'>
                         Nei
-                      </Radio>
+                      </RadioPanel>
                     </HStack>
                   </RadioGroup>
                   {addremovepanel}

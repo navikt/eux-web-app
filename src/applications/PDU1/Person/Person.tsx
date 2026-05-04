@@ -1,4 +1,5 @@
-import {Alert, BodyLong, Box, Heading, HGrid, HStack, Radio, RadioGroup, VStack} from '@navikt/ds-react'
+import {Alert, BodyLong, Box, Heading, HGrid, HStack, RadioGroup, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { setReplySed } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validatePerson, ValidationPersonProps } from 'applications/PDU1/Person/validation'
@@ -17,8 +18,6 @@ import performValidation from 'utils/performValidation'
 import Adresse from './Adresse/Adresse'
 import StatsborgerskapFC from './Statsborgerskap/Statsborgerskap'
 import DateField from "../../../components/DateField/DateField";
-import commonStyles from 'assets/css/common.module.css'
-
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -135,12 +134,12 @@ const Person: React.FC<MainFormProps> = ({
           onChange={onKjoennChange}
         >
           <HStack gap="space-16">
-            <Radio className={commonStyles.radioPanel} value='K'>
+            <RadioPanel value='K'>
               {t('label:kvinne')}
-            </Radio>
-            <Radio className={commonStyles.radioPanel} value='M'>
+            </RadioPanel>
+            <RadioPanel value='M'>
               {t('label:mann')}
-            </Radio>
+            </RadioPanel>
           </HStack>
         </RadioGroup>
         </HGrid>

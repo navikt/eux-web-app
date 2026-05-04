@@ -1,4 +1,5 @@
-import {Box, Heading, Radio, RadioGroup, VStack} from '@navikt/ds-react'
+import {Box, Heading, RadioGroup, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
@@ -11,8 +12,6 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validateKlargjør, ValidationKlargjørProps } from './validation'
-import commonStyles from "assets/css/common.module.css"
-
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -109,11 +108,11 @@ const Klargjør: React.FC<MainFormProps> = ({
           name={namespace + '-grunn'}
           onChange={setGrunn}
         >
-          <Radio className={commonStyles.radioPanel} value='informasjon_påkrevd_for_vår_nasjonale_undersøkelse'>{t('el:option-klargjør-01')}</Radio>
-          <Radio className={commonStyles.radioPanel} value='informasjon_påkrevd_for_beregning_av_ytelse'>{t('el:option-klargjør-02')}</Radio>
-          <Radio className={commonStyles.radioPanel} value='motstridende_informasjon_mottatt'>{t('el:option-klargjør-03')}</Radio>
-          <Radio className={commonStyles.radioPanel} value='det_må_vedlegges_støttedokumentasjon_belegg'>{t('el:option-klargjør-04')}</Radio>
-          <Radio className={commonStyles.radioPanel} value='annet'>{t('el:option-klargjør-99')}</Radio>
+          <RadioPanel value='informasjon_påkrevd_for_vår_nasjonale_undersøkelse'>{t('el:option-klargjør-01')}</RadioPanel>
+          <RadioPanel value='informasjon_påkrevd_for_beregning_av_ytelse'>{t('el:option-klargjør-02')}</RadioPanel>
+          <RadioPanel value='motstridende_informasjon_mottatt'>{t('el:option-klargjør-03')}</RadioPanel>
+          <RadioPanel value='det_må_vedlegges_støttedokumentasjon_belegg'>{t('el:option-klargjør-04')}</RadioPanel>
+          <RadioPanel value='annet'>{t('el:option-klargjør-99')}</RadioPanel>
         </RadioGroup>
         {klargjoerInfoItem?.begrunnelseType === 'annet' && (
           <Input

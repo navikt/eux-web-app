@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, Heading, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Heading, HStack, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -205,15 +206,15 @@ const Påminnelse: React.FC<MainFormProps> = ({
                   onChange={(gjelder: string) => setPurringGjelder(gjelder, index)}
                 >
                   <HStack gap="space-16">
-                    <Radio className={commonStyles.radioPanel} value='dokument'>
+                    <RadioPanel value='dokument'>
                       {t('label:dokument')}
-                    </Radio>
-                    <Radio className={commonStyles.radioPanel} value='informasjon'>
+                    </RadioPanel>
+                    <RadioPanel value='informasjon'>
                       {t('label:informasjon')}
-                    </Radio>
-                    <Radio className={commonStyles.radioPanel} value='sed'>
+                    </RadioPanel>
+                    <RadioPanel value='sed'>
                       {t('label:sed')}
-                    </Radio>
+                    </RadioPanel>
                   </HStack>
                 </RadioGroup>
                 <Spacer/>

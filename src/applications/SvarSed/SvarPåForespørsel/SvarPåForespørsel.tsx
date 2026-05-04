@@ -1,11 +1,11 @@
-import { Box, Heading, HGrid, Label, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import {Box, Heading, HGrid, Label, RadioGroup, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import {
   validateSvarPåForespørsel,
   ValidationSvarPåForespørselProps
 } from 'applications/SvarSed/SvarPåForespørsel/validation'
-import commonStyles from 'assets/css/common.module.css'
 import TextArea from 'components/Forms/TextArea'
 import { State } from 'declarations/reducers'
 import { H002Sed, H002Svar, HSvarType } from 'declarations/sed'
@@ -165,12 +165,12 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
             }}
           >
             <HGrid columns={2} gap="space-16" align="start">
-              <Radio className={commonStyles.radioPanel} description={t('message:help-jeg-kan-sende')} value='positivt'>
+              <RadioPanel description={t('message:help-jeg-kan-sende')} value='positivt'>
                 {t('el:option-svar-1')}
-              </Radio>
-              <Radio className={commonStyles.radioPanel} description={t('message:help-jeg-kan-ikke-sende')} value='negativt'>
+              </RadioPanel>
+              <RadioPanel description={t('message:help-jeg-kan-ikke-sende')} value='negativt'>
                 {t('el:option-svar-2')}
-              </Radio>
+              </RadioPanel>
             </HGrid>
           </RadioGroup>
         </div>

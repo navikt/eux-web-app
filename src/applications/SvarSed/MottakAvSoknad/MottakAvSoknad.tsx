@@ -11,7 +11,8 @@ import useUnmount from "../../../hooks/useUnmount";
 import _ from "lodash";
 import performValidation from "../../../utils/performValidation";
 import { validateKrav, ValidationKravProps } from "./validation";
-import {Box, HGrid, HStack, Radio, RadioGroup} from "@navikt/ds-react";
+import {Box, HGrid, HStack, RadioGroup} from "@navikt/ds-react";
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import commonStyles from "assets/css/common.module.css";
 
 interface MottakAvSoknadSelector {
@@ -78,8 +79,8 @@ const MottakAvSoknad: React.FC<MainFormProps> = ({
           value={krav?.kravType}
         >
           <HStack gap="space-16">
-            <Radio className={commonStyles.radioPanel} value='nytt_krav'>{t('label:kravType-nytt_krav')}</Radio>
-            <Radio className={commonStyles.radioPanel} value='endrede_omstendigheter'>{t('label:kravType-endrede_omstendigheter')}</Radio>
+            <RadioPanel value='nytt_krav'>{t('label:kravType-nytt_krav')}</RadioPanel>
+            <RadioPanel value='endrede_omstendigheter'>{t('label:kravType-endrede_omstendigheter')}</RadioPanel>
           </HStack>
         </RadioGroup>
       </HGrid>

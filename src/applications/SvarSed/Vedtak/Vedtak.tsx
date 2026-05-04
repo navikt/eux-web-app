@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, Checkbox, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, Tag, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Checkbox, Heading, HGrid, HStack, Label, RadioGroup, Spacer, Tag, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { resetAdresse } from 'actions/adresse'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -566,8 +567,8 @@ const VedtakFC: React.FC<MainFormProps> = ({
                         onChange={(e: string) => setKompetansePeriodeSkalYtelseUtbetales(e as JaNei, index)}
                       >
                         <HStack gap="space-16" align="center">
-                          <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
-                          <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
+                          <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                          <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
                         </HStack>
                       </RadioGroup>
                     }
@@ -641,8 +642,8 @@ const VedtakFC: React.FC<MainFormProps> = ({
             onChange={(e: string) => setGjelderAlleBarn(e as JaNei)}
           >
             <HStack  gap="space-16" align="center">
-              <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
-              <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
+              <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+              <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
               <Spacer/>
             </HStack>
           </RadioGroup>

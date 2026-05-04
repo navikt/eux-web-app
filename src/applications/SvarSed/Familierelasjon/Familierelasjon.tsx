@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -334,8 +335,8 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                 onChange={(e: string) => setBorSammen(e as JaNei, index)}
               >
                 <HStack gap="space-16">
-                  <Radio value='ja' className={commonStyles.radioPanel}>{t('label:ja')}</Radio>
-                  <Radio value='nei' className={commonStyles.radioPanel}>{t('label:nei')}</Radio>
+                  <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                  <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
                 </HStack>
               </RadioGroup>
             </VStack>

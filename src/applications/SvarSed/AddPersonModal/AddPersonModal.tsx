@@ -1,5 +1,6 @@
 import { PlusCircleIcon, ChildEyesIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, Heading, HStack, Modal as NavModal, Radio, RadioGroup, Spacer, TextField, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Heading, HStack, Modal as NavModal, RadioGroup, Spacer, TextField, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { ActionWithPayload } from '@navikt/fetch'
 import { validateAddPersonModal, ValidationAddPersonModalProps } from 'applications/SvarSed/AddPersonModal/validation'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -340,15 +341,15 @@ const AddPersonModal = <T extends StorageTypes>({
                   onChange={setKjoenn}
                 >
                   <HStack gap="space-8">
-                    <Radio value='M' className={commonStyles.radioPanel}>
+                    <RadioPanel value='M'>
                       {t(_newPersonRelation?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
-                    </Radio>
-                    <Radio value='K' className={commonStyles.radioPanel}>
+                    </RadioPanel>
+                    <RadioPanel value='K'>
                       {t(_newPersonRelation?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
-                    </Radio>
-                    <Radio value='U' className={commonStyles.radioPanel}>
+                    </RadioPanel>
+                    <RadioPanel value='U'>
                       {t('label:ukjent')}
-                    </Radio>
+                    </RadioPanel>
                   </HStack>
                 </RadioGroup>
                 <Select

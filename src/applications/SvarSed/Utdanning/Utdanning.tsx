@@ -1,4 +1,5 @@
-import {HStack, Label, Radio, RadioGroup, VStack} from '@navikt/ds-react'
+import {HStack, Label, RadioGroup, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import React from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import TextArea from "../../../components/Forms/TextArea";
@@ -45,11 +46,11 @@ const Utdanning: React.FC<MainFormProps> = ({
         error={validation[namespace + '-type']?.feilmelding}
       >
         <HStack gap="space-8">
-          <Radio className={commonStyles.radioPanel} value='skole'>Skole</Radio>
-          <Radio className={commonStyles.radioPanel} value='høyskole'>Høyskole</Radio>
-          <Radio className={commonStyles.radioPanel} value='universitet'>Universitet</Radio>
-          <Radio className={commonStyles.radioPanel} value='yrkesrettet_opplæring'>Yrkesrettet opplæring</Radio>
-          <Radio className={commonStyles.radioPanel} value='barnehage_daghjem'>Barnehage/Daghjem</Radio>
+          <RadioPanel value='skole'>Skole</RadioPanel>
+          <RadioPanel value='høyskole'>Høyskole</RadioPanel>
+          <RadioPanel value='universitet'>Universitet</RadioPanel>
+          <RadioPanel value='yrkesrettet_opplæring'>Yrkesrettet opplæring</RadioPanel>
+          <RadioPanel value='barnehage_daghjem'>Barnehage/Daghjem</RadioPanel>
         </HStack>
       </RadioGroup>
       <RadioGroup
@@ -60,8 +61,8 @@ const Utdanning: React.FC<MainFormProps> = ({
         error={validation[namespace + '-typedeltakelse']?.feilmelding}
       >
         <HStack gap="space-8">
-          <Radio className={commonStyles.radioPanel} value='deltid'>Deltid</Radio>
-          <Radio className={commonStyles.radioPanel} value='heltid'>Heltid</Radio>
+          <RadioPanel value='deltid'>Deltid</RadioPanel>
+          <RadioPanel value='heltid'>Heltid</RadioPanel>
         </HStack>
       </RadioGroup>
       <Label>Faktisk deltakelse</Label>
@@ -73,9 +74,9 @@ const Utdanning: React.FC<MainFormProps> = ({
         id={namespace + '-timer-pr'}
       >
         <HStack gap="space-8">
-          <Radio className={commonStyles.radioPanel} value='dag'>Dag</Radio>
-          <Radio className={commonStyles.radioPanel} value='uke'>Uke</Radio>
-          <Radio className={commonStyles.radioPanel} value='maaned'>Måned</Radio>
+          <RadioPanel value='dag'>Dag</RadioPanel>
+          <RadioPanel value='uke'>Uke</RadioPanel>
+          <RadioPanel value='maaned'>Måned</RadioPanel>
         </HStack>
       </RadioGroup>
       <Input

@@ -1,4 +1,5 @@
-import {VStack, Box, Heading, HGrid, TextField, Label, Select, Radio, RadioGroup, HStack} from '@navikt/ds-react'
+import {VStack, Box, Heading, HGrid, TextField, Label, Select, RadioGroup, HStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
@@ -17,8 +18,6 @@ import {
   ValidationAnnenInformasjonBarnetProps
 } from "./validation";
 import {setValidation} from "../../../actions/validation";
-import commonStyles from 'assets/css/common.module.css'
-
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -84,12 +83,12 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
               onChange={(e:string) => setAnnenInformasjonBarnetProperty('barnehage.gaarIBarnehage', e as JaNei)}
             >
               <HStack gap="space-16">
-                <Radio className={commonStyles.radioPanel} value='ja'>
+                <RadioPanel value='ja'>
                   Ja
-                </Radio>
-                <Radio className={commonStyles.radioPanel} value='nei'>
+                </RadioPanel>
+                <RadioPanel value='nei'>
                   Nei
-                </Radio>
+                </RadioPanel>
               </HStack>
             </RadioGroup>
           </Box>
@@ -104,12 +103,12 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
                   onChange={(e:string) => setAnnenInformasjonBarnetProperty('barnehage.mottarOffentligStoette', e as JaNei)}
                 >
                   <HStack gap="space-16">
-                    <Radio className={commonStyles.radioPanel} value='ja'>
+                    <RadioPanel value='ja'>
                       Ja
-                    </Radio>
-                    <Radio className={commonStyles.radioPanel} value='nei'>
+                    </RadioPanel>
+                    <RadioPanel value='nei'>
                       Nei
-                    </Radio>
+                    </RadioPanel>
                   </HStack>
                 </RadioGroup>
               </Box>

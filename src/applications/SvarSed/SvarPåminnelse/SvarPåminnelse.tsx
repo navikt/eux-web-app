@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, Heading, HGrid, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -397,15 +398,15 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     onChange={(type: string) => setBesvarelseKommerType(type, index)}
                   >
                     <HStack gap="space-16" width="100%">
-                      <Radio className={commonStyles.radioPanel} value='dokument'>
+                      <RadioPanel value='dokument'>
                         {t('label:dokument')}
-                      </Radio>
-                      <Radio className={commonStyles.radioPanel} value='informasjon'>
+                      </RadioPanel>
+                      <RadioPanel value='informasjon'>
                         {t('label:informasjon')}
-                      </Radio>
-                      <Radio className={commonStyles.radioPanel} value='sed'>
+                      </RadioPanel>
+                      <RadioPanel value='sed'>
                         {t('label:sed')}
-                      </Radio>
+                      </RadioPanel>
                     </HStack>
                   </RadioGroup>
                   <Spacer/>
@@ -534,15 +535,15 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     onChange={(type: string) => setBesvarelseUmuligType(type, index)}
                   >
                     <HStack gap="space-16" width="100%">
-                      <Radio className={commonStyles.radioPanel} value='dokument'>
+                      <RadioPanel value='dokument'>
                         {t('label:dokument')}
-                      </Radio>
-                      <Radio className={commonStyles.radioPanel} value='informasjon'>
+                      </RadioPanel>
+                      <RadioPanel value='informasjon'>
                         {t('label:informasjon')}
-                      </Radio>
-                      <Radio className={commonStyles.radioPanel} value='sed'>
+                      </RadioPanel>
+                      <RadioPanel value='sed'>
                         {t('label:sed')}
-                      </Radio>
+                      </RadioPanel>
                     </HStack>
                   </RadioGroup>
                   <Spacer/>
@@ -572,7 +573,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                   onChange={(begrunnelseType: string) => setBegrunnelseType(begrunnelseType, index)}
                 >
                   {begrunnelsetypeOptions.map((option) => {
-                    return <Radio className={commonStyles.radioPanel} value={option.value}>{option.label}</Radio>
+                    return <RadioPanel value={option.value}>{option.label}</RadioPanel>
                   })}
                 </RadioGroup>
                 {_BesvarelseUmulig?.begrunnelseType === 'annet' && (

@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import { resetValidation, setValidation } from 'actions/validation'
@@ -307,9 +308,9 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     onChange={(e: string) => setYtelseNavn(e as YtelseNavn, index)}
                   >
                     <VStack gap="space-4">
-                      <Radio className={commonStyles.radioPanel} value='Barnetrygd'>{t('el:option-familieytelser-barnetrygd')}</Radio>
-                      <Radio className={commonStyles.radioPanel} value='Kontantstøtte'>{t('el:option-familieytelser-kontantstøtte')}</Radio>
-                      {personID === 'familie' && <Radio className={commonStyles.radioPanel} value='Utvidet barnetrygd'>{t('el:option-familieytelser-utvidet-barnetrygd')}</Radio>}
+                      <RadioPanel value='Barnetrygd'>{t('el:option-familieytelser-barnetrygd')}</RadioPanel>
+                      <RadioPanel value='Kontantstøtte'>{t('el:option-familieytelser-kontantstøtte')}</RadioPanel>
+                      {personID === 'familie' && <RadioPanel value='Utvidet barnetrygd'>{t('el:option-familieytelser-utvidet-barnetrygd')}</RadioPanel>}
                     </VStack>
                   </RadioGroup>
                   <Box>
@@ -387,8 +388,8 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                   onChange={(e: string) => setUtbetalingshyppighet(e as Utbetalingshyppighet, index)}
                 >
                   <HStack gap="space-16">
-                    <Radio className={commonStyles.radioPanel} value='Månedlig'>{t('label:månedlig')}</Radio>
-                    <Radio className={commonStyles.radioPanel} value='Årlig'>{t('label:årlig')}</Radio>
+                    <RadioPanel value='Månedlig'>{t('label:månedlig')}</RadioPanel>
+                    <RadioPanel value='Årlig'>{t('label:årlig')}</RadioPanel>
                   </HStack>
                 </RadioGroup>
               </HGrid>

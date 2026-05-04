@@ -1,0 +1,39 @@
+.radioPanel {
+  flex: 1;
+  background-color: var(--ax-bg-input);
+  width: 100%;
+  border-radius: 4px;
+  padding: 0;
+  align-items: center;
+  position: relative;
+}
+
+.radioPanel:focus-within::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  outline: 3px solid var(--ax-border-focus);
+  outline-offset: 3px;
+  pointer-events: none;
+}
+
+.radioPanel :global(.aksel-radio) {
+  width: 100%;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.radioPanel :global(.aksel-radio):focus-within::after {
+  outline: none;
+}
+
+.radioPanel:has(input[type=radio]:checked) {
+  background-color: var(--ax-bg-accent-moderate-hover);
+  border-radius: 4px;
+}
+
+.radioPanel:hover {
+  background-color: var(--ax-bg-accent-moderate-hover);
+  border-radius: 4px;
+}

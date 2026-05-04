@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, Checkbox, HGrid, HStack, Label, Radio, RadioGroup, Spacer, Tag, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Checkbox, HGrid, HStack, Label, RadioGroup, Spacer, Tag, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -251,12 +252,12 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
                     onChange={(newType: string) => setType(newType, index)}
                   >
                     <HStack gap="space-16" width="100%">
-                      <Radio className={commonStyles.radioPanel} value='dekkedePerioder'>
+                      <RadioPanel value='dekkedePerioder'>
                         {t('label:dekkede')}
-                      </Radio>
-                      <Radio className={commonStyles.radioPanel} value='udekkedePerioder'>
+                      </RadioPanel>
+                      <RadioPanel value='udekkedePerioder'>
                         {t('label:udekkede')}
-                      </Radio>
+                      </RadioPanel>
                     </HStack>
                   </RadioGroup>
                 </HGrid>
