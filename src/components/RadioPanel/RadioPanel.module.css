@@ -5,16 +5,27 @@
   border-radius: 4px;
   padding: 0;
   align-items: center;
-  &:focus-within::after {
-    inset: 0;
-    border-radius: 4px;
-  }
+  position: relative;
+}
+
+.radioPanel:focus-within::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  outline: 3px solid var(--ax-border-focus);
+  outline-offset: 3px;
+  pointer-events: none;
 }
 
 .radioPanel :global(.aksel-radio) {
   width: 100%;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+}
+
+.radioPanel :global(.aksel-radio):focus-within::after {
+  outline: none;
 }
 
 .radioPanel:has(input[type=radio]:checked) {
