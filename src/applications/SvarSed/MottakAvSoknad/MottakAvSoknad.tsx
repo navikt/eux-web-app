@@ -12,7 +12,7 @@ import _ from "lodash";
 import performValidation from "../../../utils/performValidation";
 import { validateKrav, ValidationKravProps } from "./validation";
 import {Box, HGrid, HStack, RadioGroup} from "@navikt/ds-react";
-import RadioPanel from 'components/RadioPanel'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import commonStyles from "assets/css/common.module.css";
 
 interface MottakAvSoknadSelector {

@@ -1,5 +1,5 @@
 import {HStack, Label, RadioGroup, VStack} from '@navikt/ds-react'
-import RadioPanel from 'components/RadioPanel'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import React from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import TextArea from "../../../components/Forms/TextArea";

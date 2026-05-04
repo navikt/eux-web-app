@@ -1,5 +1,5 @@
 import {Alert, BodyLong, Box, Heading, HGrid, HStack, RadioGroup, VStack} from '@navikt/ds-react'
-import RadioPanel from 'components/RadioPanel'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { setReplySed } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validatePerson, ValidationPersonProps } from 'applications/PDU1/Person/validation'

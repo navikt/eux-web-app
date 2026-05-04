@@ -1,6 +1,6 @@
 import { PlusCircleIcon, ChildEyesIcon } from '@navikt/aksel-icons';
 import {BodyLong, Box, Button, Heading, HStack, Modal as NavModal, RadioGroup, Spacer, TextField, VStack} from '@navikt/ds-react'
-import RadioPanel from 'components/RadioPanel'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { ActionWithPayload } from '@navikt/fetch'
 import { validateAddPersonModal, ValidationAddPersonModalProps } from 'applications/SvarSed/AddPersonModal/validation'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'

@@ -12,7 +12,7 @@ import {
 } from "../../../../declarations/sed";
 import _ from "lodash";
 import {BodyLong, Box, Button, Heading, VStack, HGrid, Select, Label, HStack, RadioGroup, Spacer} from "@navikt/ds-react";
-import RadioPanel from 'components/RadioPanel'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import TextArea from "../../../../components/Forms/TextArea";
 import {PlusCircleIcon} from "@navikt/aksel-icons";
 import {getIdx} from "../../../../utils/namespace";

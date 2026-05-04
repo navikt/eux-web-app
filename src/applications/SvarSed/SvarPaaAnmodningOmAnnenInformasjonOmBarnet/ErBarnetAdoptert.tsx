@@ -1,5 +1,5 @@
 import {VStack, Box, Heading, RadioGroup, HStack} from '@navikt/ds-react'
-import RadioPanel from 'components/RadioPanel'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'

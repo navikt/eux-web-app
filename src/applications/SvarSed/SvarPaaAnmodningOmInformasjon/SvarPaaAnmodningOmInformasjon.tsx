@@ -12,7 +12,7 @@ import _ from "lodash";
 import performValidation from "../../../utils/performValidation";
 import { validateKrav, ValidationKravProps } from "./validation";
 import {Box, Checkbox, HGrid, HStack, RadioGroup, VStack} from "@navikt/ds-react";
-import RadioPanel from 'components/RadioPanel'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import {setDeselectedMenu} from "../../../actions/svarsed";
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
 interface KravSelector {

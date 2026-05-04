@@ -7,7 +7,7 @@ import React, {useEffect} from 'react'
 import { useTranslation } from 'react-i18next'
 import CountryDropdown from "components/CountryDropdown/CountryDropdown";
 import {HGrid, HStack, RadioGroup, VStack} from "@navikt/ds-react";
-import RadioPanel from 'components/RadioPanel'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 export interface AdresseFormProps {
   disabled?: boolean
   options?: {[k in string]: any}

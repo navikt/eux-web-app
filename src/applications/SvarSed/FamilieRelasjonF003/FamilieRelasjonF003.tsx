@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from "../../../store";
 import {FamilieRelasjon, JaNei, Periode, ForelderType} from "../../../declarations/sed";
 import _ from "lodash";
 import {Box, Heading, HGrid, RadioGroup, VStack} from "@navikt/ds-react";
-import RadioPanel from 'components/RadioPanel'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
 import Select from "../../../components/Forms/Select";
 import {Option, Options} from "../../../declarations/app";

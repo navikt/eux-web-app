@@ -1,5 +1,5 @@
 import {Box, Heading, HStack, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
-import RadioPanel from 'components/RadioPanel'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateAvslutning, ValidationAvslutningProps } from 'applications/SvarSed/Avslutning/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
