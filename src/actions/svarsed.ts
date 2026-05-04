@@ -376,7 +376,7 @@ export const replyToSed = (
     ? sprintf(urls.API_SED_DRAFT_BY_TYPE_URL, {
         rinaSakId: sak.sakId,
         sedType: parentSed.svarsedType?.toLowerCase(),
-        parentSedId: parentSedId,
+        parentSedId,
         parentSedType: parentSed.sedType?.toLowerCase()
       })
     : sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {

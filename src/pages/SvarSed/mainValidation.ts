@@ -6,6 +6,7 @@ import {
 } from 'applications/SvarSed/AnmodningsPeriode/validation'
 import { validateAvslutning, ValidationAvslutningProps } from 'applications/SvarSed/Avslutning/validation'
 import { validateAvvis, ValidationAvvisProps } from 'applications/SvarSed/Avvis/validation'
+import { validateGjenaapning, ValidationGjenaapningProps } from 'applications/SvarSed/Gjenaapning/validation'
 import {
   validateBeløpNavnOgValutas,
   ValidationBeløpNavnOgValutasProps
@@ -107,6 +108,7 @@ import {
   Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse, VedtakF003, Vedtak
 } from 'declarations/sed'
 import { H120Sed } from 'declarations/h120'
+import { X002Sed } from 'declarations/x002'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
 import _ from 'lodash'
@@ -124,6 +126,7 @@ import {
   isS046Sed,
   isUSed,
   isX001Sed,
+  isX002Sed,
   isX008Sed,
   isX009Sed,
   isX010Sed, isX011Sed, isX012Sed,
@@ -495,6 +498,11 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     if (isX001Sed(replySed)) {
       hasErrors.push(performValidation<ValidationAvslutningProps>(v, `svarsed-${personID}-avslutning`, validateAvslutning, {
         replySed: (replySed as X001Sed), personName
+      }, true))
+    }
+    if (isX002Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationGjenaapningProps>(v, `svarsed-${personID}-gjenaapning`, validateGjenaapning, {
+        replySed: (replySed as X002Sed), personName
       }, true))
     }
     if (isX008Sed(replySed)) {

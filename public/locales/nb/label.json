@@ -617,5 +617,7 @@
   "pin-opphold-land": "PIN i oppholds- eller bostedslandet i EU",
   "fornavn-ved-foedsel": "Fornavn ved fødsel",
   "globalt-krav": "Globalt krav",
-  "refusjon": "Refusjon"
+  "refusjon": "Refusjon",
+  "gjenaapning-aarsak": "Årsak til anmodning om gjenåpning",
+  "gjenaapning-aarsak-annet": "Begrunnelse for gjenåpning"
 }
