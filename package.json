@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "13.4.4",
+  "version": "13.5.0-FIX-TEN-1658-RADIOPANEL-WRAPPER",
   "private": true,
   "type": "module",
   "scripts": {
@@ -206,6 +206,5 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@13.4.4"
+  "disabled-homepage": "http://eesi2.no/melosys"
 }
