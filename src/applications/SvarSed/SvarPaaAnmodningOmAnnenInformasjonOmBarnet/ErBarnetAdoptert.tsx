@@ -1,4 +1,5 @@
-import {VStack, Box, Heading, Radio, RadioGroup, HStack} from '@navikt/ds-react'
+import {VStack, Box, Heading, RadioGroup, HStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
@@ -16,8 +17,6 @@ import {
   validateErAdoptert, ValidationAnnenInformasjonBarnetProps
 } from "./validation";
 import {setValidation} from "../../../actions/validation";
-import commonStyles from 'assets/css/common.module.css'
-
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -81,12 +80,12 @@ const ErBarnetAdoptert: React.FC<MainFormProps> = ({
               onChange={(e:string) => setAnnenInformasjonBarnetProperty("erAdoptert",  e as JaNei)}
             >
               <HStack gap="space-16">
-                <Radio className={commonStyles.radioPanel} value='ja'>
+                <RadioPanel value='ja'>
                   Ja
-                </Radio>
-                <Radio className={commonStyles.radioPanel} value='nei'>
+                </RadioPanel>
+                <RadioPanel value='nei'>
                   Nei
-                </Radio>
+                </RadioPanel>
               </HStack>
             </RadioGroup>
           </Box>

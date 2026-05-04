@@ -1,4 +1,5 @@
-import { Box, Heading, HStack, Radio, RadioGroup, Spacer, VStack } from '@navikt/ds-react'
+import {Box, Heading, HStack, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateYtterligereInfoOmKrav, ValidationYtterligereInfoOmKravProps } from 'applications/SvarSed/YtterligereInfoOmKrav/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -14,8 +15,6 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import commonStyles from 'assets/css/common.module.css'
-
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -190,12 +189,12 @@ const YtterligereInfoOmKrav: React.FC<MainFormProps> = ({
           onChange={setErBrukerSoekeren}
         >
           <HStack gap="space-16">
-            <Radio className={commonStyles.radioPanel} value='ja'>
+            <RadioPanel value='ja'>
               {t('label:ja')}
-            </Radio>
-            <Radio className={commonStyles.radioPanel} value='nei'>
+            </RadioPanel>
+            <RadioPanel value='nei'>
               {t('label:nei')}
-            </Radio>
+            </RadioPanel>
             <Spacer />
             <Spacer />
           </HStack>

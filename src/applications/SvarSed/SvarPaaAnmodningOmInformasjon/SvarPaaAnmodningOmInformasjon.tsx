@@ -11,11 +11,10 @@ import useUnmount from "../../../hooks/useUnmount";
 import _ from "lodash";
 import performValidation from "../../../utils/performValidation";
 import { validateKrav, ValidationKravProps } from "./validation";
-import {Box, Checkbox, HGrid, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
+import {Box, Checkbox, HGrid, HStack, RadioGroup, VStack} from "@navikt/ds-react";
+import RadioPanel from 'components/RadioPanel'
 import {setDeselectedMenu} from "../../../actions/svarsed";
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
-import commonStyles from 'assets/css/common.module.css'
-
 interface KravSelector {
   validation: Validation
 }
@@ -105,12 +104,12 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
                 value={erKravEllerSvarPaaKrav}
               >
                 <HStack gap="space-16">
-                  <Radio className={commonStyles.radioPanel} value='krav'>
+                  <RadioPanel value='krav'>
                     {t('label:krav-eller-svar-paa-krav-nytt_krav')}
-                  </Radio>
-                  <Radio className={commonStyles.radioPanel} value='svar_paa_krav'>
+                  </RadioPanel>
+                  <RadioPanel value='svar_paa_krav'>
                     {t('label:krav-eller-svar-paa-krav-svar-paa-krav')}
-                  </Radio>
+                  </RadioPanel>
                 </HStack>
               </RadioGroup>
             </HGrid>

@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, Heading, HGrid, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -260,12 +261,12 @@ const AnmodningsPeriode: React.FC<MainFormProps> = ({
               onChange={(e: string | number | boolean) => setKravType(e as string)}
               value={(replySed as F002Sed).krav?.kravType}
             >
-              <Radio className={commonStyles.radioPanel} value='nytt_krav'>
+              <RadioPanel value='nytt_krav'>
                 {t('label:kravType-nytt_krav')}
-              </Radio>
-              <Radio className={commonStyles.radioPanel} value='endrede_omstendigheter'>
+              </RadioPanel>
+              <RadioPanel value='endrede_omstendigheter'>
                 {t('label:kravType-endrede_omstendigheter')}
-              </Radio>
+              </RadioPanel>
             </RadioGroup>
             <DateField
               error={validation[namespace + '-kravMottattDato']?.feilmelding}
@@ -285,12 +286,12 @@ const AnmodningsPeriode: React.FC<MainFormProps> = ({
               value={(replySed as F002Sed).krav?.infoType}
               onChange={(e: string | number | boolean) => setInfoType(e as string)}
             >
-              <Radio className={commonStyles.radioPanel} value='bekrefter_opplysninger'>
+              <RadioPanel value='bekrefter_opplysninger'>
                 {t('label:info-confirm-information')}
-              </Radio>
-              <Radio className={commonStyles.radioPanel} value='gi_oss_opplysninger'>
+              </RadioPanel>
+              <RadioPanel value='gi_oss_opplysninger'>
                 {t('label:info-point-information')}
-              </Radio>
+              </RadioPanel>
             </RadioGroup>
             {(replySed as F002Sed).krav?.infoType === 'gi_oss_opplysninger' && (
               <TextArea

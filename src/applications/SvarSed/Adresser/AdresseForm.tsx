@@ -6,9 +6,8 @@ import _ from 'lodash'
 import React, {useEffect} from 'react'
 import { useTranslation } from 'react-i18next'
 import CountryDropdown from "components/CountryDropdown/CountryDropdown";
-import {HGrid, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
-import commonStyles from 'assets/css/common.module.css'
-
+import {HGrid, HStack, RadioGroup, VStack} from "@navikt/ds-react";
+import RadioPanel from 'components/RadioPanel'
 export interface AdresseFormProps {
   disabled?: boolean
   options?: {[k in string]: any}
@@ -114,9 +113,9 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
           onChange={(e: string) => setType((e as AdresseType))}
         >
           <HStack gap="space-16">
-            <Radio className={commonStyles.radioPanel} value='bosted'>{t('label:bosted')}</Radio>
-            <Radio className={commonStyles.radioPanel} value='opphold'>{t('label:opphold')}</Radio>
-            <Radio className={commonStyles.radioPanel} value='kontakt'>{t('label:kontakt')}</Radio>
+            <RadioPanel value='bosted'>{t('label:bosted')}</RadioPanel>
+            <RadioPanel value='opphold'>{t('label:opphold')}</RadioPanel>
+            <RadioPanel value='kontakt'>{t('label:kontakt')}</RadioPanel>
           </HStack>
         </RadioGroup>
       )}

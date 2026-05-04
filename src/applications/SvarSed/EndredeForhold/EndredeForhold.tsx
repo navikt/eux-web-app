@@ -1,4 +1,5 @@
-import { Box, Heading, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import {Box, Heading, HStack, RadioGroup, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateEndredeForhold, ValidationEndredeForholdProps } from 'applications/SvarSed/EndredeForhold/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -11,8 +12,6 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import commonStyles from 'assets/css/common.module.css'
-
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -70,12 +69,12 @@ const EndredeForhold: React.FC<MainFormProps> = ({
           onChange={(e: string | number | boolean) => setYtterligereInfoType(e as YtterligereInfoType)}
         >
           <HStack gap="space-16">
-            <Radio className={commonStyles.radioPanel} value='melding_om_mer_informasjon'>
+            <RadioPanel value='melding_om_mer_informasjon'>
               {t('el:option-ytterligere-1')}
-            </Radio>
-            <Radio className={commonStyles.radioPanel} value='anmodning_om_mer_informasjon'>
+            </RadioPanel>
+            <RadioPanel value='anmodning_om_mer_informasjon'>
               {t('el:option-ytterligere-2')}
-            </Radio>
+            </RadioPanel>
           </HStack>
         </RadioGroup>
         <TextArea

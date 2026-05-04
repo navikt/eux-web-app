@@ -11,7 +11,8 @@ import {
   SvarYtelseTilForeldreloese_V43
 } from "../../../../declarations/sed";
 import _ from "lodash";
-import {BodyLong, Box, Button, Heading, VStack, HGrid, Select, Label, HStack, Radio, RadioGroup, Spacer} from "@navikt/ds-react";
+import {BodyLong, Box, Button, Heading, VStack, HGrid, Select, Label, HStack, RadioGroup, Spacer} from "@navikt/ds-react";
+import RadioPanel from 'components/RadioPanel'
 import TextArea from "../../../../components/Forms/TextArea";
 import {PlusCircleIcon} from "@navikt/aksel-icons";
 import {getIdx} from "../../../../utils/namespace";
@@ -286,12 +287,12 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
                     onChange={(e:string) => setRelasjonProperty("varKravstillerISammeHushold",  e as JaNei,"var-kravstiller-i-samme-hushold", index)}
                   >
                     <HStack gap="space-16">
-                      <Radio className={commonStyles.radioPanel} value='ja'>
+                      <RadioPanel value='ja'>
                         Ja
-                      </Radio>
-                      <Radio className={commonStyles.radioPanel} value='nei'>
+                      </RadioPanel>
+                      <RadioPanel value='nei'>
                         Nei
-                      </Radio>
+                      </RadioPanel>
                     </HStack>
                   </RadioGroup>
 

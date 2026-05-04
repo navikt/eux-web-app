@@ -1,4 +1,5 @@
-import {Alert, Box, Heading, HGrid, Radio, RadioGroup, VStack} from '@navikt/ds-react'
+import {Alert, Box, Heading, HGrid, RadioGroup, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import DateField from 'components/DateField/DateField'
@@ -15,8 +16,6 @@ import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validatePersonLight, ValidationPersonLightProps } from './validation'
 import {isXSed} from "../../../utils/sed";
-import commonStyles from 'assets/css/common.module.css'
-
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -196,15 +195,15 @@ const PersonLightFC: React.FC<MainFormProps> = ({
           onChange={setKjoenn}
         >
           <HGrid columns={3} gap="space-16">
-            <Radio className={commonStyles.radioPanel} value='M'>
+            <RadioPanel value='M'>
               {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
-            </Radio>
-            <Radio className={commonStyles.radioPanel} value='K'>
+            </RadioPanel>
+            <RadioPanel value='K'>
               {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
-            </Radio>
-            <Radio className={commonStyles.radioPanel}value='U'>
+            </RadioPanel>
+            <RadioPanel value='U'>
               {t('label:ukjent')}
-            </Radio>
+            </RadioPanel>
           </HGrid>
         </RadioGroup>
       </VStack>

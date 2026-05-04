@@ -1,0 +1,22 @@
+.radioPanel {
+  flex: 1;
+  background-color: var(--ax-bg-input);
+  width: 100%;
+  border-radius: 4px;
+  padding: 0.8rem 0.5rem;
+  align-items: center;
+  &:focus-within::after {
+    inset: 0;
+    border-radius: 4px;
+  }
+}
+
+.radioPanel:has(input[type=radio]:checked) {
+  background-color: var(--ax-bg-accent-moderate-hover);
+  border-radius: 4px;
+}
+
+.radioPanel:hover {
+  background-color: var(--ax-bg-accent-moderate-hover);
+  border-radius: 4px;
+}

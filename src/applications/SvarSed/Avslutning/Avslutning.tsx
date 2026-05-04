@@ -1,4 +1,5 @@
-import {Box, Heading, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import {Box, Heading, HStack, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateAvslutning, ValidationAvslutningProps } from 'applications/SvarSed/Avslutning/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -14,8 +15,6 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import commonStyles from "assets/css/common.module.css"
-
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -121,12 +120,12 @@ const Avslutning: React.FC<MainFormProps> = ({
           onChange={setAvslutningType}
         >
           <HStack gap="space-16">
-            <Radio className={commonStyles.radioPanel} value='manuell'>
+            <RadioPanel value='manuell'>
               {t('label:manuell')}
-            </Radio>
-            <Radio className={commonStyles.radioPanel} value='automatisk'>
+            </RadioPanel>
+            <RadioPanel value='automatisk'>
               {t('label:automatisk')}
-            </Radio>
+            </RadioPanel>
             <Spacer/>
             <Spacer/>
           </HStack>

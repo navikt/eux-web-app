@@ -1,4 +1,5 @@
-import { Box, HGrid, Heading, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import {Box, HGrid, Heading, HStack, RadioGroup, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateAnmodningInfo, ValidationAnmodningInfoProps } from 'applications/SvarSed/AnmodningInfo/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -13,8 +14,6 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import commonStyles from 'assets/css/common.module.css'
-
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -103,12 +102,12 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
           onChange={setGjelderArbeidsufoerhet}
         >
           <HStack gap="space-16">
-            <Radio className={commonStyles.radioPanel} value='ja'>
+            <RadioPanel value='ja'>
               {t('label:ja')}
-            </Radio>
-            <Radio className={commonStyles.radioPanel} value='nei'>
+            </RadioPanel>
+            <RadioPanel value='nei'>
               {t('label:nei')}
-            </Radio>
+            </RadioPanel>
           </HStack>
         </RadioGroup>
 

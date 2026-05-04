@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Box, Button, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, VStack } from '@navikt/ds-react'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel'
 import CountryData, { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import { resetValidation, setValidation } from 'actions/validation'
@@ -293,15 +294,15 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                   onChange={(e: string) => setUtbetalingType(e, index)}
                 >
                   <VStack gap="space-8">
-                    <Radio className={commonStyles.radioPanel} value='inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet'>
+                    <RadioPanel value='inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet'>
                       {t('el:option-typebeløp-inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet')}
-                    </Radio>
-                    <Radio className={commonStyles.radioPanel} value='vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'>
+                    </RadioPanel>
+                    <RadioPanel value='vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'>
                       {t('el:option-typebeløp-vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie')}
-                    </Radio>
-                    <Radio className={commonStyles.radioPanel} value='annet_vederlag_eller_tilsvarende_utbetalinger'>
+                    </RadioPanel>
+                    <RadioPanel value='annet_vederlag_eller_tilsvarende_utbetalinger'>
                       {t('el:option-typebeløp-annet_vederlag_eller_tilsvarende_utbetalinger')}
-                    </Radio>
+                    </RadioPanel>
                   </VStack>
                 </RadioGroup>
                 )

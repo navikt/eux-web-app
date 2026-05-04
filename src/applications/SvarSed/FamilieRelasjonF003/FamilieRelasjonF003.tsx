@@ -5,7 +5,8 @@ import {useTranslation} from "react-i18next";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {FamilieRelasjon, JaNei, Periode, ForelderType} from "../../../declarations/sed";
 import _ from "lodash";
-import {Box, Heading, HGrid, Radio, RadioGroup, VStack} from "@navikt/ds-react";
+import {Box, Heading, HGrid, RadioGroup, VStack} from "@navikt/ds-react";
+import RadioPanel from 'components/RadioPanel'
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
 import Select from "../../../components/Forms/Select";
 import {Option, Options} from "../../../declarations/app";
@@ -149,8 +150,8 @@ const FamilieRelasjonF003: React.FC<MainFormProps> = ({
           onChange={(e: string) => setBorSammen(e as JaNei)}
         >
           <HGrid columns={2} gap="space-16">
-            <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
-            <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
+            <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+            <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
           </HGrid>
         </RadioGroup>
       </VStack>

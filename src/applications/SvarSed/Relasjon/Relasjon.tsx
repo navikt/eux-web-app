@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Box, Button, Checkbox, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, VStack } from '@navikt/ds-react'
+import {BodyLong, Box, Button, Checkbox, Heading, HGrid, HStack, Label, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import RadioPanel from 'components/RadioPanel'
 import { resetAdresse } from 'actions/adresse'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -299,10 +300,10 @@ const Relasjon: React.FC<MainFormProps> = ({
                 onChange={(e: string) => setRelasjon(e as BarnRelasjon, index)}
               >
                 <HStack gap="space-16">
-                  <Radio className={commonStyles.radioPanel} value='søker'>{t('label:søker')}</Radio>
-                  <Radio className={commonStyles.radioPanel} value='ektefelle_partner'>{t('label:ektefelle_partner')}</Radio>
-                  <Radio className={commonStyles.radioPanel} value='avdød'>{t('label:avdød')}</Radio>
-                  <Radio className={commonStyles.radioPanel} value='annen_person'>{t('label:annen_person')}</Radio>
+                  <RadioPanel value='søker'>{t('label:søker')}</RadioPanel>
+                  <RadioPanel value='ektefelle_partner'>{t('label:ektefelle_partner')}</RadioPanel>
+                  <RadioPanel value='avdød'>{t('label:avdød')}</RadioPanel>
+                  <RadioPanel value='annen_person'>{t('label:annen_person')}</RadioPanel>
                 </HStack>
               </RadioGroup>
               <HGrid columns="1fr 2fr" gap="space-16" align="start">
@@ -341,8 +342,8 @@ const Relasjon: React.FC<MainFormProps> = ({
                   onChange={(e: string) => setErDeltForeldreansvar(e as JaNei, index)}
                 >
                   <HStack gap="space-16">
-                    <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
-                    <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
+                    <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                    <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
                   </HStack>
                 </RadioGroup>
               </HGrid>
