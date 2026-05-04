@@ -3,12 +3,18 @@
   background-color: var(--ax-bg-input);
   width: 100%;
   border-radius: 4px;
-  padding: 0.8rem 0.5rem;
+  padding: 0;
   align-items: center;
   &:focus-within::after {
     inset: 0;
     border-radius: 4px;
   }
+}
+
+.radioPanel :global(.aksel-radio) {
+  width: 100%;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .radioPanel:has(input[type=radio]:checked) {
