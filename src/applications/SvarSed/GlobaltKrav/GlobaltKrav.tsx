@@ -5,9 +5,8 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
 import { H021Sed } from 'declarations/h021'
-import CountrySelect from '@navikt/landvelger'
+import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import { Currency } from '@navikt/land-verktoy'
-import { ALLOWED_EU_CURRENCIES } from 'constants/currencies'
 import { sanitizeAmount } from 'utils/amount'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -158,18 +157,15 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
             required
             value={sed.refusjonskrav?.kreditorinstitusjon?.kravTotalbeloep?.beloep || ''}
           />
-          <CountrySelect
+          <CurrencyDropdown
             ariaLabel={t('label:valuta')}
             closeMenuOnSelect
             error={validation[namespace + '-kravTotalbeloep-valuta']?.feilmelding}
             id={namespace + '-kravTotalbeloep-valuta'}
             label={t('label:valuta')}
             locale='nb'
-            menuPortalTarget={document.body}
             onOptionSelected={(currency: Currency) => setBeloepValuta('kravTotalbeloep', 'valuta', currency.value)}
-            type='currency'
             includeHistoricCurrencies
-            includeList={ALLOWED_EU_CURRENCIES}
             sort={"noeuFirst"}
             required
             values={sed.refusjonskrav?.kreditorinstitusjon?.kravTotalbeloep?.valuta}
@@ -185,18 +181,15 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
             onChanged={(value: string) => setBeloepValuta('avvistKravTotalbeloep', 'beloep', sanitizeAmount(value))}
             value={sed.refusjonskrav?.kreditorinstitusjon?.avvistKravTotalbeloep?.beloep || ''}
           />
-          <CountrySelect
+          <CurrencyDropdown
             ariaLabel={t('label:valuta')}
             closeMenuOnSelect
             error={validation[namespace + '-avvistKravTotalbeloep-valuta']?.feilmelding}
             id={namespace + '-avvistKravTotalbeloep-valuta'}
             label={t('label:valuta')}
             locale='nb'
-            menuPortalTarget={document.body}
             onOptionSelected={(currency: Currency) => setBeloepValuta('avvistKravTotalbeloep', 'valuta', currency.value)}
-            type='currency'
             includeHistoricCurrencies
-            includeList={ALLOWED_EU_CURRENCIES}
             sort={"noeuFirst"}
             values={sed.refusjonskrav?.kreditorinstitusjon?.avvistKravTotalbeloep?.valuta}
           />
@@ -212,18 +205,15 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
             required
             value={sed.refusjonskrav?.kreditorinstitusjon?.utbetalingTotalbeloep?.beloep || ''}
           />
-          <CountrySelect
+          <CurrencyDropdown
             ariaLabel={t('label:valuta')}
             closeMenuOnSelect
             error={validation[namespace + '-utbetalingTotalbeloep-valuta']?.feilmelding}
             id={namespace + '-utbetalingTotalbeloep-valuta'}
             label={t('label:valuta')}
             locale='nb'
-            menuPortalTarget={document.body}
             onOptionSelected={(currency: Currency) => setBeloepValuta('utbetalingTotalbeloep', 'valuta', currency.value)}
-            type='currency'
             includeHistoricCurrencies
-            includeList={ALLOWED_EU_CURRENCIES}
             sort={"noeuFirst"}
             required
             values={sed.refusjonskrav?.kreditorinstitusjon?.utbetalingTotalbeloep?.valuta}
