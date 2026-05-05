@@ -366,27 +366,28 @@ export const setCurrentSak = (currentSak: Sak | undefined) => ({
 })
 
 export const replyToSed = (
-  connectedSed: Sed, sak: Sak
+  parentSed: Sed, sak: Sak
 ): ActionWithPayload<ReplySed> => {
-  const sedId = connectedSed.sedType === 'F002' && connectedSed.svarsedType === 'F002' && !_.isEmpty(connectedSed.sedIdParent)
-    ? connectedSed.sedIdParent
-    : connectedSed.sedId
+  const parentSedId = parentSed.sedType === 'F002' && parentSed.svarsedType === 'F002' && !_.isEmpty(parentSed.sedIdParent)
+    ? parentSed.sedIdParent
+    : parentSed.sedId
 
-  const url = usesTypedSedApi(connectedSed.sedType)
-    ? sprintf(urls.API_SED_SVARSED_DRAFT_BY_TYPE_URL, {
+  const url = usesTypedSedApi(parentSed.svarsedType)
+    ? sprintf(urls.API_SED_DRAFT_BY_TYPE_URL, {
         rinaSakId: sak.sakId,
-        sedType: connectedSed.sedType?.toLowerCase(),
-        sedId
+        sedType: parentSed.svarsedType?.toLowerCase(),
+        parentSedId: parentSedId,
+        parentSedType: parentSed.sedType?.toLowerCase()
       })
     : sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
         rinaSakId: sak.sakId,
-        sedId,
-        sedType: connectedSed.svarsedType
+        sedId: parentSedId,
+        sedType: parentSed.svarsedType
       })
 
   return call({
     url,
-    expectedPayload: mockReplySed(connectedSed.svarsedType!),
+    expectedPayload: mockReplySed(parentSed.svarsedType!),
     context: {
       sak,
       sed: undefined

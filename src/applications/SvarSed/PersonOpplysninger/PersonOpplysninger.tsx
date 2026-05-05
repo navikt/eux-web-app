@@ -45,6 +45,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   const [gradering, setGradering] = useState<string | null>(null)
 
   const showFoedested = options && options.hasOwnProperty("showFoedested") ? options["showFoedested"] : true
+  const showUtenlandskPin = options && options.hasOwnProperty("showUtenlandskPin") ? options["showUtenlandskPin"] : true
+  const showH021Pins = options && options.hasOwnProperty("showH021Pins") ? options["showH021Pins"] : false
   const validateOnUnmount = options && options.hasOwnProperty("validateOnUnmount") ? options["validateOnUnmount"] : true
 
   useUnmount(() => {
@@ -52,7 +54,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
       const clonedValidation = _.cloneDeep(validation)
       performValidation<ValidationPersonopplysningerProps>(clonedValidation, namespace, validatePersonopplysninger, {
         personInfo,
-        personName
+        personName,
+        validateH021Pins: showH021Pins
       }, true)
       dispatch(setValidation(clonedValidation))
     }
@@ -95,6 +98,28 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(`${target}.kjoenn`, newKjoenn.trim()))
     if (validation[namespace + '-kjoenn']) {
       dispatch(resetValidation(namespace + '-kjoenn'))
+    }
+  }
+
+  const setPinKompetentLand = (value: string) => {
+    if (value === "") {
+      dispatch(updateReplySed(`${target}.pinKompetentLand`, undefined))
+    } else {
+      dispatch(updateReplySed(`${target}.pinKompetentLand`, value.trim()))
+    }
+    if (validation[namespace + '-pinKompetentLand']) {
+      dispatch(resetValidation(namespace + '-pinKompetentLand'))
+    }
+  }
+
+  const setPinOppholdLand = (value: string) => {
+    if (value === "") {
+      dispatch(updateReplySed(`${target}.pinOppholdLand`, undefined))
+    } else {
+      dispatch(updateReplySed(`${target}.pinOppholdLand`, value.trim()))
+    }
+    if (validation[namespace + '-pinOppholdLand']) {
+      dispatch(resetValidation(namespace + '-pinOppholdLand'))
     }
   }
 
@@ -267,17 +292,43 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               </RadioPanel>
             </HStack>
           </RadioGroup>
-          <Heading size='small'>
-            {t('label:utenlandske-pin')}
-          </Heading>
-          <UtenlandskPins
-            limit={99}
-            pins={utenlandskPins}
-            onPinsChanged={setUtenlandskPin}
-            namespace={namespace + '-pin'}
-            validation={validation}
-            personName={personName}
-          />
+          {showUtenlandskPin && (
+            <>
+              <Heading size='small'>
+                {t('label:utenlandske-pin')}
+              </Heading>
+              <UtenlandskPins
+                limit={99}
+                pins={utenlandskPins}
+                onPinsChanged={setUtenlandskPin}
+                namespace={namespace + '-pin'}
+                validation={validation}
+                personName={personName}
+              />
+            </>
+          )}
+          {showH021Pins && (
+            <HGrid columns={2} gap="space-16" align="start">
+              <TextField
+                error={validation[namespace + '-pinKompetentLand']?.feilmelding}
+                id={namespace + '-pinKompetentLand'}
+                label={t('label:pin-kompetent-land') + ' *'}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setPinKompetentLand(e.target.value)
+                }}
+                value={(personInfo as PersonInfo & { pinKompetentLand?: string })?.pinKompetentLand ?? ''}
+              />
+              <TextField
+                error={validation[namespace + '-pinOppholdLand']?.feilmelding}
+                id={namespace + '-pinOppholdLand'}
+                label={t('label:pin-opphold-land')}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setPinOppholdLand(e.target.value)
+                }}
+                value={(personInfo as PersonInfo & { pinOppholdLand?: string })?.pinOppholdLand ?? ''}
+              />
+            </HGrid>
+          )}
           {showFoedested &&
             <VStack>
               <Heading size='small'>

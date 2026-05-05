@@ -1,0 +1,37 @@
+{
+  "sedType": "H021",
+  "sedVersjon": "4.4",
+  "bruker": {
+    "personInfo": {
+      "fornavn": "Test",
+      "etternavn": "Testesen",
+      "kjoenn": "M",
+      "foedselsdato": "1980-01-01",
+      "pinKompetentLand": "12345678901",
+      "pinOppholdLand": "98765432109"
+    }
+  },
+  "refusjonskrav": {
+    "kreditorinstitusjon": {
+      "id": "SE:123",
+      "navn": "Swedish Institution",
+      "globalReferanse": "REF-001"
+    },
+    "debitorinstitusjon": {
+      "globalReferanse": "NO-REF-001"
+    },
+    "totaltAntallFakturaer": "1",
+    "refusjoner": [
+      {
+        "henvisningTil": "anmodning_om_administrativ_kontroll",
+        "utstedelsesdato": "2024-01-15",
+        "fakturanummer": "FAKT-001",
+        "fakturabeloep": {
+          "beloep": "1500.00",
+          "valuta": "SEK"
+        },
+        "avslag": "ikke_avslag"
+      }
+    ]
+  }
+}

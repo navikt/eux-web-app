@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "13.5.0",
+  "version": "13.6.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -32,11 +32,11 @@
     "@navikt/ds-react": "8.9.0",
     "@navikt/eessi-kodeverk": "2.4.1",
     "@navikt/fetch": "7.2.11",
-    "@navikt/flagg-ikoner": "13.0.13",
+    "@navikt/flagg-ikoner": "13.2.1",
     "@navikt/fnrvalidator": "2.2.1",
-    "@navikt/land-verktoy": "13.0.13",
-    "@navikt/landvelger": "13.0.13",
     "@navikt/tabell": "18.2.11",
+    "@navikt/land-verktoy": "13.2.1",
+    "@navikt/landvelger": "13.2.1",
     "@reduxjs/toolkit": "1.9.7",
     "ansi-to-html": "0.7.2",
     "bytes": "3.1.2",
@@ -207,5 +207,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@13.5.0"
+  "_id": "neessi@13.6.0"
 }
