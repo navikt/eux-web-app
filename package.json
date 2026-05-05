@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "13.7.0-FIX-TEN-1662-CURRENCY-CODES-ENDPOINT",
+  "version": "13.7.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -207,5 +207,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@13.7.0-FIX-TEN-1662-CURRENCY-CODES-ENDPOINT"
+  "_id": "neessi@13.7.0"
 }
