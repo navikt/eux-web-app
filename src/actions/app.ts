@@ -10,8 +10,7 @@ import mockReautorisering from 'mocks/app/reautorisering'
 import mockSaksbehandler from 'mocks/app/saksbehandler'
 import mockServerInfo from 'mocks/app/serverinfo'
 import mockUtgaarDato from 'mocks/app/utgaarDato'
-import mockCountryCodes from 'mocks/app/countryCodes'
-import mockCurrencyCodes from 'mocks/app/currencyCodes'
+import mockCountryAndCurrencyCodes from 'mocks/app/countryAndCurrencyCodes'
 import { Action, ActionCreator } from 'redux'
 
 export const copyToClipboard = (text?: string) => ({
@@ -183,28 +182,15 @@ export const getCDMVersjon = (): Action => {
 }
 
 
-export const getCountryCodes = (): Action => {
-  return call({
-    url: urls.API_LANDKODER_RINA_URL,
-    cascadeFailureError: true,
-    expectedPayload: mockCountryCodes,
-    type: {
-      request: types.APP_COUNTRYCODES_REQUEST,
-      success: types.APP_COUNTRYCODES_SUCCESS,
-      failure: types.APP_COUNTRYCODES_FAILURE,
-    }
-  })
-}
-
-export const getCurrencyCodes = (): Action => {
+export const getCountryAndCurrencyCodes = (): Action => {
   return call({
     url: urls.API_LANDOGVALUTAKODER_RINA_URL,
     cascadeFailureError: true,
-    expectedPayload: mockCurrencyCodes,
+    expectedPayload: mockCountryAndCurrencyCodes,
     type: {
-      request: types.APP_CURRENCYCODES_REQUEST,
-      success: types.APP_CURRENCYCODES_SUCCESS,
-      failure: types.APP_CURRENCYCODES_FAILURE,
+      request: types.APP_COUNTRY_AND_CURRENCY_CODES_REQUEST,
+      success: types.APP_COUNTRY_AND_CURRENCY_CODES_SUCCESS,
+      failure: types.APP_COUNTRY_AND_CURRENCY_CODES_FAILURE,
     }
   })
 }

@@ -4,8 +4,7 @@ import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "./store";
 import {
   getCDMVersjon,
-  getCountryCodes,
-  getCurrencyCodes,
+  getCountryAndCurrencyCodes,
   getEnheter,
   getSaksbehandler,
   getSaksbehandlerBucer,
@@ -46,8 +45,7 @@ export const App = () => {
       dispatch(getEnheter())
       dispatch(getServerinfo())
       dispatch(getUtgaarDato())
-      dispatch(getCountryCodes())
-      dispatch(getCurrencyCodes())
+      dispatch(getCountryAndCurrencyCodes())
       dispatch(getCDMVersjon())
       dispatch(getSaksbehandlerBucer())
     }, [])
