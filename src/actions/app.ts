@@ -11,6 +11,7 @@ import mockSaksbehandler from 'mocks/app/saksbehandler'
 import mockServerInfo from 'mocks/app/serverinfo'
 import mockUtgaarDato from 'mocks/app/utgaarDato'
 import mockCountryCodes from 'mocks/app/countryCodes'
+import mockCurrencyCodes from 'mocks/app/currencyCodes'
 import { Action, ActionCreator } from 'redux'
 
 export const copyToClipboard = (text?: string) => ({
@@ -191,6 +192,19 @@ export const getCountryCodes = (): Action => {
       request: types.APP_COUNTRYCODES_REQUEST,
       success: types.APP_COUNTRYCODES_SUCCESS,
       failure: types.APP_COUNTRYCODES_FAILURE,
+    }
+  })
+}
+
+export const getCurrencyCodes = (): Action => {
+  return call({
+    url: urls.API_LANDOGVALUTAKODER_RINA_URL,
+    cascadeFailureError: true,
+    expectedPayload: mockCurrencyCodes,
+    type: {
+      request: types.APP_CURRENCYCODES_REQUEST,
+      success: types.APP_CURRENCYCODES_SUCCESS,
+      failure: types.APP_CURRENCYCODES_FAILURE,
     }
   })
 }

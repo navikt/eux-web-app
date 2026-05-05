@@ -4,6 +4,7 @@ import {
   BucTyper,
   CountryCodes,
   CountryCodeLists,
+  CurrencyCodes,
   Enhet,
   Enheter,
   Kodemaps,
@@ -23,6 +24,7 @@ export interface AppState {
   cdmVersjon: string | undefined
   countryCodes: CountryCodes | null | undefined
   countryCodeMap: {key?: string} | null | undefined
+  currencyCodes: CurrencyCodes | null | undefined
 
   saksbehandler: Saksbehandler | undefined
   saksbehandlerBucer: Array<string> | null | undefined
@@ -59,6 +61,7 @@ export const initialAppState: AppState = {
   cdmVersjon: undefined,
   countryCodes: undefined,
   countryCodeMap: undefined,
+  currencyCodes: undefined,
   expirationTime: undefined,
   sessionEndsAt: undefined,
 
@@ -202,6 +205,20 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         ...state,
         countryCodes: null,
         countryCodeMap: null
+      }
+
+    case types.APP_CURRENCYCODES_SUCCESS: {
+      const currencyCodes: CurrencyCodes = action.payload
+      return {
+        ...state,
+        currencyCodes
+      }
+    }
+
+    case types.APP_CURRENCYCODES_FAILURE:
+      return {
+        ...state,
+        currencyCodes: null
       }
 
 

@@ -5,6 +5,7 @@ import {useAppDispatch, useAppSelector} from "./store";
 import {
   getCDMVersjon,
   getCountryCodes,
+  getCurrencyCodes,
   getEnheter,
   getSaksbehandler,
   getSaksbehandlerBucer,
@@ -46,6 +47,7 @@ export const App = () => {
       dispatch(getServerinfo())
       dispatch(getUtgaarDato())
       dispatch(getCountryCodes())
+      dispatch(getCurrencyCodes())
       dispatch(getCDMVersjon())
       dispatch(getSaksbehandlerBucer())
     }, [])

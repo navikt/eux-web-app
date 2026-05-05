@@ -49,6 +49,30 @@ export type SimpleCountry = {
   landnavn: string
 }
 
+export type CurrencyCodes = {
+  "v4.1"?: CurrencyCodeLists,
+  "v4.2": CurrencyCodeLists,
+  "v4.3": CurrencyCodeLists,
+  "v4.4": CurrencyCodeLists
+}
+
+export type CurrencyCodeLists = {
+  "euEftaValuta": Array<SimpleCurrency>
+  "verdensValuta": Array<SimpleCurrency>
+}
+
+export type SimpleCurrency = {
+  valutakode: string
+  valutanavn: string
+}
+
+export type LandOgValutakoder = {
+  "v4.1"?: CountryCodeLists & CurrencyCodeLists,
+  "v4.2": CountryCodeLists & CurrencyCodeLists,
+  "v4.3": CountryCodeLists & CurrencyCodeLists,
+  "v4.4": CountryCodeLists & CurrencyCodeLists
+}
+
 export interface BucTyper {
   awod: Array<Kodeverk>
   administrative: Array<Kodeverk>
