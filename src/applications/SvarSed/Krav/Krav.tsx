@@ -277,6 +277,7 @@ const Krav: React.FC<MainFormProps> = ({
               <CurrencyDropdown
                 ariaLabel={t('label:valuta')}
                 closeMenuOnSelect
+                currencyCodeListName="euEftaValuta"
                 error={_v[_namespace + '-fakturabeloep-valuta']?.feilmelding}
                 id={_namespace + '-fakturabeloep-valuta'}
                 label={t('label:valuta')}
@@ -326,6 +327,7 @@ const Krav: React.FC<MainFormProps> = ({
                     <CurrencyDropdown
                       ariaLabel={t('label:valuta')}
                       closeMenuOnSelect
+                      currencyCodeListName="euEftaValuta"
                       error={_v[_namespace + '-avslagDetaljer-avvistBeloep-valuta']?.feilmelding}
                       id={_namespace + '-avslagDetaljer-avvistBeloep-valuta'}
                       label={t('label:valuta')}

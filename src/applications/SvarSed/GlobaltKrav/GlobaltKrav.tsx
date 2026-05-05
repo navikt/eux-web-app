@@ -160,6 +160,7 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
           <CurrencyDropdown
             ariaLabel={t('label:valuta')}
             closeMenuOnSelect
+            currencyCodeListName="euEftaValuta"
             error={validation[namespace + '-kravTotalbeloep-valuta']?.feilmelding}
             id={namespace + '-kravTotalbeloep-valuta'}
             label={t('label:valuta')}
@@ -184,6 +185,7 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
           <CurrencyDropdown
             ariaLabel={t('label:valuta')}
             closeMenuOnSelect
+            currencyCodeListName="euEftaValuta"
             error={validation[namespace + '-avvistKravTotalbeloep-valuta']?.feilmelding}
             id={namespace + '-avvistKravTotalbeloep-valuta'}
             label={t('label:valuta')}
@@ -208,6 +210,7 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
           <CurrencyDropdown
             ariaLabel={t('label:valuta')}
             closeMenuOnSelect
+            currencyCodeListName="euEftaValuta"
             error={validation[namespace + '-utbetalingTotalbeloep-valuta']?.feilmelding}
             id={namespace + '-utbetalingTotalbeloep-valuta'}
             label={t('label:valuta')}
