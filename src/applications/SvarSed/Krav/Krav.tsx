@@ -14,9 +14,8 @@ import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import ErrorLabel from 'components/Forms/ErrorLabel'
 import AddRemove from 'components/AddRemovePanel/AddRemove'
-import CountrySelect from '@navikt/landvelger'
+import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import { Currency } from '@navikt/land-verktoy'
-import { ALLOWED_EU_CURRENCIES } from 'constants/currencies'
 import { Option, Options } from 'declarations/app'
 import { H021Sed, RefusjonItem, AvslagType } from 'declarations/h021'
 import { ReplySed } from 'declarations/sed'
@@ -275,18 +274,16 @@ const Krav: React.FC<MainFormProps> = ({
                 required
                 value={_item?.fakturabeloep?.beloep || ''}
               />
-              <CountrySelect
+              <CurrencyDropdown
                 ariaLabel={t('label:valuta')}
                 closeMenuOnSelect
+                currencyCodeListName="euEftaValuta"
                 error={_v[_namespace + '-fakturabeloep-valuta']?.feilmelding}
                 id={_namespace + '-fakturabeloep-valuta'}
                 label={t('label:valuta')}
                 locale='nb'
-                menuPortalTarget={document.body}
                 onOptionSelected={(currency: Currency) => setItemNestedProp('fakturabeloep.valuta', currency.value, index)}
-                type='currency'
                 includeHistoricCurrencies
-                includeList={ALLOWED_EU_CURRENCIES}
                 sort={"noeuFirst"}
                 required
                 values={_item?.fakturabeloep?.valuta}
@@ -327,18 +324,16 @@ const Krav: React.FC<MainFormProps> = ({
                       required
                       value={_item?.avslagDetaljer?.avvistBeloep?.beloep || ''}
                     />
-                    <CountrySelect
+                    <CurrencyDropdown
                       ariaLabel={t('label:valuta')}
                       closeMenuOnSelect
+                      currencyCodeListName="euEftaValuta"
                       error={_v[_namespace + '-avslagDetaljer-avvistBeloep-valuta']?.feilmelding}
                       id={_namespace + '-avslagDetaljer-avvistBeloep-valuta'}
                       label={t('label:valuta')}
                       locale='nb'
-                      menuPortalTarget={document.body}
                       onOptionSelected={(currency: Currency) => setItemNestedProp('avslagDetaljer.avvistBeloep.valuta', currency.value, index)}
-                      type='currency'
                       includeHistoricCurrencies
-                      includeList={ALLOWED_EU_CURRENCIES}
                       sort={"noeuFirst"}
                       required
                       values={_item?.avslagDetaljer?.avvistBeloep?.valuta}

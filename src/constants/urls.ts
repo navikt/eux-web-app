@@ -14,7 +14,7 @@ export const ADMIN_PUBLISH_SED_EVENTS_URL = API_BASE_URL + '/sed-events/publish'
 
 // RINA
 export const API_CDMVERSJON_RINA_URL = API_BASE_URL + '/rina/cdmversjon'
-export const API_LANDKODER_RINA_URL = API_BASE_URL + '/landkoder/rina?format=iso3'
+export const API_LANDOGVALUTAKODER_RINA_URL = API_BASE_URL + '/landogvalutakoder/rina?format=iso3'
 export const API_INSTITUSJONER_URL= API_BASE_URL + '/institusjoner/%(buctype)s?landkode=%(landkode)s&domene=nav'
 export const API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL = V5_BASE_URL + '/personer/%(fnr)s/rinasaker/oversikt'
 export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = V5_BASE_URL + '/rinasaker/%(rinaSakId)s/oversikt'

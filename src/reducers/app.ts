@@ -4,10 +4,13 @@ import {
   BucTyper,
   CountryCodes,
   CountryCodeLists,
+  CurrencyCodes,
+  CurrencyCodeLists,
   Enhet,
   Enheter,
   Kodemaps,
   Kodeverk,
+  LandOgValutakoder,
   Saksbehandler,
   ServerInfo,
   Tema
@@ -23,6 +26,7 @@ export interface AppState {
   cdmVersjon: string | undefined
   countryCodes: CountryCodes | null | undefined
   countryCodeMap: {key?: string} | null | undefined
+  currencyCodes: CurrencyCodes | null | undefined
 
   saksbehandler: Saksbehandler | undefined
   saksbehandlerBucer: Array<string> | null | undefined
@@ -59,6 +63,7 @@ export const initialAppState: AppState = {
   cdmVersjon: undefined,
   countryCodes: undefined,
   countryCodeMap: undefined,
+  currencyCodes: undefined,
   expirationTime: undefined,
   sessionEndsAt: undefined,
 
@@ -179,9 +184,27 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       }
     }
 
-    case types.APP_COUNTRYCODES_SUCCESS: {
+    case types.APP_COUNTRY_AND_CURRENCY_CODES_SUCCESS: {
+      const landOgValutakoder: LandOgValutakoder = action.payload
+
+      const countryCodes: CountryCodes = {} as CountryCodes
+      const currencyCodes: CurrencyCodes = {} as CurrencyCodes
+
+      Object.keys(landOgValutakoder).forEach(versionKey => {
+        const version = landOgValutakoder[versionKey as keyof LandOgValutakoder]!
+        countryCodes[versionKey as keyof CountryCodes] = {
+          euEftaLand: version.euEftaLand,
+          verdensLand: version.verdensLand,
+          verdensLandHistorisk: version.verdensLandHistorisk,
+          statsborgerskap: version.statsborgerskap
+        } as CountryCodeLists
+        currencyCodes[versionKey as keyof CurrencyCodes] = {
+          euEftaValuta: version.euEftaValuta,
+          verdensValuta: version.verdensValuta
+        } as CurrencyCodeLists
+      })
+
       let countryCodeMap: {key?: string} = {}
-      const countryCodes: CountryCodes = action.payload
       Object.keys(countryCodes).forEach(versionKey => {
         Object.keys(countryCodes[versionKey as keyof CountryCodes]).forEach(landKey => {
           countryCodes[versionKey as keyof CountryCodes][landKey as keyof CountryCodeLists].forEach(land => {
@@ -193,15 +216,17 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       return {
         ...state,
         countryCodes,
-        countryCodeMap
+        countryCodeMap,
+        currencyCodes
       }
     }
 
-    case types.APP_COUNTRYCODES_FAILURE:
+    case types.APP_COUNTRY_AND_CURRENCY_CODES_FAILURE:
       return {
         ...state,
         countryCodes: null,
-        countryCodeMap: null
+        countryCodeMap: null,
+        currencyCodes: null
       }
 
 
