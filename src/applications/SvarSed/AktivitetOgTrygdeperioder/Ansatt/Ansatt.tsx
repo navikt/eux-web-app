@@ -11,7 +11,7 @@ import PeriodeText from 'components/Forms/PeriodeText'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
 import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import {ForsikringPeriode, Periode, PeriodeMedForsikring} from 'declarations/sed'
+import {ForsikringPeriode, Periode, PeriodeMedForsikring, ReplySed} from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -55,6 +55,7 @@ const Ansatt: React.FC<AnsattProps> = ({
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}`
   const target = `${personID}.${parentTarget}`
+  const currencyCodeListName = (replySed as ReplySed)?.sedType?.startsWith('U') ? 'verdensValuta' : 'euEftaValuta'
   const perioder: Array<Periode> | undefined = _.get(replySed, target)
   const fnr = getFnr(replySed, personID)
   const getId = (item: PlanItem<Periode | ForsikringPeriode> | null): string => (item
@@ -267,6 +268,7 @@ const Ansatt: React.FC<AnsattProps> = ({
         validation={validation}
         resetValidation={doResetValidation}
         setValidation={doSetValidation}
+        currencyCodeListName={currencyCodeListName}
       />
     )
   }

@@ -26,7 +26,7 @@ export interface CurrencyDropdownProps extends CountrySelectProps<any> {
 }
 
 const CurrencyDropdown: React.FC<CurrencyDropdownProps> = ({
-  currencyCodeListName = 'euEftaValuta',
+  currencyCodeListName = 'verdensValuta',
   dataTestId,
   menuPortalTarget = document.body,
   ...rest

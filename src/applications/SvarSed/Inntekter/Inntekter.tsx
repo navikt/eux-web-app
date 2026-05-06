@@ -1,7 +1,7 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Box, Button, HGrid, HStack, Label, Spacer, VStack } from '@navikt/ds-react'
 import { Currency } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -237,17 +237,16 @@ const Inntekter: React.FC<any> = ({
                     required
                     value={_inntekt?.beloep ? _inntekt?.beloep.replace('.', ',') : undefined}
                   />
-                  <CountrySelect
+                  <CurrencyDropdown
                     closeMenuOnSelect
                     ariaLabel={t('label:valuta')}
-                    data-testid={namespace + '-valuta'}
+                    dataTestId={namespace + '-valuta'}
                     error={_v[_namespace + '-valuta']?.feilmelding}
                     id={_namespace + '-valuta'}
                     label={t('label:valuta') + ' *'}
                     locale='nb'
-                    menuPortalTarget={document.body}
                     onOptionSelected={(valuta: Currency) => setValuta(valuta, index)}
-                    type='currency'
+                    currencyCodeListName='verdensValuta'
                     values={_inntekt?.valuta}
                   />
                 </HGrid>

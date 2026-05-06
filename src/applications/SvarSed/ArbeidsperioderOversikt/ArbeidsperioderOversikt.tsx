@@ -64,6 +64,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
 
   const namespace = `${parentNamespace}-${personID}-arbeidsperioder`
   const forsikringNamespace = `${parentNamespace}-${personID}-forsikring`
+  const currencyCodeListName = (replySed as ReplySed)?.sedType?.startsWith('U') ? 'verdensValuta' : 'euEftaValuta'
   const target = 'perioderAnsattMedForsikring'
   const perioder: Array<PeriodeMedForsikring> | Array<PDPeriode> | undefined = _.get(replySed, target)
   const anmodningsperiode: Periode | undefined = _.get(replySed, "anmodningsperiode")
@@ -297,6 +298,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
           setValidation={doSetValidation}
           setCopiedPeriod={_setCopiedPeriod}
           index={index}
+          currencyCodeListName={currencyCodeListName}
        />
       </>
     )

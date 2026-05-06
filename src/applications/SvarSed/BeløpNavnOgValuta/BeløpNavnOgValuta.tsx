@@ -2,7 +2,7 @@ import { PlusCircleIcon } from '@navikt/aksel-icons';
 import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { Currency } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -342,17 +342,16 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                   value={_ytelse?.beloep}
                 />
 
-                <CountrySelect
+                <CurrencyDropdown
                   closeMenuOnSelect
                   ariaLabel={t('label:valuta')}
-                  data-testid={_namespace + '-valuta'}
+                  dataTestId={_namespace + '-valuta'}
                   error={_v[_namespace + '-valuta']?.feilmelding}
                   id={_namespace + '-valuta'}
                   label={t('label:valuta') + ' *'}
                   locale='nb'
-                  menuPortalTarget={document.body}
                   onOptionSelected={(e: any) => setValuta(e, index)}
-                  type='currency'
+                  currencyCodeListName='euEftaValuta'
                   values={_ytelse?.valuta}
                 />
               </HGrid>

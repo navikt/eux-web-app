@@ -1,6 +1,6 @@
 import {Accordion, BodyLong, Box, Checkbox, Heading, HGrid, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
 import { Currency } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/Identifikator/Identifikator'
 import classNames from 'classnames'
@@ -24,7 +24,7 @@ import {
   PeriodeMedForsikring,
   PeriodeUtenForsikring
 } from 'declarations/sed.d'
-import { Validation } from 'declarations/types'
+import { CurrencyCodeLists, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import React, {useState} from 'react'
@@ -66,6 +66,7 @@ export interface ArbeidsgiverBoxProps<T> {
   setCopiedPeriod?: (p:any | null) => void
   index?: number | undefined
   type?: string | undefined
+  currencyCodeListName?: keyof CurrencyCodeLists
 }
 
 const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
@@ -95,7 +96,8 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   setValidation,
   setCopiedPeriod,
   index,
-  type
+  type,
+  currencyCodeListName
 }: ArbeidsgiverBoxProps<T>): JSX.Element => {
   const { t } = useTranslation()
 
@@ -563,6 +565,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                   parentNamespace={namespace}
                   inntektOgTimer={(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimer}
                   onInntektOgTimeChanged={setInntektOgTimer}
+                  currencyCodeListName={currencyCodeListName}
                 />
                 <Input
                   error={_v[namespace + '-inntektOgTimerInfo']?.feilmelding}
@@ -598,17 +601,16 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                   required
                   value={(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? (_forsikringPeriode as PeriodeFerieForsikring)?.beloep?.replace('.', ',') : undefined}
                 />
-                <CountrySelect
+                <CurrencyDropdown
                   closeMenuOnSelect
                   ariaLabel={t('label:valuta')}
-                  data-testid={namespace + '-valuta'}
+                  dataTestId={namespace + '-valuta'}
                   error={_v[namespace + '-valuta']?.feilmelding}
                   id={namespace + '-valuta'}
                   label={t('label:valuta') + ' *'}
                   locale='nb'
-                  menuPortalTarget={document.body}
                   onOptionSelected={setValuta}
-                  type='currency'
+                  currencyCodeListName={currencyCodeListName}
                   values={(_forsikringPeriode as PeriodeFerieForsikring)?.valuta}
                 />
               </HGrid>

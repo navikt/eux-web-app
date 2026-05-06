@@ -15,7 +15,7 @@ import Input from "../../../components/Forms/Input";
 import {Validation} from "../../../declarations/types";
 import useLocalValidation from "../../../hooks/useLocalValidation";
 import {validateMotregning, validateMotregninger, ValidationMotregningerProps, ValidationMotregningProps} from "./validation";
-import CountrySelect from "@navikt/landvelger";
+import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
 import TextArea from "../../../components/Forms/TextArea";
 import {Currency} from "@navikt/land-verktoy";
@@ -418,17 +418,16 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 onChanged={(value: string) => setMotregningProp("beloep", sanitizeAmount(value), index)}
                 value={_motregning?.beloep}
               />
-              <CountrySelect
+              <CurrencyDropdown
                 ariaLabel={t('label:valuta')}
                 closeMenuOnSelect
-                data-testid={_namespace + '-valuta'}
+                dataTestId={_namespace + '-valuta'}
                 error={_v[_namespace + '-valuta']?.feilmelding}
                 id={_namespace + '-valuta'}
                 label={t('label:valuta')}
                 locale='nb'
-                menuPortalTarget={document.body}
                 onOptionSelected={(currency: Currency) => setMotregningProp("valuta", currency.value, index)}
-                type='currency'
+                currencyCodeListName='euEftaValuta'
                 required={true}
                 values={_motregning?.valuta}
               />
@@ -553,16 +552,15 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               onChanged={(value: string) => setOppsummeringProp("totalbeloep", sanitizeAmount(value), type)}
               value={(motregninger as any)?.[target]?.totalbeloep || ''}
             />
-            <CountrySelect
+            <CurrencyDropdown
               ariaLabel={t('label:valuta')}
               closeMenuOnSelect
               error={validation[namespace + '-' + target + '-valuta']?.feilmelding}
               id={namespace + '-' + target + '-valuta'}
               label={t('label:valuta')}
               locale='nb'
-              menuPortalTarget={document.body}
               onOptionSelected={(currency: Currency) => setOppsummeringProp("valuta", currency.value, type)}
-              type='currency'
+              currencyCodeListName='euEftaValuta'
               values={(motregninger as any)?.[target]?.valuta}
             />
           </HGrid>

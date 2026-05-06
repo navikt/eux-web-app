@@ -58,6 +58,7 @@ const Forsikring: React.FC<MainFormProps> = ({
 
   const namespace = `${parentNamespace}-${personID}-forsikring`
   const arbeidsPerioderNamespace = `${parentNamespace}-${personID}-arbeidsperioder`
+  const currencyCodeListName = (replySed as ReplySed)?.sedType?.startsWith('U') ? 'verdensValuta' : 'euEftaValuta'
   const getId = (p: ForsikringPeriode | null | undefined): string => p ? p.__type + '[' + p.__index + ']' : 'new-forsikring'
 
   const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
@@ -332,6 +333,7 @@ const Forsikring: React.FC<MainFormProps> = ({
                     setCopiedPeriod={_setCopiedPeriod}
                     index={index}
                     type={_type}
+                    currencyCodeListName={currencyCodeListName}
                   />
                 </Box>
               )}
@@ -360,6 +362,7 @@ const Forsikring: React.FC<MainFormProps> = ({
                   setCopiedPeriod={_setCopiedPeriod}
                   index={index}
                   type={_type}
+                  currencyCodeListName={currencyCodeListName}
                 />
               )}
             </VStack>
