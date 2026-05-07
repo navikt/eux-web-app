@@ -75,6 +75,7 @@ import {
 import { validateSvarPåminnelse, ValidationSvarPåminnelseProps } from 'applications/SvarSed/SvarPåminnelse/validation'
 import {validateTrygdeordning, validateTrygdeordninger, ValidateTrygdeordningerProps} from 'applications/SvarSed/Trygdeordning/validation'
 import { validateUgyldiggjøre, ValidationUgyldiggjøreProps } from 'applications/SvarSed/Ugyldiggjøre/validation'
+import { validateSvarGjenaapning, ValidationSvarGjenaapningProps } from 'applications/SvarSed/SvarGjenaapning/validation'
 import { validateVedtak, ValidationVedtakProps } from 'applications/SvarSed/Vedtak/validation'
 import {
   Adresse,
@@ -109,6 +110,7 @@ import {
 } from 'declarations/sed'
 import { H120Sed } from 'declarations/h120'
 import { X002Sed } from 'declarations/x002'
+import { X003Sed } from 'declarations/x003'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
 import _ from 'lodash'
@@ -127,6 +129,7 @@ import {
   isUSed,
   isX001Sed,
   isX002Sed,
+  isX003Sed,
   isX008Sed,
   isX009Sed,
   isX010Sed, isX011Sed, isX012Sed,
@@ -530,6 +533,11 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     if (isX012Sed(replySed)) {
       hasErrors.push(performValidation<ValidationKlargjørProps>(v, `svarsed-${personID}-klargjør`, validateKlargjør, {
         replySed: (replySed as X012Sed), personName
+      }, true))
+    }
+    if (isX003Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationSvarGjenaapningProps>(v, `svarsed-${personID}-svargjenaapning`, validateSvarGjenaapning, {
+        replySed: (replySed as X003Sed), personName
       }, true))
     }
   }
