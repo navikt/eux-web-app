@@ -192,5 +192,8 @@
   "noAvslag": "Avslag er påkrevd",
   "noAvslagGrunn": "Avslagsgrunn er påkrevd",
   "noAvslagGrunnAnnet": "Annen avslagsgrunn er påkrevd",
-  "noRefusjoner": "Minst én refusjon er påkrevd"
+  "noRefusjoner": "Minst én refusjon er påkrevd",
+  "noErGodkjent": "Du må angi om gjenåpning er godkjent",
+  "noAarsakType": "Grunn er påkrevd",
+  "noAarsakAnnet": "Annen grunn er påkrevd"
 }

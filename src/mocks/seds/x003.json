@@ -1,0 +1,15 @@
+{
+  "bruker": {
+    "fornavn": "æøå",
+    "etternavn": "æøå",
+    "kjoenn": "M",
+    "foedselsdato": "2002-02-02"
+  },
+  "svarGjenaapning": {
+    "erGodkjent": "ja",
+    "grunnType": "ny_informasjon_ble_tilgjengelig",
+    "grunnAnnet": ""
+  },
+  "sedType": "X003",
+  "sedVersjon": "4.4"
+}

@@ -236,6 +236,17 @@ const svarsedReducer = (
       // trim fnr - might contain whitespace if entered in RINA
       let bruker = trimPin(payload.bruker)
 
+      // For X003: if bruker is missing (arbeidsgiver/refusjonskrav context), prefill from Sak
+      if (payload.sedType === 'X003' && _.isEmpty(bruker) && sak) {
+        bruker = {
+          fornavn: sak.fornavn,
+          etternavn: sak.etternavn,
+          foedselsdato: sak.foedselsdato,
+          kjoenn: sak.kjoenn as Kjoenn,
+          ...(sak.fnr && { pin: [{ identifikator: sak.fnr, land: 'NO' }] })
+        }
+      }
+
       const newReplySed = {
         ...payload,
         bruker: {

@@ -49,6 +49,7 @@ import SvarPåForespørsel from 'applications/SvarSed/SvarPåForespørsel/SvarP�
 import SvarPåminnelse from 'applications/SvarSed/SvarPåminnelse/SvarPåminnelse'
 import Trygdeordning from 'applications/SvarSed/Trygdeordning/Trygdeordning'
 import Ugyldiggjøre from 'applications/SvarSed/Ugyldiggjøre/Ugyldiggjøre'
+import SvarGjenaapning from 'applications/SvarSed/SvarGjenaapning/SvarGjenaapning'
 import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
 import YtterligereInfoOmKrav from 'applications/SvarSed/YtterligereInfoOmKrav/YtterligereInfoOmKrav'
 import GrunnerForOverfoering from 'applications/SvarSed/GrunnerForOverfoering/GrunnerForOverfoering'
@@ -478,7 +479,8 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
                   { label: t('el:option-mainform-svarpåminnelse'), value: 'svarpåminnelse', component: SvarPåminnelse, type: 'X010' },
                   { label: t('el:option-mainform-avvis'), value: 'avvis', component: Avvis, type: 'X011' },
-                  { label: t('el:option-mainform-klargjør'), value: 'klargjør', component: Klargjør, type: 'X012' }
+                  { label: t('el:option-mainform-klargjør'), value: 'klargjør', component: Klargjør, type: 'X012' },
+                  { label: t('el:option-mainform-svargjenaapning'), value: 'svargjenaapning', component: SvarGjenaapning, type: 'X003' }
                 ]}
                 replySed={replySed}
                 updateReplySed={updateReplySed}

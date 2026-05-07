@@ -216,6 +216,7 @@
   "option-mainform-svarpåforespørsel": "Svar på forespørsel",
   "option-mainform-coverletter": "Følgebrev",
   "option-mainform-svarpåminnelse": "Svar på påminnelse",
+  "option-mainform-svargjenaapning": "Svar på anmodning om gjenåpning",
   "option-mainform-dagpenger": "Mottatte dagpenger",
   "option-mainform-trygdeordninger": "Trygdeordninger",
   "option-mainform-endredeforhold": "Ytterligere informasjon",
@@ -416,5 +417,11 @@
   "option-h021-avslaggrunn-ingen_betaling_gjelder_for_denne_faktura": "Ingen betaling gjelder for denne faktura",
   "option-h021-avslaggrunn-ikke_mottatt_svar_på_forespørsel": "Ikke mottatt svar på forespørsel",
   "option-h021-avslaggrunn-informasjon_ikke_i_overensstemmelse": "Informasjon som er mottatt er ikke i overensstemmelse med originalforespørsel",
-  "option-h021-avslaggrunn-annet": "Annet"
+  "option-h021-avslaggrunn-annet": "Annet",
+  "option-gjenaapning-01": "Ny informasjon ble tilgjengelig",
+  "option-gjenaapning-02": "Feilaktig informasjon levert",
+  "option-gjenaapning-03": "Saken ble utilsiktet avsluttet",
+  "option-gjenaapning-99": "Annet",
+  "option-svargjenaapning-godkjent": "Ja, gjenåpning godkjent",
+  "option-svargjenaapning-avvist": "Nei, gjenåpning avvist"
 }
