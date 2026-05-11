@@ -23,12 +23,14 @@ export interface CurrencyDropdownProps extends CountrySelectProps<any> {
    * 'euEftaValuta' = EU/EFTA-valutaer, 'verdensValuta' = alle valutaer akseptert av Rina. */
   currencyCodeListName?: keyof CurrencyCodeLists
   menuPortalTarget?: HTMLElement | null
+  includeHistoricCurrencies?: boolean
 }
 
 const CurrencyDropdown: React.FC<CurrencyDropdownProps> = ({
   currencyCodeListName = 'verdensValuta',
   dataTestId,
   menuPortalTarget = document.body,
+  includeHistoricCurrencies = true,
   ...rest
 }: CurrencyDropdownProps) => {
 
@@ -53,6 +55,7 @@ const CurrencyDropdown: React.FC<CurrencyDropdownProps> = ({
       menuPortalTarget={menuPortalTarget}
       data-testid={dataTestId}
       includeList={includeList}
+      includeHistoricCurrencies={includeHistoricCurrencies}
     />
   )
 }
