@@ -9,7 +9,7 @@ import {State} from "../../../declarations/reducers";
 import {sanitizeAmount} from "../../../utils/amount";
 import {SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from "../../../declarations/sed";
 import Input from "../../../components/Forms/Input";
-import CountrySelect from "@navikt/landvelger";
+import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import {Currency} from "@navikt/land-verktoy";
 import useUnmount from "../../../hooks/useUnmount";
 import performValidation from "../../../utils/performValidation";
@@ -82,17 +82,16 @@ const InntektForeldreloeseBarnet: React.FC<MainFormProps> = ({
                 onChanged={(v) => setYtelseTilForeldreloeseProperty('inntekt.beloep', sanitizeAmount(v))}
                 value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.barnet?.inntekt?.beloep ?? ''}
               />
-              <CountrySelect
+              <CurrencyDropdown
                 closeMenuOnSelect
                 ariaLabel={t('label:valuta')}
-                data-testid={namespace + '-valuta'}
+                dataTestId={namespace + '-valuta'}
                 error={validation[namespace + '-valuta']?.feilmelding}
                 id={namespace + '-valuta'}
                 label={t('label:valuta')}
                 locale='nb'
-                menuPortalTarget={document.body}
                 onOptionSelected={(c: Currency) => setYtelseTilForeldreloeseProperty('inntekt.valuta', c.value)}
-                type='currency'
+                currencyCodeListName='euEftaValuta'
                 values={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.barnet?.inntekt?.valuta}
               />
             </HGrid>

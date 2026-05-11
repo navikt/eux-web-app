@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import {ArrowRightLeftIcon, PlusCircleIcon} from "@navikt/aksel-icons";
 import Input from "../../../components/Forms/Input";
-import CountrySelect from "@navikt/landvelger";
+import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import {Currency} from "@navikt/land-verktoy";
 import {Validation} from "../../../declarations/types";
 import {getIdx} from "../../../utils/namespace";
@@ -192,16 +192,15 @@ const RefusjonFC: React.FC<MainFormProps> = ({
               onChanged={(value: string) => setRefusjonProp("totalbeloep", sanitizeAmount(value))}
               value={refusjon?.totalbeloep || ''}
             />
-            <CountrySelect
+            <CurrencyDropdown
               ariaLabel={t('label:valuta')}
               closeMenuOnSelect
               error={validation[namespace + '-valuta']?.feilmelding}
               id={namespace + '-valuta'}
               label={t('label:valuta')}
               locale='nb'
-              menuPortalTarget={document.body}
               onOptionSelected={(currency: Currency) => setRefusjonProp("valuta", currency.value)}
-              type='currency'
+              currencyCodeListName='euEftaValuta'
               values={refusjon?.valuta}
             />
           </HGrid>
@@ -275,17 +274,16 @@ const RefusjonFC: React.FC<MainFormProps> = ({
                 onChanged={(value: string) => setRefusjonsKravProp("beloep", sanitizeAmount(value), index)}
                 value={_refusjonskrav?.beloep}
               />
-              <CountrySelect
+              <CurrencyDropdown
                 ariaLabel={t('label:valuta')}
                 closeMenuOnSelect
-                data-testid={_namespace + '-valuta'}
+                dataTestId={_namespace + '-valuta'}
                 error={_v[_namespace + '-valuta']?.feilmelding}
                 id={_namespace + '-valuta'}
                 label={t('label:valuta')}
                 locale='nb'
-                menuPortalTarget={document.body}
                 onOptionSelected={(currency: Currency) => setRefusjonsKravProp("valuta", currency.value, index)}
-                type='currency'
+                currencyCodeListName='euEftaValuta'
                 required={true}
                 values={_refusjonskrav?.valuta}
               />

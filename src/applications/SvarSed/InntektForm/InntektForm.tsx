@@ -17,7 +17,7 @@ import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeri
 import InntektFC from 'components/Inntekt/Inntekt'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
-import {Loennsopplysning, Periode, PeriodeMedForsikring, AnsettelsesType, USed} from 'declarations/sed'
+import {Loennsopplysning, Periode, PeriodeMedForsikring, AnsettelsesType, ReplySed, USed} from 'declarations/sed'
 import { Inntekt } from 'declarations/sed.d'
 import { ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -72,6 +72,7 @@ const InntektForm: React.FC<MainFormProps> = ({
 
   const CDM_VERSJON: number = parseFloat((replySed as USed)?.sak?.cdmVersjon!)
   const namespace = `${parentNamespace}-${personID}-inntekt`
+  const currencyCodeListName = (replySed as ReplySed)?.sedType?.startsWith('U') ? 'verdensValuta' : 'euEftaValuta'
   const target = 'loennsopplysninger'
   const loennsopplysninger: Array<Loennsopplysning> | undefined = _.get(replySed, target)
   const fnr: string | undefined = getFnr(replySed, personID)
@@ -512,6 +513,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                   forsikringPeriode={period}
                   showArbeidsgiver
                   namespace={namespace}
+                  currencyCodeListName={currencyCodeListName}
                 />
               )
             })}

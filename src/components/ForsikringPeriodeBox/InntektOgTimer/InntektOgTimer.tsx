@@ -1,7 +1,7 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import {BodyLong, Box, Button, HGrid, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
 import { Currency } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -12,7 +12,7 @@ import PeriodeText from 'components/Forms/PeriodeText'
 import { InntektOgTime, Periode } from 'declarations/sed'
 import { sanitizeAmount } from 'utils/amount'
 import commonStyles from 'assets/css/common.module.css'
-import { Validation } from 'declarations/types'
+import {CurrencyCodeLists, Validation} from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import React, { useState } from 'react'
@@ -29,6 +29,7 @@ export interface InntektOgTimerProps {
   parentNamespace: string
   personName?: string
   validation: Validation
+  currencyCodeListName?: keyof CurrencyCodeLists
 }
 
 const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
@@ -36,7 +37,8 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   onInntektOgTimeChanged,
   parentNamespace,
   personName,
-  validation
+  validation,
+  currencyCodeListName
 }: InntektOgTimerProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -247,17 +249,16 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                 required
                 value={_inntektOgTime?.bruttoinntekt ? _inntektOgTime?.bruttoinntekt.replace('.', ',') : undefined}
               />
-              <CountrySelect
+              <CurrencyDropdown
                 closeMenuOnSelect
                 ariaLabel={t('label:valuta')}
-                data-testid={_namespace + '-valuta'}
+                dataTestId={_namespace + '-valuta'}
                 error={_v[_namespace + '-valuta']?.feilmelding}
                 id={_namespace + '-valuta'}
                 label={t('label:valuta') + ' *'}
                 locale='nb'
-                menuPortalTarget={document.body}
                 onOptionSelected={(valuta: Currency) => setValuta(valuta, index)}
-                type='currency'
+                currencyCodeListName={currencyCodeListName}
                 values={_inntektOgTime?.valuta}
               />
               <Input

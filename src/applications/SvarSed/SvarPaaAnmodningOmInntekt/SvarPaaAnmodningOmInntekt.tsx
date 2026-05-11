@@ -10,7 +10,7 @@ import {sanitizeAmount} from "../../../utils/amount";
 import {useTranslation} from "react-i18next";
 import Input from "../../../components/Forms/Input";
 import DateField from "../../../components/DateField/DateField";
-import CountrySelect from "@navikt/landvelger";
+import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import {Currency} from "@navikt/land-verktoy";
 import useUnmount from "../../../hooks/useUnmount";
 import performValidation from "../../../utils/performValidation";
@@ -116,16 +116,15 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
                 onChanged={(v) => setInntektProperty('aarlig.beloep', sanitizeAmount(v))}
                 value={svarInntekt?.aarlig?.beloep}
               />
-              <CountrySelect
+              <CurrencyDropdown
                 closeMenuOnSelect
                 ariaLabel={t('label:valuta')}
                 error={validation[namespace + '-aarlig-valuta']?.feilmelding}
                 id={namespace + '-aarlig-valuta'}
                 label={t('label:valuta')}
                 locale='nb'
-                menuPortalTarget={document.body}
                 onOptionSelected={(valuta: Currency) => setInntektProperty('aarlig.valuta', valuta.value)}
-                type='currency'
+                currencyCodeListName='euEftaValuta'
                 sort="noeuFirst"
                 values={svarInntekt?.aarlig?.valuta}
               />
