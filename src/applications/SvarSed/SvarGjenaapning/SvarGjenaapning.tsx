@@ -1,7 +1,6 @@
-import { Box, Heading, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import { Box, Heading, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
 import { X003Sed } from 'declarations/x003'
 import useUnmount from 'hooks/useUnmount'
@@ -104,14 +103,14 @@ const SvarGjenaapning: React.FC<MainFormProps> = ({
         </RadioGroup>
 
         {sed.svarGjenaapning?.grunnType === 'annet' && (
-          <Input
+          <Textarea
             error={validation[namespace + '-grunnAnnet']?.feilmelding}
-            namespace={namespace}
-            id='grunnAnnet'
+            id={namespace + '-grunnAnnet'}
             label={t('label:svargjenaapning-grunn-annet')}
-            onChanged={setGrunnAnnet}
-            required
-            value={sed.svarGjenaapning?.grunnAnnet}
+            maxLength={255}
+            resize
+            value={sed.svarGjenaapning?.grunnAnnet ?? ''}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setGrunnAnnet(e.target.value)}
           />
         )}
       </VStack>
