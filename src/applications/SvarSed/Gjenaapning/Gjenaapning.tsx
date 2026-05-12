@@ -1,7 +1,6 @@
-import { Box, Heading, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import { Box, Heading, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
 import { X002Sed } from 'declarations/x002'
 import useUnmount from 'hooks/useUnmount'
@@ -84,14 +83,14 @@ const Gjenaapning: React.FC<MainFormProps> = ({
         </RadioGroup>
 
         {sed.gjenaapning?.aarsakType === 'annet' && (
-          <Input
+          <Textarea
             error={validation[namespace + '-aarsakAnnet']?.feilmelding}
-            namespace={namespace}
-            id='aarsakAnnet'
+            id={namespace + '-aarsakAnnet'}
             label={t('label:gjenaapning-aarsak-annet')}
-            onChanged={setAarsakAnnet}
-            required
-            value={sed.gjenaapning?.aarsakAnnet}
+            maxLength={255}
+            resize
+            value={sed.gjenaapning?.aarsakAnnet ?? ''}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setAarsakAnnet(e.target.value)}
           />
         )}
       </VStack>
