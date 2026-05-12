@@ -49,7 +49,6 @@ export default (saksnummer: string, type: string) => {
       ],
       sedListe: [
         {
-        {
           sedTittel: 'Anmodning om avslutning',
           sedType: 'X001',
           sedId: 'x001_mock_id',
