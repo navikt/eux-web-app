@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "13.7.0",
+  "version": "13.7.1-TEN-1577-VALIDATE-RINASAKID-INPUT",
   "private": true,
   "type": "module",
   "scripts": {
@@ -206,6 +206,5 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@13.7.0"
+  "disabled-homepage": "http://eesi2.no/melosys"
 }
