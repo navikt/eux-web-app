@@ -231,6 +231,7 @@ const svarsedReducer = (
 
     case types.SVARSED_EDIT_SUCCESS: {
       const payload = (action as ActionWithPayload).payload
+      const sak: Sak | undefined = (action as ActionWithPayload).context.sak
 
       // trim fnr - might contain whitespace if entered in RINA
       let bruker = trimPin(payload.bruker)
@@ -240,7 +241,7 @@ const svarsedReducer = (
         bruker: {
           ...bruker,
         },
-        sak: (action as ActionWithPayload).context.sak,
+        sak,
         sed: (action as ActionWithPayload).context.sed
       }
 

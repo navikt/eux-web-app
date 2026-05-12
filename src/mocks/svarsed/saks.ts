@@ -49,6 +49,14 @@ export default (saksnummer: string, type: string) => {
       ],
       sedListe: [
         {
+          sedTittel: 'Anmodning om avslutning',
+          sedType: 'X001',
+          sedId: 'x001_mock_id',
+          status: 'received',
+          sistEndretDato: '2025-04-15',
+          svarsedType: 'X002',
+          sedHandlinger: ['X002', 'X008', 'Read']
+        }, {
           sedTittel: 'Påminnelse',
           sedType: 'X009',
           sedId: '46f4ea863edd4106bd20b36675315008',

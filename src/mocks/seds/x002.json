@@ -1,0 +1,14 @@
+{
+  "bruker": {
+    "fornavn": "æøå",
+    "etternavn": "æøå",
+    "kjoenn": "M",
+    "foedselsdato": "2002-02-02"
+  },
+  "gjenaapning": {
+    "aarsakType": "ny_informasjon_ble_tilgjengelig",
+    "aarsakAnnet": ""
+  },
+  "sedType": "X002",
+  "sedVersjon": "4.4"
+}
