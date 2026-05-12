@@ -19,5 +19,7 @@
     "R004": "Opprett R004",
     "Delete_Case": "Slett sak",
     "Close_Case": "Lukk sak (lokal)",
+    "Archive_Case": "Arkiver sak",
+    "Reopen_Case": "Gjenåpne sak",
     "opprett": "Opprett {{SED}}"
 }
