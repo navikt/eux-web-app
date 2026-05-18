@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, type JSX } from "react";
 import {MainFormProps, MainFormSelector, mapState} from "../MainForm";
 import {BodyLong, Box, Button, Checkbox, Heading, HGrid, HStack, Label, Radio, RadioGroup, Select, Spacer, Tabs, VStack} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";

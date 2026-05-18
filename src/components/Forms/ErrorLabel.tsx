@@ -1,5 +1,5 @@
 import { Label } from '@navikt/ds-react'
-import React from 'react'
+import React, { type JSX } from 'react';
 
 export interface ErrorLabelProps {
   error: string | undefined

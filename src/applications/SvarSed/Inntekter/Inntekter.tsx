@@ -13,7 +13,7 @@ import { sanitizeAmount } from 'utils/amount'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React, { useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
 import { getIdx } from 'utils/namespace'

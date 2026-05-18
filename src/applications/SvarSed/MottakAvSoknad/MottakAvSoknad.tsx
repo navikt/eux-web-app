@@ -1,6 +1,6 @@
 import {Validation} from "../../../declarations/types";
 import {State} from "../../../declarations/reducers";
-import React from "react";
+import React, { type JSX } from "react";
 import {MainFormProps} from "../MainForm";
 import {useTranslation} from "react-i18next";
 import {useAppDispatch, useAppSelector} from "../../../store";

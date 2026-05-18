@@ -7,7 +7,7 @@ import { State } from 'declarations/reducers'
 import { Sak, Sed } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import React, { useEffect } from 'react'
+import React, { useEffect, type JSX } from 'react';
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import { useNavigate } from 'react-router-dom'

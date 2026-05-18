@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { AlertError, AlertVariant } from 'declarations/components'
 import _ from 'lodash'
 import { Alert } from '@navikt/ds-react'
-import React from 'react'
+import React, { type JSX } from 'react';
 import styles from './BannerAlert.module.css'
 
 export interface BannerAlertProps {

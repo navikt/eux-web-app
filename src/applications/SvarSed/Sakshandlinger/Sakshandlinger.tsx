@@ -3,7 +3,7 @@ import {createF002Sed, createFSed, createHSed, createXSed, deleteSak} from 'acti
 import commonStyles from 'assets/css/common.module.css'
 import {Sak, Sed} from 'declarations/types'
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'

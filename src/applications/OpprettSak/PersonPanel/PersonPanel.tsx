@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, type JSX } from "react";
 import {Kodeverk, PersonInfoPDL, PersonInfoUtland, PersonMedFamilie} from "declarations/types";
 import {useTranslation} from "react-i18next";
 import ukjent from "assets/icons/Unknown.png";

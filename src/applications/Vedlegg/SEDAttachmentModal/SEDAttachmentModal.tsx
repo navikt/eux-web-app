@@ -2,7 +2,7 @@ import JoarkBrowser from 'applications/Vedlegg/JoarkBrowser/JoarkBrowser'
 import Modal from 'components/Modal/Modal'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { setJoarkItemPreview } from 'actions/attachments'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import {State} from "../../../declarations/reducers";
 import {useDispatch, useSelector} from "react-redux";

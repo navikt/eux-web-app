@@ -24,7 +24,7 @@ import { State } from 'declarations/reducers'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
 import { StorageTypes, UpdateReplySedPayload, Validation } from 'declarations/types'
 import _ from 'lodash'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import {isF001Sed, isF002Sed, canAddPerson} from 'utils/sed'

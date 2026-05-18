@@ -19,7 +19,7 @@ import {Avsender, PDU1, Pdu1Person} from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import {useNavigate, useParams} from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'

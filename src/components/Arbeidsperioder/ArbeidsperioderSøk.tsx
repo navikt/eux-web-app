@@ -7,7 +7,7 @@ import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import {Button, BodyLong, HStack, VStack} from '@navikt/ds-react'
 import { MagnifyingGlassIcon } from '@navikt/aksel-icons'
-import React, { useState } from 'react'
+import React, { useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import moment from 'moment'

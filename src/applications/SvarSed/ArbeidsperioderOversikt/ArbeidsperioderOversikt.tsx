@@ -13,7 +13,7 @@ import {ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeVi
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, {useEffect, useRef, useState} from 'react'
+import React, { useEffect, useRef, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'

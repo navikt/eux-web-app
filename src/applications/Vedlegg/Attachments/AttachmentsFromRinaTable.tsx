@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState, type JSX } from "react";
 import Table, {RenderOptions} from "@navikt/tabell";
 import {Attachment, AttachmentContext, AttachmentTableItem} from "../../../declarations/types";
 import {Button, Loader, Checkbox, HStack} from "@navikt/ds-react";

@@ -2,6 +2,8 @@ import * as types from 'constants/actionTypes'
 import { ActionWithPayload } from '@navikt/fetch'
 import { Action, ActionCreator } from 'redux'
 
+import type { JSX } from "react";
+
 export const alertReset: ActionCreator<Action> = (): Action => ({
   type: types.ALERT_RESET
 })

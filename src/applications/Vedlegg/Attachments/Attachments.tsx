@@ -4,7 +4,7 @@ import SEDAttachmentModal from 'applications/Vedlegg/SEDAttachmentModal/SEDAttac
 import FnrTextField from 'components/FnrTextField/FnrTextField'
 import { JoarkBrowserItem, JoarkBrowserItems } from 'declarations/attachments'
 import _ from 'lodash'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import {Attachment} from "../../../declarations/types";
 import AttachmentsFromRinaTable from "./AttachmentsFromRinaTable";

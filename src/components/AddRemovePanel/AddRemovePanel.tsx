@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { Labels } from 'declarations/app'
 import {Button, BodyLong, HStack, Box} from '@navikt/ds-react'
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React, { useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import styles from './AddRemovePanel.module.css'
 import commonStyles from 'assets/css/common.module.css'

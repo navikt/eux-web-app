@@ -26,7 +26,7 @@ import { ForsikringPeriode, Periode, PeriodeSort, ReplySed, U002Sed } from 'decl
 import { Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, {useEffect, useRef, useState} from 'react'
+import React, { useEffect, useRef, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getNSIdx } from 'utils/namespace'

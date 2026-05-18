@@ -1,7 +1,7 @@
 import {Alert, Loader, Search, VStack} from '@navikt/ds-react'
 import {PersonInfoPDL, PersonMedFamilie} from 'declarations/types'
 import _ from 'lodash'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 
 export interface PersonSearchProps {
