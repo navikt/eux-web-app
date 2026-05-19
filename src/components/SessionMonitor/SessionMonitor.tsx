@@ -2,7 +2,7 @@ import * as urls from 'constants/urls'
 import { logMeAgain, setExpirationTime, setSessionEndsAt } from 'actions/app'
 import { PDU1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
-import React, { useEffect, useState, type JSX } from 'react';
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import Modal from 'components/Modal/Modal'

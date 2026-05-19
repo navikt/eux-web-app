@@ -3,7 +3,7 @@ import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import React, { type JSX } from 'react';
+import React, { JSX } from 'react';
 import {useAppDispatch, useAppSelector} from 'store'
 import {
   AnnenInformasjonBarnet_V43,

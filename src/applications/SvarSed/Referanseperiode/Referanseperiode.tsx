@@ -10,7 +10,7 @@ import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { type JSX } from 'react';
+import React, { JSX } from 'react';
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 

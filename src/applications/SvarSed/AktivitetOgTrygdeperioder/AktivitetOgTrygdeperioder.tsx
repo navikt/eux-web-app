@@ -1,4 +1,4 @@
-import React, { useState, type JSX } from "react";
+import React, { useState, JSX } from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import useUnmount from "../../../hooks/useUnmount";

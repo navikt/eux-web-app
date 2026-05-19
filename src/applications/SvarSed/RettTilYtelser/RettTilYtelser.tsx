@@ -7,7 +7,7 @@ import { State } from 'declarations/reducers'
 import { JaNei, Periode, RettTilYtelse } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { useEffect, useState, type JSX } from 'react';
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'

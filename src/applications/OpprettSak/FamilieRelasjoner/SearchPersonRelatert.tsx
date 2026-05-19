@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type JSX } from "react";
+import React, { useEffect, useState, JSX } from "react";
 import {Alert, HGrid, Loader, Search, VStack} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";
 import {State} from "../../../declarations/reducers";

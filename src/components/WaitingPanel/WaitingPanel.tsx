@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import {BodyLong, Box, Loader} from '@navikt/ds-react'
-import React, { type JSX } from 'react';
+import React, { JSX } from 'react';
 import styles from './WaitingPanel.module.css'
 
 export type WaitingPanelSize = 'xsmall'| 'small' | 'medium'| 'large' | 'xlarge'| '2xlarge'

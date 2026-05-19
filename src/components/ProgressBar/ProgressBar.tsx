@@ -1,4 +1,4 @@
-import React, { type JSX } from 'react';
+import React, { JSX } from 'react';
 import classNames from 'classnames'
 import styles from './ProgressBar.module.css'
 

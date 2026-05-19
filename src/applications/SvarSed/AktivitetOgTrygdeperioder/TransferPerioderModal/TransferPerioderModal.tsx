@@ -1,4 +1,4 @@
-import React, { useState, type JSX } from "react";
+import React, { useState, JSX } from "react";
 import Modal from "../../../../components/Modal/Modal";
 import {Box, Checkbox, HStack, Radio, RadioGroup, Spacer, Tag} from "@navikt/ds-react";
 import PeriodeText from "../../../../components/Forms/PeriodeText";

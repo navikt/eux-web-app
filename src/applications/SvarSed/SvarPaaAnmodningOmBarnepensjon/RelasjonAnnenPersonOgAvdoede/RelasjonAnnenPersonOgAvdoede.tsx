@@ -1,6 +1,6 @@
 import {State} from "../../../../declarations/reducers";
 import {MainFormProps, MainFormSelector} from "../../MainForm";
-import React, { useState, type JSX } from "react";
+import React, { useState, JSX } from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store";
 import {useTranslation} from "react-i18next";
 import {

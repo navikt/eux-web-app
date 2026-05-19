@@ -1,7 +1,7 @@
 /// <reference types="vite-plugin-svgr/client" />
 import { State } from 'declarations/reducers'
 import TopContainer from 'components/TopContainer/TopContainer'
-import React, { useEffect, useState, type JSX } from 'react';
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import {Box, Heading, HStack, Link, VStack} from '@navikt/ds-react'

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type JSX } from "react";
+import React, { useEffect, useState, JSX } from "react";
 import {useAppDispatch, useAppSelector} from "../../../store";
 // @ts-ignore
 import {ComboboxOption} from "@navikt/ds-react/cjs/form/combobox/types";

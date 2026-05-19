@@ -16,7 +16,7 @@ import { ReplySed } from 'declarations/sed'
 import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
 import {Alert, Box, Button, HStack, List, Loader, Spacer, VStack} from '@navikt/ds-react'
-import React, { useEffect, useState, type JSX } from 'react';
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import {alertReset} from "../../../actions/alert";

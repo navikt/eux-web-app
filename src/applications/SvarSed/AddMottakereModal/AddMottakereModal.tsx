@@ -7,7 +7,7 @@ import { ErrorElement } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Institusjon, Validation } from 'declarations/types'
 import _ from 'lodash'
-import React, { useState, type JSX } from 'react';
+import React, { useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import {getInstitusjoner} from "actions/sak";

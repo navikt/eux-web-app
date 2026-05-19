@@ -1,5 +1,5 @@
 import {BodyLong, Box, Button, Heading, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
-import React, { useState, type JSX } from "react";
+import React, { useState, JSX } from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import {setReplySed} from "../../../actions/svarsed";
 import Utdanning from "../Utdanning/Utdanning";

@@ -1,5 +1,5 @@
 import { TextField } from '@navikt/ds-react'
-import React, { useState, type JSX } from 'react';
+import React, { useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { validateFnrDnrNpid } from 'utils/fnrValidator'
 

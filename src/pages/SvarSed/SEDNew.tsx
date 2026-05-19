@@ -39,7 +39,7 @@ import {
   Validation
 } from 'declarations/types'
 import _, {cloneDeep} from 'lodash'
-import React, { useEffect, useState, type JSX } from 'react';
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'

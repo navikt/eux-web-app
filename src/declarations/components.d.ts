@@ -1,4 +1,4 @@
-import type { JSX } from "react";
+import { JSX } from "react";
 export interface ModalButton {
   onClick?: () => void
   disabled ?: boolean

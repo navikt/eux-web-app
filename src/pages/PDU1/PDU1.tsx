@@ -5,7 +5,7 @@ import Modal from 'components/Modal/Modal'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
-import React, { useEffect, useState, type JSX } from 'react';
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'

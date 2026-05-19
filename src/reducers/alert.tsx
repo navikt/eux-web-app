@@ -4,7 +4,7 @@ import i18n from 'i18n'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import {HStack, Link} from '@navikt/ds-react'
-import React, { type JSX } from 'react';
+import React, { JSX } from 'react';
 import { Action } from 'redux'
 
 export interface AlertState {

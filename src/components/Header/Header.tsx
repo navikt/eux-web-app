@@ -2,7 +2,7 @@ import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, StarFillIcon, StarIcon
 import { State } from 'declarations/reducers'
 import {Enhet, Enheter, Saksbehandler} from 'declarations/types'
 import {ActionMenu, BodyShort, Button, Detail, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
-import React, { useCallback, useEffect, useState, type JSX } from 'react';
+import React, { useCallback, useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import {appReset, setFavouriteEnhet, setSelectedEnhet} from 'actions/app'

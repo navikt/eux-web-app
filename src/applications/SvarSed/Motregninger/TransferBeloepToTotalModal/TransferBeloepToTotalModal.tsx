@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type JSX } from "react";
+import React, { useEffect, useState, JSX } from "react";
 import Modal from "../../../../components/Modal/Modal";
 import {Alert, BodyShort, Box, Checkbox, HelpText, HStack, Tag,} from "@navikt/ds-react";
 import {Motregning, RefusjonsKrav} from "../../../../declarations/sed";

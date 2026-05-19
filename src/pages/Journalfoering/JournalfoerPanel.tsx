@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type JSX } from "react";
+import React, { useEffect, useState, JSX } from "react";
 import {
   Enhet, Enheter,
   Fagsak,

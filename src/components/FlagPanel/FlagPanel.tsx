@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import React, { JSX } from "react";
 import Flag from "@navikt/flagg-ikoner";
 import CountryData from "@navikt/land-verktoy";
 import {State} from "../../declarations/reducers";

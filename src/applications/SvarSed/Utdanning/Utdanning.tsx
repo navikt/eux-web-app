@@ -1,6 +1,6 @@
 import {HStack, Label, RadioGroup, VStack} from '@navikt/ds-react'
 import RadioPanel from 'components/RadioPanel/RadioPanel'
-import React, { type JSX } from "react";
+import React, { JSX } from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import TextArea from "../../../components/Forms/TextArea";
 import {useAppDispatch, useAppSelector} from "../../../store";

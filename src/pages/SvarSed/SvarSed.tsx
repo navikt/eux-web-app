@@ -9,7 +9,7 @@ import SEDEdit from 'pages/SvarSed/SEDEdit'
 import SEDNew from 'pages/SvarSed/SEDNew'
 import SEDSearch from 'pages/SvarSed/SEDSearch'
 import SEDView from 'pages/SvarSed/SEDView'
-import React, { useEffect, useState, type JSX } from 'react';
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
