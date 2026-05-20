@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState, JSX } from "react";
 import {Kodeverk, PersonInfoUtland, Validation} from "../../../declarations/types";
 import {BodyLong, Box, Button, HGrid, Select, TextField, VStack} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";

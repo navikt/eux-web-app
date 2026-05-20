@@ -7,7 +7,7 @@ import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import Error from 'pages/Error'
-import React from 'react'
+import React, { JSX } from 'react';
 import { ErrorBoundary } from 'react-error-boundary'
 import { useAppDispatch, useAppSelector } from 'store'
 import styles from "./TopContainer.module.css"

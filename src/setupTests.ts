@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
-import { act } from 'react-dom/test-utils'
+import { act } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 import { TextEncoder, TextDecoder } from 'util';
 (global as any).TextEncoder = TextEncoder;
 (global as any).TextDecoder = TextDecoder;
@@ -54,8 +54,8 @@ jest.mock('react-i18next', () => ({
 }))
 
 export const stageSelector = (defaultSelector: any, params: any) => {
-  (useDispatch as jest.Mock).mockImplementation(() => jest.fn());
-  (useSelector as jest.Mock).mockImplementation(() => ({
+  (useDispatch as unknown as jest.Mock).mockImplementation(() => jest.fn());
+  (useSelector as unknown as jest.Mock).mockImplementation(() => ({
     ...defaultSelector,
     ...params
   }))

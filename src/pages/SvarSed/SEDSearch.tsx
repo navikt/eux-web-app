@@ -10,7 +10,7 @@ import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Sak, Sed } from 'declarations/types'
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'

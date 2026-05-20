@@ -10,7 +10,7 @@ import { State } from 'declarations/reducers'
 import { Validation, VedleggSendResponse } from 'declarations/types'
 import _ from 'lodash'
 import performValidation from 'utils/performValidation'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { validateVedlegg, ValidationVedleggProps } from './validation'

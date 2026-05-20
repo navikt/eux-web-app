@@ -1,6 +1,6 @@
 import {State} from "../../../declarations/reducers";
 import {MainFormProps, MainFormSelector} from "../MainForm";
-import React from "react";
+import React, { JSX } from "react";
 import {useTranslation} from "react-i18next";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {FamilieRelasjon, JaNei, Periode, ForelderType} from "../../../declarations/sed";

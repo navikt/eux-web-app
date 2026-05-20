@@ -5,7 +5,7 @@ import Modal from 'components/Modal/Modal'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -105,7 +105,7 @@ export const PDU1Page: React.FC<PDU1PageProps> = ({
             )
           }}
         />
-        <Page.Block width="2xl" gutters as="main" background="bg-subtle">
+        <Page.Block width="2xl" gutters as="main">
           <HStack padding="space-48" width="100%">
             <Spacer/>
             {type === 'search' && (<PDU1Search />)}

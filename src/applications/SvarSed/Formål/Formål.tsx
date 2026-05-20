@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { JSX } from 'react';
 import {Box, Checkbox, Heading, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateFormål, ValidationFormålProps } from 'applications/SvarSed/Formål/validation'

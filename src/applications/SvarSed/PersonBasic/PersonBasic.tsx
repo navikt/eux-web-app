@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { JSX } from 'react';
 import {resetValidation} from 'actions/validation'
 import {MainFormProps, MainFormSelector} from 'applications/SvarSed/MainForm'
 import DateField from 'components/DateField/DateField'

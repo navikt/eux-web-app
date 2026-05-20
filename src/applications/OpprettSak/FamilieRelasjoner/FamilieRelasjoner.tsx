@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState, JSX } from "react";
 import {Box, VStack, Heading, BodyLong, HGrid, Button} from "@navikt/ds-react";
 import classNames from "classnames";
 import { useTranslation } from 'react-i18next'

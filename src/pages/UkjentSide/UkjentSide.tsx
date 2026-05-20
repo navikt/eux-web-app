@@ -1,6 +1,6 @@
 import TopContainer from 'components/TopContainer/TopContainer'
 import {Page, Box, Alert, Link, Heading, HStack,Spacer} from '@navikt/ds-react'
-import React from 'react'
+import React, { JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 
 const UkjentSide: React.FC = (): JSX.Element => {

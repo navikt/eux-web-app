@@ -1,6 +1,6 @@
 import {State} from "declarations/reducers";
 import {MainFormProps, MainFormSelector} from "../MainForm";
-import React from "react";
+import React, { JSX } from "react";
 import {useAppDispatch, useAppSelector} from "store";
 import {Box, Checkbox, Heading, VStack} from "@navikt/ds-react";
 import useUnmount from "hooks/useUnmount";

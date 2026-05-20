@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect, JSX } from "react";
 import TopContainer from "../../components/TopContainer/TopContainer";
 import SakBanner from "../../applications/SvarSed/Sak/SakBanner";
 import {useNavigate, useParams} from "react-router-dom";

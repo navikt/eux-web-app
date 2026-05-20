@@ -6,7 +6,7 @@ import TextArea from 'components/Forms/TextArea'
 import {F002Sed} from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React from 'react'
+import React, { JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'

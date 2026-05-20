@@ -2,7 +2,7 @@ import {VStack, Box, Heading, Select} from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import React from 'react'
+import React, { JSX } from 'react';
 import {useAppDispatch, useAppSelector} from 'store'
 import {
   AnnenInformasjonBarnet_V43,

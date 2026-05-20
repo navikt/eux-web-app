@@ -5,7 +5,7 @@ import {Alert, BodyLong, Box, Button, ErrorMessage, Heading, HStack, Loader, Tex
 import {useAppSelector} from "../../store";
 import {adminResetStatus, publishSedEvents} from "../../actions/admin";
 import {useDispatch} from "react-redux";
-import {useState} from "react";
+import { useState, JSX } from "react";
 
 export interface AdminPageSelector {
   featureToggles: FeatureToggles | null | undefined

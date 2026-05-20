@@ -2,7 +2,7 @@ import {VStack, Box, Heading, Radio, RadioGroup, Label, HGrid} from '@navikt/ds-
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import React from 'react'
+import React, { JSX } from 'react';
 import { useAppDispatch, useAppSelector } from 'store'
 import TextArea from "../../../components/Forms/TextArea";
 import {SvarInntekt} from "../../../declarations/sed";

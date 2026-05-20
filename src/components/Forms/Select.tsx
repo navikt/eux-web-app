@@ -1,7 +1,7 @@
 
 import { Label } from '@navikt/ds-react'
 import classNames from 'classnames'
-import React from 'react'
+import React, { JSX } from 'react';
 import ReactSelect, { Props } from 'react-select'
 
 type SelectProps = Props & {

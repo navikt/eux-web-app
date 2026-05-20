@@ -10,7 +10,7 @@ import ProgressBar, { ProgressBarStatus } from 'components/ProgressBar/ProgressB
 import _ from 'lodash'
 import md5 from 'md5'
 import {Button, HStack} from '@navikt/ds-react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'store'
 

@@ -5,7 +5,7 @@ import { State } from 'declarations/reducers'
 import { Dokument, Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import React from 'react'
+import React, { JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import ErrorLabel from "../../../components/Forms/ErrorLabel";

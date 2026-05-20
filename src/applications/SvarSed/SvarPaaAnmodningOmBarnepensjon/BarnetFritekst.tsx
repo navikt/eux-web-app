@@ -1,5 +1,5 @@
 import {Box, Heading, VStack} from '@navikt/ds-react'
-import React from "react";
+import React, { JSX } from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import TextArea from "../../../components/Forms/TextArea";
 import {useAppDispatch, useAppSelector} from "../../../store";

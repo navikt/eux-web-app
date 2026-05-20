@@ -16,7 +16,7 @@ import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import md5 from 'md5'
 import moment from 'moment'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { blobToBase64 } from 'utils/blob'

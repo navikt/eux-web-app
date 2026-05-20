@@ -18,7 +18,7 @@ import { State } from 'declarations/reducers'
 import {Fagsaker, PDU1SearchResult, PDU1SearchResults, Fagsak, PersonInfoPDL} from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'

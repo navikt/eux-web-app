@@ -2,7 +2,7 @@ import {VStack, Box, Heading} from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import React from 'react'
+import React, { JSX } from 'react';
 import {useAppDispatch, useAppSelector} from 'store'
 import {Adresse, SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from "declarations/sed";
 import TextArea from "components/Forms/TextArea";
