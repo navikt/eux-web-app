@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "13.9.0-TEN-1476-REACT-19-MIGRATION",
+  "version": "14.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -204,5 +204,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@13.9.0-TEN-1476-REACT-19-MIGRATION"
+  "_id": "neessi@14.0.0"
 }
