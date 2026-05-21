@@ -622,5 +622,7 @@
   "gjenaapning-aarsak-annet": "Begrunnelse for gjenåpning",
   "svargjenaapning-er-godkjent": "Er gjenåpning godkjent?",
   "svargjenaapning-grunn": "Grunn for gjenåpning",
-  "svargjenaapning-grunn-annet": "Annen grunn"
+  "svargjenaapning-grunn-annet": "Annen grunn",
+  "bekreftelsegjenaapning-skal-gjenaapnes": "Skal saken gjenåpnes?",
+  "bekreftelsegjenaapning-grunn": "Begrunnelse"
 }

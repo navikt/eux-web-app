@@ -1,0 +1,14 @@
+{
+  "bruker": {
+    "fornavn": "Kari",
+    "etternavn": "Nordmann",
+    "kjoenn": "K",
+    "foedselsdato": "1990-01-15"
+  },
+  "gjenaapning": {
+    "skalGjenaapnes": "ja",
+    "grunnType": ""
+  },
+  "sedType": "X004",
+  "sedVersjon": "4.4"
+}
