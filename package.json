@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "14.0.2-TEN-1677-AKTIVITET-TYPE-TYPO",
+  "version": "14.0.2",
   "private": true,
   "type": "module",
   "scripts": {
