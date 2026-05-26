@@ -194,10 +194,10 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                       <Radio value='opphør_aktivitet_sykdom_med_lønn'>
                         {t('el:radio-aktivitet-type-mottar-loenn')}
                       </Radio>
-                      <Radio value='permisjon_med_lønnn'>
+                      <Radio value='permisjon_med_lønn'>
                         {t('el:radio-aktivitet-type-permisjon-med-loenn')}
                       </Radio>
-                      <Radio value='permisjon_uten_lønnn'>
+                      <Radio value='permisjon_uten_lønn'>
                         {t('el:radio-aktivitet-type-permisjon-uten-loenn')}
                       </Radio>
                     </RadioGroup>
