@@ -32,6 +32,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import classNames from 'classnames'
 import commonStyles from 'assets/css/common.module.css'
+import RadioPanel from "../../../components/RadioPanel/RadioPanel";
 
 const Krav: React.FC<MainFormProps> = ({
   label,
@@ -236,9 +237,9 @@ const Krav: React.FC<MainFormProps> = ({
             >
               <HStack gap="space-16">
                 {henvisningTilOptions.map((o: Option) => (
-                  <Radio key={o.value} className={commonStyles.radioPanel} value={o.value}>
+                  <RadioPanel key={o.value} value={o.value}>
                     {o.label}
-                  </Radio>
+                  </RadioPanel>
                 ))}
               </HStack>
             </RadioGroup>
@@ -300,9 +301,9 @@ const Krav: React.FC<MainFormProps> = ({
             >
               <HStack gap="space-16">
                 {avslagOptions.map((o: Option) => (
-                  <Radio key={o.value} className={commonStyles.radioPanel} value={o.value}>
+                  <RadioPanel key={o.value} value={o.value}>
                     {o.label}
-                  </Radio>
+                  </RadioPanel>
                 ))}
               </HStack>
             </RadioGroup>
