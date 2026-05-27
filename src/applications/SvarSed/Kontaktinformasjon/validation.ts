@@ -1,7 +1,7 @@
 import { Epost, Telefon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotEmail, checkIfNotEmpty } from 'utils/validation'
+import { checkIfDuplicate, checkIfNotEmail, checkIfNotEmpty, checkPattern } from 'utils/validation'
 
 export interface ValidationKontaktsinformasjonTelefonProps {
   telefon: Telefon | undefined
@@ -51,6 +51,14 @@ export const validateKontaktsinformasjonTelefon = (
     needle: telefon?.nummer,
     id: namespace + idx + '-nummer',
     message: 'validation:noTelephoneNumber',
+    personName
+  }))
+
+  hasErrors.push(checkPattern(v, {
+    needle: telefon?.nummer,
+    id: namespace + idx + '-nummer',
+    pattern: /^((\+|00)?[0-9]{1,3}[. -]?([0-9]{1,3}[- .]?)([0-9][- .]?){5,10}[0-9])$/,
+    message: 'validation:invalidTelephoneNumber',
     personName
   }))
 
