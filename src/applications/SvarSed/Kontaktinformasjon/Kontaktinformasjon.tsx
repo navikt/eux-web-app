@@ -284,7 +284,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
         paddingBlock="space-8"
         paddingInline="space-16"
       >
-        <HGrid columns={3} gap="space-16">
+        <HGrid columns={3} gap="space-16" align="start">
           {inEditMode
             ? (
               <Input
@@ -367,7 +367,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
         paddingBlock="space-8"
         paddingInline="space-16"
       >
-        <HStack gap="space-16">
+        <HStack gap="space-16" align="start">
           {inEditMode
             ? (
               <Input

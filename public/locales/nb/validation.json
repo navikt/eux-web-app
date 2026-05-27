@@ -134,6 +134,7 @@
   "notInteger": "Kun heltall tillatt",
   "noInfoPresisering": "Ingen punktvise opplysninger oppgitt",
   "noTelephoneNumber": "Du må taste inn en telefonnummer",
+  "invalidTelephoneNumber": "Ugyldig telefonnummer. Bruk format: +XX XXXXXXXX",
   "noTelephoneType": "Du må velge en telefon type til",
   "noTema": "Du må velge et tema",
   "noTimer": "Mangler timer",
