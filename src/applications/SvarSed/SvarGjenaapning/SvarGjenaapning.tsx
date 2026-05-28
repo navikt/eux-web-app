@@ -1,6 +1,7 @@
-import { Box, Heading, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
+import { Box, Heading, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { State } from 'declarations/reducers'
 import { X003Sed } from 'declarations/x003'
 import useUnmount from 'hooks/useUnmount'
@@ -10,7 +11,6 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validateSvarGjenaapning, ValidationSvarGjenaapningProps } from './validation'
-import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -81,8 +81,8 @@ const SvarGjenaapning: React.FC<MainFormProps> = ({
           onChange={setErGodkjent}
         >
           <VStack gap="2">
-            <Radio className={commonStyles.radioPanel} value='ja'>{t('el:option-svargjenaapning-godkjent')}</Radio>
-            <Radio className={commonStyles.radioPanel} value='nei'>{t('el:option-svargjenaapning-avvist')}</Radio>
+            <RadioPanel value='ja'>{t('el:option-svargjenaapning-godkjent')}</RadioPanel>
+            <RadioPanel value='nei'>{t('el:option-svargjenaapning-avvist')}</RadioPanel>
           </VStack>
         </RadioGroup>
 
@@ -95,10 +95,10 @@ const SvarGjenaapning: React.FC<MainFormProps> = ({
           onChange={setGrunnType}
         >
           <VStack gap="2">
-            <Radio className={commonStyles.radioPanel} value='ny_informasjon_ble_tilgjengelig'>{t('el:option-gjenaapning-01')}</Radio>
-            <Radio className={commonStyles.radioPanel} value='feilaktig_informasjon_levert'>{t('el:option-gjenaapning-02')}</Radio>
-            <Radio className={commonStyles.radioPanel} value='saken_ble_utilsiktet_avsluttet'>{t('el:option-gjenaapning-03')}</Radio>
-            <Radio className={commonStyles.radioPanel} value='annet'>{t('el:option-gjenaapning-99')}</Radio>
+            <RadioPanel value='ny_informasjon_ble_tilgjengelig'>{t('el:option-gjenaapning-01')}</RadioPanel>
+            <RadioPanel value='feilaktig_informasjon_levert'>{t('el:option-gjenaapning-02')}</RadioPanel>
+            <RadioPanel value='saken_ble_utilsiktet_avsluttet'>{t('el:option-gjenaapning-03')}</RadioPanel>
+            <RadioPanel value='annet'>{t('el:option-gjenaapning-99')}</RadioPanel>
           </VStack>
         </RadioGroup>
 
