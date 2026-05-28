@@ -1,6 +1,7 @@
-import { Box, Heading, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import { Box, Heading, RadioGroup, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { State } from 'declarations/reducers'
 import { X004Sed } from 'declarations/x004'
 import useUnmount from 'hooks/useUnmount'
@@ -10,7 +11,6 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validateBekreftelseGjenaapning, ValidationBekreftelseGjenaapningProps } from './validation'
-import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -74,8 +74,8 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
           onChange={setSkalGjenaapnes}
         >
           <VStack gap="2">
-            <Radio className={commonStyles.radioPanel} value='ja'>{t('el:option-bekreftelsegjenaapning-ja')}</Radio>
-            <Radio className={commonStyles.radioPanel} value='nei'>{t('el:option-bekreftelsegjenaapning-nei')}</Radio>
+            <RadioPanel value='ja'>{t('el:option-bekreftelsegjenaapning-ja')}</RadioPanel>
+            <RadioPanel value='nei'>{t('el:option-bekreftelsegjenaapning-nei')}</RadioPanel>
           </VStack>
         </RadioGroup>
 
@@ -89,7 +89,7 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
             onChange={setGrunnType}
           >
             <VStack gap="2">
-              <Radio className={commonStyles.radioPanel} value='alle_deltakerne_kan_ikke_gjenåpne_saken'>{t('el:option-bekreftelsegjenaapning-grunn-01')}</Radio>
+              <RadioPanel value='alle_deltakerne_kan_ikke_gjenåpne_saken'>{t('el:option-bekreftelsegjenaapning-grunn-01')}</RadioPanel>
             </VStack>
           </RadioGroup>
         )}
