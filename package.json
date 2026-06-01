@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "14.0.3",
+  "version": "14.0.4",
   "private": true,
   "type": "module",
   "scripts": {
@@ -30,7 +30,7 @@
     "@navikt/aksel-icons": "8.10.5",
     "@navikt/ds-css": "8.10.5",
     "@navikt/ds-react": "8.10.5",
-    "@navikt/eessi-kodeverk": "2.4.1",
+    "@navikt/eessi-kodeverk": "2.4.3",
     "@navikt/fetch": "7.2.13",
     "@navikt/flagg-ikoner": "13.2.2",
     "@navikt/fnrvalidator": "2.2.1",
@@ -204,5 +204,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@14.0.3"
+  "_id": "neessi@14.0.4"
 }
