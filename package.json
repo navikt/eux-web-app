@@ -29,7 +29,7 @@
   "dependencies": {
     "@navikt/aksel-icons": "8.10.5",
     "@navikt/ds-css": "8.10.5",
-    "@navikt/ds-react": "8.10.5",
+    "@navikt/ds-react": "8.11.0",
     "@navikt/eessi-kodeverk": "2.4.3",
     "@navikt/fetch": "7.2.13",
     "@navikt/flagg-ikoner": "13.2.2",
