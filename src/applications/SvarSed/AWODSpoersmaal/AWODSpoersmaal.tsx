@@ -68,76 +68,76 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
   })
 
   const setType = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.type', value.trim()))
+    dispatch(updateReplySed('yrkesskade.type', value.trim()))
     if (validation[namespace + '-type']) {
       dispatch(resetValidation(namespace + '-type'))
     }
   }
 
   const setDato = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.dato', value.trim()))
+    dispatch(updateReplySed('yrkesskade.dato', value.trim()))
   }
 
   const setBrukerStatus = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.brukerStatus', value.trim()))
+    dispatch(updateReplySed('yrkesskade.brukerStatus', value.trim()))
     if (value !== 'annet') {
-      dispatch(updateReplySed('arbeidsulykkeyrkessykdom.brukerStatusAnnet', undefined))
+      dispatch(updateReplySed('yrkesskade.brukerStatusAnnet', undefined))
     }
   }
 
   const setBrukerStatusAnnet = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.brukerStatusAnnet', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.brukerStatusAnnet', value.trim() || undefined))
   }
 
   const setSykdomKode = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.sykdomKode', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.sykdomKode', value.trim() || undefined))
   }
 
   const setSykdomKodingssystem = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.sykdomKodingssystem', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.sykdomKodingssystem', value.trim() || undefined))
   }
 
   const setKonsekvensEllerBeskrivelse = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.konsekvensEllerBeskrivelse', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.konsekvensEllerBeskrivelse', value.trim() || undefined))
   }
 
   const setArbeidsgiverNavn = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.arbeidsgiver.navn', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.arbeidsgiver.navn', value.trim() || undefined))
   }
 
   const setArbeidsgiverGate = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.arbeidsgiver.adresse.gate', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.arbeidsgiver.adresse.gate', value.trim() || undefined))
   }
 
   const setArbeidsgiverBygning = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.arbeidsgiver.adresse.bygning', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.arbeidsgiver.adresse.bygning', value.trim() || undefined))
   }
 
   const setArbeidsgiverPostnummer = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.arbeidsgiver.adresse.postnummer', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.arbeidsgiver.adresse.postnummer', value.trim() || undefined))
   }
 
   const setArbeidsgiverBy = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.arbeidsgiver.adresse.by', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.arbeidsgiver.adresse.by', value.trim() || undefined))
   }
 
   const setArbeidsgiverRegion = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.arbeidsgiver.adresse.region', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.arbeidsgiver.adresse.region', value.trim() || undefined))
   }
 
   const setArbeidsgiverLandkode = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.arbeidsgiver.adresse.landkode', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.arbeidsgiver.adresse.landkode', value.trim() || undefined))
   }
 
   const setIdentifikatorType = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.arbeidsgiver.identifikator[0].type', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.arbeidsgiver.identifikator[0].type', value.trim() || undefined))
   }
 
   const setIdentifikatorId = (value: string) => {
-    dispatch(updateReplySed('arbeidsulykkeyrkessykdom.arbeidsgiver.identifikator[0].id', value.trim() || undefined))
+    dispatch(updateReplySed('yrkesskade.arbeidsgiver.identifikator[0].id', value.trim() || undefined))
   }
 
-  const awod = sed.arbeidsulykkeyrkessykdom
+  const awod = sed.yrkesskade
   const adresse = awod?.arbeidsgiver?.adresse
   const hasAnyAdresseField = !!(
     adresse?.gate?.trim() || adresse?.bygning?.trim() || adresse?.postnummer?.trim() ||
@@ -169,8 +169,8 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
           menuPortalTarget={document.body}
           onChange={(o: unknown) => setType((o as Option).value)}
           options={awodTypeOptions}
-          value={_.find(awodTypeOptions, o => o.value === sed.arbeidsulykkeyrkessykdom?.type)}
-          defaultValue={_.find(awodTypeOptions, o => o.value === sed.arbeidsulykkeyrkessykdom?.type)}
+          value={_.find(awodTypeOptions, o => o.value === sed.yrkesskade?.type)}
+          defaultValue={_.find(awodTypeOptions, o => o.value === sed.yrkesskade?.type)}
         />
 
         <HStack>
@@ -180,7 +180,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
             namespace={namespace}
             label={t('label:dato-for-ulykken-sykdommen') + (hasAnyAWODField ? ' *' : '')}
             onChanged={setDato}
-            dateValue={sed.arbeidsulykkeyrkessykdom?.dato}
+            dateValue={sed.yrkesskade?.dato}
           />
         </HStack>
 
@@ -191,11 +191,11 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
           menuPortalTarget={document.body}
           onChange={(o: unknown) => setBrukerStatus((o as Option).value)}
           options={brukerStatusOptions}
-          value={_.find(brukerStatusOptions, o => o.value === sed.arbeidsulykkeyrkessykdom?.brukerStatus)}
-          defaultValue={_.find(brukerStatusOptions, o => o.value === sed.arbeidsulykkeyrkessykdom?.brukerStatus)}
+          value={_.find(brukerStatusOptions, o => o.value === sed.yrkesskade?.brukerStatus)}
+          defaultValue={_.find(brukerStatusOptions, o => o.value === sed.yrkesskade?.brukerStatus)}
         />
 
-        {sed.arbeidsulykkeyrkessykdom?.brukerStatus === 'annet' && (
+        {sed.yrkesskade?.brukerStatus === 'annet' && (
           <TextArea
             error={validation[namespace + '-brukerStatusAnnet']?.feilmelding}
             namespace={namespace}
@@ -203,7 +203,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
             label={t('label:angi-status-annet')}
             maxLength={65}
             onChanged={setBrukerStatusAnnet}
-            value={sed.arbeidsulykkeyrkessykdom?.brukerStatusAnnet}
+            value={sed.yrkesskade?.brukerStatusAnnet}
           />
         )}
 
@@ -214,7 +214,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
             id='sykdomKode'
             label={t('label:kode-arbeidsulykke-yrkessykdom')}
             onChanged={setSykdomKode}
-            value={sed.arbeidsulykkeyrkessykdom?.sykdomKode}
+            value={sed.yrkesskade?.sykdomKode}
           />
           <Input
             error={validation[namespace + '-sykdomKodingssystem']?.feilmelding}
@@ -222,7 +222,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
             id='sykdomKodingssystem'
             label={t('label:kodingssystem')}
             onChanged={setSykdomKodingssystem}
-            value={sed.arbeidsulykkeyrkessykdom?.sykdomKodingssystem}
+            value={sed.yrkesskade?.sykdomKodingssystem}
           />
         </HGrid>
 
@@ -233,7 +233,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
           label={t('label:konsekvenser-eller-beskrivelse')}
           maxLength={255}
           onChanged={setKonsekvensEllerBeskrivelse}
-          value={sed.arbeidsulykkeyrkessykdom?.konsekvensEllerBeskrivelse}
+          value={sed.yrkesskade?.konsekvensEllerBeskrivelse}
         />
 
         <Heading size='xsmall'>
@@ -245,7 +245,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
           id='arbeidsgiverNavn'
           label={t('label:arbeidsgiver-navn') + (hasAnyAWODField ? ' *' : '')}
           onChanged={setArbeidsgiverNavn}
-          value={sed.arbeidsulykkeyrkessykdom?.arbeidsgiver?.navn}
+          value={sed.yrkesskade?.arbeidsgiver?.navn}
         />
         <HGrid columns={2} gap="space-16" align="start">
           <Input
@@ -254,7 +254,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
             id='identifikatorId'
             label={t('label:arbeidsgiver-identifikator-id') + (hasAnyIdentifikatorField ? ' *' : '')}
             onChanged={setIdentifikatorId}
-            value={sed.arbeidsulykkeyrkessykdom?.arbeidsgiver?.identifikator?.[0]?.id}
+            value={sed.yrkesskade?.arbeidsgiver?.identifikator?.[0]?.id}
           />
           <Select
             data-testid={namespace + '-identifikatorType'}
@@ -264,8 +264,8 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
             menuPortalTarget={document.body}
             onChange={(o: unknown) => setIdentifikatorType((o as Option).value)}
             options={identifikatorTypeOptions}
-            value={_.find(identifikatorTypeOptions, o => o.value === sed.arbeidsulykkeyrkessykdom?.arbeidsgiver?.identifikator?.[0]?.type)}
-            defaultValue={_.find(identifikatorTypeOptions, o => o.value === sed.arbeidsulykkeyrkessykdom?.arbeidsgiver?.identifikator?.[0]?.type)}
+            value={_.find(identifikatorTypeOptions, o => o.value === sed.yrkesskade?.arbeidsgiver?.identifikator?.[0]?.type)}
+            defaultValue={_.find(identifikatorTypeOptions, o => o.value === sed.yrkesskade?.arbeidsgiver?.identifikator?.[0]?.type)}
           />
         </HGrid>
         <HGrid columns={"2fr 1fr"} gap="space-16">
@@ -275,7 +275,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
             id='arbeidsgiverGate'
             label={t('label:gateadresse')}
             onChanged={setArbeidsgiverGate}
-            value={sed.arbeidsulykkeyrkessykdom?.arbeidsgiver?.adresse?.gate}
+            value={sed.yrkesskade?.arbeidsgiver?.adresse?.gate}
           />
           <Input
             error={undefined}
@@ -283,7 +283,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
             id='arbeidsgiverBygning'
             label={t('label:bygning')}
             onChanged={setArbeidsgiverBygning}
-            value={sed.arbeidsulykkeyrkessykdom?.arbeidsgiver?.adresse?.bygning}
+            value={sed.yrkesskade?.arbeidsgiver?.adresse?.bygning}
           />
         </HGrid>
         <HGrid columns={4} gap="space-16" align="start">
@@ -293,7 +293,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
             id='arbeidsgiverPostnummer'
             label={t('label:postnr')}
             onChanged={setArbeidsgiverPostnummer}
-            value={sed.arbeidsulykkeyrkessykdom?.arbeidsgiver?.adresse?.postnummer}
+            value={sed.yrkesskade?.arbeidsgiver?.adresse?.postnummer}
           />
           <Input
             error={validation[namespace + '-arbeidsgiverBy']?.feilmelding}
@@ -301,7 +301,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
             id='arbeidsgiverBy'
             label={t('label:by') + (hasAnyAdresseField ? ' *' : '')}
             onChanged={setArbeidsgiverBy}
-            value={sed.arbeidsulykkeyrkessykdom?.arbeidsgiver?.adresse?.by}
+            value={sed.yrkesskade?.arbeidsgiver?.adresse?.by}
           />
           <Input
             error={undefined}
@@ -309,7 +309,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
             id='arbeidsgiverRegion'
             label={t('label:region')}
             onChanged={setArbeidsgiverRegion}
-            value={sed.arbeidsulykkeyrkessykdom?.arbeidsgiver?.adresse?.region}
+            value={sed.yrkesskade?.arbeidsgiver?.adresse?.region}
           />
           <div style={{ maxWidth: '400px' }}>
             <CountryDropdown
@@ -322,7 +322,7 @@ const AWODSpoersmaal: React.FC<MainFormProps> = ({
               label={t('label:land') + (hasAnyAdresseField ? ' *' : '')}
               menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => setArbeidsgiverLandkode(e.value3)}
-              values={sed.arbeidsulykkeyrkessykdom?.arbeidsgiver?.adresse?.landkode}
+              values={sed.yrkesskade?.arbeidsgiver?.adresse?.landkode}
             />
           </div>
         </HGrid>

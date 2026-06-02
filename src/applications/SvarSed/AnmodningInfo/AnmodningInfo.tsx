@@ -10,13 +10,23 @@ import { State } from 'declarations/reducers'
 import { H120Sed } from 'declarations/h120'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { JSX } from 'react';
+import React, { useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
+
+const deriveGjelderArbeidsufoerhet = (sed: H120Sed): string => {
+  if (sed.arbeidsufoer?.periodeStartdato || sed.arbeidsufoer?.periodeSluttdato) {
+    return 'ja'
+  }
+  if (sed.arbeidsdyktig?.dekkesKostnader) {
+    return 'nei'
+  }
+  return ''
+}
 
 const AnmodningInfo: React.FC<MainFormProps> = ({
   label,
@@ -32,7 +42,11 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-anmodninginfo`
   const sed = replySed as H120Sed
 
-  const dekningKostnaderOptions: Options = [
+  const [gjelderArbeidsufoerhet, setGjelderArbeidsufoerhetState] = useState<string>(
+    () => deriveGjelderArbeidsufoerhet(sed)
+  )
+
+  const dekkesKostnaderOptions: Options = [
     { label: t('el:option-h120-dekningkostnader-ja'), value: 'ja' },
     { label: t('el:option-h120-dekningkostnader-nei'), value: 'nei' },
     { label: t('el:option-h120-dekningkostnader-gjelder_ikke'), value: 'gjelder_ikke' }
@@ -50,11 +64,11 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
   })
 
   const setGjelderArbeidsufoerhet = (value: string) => {
-    const boolValue = value === 'ja'
-    dispatch(updateReplySed('anmodningInfo.gjelderArbeidsufoerhet', boolValue))
-    if (!boolValue) {
-      dispatch(updateReplySed('anmodningInfo.periodeStartdato', undefined))
-      dispatch(updateReplySed('anmodningInfo.periodeSluttdato', undefined))
+    setGjelderArbeidsufoerhetState(value)
+    if (value === 'ja') {
+      dispatch(updateReplySed('arbeidsdyktig', undefined))
+    } else {
+      dispatch(updateReplySed('arbeidsufoer', undefined))
     }
     if (validation[namespace + '-gjelderArbeidsufoerhet']) {
       dispatch(resetValidation(namespace + '-gjelderArbeidsufoerhet'))
@@ -62,27 +76,30 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
   }
 
   const setPeriodeStartdato = (value: string) => {
-    dispatch(updateReplySed('anmodningInfo.periodeStartdato', value.trim()))
+    dispatch(updateReplySed('arbeidsufoer.periodeStartdato', value.trim()))
     if (validation[namespace + '-startdato']) {
       dispatch(resetValidation(namespace + '-startdato'))
     }
   }
 
   const setPeriodeSluttdato = (value: string) => {
-    dispatch(updateReplySed('anmodningInfo.periodeSluttdato', value.trim()))
+    dispatch(updateReplySed('arbeidsufoer.periodeSluttdato', value.trim()))
     if (validation[namespace + '-sluttdato']) {
       dispatch(resetValidation(namespace + '-sluttdato'))
     }
   }
 
-  const setDekningKostnader = (value: string) => {
-    dispatch(updateReplySed('anmodningInfo.dekningKostnader', value.trim()))
-    if (validation[namespace + '-dekningKostnader']) {
-      dispatch(resetValidation(namespace + '-dekningKostnader'))
+  const setDekkesKostnader = (value: string) => {
+    const target = gjelderArbeidsufoerhet === 'ja' ? 'arbeidsufoer.dekkesKostnader' : 'arbeidsdyktig.dekkesKostnader'
+    dispatch(updateReplySed(target, value.trim()))
+    if (validation[namespace + '-dekkesKostnader']) {
+      dispatch(resetValidation(namespace + '-dekkesKostnader'))
     }
   }
 
-  const gjelderArbeidsufoerhet = sed.anmodningInfo?.gjelderArbeidsufoerhet
+  const currentDekkesKostnader = gjelderArbeidsufoerhet === 'ja'
+    ? sed.arbeidsufoer?.dekkesKostnader
+    : sed.arbeidsdyktig?.dekkesKostnader
 
   return (
     <Box padding="space-16">
@@ -92,7 +109,7 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
         </Heading>
 
         <RadioGroup
-          value={gjelderArbeidsufoerhet === true ? 'ja' : gjelderArbeidsufoerhet === false ? 'nei' : ''}
+          value={gjelderArbeidsufoerhet}
           data-no-border
           data-testid={namespace + '-gjelderArbeidsufoerhet'}
           error={validation[namespace + '-gjelderArbeidsufoerhet']?.feilmelding}
@@ -111,7 +128,7 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
           </HStack>
         </RadioGroup>
 
-        {gjelderArbeidsufoerhet === true && (
+        {gjelderArbeidsufoerhet === 'ja' && (
           <HGrid columns={2} gap="space-16" align="start">
             <DateField
               error={validation[namespace + '-startdato']?.feilmelding}
@@ -120,7 +137,7 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
               label={t('label:startdato-arbeidsufoerhet')}
               onChanged={setPeriodeStartdato}
               required
-              dateValue={sed.anmodningInfo?.periodeStartdato}
+              dateValue={sed.arbeidsufoer?.periodeStartdato}
             />
             <DateField
               error={validation[namespace + '-sluttdato']?.feilmelding}
@@ -129,23 +146,25 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
               label={t('label:sluttdato-arbeidsufoerhet')}
               onChanged={setPeriodeSluttdato}
               required
-              dateValue={sed.anmodningInfo?.periodeSluttdato}
+              dateValue={sed.arbeidsufoer?.periodeSluttdato}
             />
           </HGrid>
         )}
 
-        <Select
-          data-testid={namespace + '-dekningKostnader'}
-          error={validation[namespace + '-dekningKostnader']?.feilmelding}
-          id={namespace + '-dekningKostnader'}
-          label={t('label:dekking-av-kostnader')}
-          menuPortalTarget={document.body}
-          onChange={(o: unknown) => setDekningKostnader((o as Option).value)}
-          options={dekningKostnaderOptions}
-          required
-          value={_.find(dekningKostnaderOptions, o => o.value === sed.anmodningInfo?.dekningKostnader)}
-          defaultValue={_.find(dekningKostnaderOptions, o => o.value === sed.anmodningInfo?.dekningKostnader)}
-        />
+        {gjelderArbeidsufoerhet !== '' && (
+          <Select
+            data-testid={namespace + '-dekkesKostnader'}
+            error={validation[namespace + '-dekkesKostnader']?.feilmelding}
+            id={namespace + '-dekkesKostnader'}
+            label={t('label:dekking-av-kostnader')}
+            menuPortalTarget={document.body}
+            onChange={(o: unknown) => setDekkesKostnader((o as Option).value)}
+            options={dekkesKostnaderOptions}
+            required
+            value={_.find(dekkesKostnaderOptions, o => o.value === currentDekkesKostnader)}
+            defaultValue={_.find(dekkesKostnaderOptions, o => o.value === currentDekkesKostnader)}
+          />
+        )}
       </VStack>
     </Box>
   )

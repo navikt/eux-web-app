@@ -56,14 +56,14 @@ const FamilieytelseSpoersmaal: React.FC<MainFormProps> = ({
   })
 
   const setEtterspurtDokumentasjon = (values: string[]) => {
-    dispatch(updateReplySed('familie.etterspurtDokumentasjon', values.length > 0 ? values : undefined))
+    dispatch(updateReplySed('familieYtelse.etterspurtDokumentasjon', values.length > 0 ? values : undefined))
     if (validation[namespace + '-etterspurtDokumentasjon']) {
       dispatch(resetValidation(namespace + '-etterspurtDokumentasjon'))
     }
   }
 
   const setAnnenDokumentasjon = (value: string) => {
-    dispatch(updateReplySed('familie.annenDokumentasjon', value.trim() || undefined))
+    dispatch(updateReplySed('familieYtelse.annenDokumentasjon', value.trim() || undefined))
   }
 
   return (
@@ -76,7 +76,7 @@ const FamilieytelseSpoersmaal: React.FC<MainFormProps> = ({
         <CheckboxGroup
           legend={t('label:etterspurt-dokumentasjon-familieytelser')}
           error={validation[namespace + '-etterspurtDokumentasjon']?.feilmelding}
-          value={sed.familie?.etterspurtDokumentasjon ?? []}
+          value={sed.familieYtelse?.etterspurtDokumentasjon ?? []}
           onChange={setEtterspurtDokumentasjon}
         >
           {familieEtterspurtDokumentasjonOptions.map(opt => (
@@ -93,7 +93,7 @@ const FamilieytelseSpoersmaal: React.FC<MainFormProps> = ({
           label={t('label:annen-dokumentasjon-familieytelser')}
           maxLength={500}
           onChanged={setAnnenDokumentasjon}
-          value={sed.familie?.annenDokumentasjon}
+          value={sed.familieYtelse?.annenDokumentasjon}
         />
       </VStack>
     </Box>

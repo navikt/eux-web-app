@@ -65,11 +65,11 @@ const BeroertYtelse: React.FC<MainFormProps> = ({
   const setBeroertYtelse = (value: string) => {
     const trimmed = value.trim()
     dispatch(updateReplySed('beroertYtelse', trimmed))
-    if (trimmed !== 'familieytelse' && sed.familie) {
-      dispatch(updateReplySed('familie', undefined))
+    if (trimmed !== 'familieytelse' && sed.familieYtelse) {
+      dispatch(updateReplySed('familieYtelse', undefined))
     }
-    if (!isAWODYtelse(trimmed) && sed.arbeidsulykkeyrkessykdom) {
-      dispatch(updateReplySed('arbeidsulykkeyrkessykdom', undefined))
+    if (!isAWODYtelse(trimmed) && sed.yrkesskade) {
+      dispatch(updateReplySed('yrkesskade', undefined))
     }
     if (validation[namespace + '-beroertYtelse']) {
       dispatch(resetValidation(namespace + '-beroertYtelse'))

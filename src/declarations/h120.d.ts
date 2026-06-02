@@ -1,4 +1,4 @@
-import { HSed } from 'declarations/sed'
+import { Adresse, BaseReplySed, PersonInfo } from 'declarations/sed'
 
 // ===== Berørt ytelse (Section 2) =====
 
@@ -38,7 +38,7 @@ export interface KravetsArt {
   spesielleKravTilDokumentasjon?: string
 }
 
-// ===== AWOD — Arbeidsulykke/yrkessykdom (Section 4) =====
+// ===== Yrkesskade — Arbeidsulykke/yrkessykdom (Section 6) =====
 
 export type AWODType = 'arbeidsulykke' | 'yrkessykdom'
 
@@ -71,7 +71,7 @@ export interface Arbeidsgiver {
   identifikator?: Array<ArbeidsgiverIdentifikator>
 }
 
-export interface Arbeidsulykkeyrkessykdom {
+export interface Yrkesskade {
   type?: AWODType
   dato?: string
   brukerStatus?: BrukerStatusType
@@ -82,18 +82,21 @@ export interface Arbeidsulykkeyrkessykdom {
   arbeidsgiver?: Arbeidsgiver
 }
 
-// ===== Informasjon om anmodningen (Section 5) =====
+// ===== Arbeidsufoer / Arbeidsdyktig (Section 4) =====
 
-export type DekningKostnaderType = 'ja' | 'nei' | 'gjelder_ikke'
+export type DekkesKostnaderType = 'ja' | 'nei' | 'gjelder_ikke'
 
-export interface AnmodningInfo {
-  gjelderArbeidsufoerhet?: boolean
+export interface Arbeidsufoer {
   periodeStartdato?: string
   periodeSluttdato?: string
-  dekningKostnader?: DekningKostnaderType
+  dekkesKostnader?: DekkesKostnaderType
 }
 
-// ===== Familie (Section 6) =====
+export interface Arbeidsdyktig {
+  dekkesKostnader?: DekkesKostnaderType
+}
+
+// ===== FamilieYtelse (Section 5) =====
 
 export type FamilieEtterspurtDokumentasjonType =
   | 'grad_av_selvhjulpenhet'
@@ -108,17 +111,27 @@ export type FamilieEtterspurtDokumentasjonType =
   | 'prognose'
   | 'grad_av_inntektsevne'
 
-export interface Familie {
+export interface FamilieYtelse {
   etterspurtDokumentasjon?: Array<FamilieEtterspurtDokumentasjonType>
   annenDokumentasjon?: string
 }
 
+// ===== H120 Bruker =====
+
+export interface H120Bruker {
+  personInfo: PersonInfo
+  adresse?: Adresse
+}
+
 // ===== H120 SED =====
 
-export interface H120Sed extends HSed {
+export interface H120Sed extends BaseReplySed {
+  bruker: H120Bruker
+  ytterligereInfo?: string
   beroertYtelse?: BeroertYtelseType
   kravetsArt?: KravetsArt
-  arbeidsulykkeyrkessykdom?: Arbeidsulykkeyrkessykdom
-  anmodningInfo?: AnmodningInfo
-  familie?: Familie
+  yrkesskade?: Yrkesskade
+  arbeidsufoer?: Arbeidsufoer
+  arbeidsdyktig?: Arbeidsdyktig
+  familieYtelse?: FamilieYtelse
 }

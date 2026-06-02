@@ -24,16 +24,12 @@
         }
       ]
     },
-    "adresser": [
-      {
-        "type": "bosted",
-        "gate": "Storgata 1",
-        "postnummer": "0101",
-        "by": "Oslo",
-        "land": "NO",
-        "landkode": "NOR"
-      }
-    ]
+    "adresse": {
+      "gate": "Storgata 1",
+      "postnummer": "0101",
+      "by": "Oslo",
+      "landkode": "NOR"
+    }
   },
   "beroertYtelse": "sykepenger_som_kontantytelse_i_forbindelse_med_arbeidsuførhet",
   "kravetsArt": {
@@ -42,15 +38,12 @@
     ],
     "etterspurtDokumentasjon": [
       "standard_medisinsk_rapport"
-    ],
-    "annenDokumentasjon": "",
-    "spesielleKravTilDokumentasjon": ""
+    ]
   },
-  "anmodningInfo": {
-    "gjelderArbeidsufoerhet": true,
+  "arbeidsufoer": {
     "periodeStartdato": "2025-01-01",
     "periodeSluttdato": "2025-06-30",
-    "dekningKostnader": "ja"
+    "dekkesKostnader": "ja"
   },
-  "ytterligereInformasjon": ""
+  "ytterligereInfo": ""
 }
