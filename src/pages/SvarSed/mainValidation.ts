@@ -1,4 +1,4 @@
-import {validateAdresser, validateAnmodningOmAdresse, ValidationAdresserProps} from 'applications/SvarSed/Adresser/validation'
+import {validateAdresser, validateAdresseH120, validateAnmodningOmAdresse, ValidationAdresseH120Props, ValidationAdresserProps} from 'applications/SvarSed/Adresser/validation'
 import { validateAnmodning, ValidationAnmodningProps } from 'applications/SvarSed/Anmodning/validation'
 import {
   validateAnmodningsPerioder, validateKrav,
@@ -427,9 +427,16 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
       statsborgerskaper, personName
     }, true))
-    hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
-      adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName
-    }, true))
+    if (!isH120Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
+        adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName
+      }, true))
+    }
+    if (isH120Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationAdresseH120Props>(v, `svarsed-${personID}-adresse`, validateAdresseH120, {
+        adresse: _.get(replySed, `${personID}.adresse`), personName
+      }, true))
+    }
     if (isH002Sed(replySed)) {
       hasErrors.push(performValidation<ValidationSvarPåForespørselProps>(v, `svarsed-${personID}-svarpåforespørsel`, validateSvarPåForespørsel, {
         replySed,

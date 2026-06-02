@@ -111,6 +111,80 @@ export const validateAdresser = (
   return hasErrors.find(value => value) !== undefined
 }
 
+export interface ValidationAdresseH120Props {
+  adresse: Adresse | undefined
+  personName?: string
+}
+
+export const validateAdresseH120 = (
+  v: Validation,
+  namespace: string,
+  {
+    adresse,
+    personName
+  }: ValidationAdresseH120Props
+): boolean => {
+  const hasErrors: Array<boolean> = []
+
+  const hasAnyField = !!(
+    adresse?.gate?.trim() || adresse?.bygning?.trim() || adresse?.postnummer?.trim() ||
+    adresse?.by?.trim() || adresse?.region?.trim() || adresse?.landkode?.trim()
+  )
+
+  if (hasAnyField) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: adresse?.by,
+      id: namespace + '-by',
+      message: 'validation:noAddressCity',
+      personName
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: adresse?.landkode,
+      id: namespace + '-land',
+      message: 'validation:noAddressCountry',
+      personName
+    }))
+  }
+
+  hasErrors.push(checkLength(v, {
+    needle: adresse?.gate,
+    id: namespace + '-gate',
+    max: 155,
+    message: 'validation:textOverX'
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: adresse?.bygning,
+    id: namespace + '-bygning',
+    max: 155,
+    message: 'validation:textOverX'
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: adresse?.by,
+    id: namespace + '-by',
+    max: 65,
+    message: 'validation:textOverX'
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: adresse?.postnummer,
+    id: namespace + '-postnummer',
+    max: 25,
+    message: 'validation:textOverX'
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: adresse?.region,
+    id: namespace + '-region',
+    max: 65,
+    message: 'validation:textOverX'
+  }))
+
+  return hasErrors.find(value => value) !== undefined
+}
+
 export const validateAnmodningOmAdresse = ({}: any): boolean => {
   const hasErrors: Array<boolean> = []
 
