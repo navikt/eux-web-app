@@ -27,8 +27,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "8.10.5",
-    "@navikt/ds-css": "8.11.0",
+    "@navikt/aksel-icons": "8.11.0",
+    "@navikt/ds-css": "8.10.5",
     "@navikt/ds-react": "8.10.5",
     "@navikt/eessi-kodeverk": "2.4.3",
     "@navikt/fetch": "7.2.13",
@@ -81,7 +81,7 @@
     "@types/lodash": "4.17.24",
     "@types/md5": "2.3.6",
     "@types/node": "24.12.4",
-    "@types/react": "19.2.15",
+    "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
@@ -101,7 +101,7 @@
     "shelljs": "0.10.0",
     "simple-git": "3.36.0",
     "standardx": "7.0.0",
-    "ts-jest": "29.4.11",
+    "ts-jest": "29.4.9",
     "typescript": "5.9.3",
     "vite": "7.3.3",
     "vite-plugin-svgr": "4.5.0",
