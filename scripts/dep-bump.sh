@@ -346,7 +346,7 @@ merge_branches() {
       warn "Lock file conflict in PR #$number — resolving..."
       git checkout --theirs package-lock.json 2>/dev/null
       git checkout --theirs package.json 2>/dev/null
-      npm install --package-lock-only --quiet 2>/dev/null
+      npm install --include=optional --package-lock-only --quiet 2>/dev/null
       git add package-lock.json package.json
       git commit --no-edit --quiet
       MERGE_STATUS[$i]="merged"
@@ -366,7 +366,7 @@ verify_build() {
   header "Step 5: Verifying build"
 
   info "Installing dependencies..."
-  npm install --quiet 2>/dev/null
+  npm install --include=optional --quiet 2>/dev/null
   ok "Dependencies installed"
 
   # Commit any lock file changes from npm install
