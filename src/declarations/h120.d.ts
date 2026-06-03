@@ -118,7 +118,7 @@ export interface FamilieYtelse {
 
 // ===== H120 Bruker =====
 
-export interface H120Bruker {
+export interface Bruker {
   personInfo: PersonInfo
   adresse?: Adresse
 }
@@ -126,7 +126,7 @@ export interface H120Bruker {
 // ===== H120 SED =====
 
 export interface H120Sed extends BaseReplySed {
-  bruker: H120Bruker
+  bruker: Bruker
   ytterligereInfo?: string
   beroertYtelse?: BeroertYtelseType
   kravetsArt?: KravetsArt

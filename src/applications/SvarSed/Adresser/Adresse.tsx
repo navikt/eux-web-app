@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import { validateAdresseH120, ValidationAdresseH120Props } from './validation'
+import { validateAdresse, ValidationAdresseProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -34,9 +34,11 @@ const Adresse: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
-    performValidation<ValidationAdresseH120Props>(
-      clonedvalidation, namespace, validateAdresseH120, {
+    performValidation<ValidationAdresseProps>(
+      clonedvalidation, namespace, validateAdresse, {
         adresse,
+        checkAdresseType: false,
+        optional: true,
         personName
       }, true
     )

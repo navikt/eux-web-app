@@ -1,4 +1,4 @@
-import {validateAdresser, validateAdresseH120, validateAnmodningOmAdresse, ValidationAdresseH120Props, ValidationAdresserProps} from 'applications/SvarSed/Adresser/validation'
+import {validateAdresse, validateAdresser, validateAnmodningOmAdresse, ValidationAdresseProps, ValidationAdresserProps} from 'applications/SvarSed/Adresser/validation'
 import { validateAnmodning, ValidationAnmodningProps } from 'applications/SvarSed/Anmodning/validation'
 import {
   validateAnmodningsPerioder, validateKrav,
@@ -433,8 +433,8 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (isH120Sed(replySed)) {
-      hasErrors.push(performValidation<ValidationAdresseH120Props>(v, `svarsed-${personID}-adresseH120`, validateAdresseH120, {
-        adresse: _.get(replySed, `${personID}.adresse`), personName
+      hasErrors.push(performValidation<ValidationAdresseProps>(v, `svarsed-${personID}-adresseH120`, validateAdresse, {
+        adresse: _.get(replySed, `${personID}.adresse`), checkAdresseType: false, optional: true, personName
       }, true))
     }
     if (isH002Sed(replySed)) {
