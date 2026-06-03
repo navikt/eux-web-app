@@ -433,7 +433,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (isH120Sed(replySed)) {
-      hasErrors.push(performValidation<ValidationAdresseH120Props>(v, `svarsed-${personID}-adresse`, validateAdresseH120, {
+      hasErrors.push(performValidation<ValidationAdresseH120Props>(v, `svarsed-${personID}-adresseH120`, validateAdresseH120, {
         adresse: _.get(replySed, `${personID}.adresse`), personName
       }, true))
     }

@@ -22,14 +22,15 @@ const Adresse: React.FC<MainFormProps> = ({
   personID,
   personName,
   replySed,
-  updateReplySed
+  updateReplySed,
+  formValue
 }: MainFormProps): JSX.Element => {
   const { validation }: MainFormSelector = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const target = `${personID}.adresse`
   const adresse: IAdresse | undefined = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-adresse`
+  const namespace = `${parentNamespace}-${personID}-${formValue ?? 'adresse'}`
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
