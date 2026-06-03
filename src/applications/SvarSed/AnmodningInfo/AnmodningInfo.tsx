@@ -19,10 +19,10 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const deriveGjelderArbeidsufoerhet = (sed: H120Sed): string => {
-  if (sed.arbeidsufoer?.periodeStartdato || sed.arbeidsufoer?.periodeSluttdato) {
+  if (sed.arbeidsufoer !== undefined) {
     return 'ja'
   }
-  if (sed.arbeidsdyktig?.dekkesKostnader) {
+  if (sed.arbeidsdyktig !== undefined) {
     return 'nei'
   }
   return ''
@@ -67,8 +67,14 @@ const AnmodningInfo: React.FC<MainFormProps> = ({
     setGjelderArbeidsufoerhetState(value)
     if (value === 'ja') {
       dispatch(updateReplySed('arbeidsdyktig', undefined))
+      if (!sed.arbeidsufoer) {
+        dispatch(updateReplySed('arbeidsufoer', {}))
+      }
     } else {
       dispatch(updateReplySed('arbeidsufoer', undefined))
+      if (!sed.arbeidsdyktig) {
+        dispatch(updateReplySed('arbeidsdyktig', {}))
+      }
     }
     if (validation[namespace + '-gjelderArbeidsufoerhet']) {
       dispatch(resetValidation(namespace + '-gjelderArbeidsufoerhet'))

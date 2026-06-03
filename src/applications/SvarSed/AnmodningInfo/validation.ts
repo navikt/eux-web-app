@@ -20,8 +20,8 @@ export const validateAnmodningInfo = (
   const hasErrors: Array<boolean> = []
   const sed = replySed as H120Sed
 
-  const isArbeidsufoer = !!(sed.arbeidsufoer?.periodeStartdato || sed.arbeidsufoer?.periodeSluttdato)
-  const isArbeidsdyktig = !!sed.arbeidsdyktig?.dekkesKostnader
+  const isArbeidsufoer = sed.arbeidsufoer !== undefined
+  const isArbeidsdyktig = sed.arbeidsdyktig !== undefined
   const hasSelection = isArbeidsufoer || isArbeidsdyktig
 
   if (!hasSelection) {
