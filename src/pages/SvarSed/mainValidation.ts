@@ -7,6 +7,8 @@ import {
 import { validateAvslutning, ValidationAvslutningProps } from 'applications/SvarSed/Avslutning/validation'
 import { validateAvvis, ValidationAvvisProps } from 'applications/SvarSed/Avvis/validation'
 import { validateGjenaapning, ValidationGjenaapningProps } from 'applications/SvarSed/Gjenaapning/validation'
+import { validateLeggTilInstitusjon, ValidationLeggTilInstitusjonProps } from 'applications/SvarSed/LeggTilInstitusjon/validation'
+import { validateFjernInstitusjon, ValidationFjernInstitusjonProps } from 'applications/SvarSed/FjernInstitusjon/validation'
 import {
   validateBeløpNavnOgValutas,
   ValidationBeløpNavnOgValutasProps
@@ -111,6 +113,8 @@ import {
 import { H120Sed } from 'declarations/h120'
 import { X002Sed } from 'declarations/x002'
 import { X003Sed } from 'declarations/x003'
+import { X005Sed } from 'declarations/x005'
+import { X006Sed } from 'declarations/x006'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
 import _ from 'lodash'
@@ -130,6 +134,8 @@ import {
   isX001Sed,
   isX002Sed,
   isX003Sed,
+  isX005Sed,
+  isX006Sed,
   isX008Sed,
   isX009Sed,
   isX010Sed, isX011Sed, isX012Sed,
@@ -513,6 +519,16 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     if (isX002Sed(replySed)) {
       hasErrors.push(performValidation<ValidationGjenaapningProps>(v, `svarsed-${personID}-gjenaapning`, validateGjenaapning, {
         replySed: (replySed as X002Sed), personName
+      }, true))
+    }
+    if (isX005Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationLeggTilInstitusjonProps>(v, `svarsed-${personID}-leggtilinstitusjon`, validateLeggTilInstitusjon, {
+        replySed: (replySed as X005Sed), personName
+      }, true))
+    }
+    if (isX006Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationFjernInstitusjonProps>(v, `svarsed-${personID}-fjerninstitusjon`, validateFjernInstitusjon, {
+        replySed: (replySed as X006Sed), personName
       }, true))
     }
     if (isX008Sed(replySed)) {
