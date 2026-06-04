@@ -192,5 +192,7 @@
   "noAvslag": "Avslag er påkrevd",
   "noAvslagGrunn": "Avslagsgrunn er påkrevd",
   "noAvslagGrunnAnnet": "Annen avslagsgrunn er påkrevd",
-  "noRefusjoner": "Minst én refusjon er påkrevd"
+  "noRefusjoner": "Minst én refusjon er påkrevd",
+  "noInstitusjon": "Institusjon er påkrevd",
+  "noGrunnType": "Grunn er påkrevd"
 }

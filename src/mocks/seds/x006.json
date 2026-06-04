@@ -1,0 +1,16 @@
+{
+  "bruker": {
+    "fornavn": "Kari",
+    "etternavn": "Nordmann",
+    "kjoenn": "K",
+    "foedselsdato": "1990-01-15"
+  },
+  "fjernInstitusjon": {
+    "institusjonId": "RO:70005",
+    "institusjonNavn": "ACC_County Agency For Employment Bihor",
+    "grunnType": "personen_arbeider_ikke_eller_har_ikke_arbeidet_i_dette_landet",
+    "grunnAnnet": ""
+  },
+  "sedType": "X006",
+  "sedVersjon": "4.4"
+}

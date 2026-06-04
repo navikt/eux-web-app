@@ -1,0 +1,16 @@
+{
+  "bruker": {
+    "fornavn": "Kari",
+    "etternavn": "Nordmann",
+    "kjoenn": "K",
+    "foedselsdato": "1990-01-15"
+  },
+  "leggTilInstitusjon": {
+    "institusjonId": "NO:NAVAT07",
+    "institusjonNavn": "NAV ACC 07",
+    "grunnType": "personen_arbeider_eller_har_arbeidet_i_dette_landet",
+    "grunnAnnet": ""
+  },
+  "sedType": "X005",
+  "sedVersjon": "4.4"
+}
