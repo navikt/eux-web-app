@@ -9,6 +9,8 @@ import { validateAvvis, ValidationAvvisProps } from 'applications/SvarSed/Avvis/
 import { validateGjenaapning, ValidationGjenaapningProps } from 'applications/SvarSed/Gjenaapning/validation'
 import { validateBekreftelseGjenaapning, ValidationBekreftelseGjenaapningProps } from 'applications/SvarSed/BekreftelseGjenaapning/validation'
 import { validateVideresend, ValidationVideresendProps } from 'applications/SvarSed/Videresend/validation'
+import { validateLeggTilInstitusjon, ValidationLeggTilInstitusjonProps } from 'applications/SvarSed/LeggTilInstitusjon/validation'
+import { validateFjernInstitusjon, ValidationFjernInstitusjonProps } from 'applications/SvarSed/FjernInstitusjon/validation'
 import {
   validateBeløpNavnOgValutas,
   ValidationBeløpNavnOgValutasProps
@@ -115,6 +117,8 @@ import { X002Sed } from 'declarations/x002'
 import { X003Sed } from 'declarations/x003'
 import { X004Sed } from 'declarations/x004'
 import { X007Sed } from 'declarations/x007'
+import { X005Sed } from 'declarations/x005'
+import { X006Sed } from 'declarations/x006'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
 import _ from 'lodash'
@@ -136,6 +140,8 @@ import {
   isX003Sed,
   isX004Sed,
   isX007Sed,
+  isX005Sed,
+  isX006Sed,
   isX008Sed,
   isX009Sed,
   isX010Sed, isX011Sed, isX012Sed,
@@ -529,6 +535,16 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     if (isX007Sed(replySed)) {
       hasErrors.push(performValidation<ValidationVideresendProps>(v, `svarsed-${personID}-videresend`, validateVideresend, {
         replySed: (replySed as X007Sed), personName
+      }, true))
+    }
+    if (isX005Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationLeggTilInstitusjonProps>(v, `svarsed-${personID}-leggtilinstitusjon`, validateLeggTilInstitusjon, {
+        replySed: (replySed as X005Sed), personName
+      }, true))
+    }
+    if (isX006Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationFjernInstitusjonProps>(v, `svarsed-${personID}-fjerninstitusjon`, validateFjernInstitusjon, {
+        replySed: (replySed as X006Sed), personName
       }, true))
     }
     if (isX008Sed(replySed)) {

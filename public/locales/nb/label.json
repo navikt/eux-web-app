@@ -629,5 +629,9 @@
   "videresend-leggtilinstitusjon": "Institusjon som legges til (mottaker)",
   "videresend-fjerninstitusjon": "Institusjon som fjernes (avsender)",
   "videresend-grunn": "Grunn for videresending",
-  "videresend-grunn-annet": "Begrunnelse"
+  "videresend-grunn-annet": "Begrunnelse",
+  "leggtilinstitusjon-grunn": "Grunn for å legge til institusjonen",
+  "leggtilinstitusjon-grunn-annet": "Begrunnelse",
+  "fjerninstitusjon-grunn": "Grunn for å fjerne institusjonen",
+  "fjerninstitusjon-grunn-annet": "Begrunnelse"
 }
