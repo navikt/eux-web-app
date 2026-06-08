@@ -21,6 +21,7 @@ import Avvis from 'applications/SvarSed/Avvis/Avvis'
 import BeløpNavnOgValuta from 'applications/SvarSed/BeløpNavnOgValuta/BeløpNavnOgValuta'
 import Gjenaapning from 'applications/SvarSed/Gjenaapning/Gjenaapning'
 import BekreftelseGjenaapning from 'applications/SvarSed/BekreftelseGjenaapning/BekreftelseGjenaapning'
+import Videresend from 'applications/SvarSed/Videresend/Videresend'
 import EndredeForhold from 'applications/SvarSed/EndredeForhold/EndredeForhold'
 import Familierelasjon from 'applications/SvarSed/Familierelasjon/Familierelasjon'
 import Formål from 'applications/SvarSed/Formål/Formål'
@@ -478,6 +479,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
                   { label: t('el:option-mainform-gjenaapning'), value: 'gjenaapning', component: Gjenaapning, type: 'X002' },
                   { label: t('el:option-mainform-bekreftelsegjenaapning'), value: 'bekreftelsegjenaapning', component: BekreftelseGjenaapning, type: 'X004' },
+                  { label: t('el:option-mainform-videresend'), value: 'videresend', component: Videresend, type: 'X007' },
                   { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
                   { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
                   { label: t('el:option-mainform-svarpåminnelse'), value: 'svarpåminnelse', component: SvarPåminnelse, type: 'X010' },

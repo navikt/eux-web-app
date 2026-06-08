@@ -625,5 +625,9 @@
   "svargjenaapning-grunn": "Grunn",
   "svargjenaapning-grunn-annet": "Gi nærmere opplysninger hvis du velger 'Annet'.",
   "bekreftelsegjenaapning-skal-gjenaapnes": "Vedtak om gjenåpning av sak",
-  "bekreftelsegjenaapning-grunn": "Grunn"
+  "bekreftelsegjenaapning-grunn": "Grunn",
+  "videresend-leggtilinstitusjon": "Institusjon som legges til (mottaker)",
+  "videresend-fjerninstitusjon": "Institusjon som fjernes (avsender)",
+  "videresend-grunn": "Grunn for videresending",
+  "videresend-grunn-annet": "Begrunnelse"
 }
