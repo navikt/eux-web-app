@@ -1,0 +1,18 @@
+{
+  "bruker": {
+    "fornavn": "æøå",
+    "etternavn": "æøå",
+    "kjoenn": "M",
+    "foedselsdato": "2002-02-02"
+  },
+  "videresend": {
+    "leggTilInstitusjonId": "NO:NAVAT07",
+    "leggTilInstitusjonNavn": "NAVAT07",
+    "fjernInstitusjonId": "NO:NAVAT08",
+    "fjernInstitusjonNavn": "NAVAT08",
+    "grunnType": "institusjonen_er_ikke_kompetent_institusjon_i_saken",
+    "grunnAnnet": ""
+  },
+  "sedType": "X007",
+  "sedVersjon": "4.4"
+}

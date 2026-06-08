@@ -619,5 +619,9 @@
   "globalt-krav": "Globalt krav",
   "refusjon": "Refusjon",
   "gjenaapning-aarsak": "Årsak til anmodning om gjenåpning",
-  "gjenaapning-aarsak-annet": "Begrunnelse for gjenåpning"
+  "gjenaapning-aarsak-annet": "Begrunnelse for gjenåpning",
+  "videresend-leggtilinstitusjon": "Institusjon som legges til (mottaker)",
+  "videresend-fjerninstitusjon": "Institusjon som fjernes (avsender)",
+  "videresend-grunn": "Grunn for videresending",
+  "videresend-grunn-annet": "Begrunnelse"
 }
