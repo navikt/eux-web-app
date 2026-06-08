@@ -31,7 +31,7 @@
     "@navikt/ds-css": "8.10.5",
     "@navikt/ds-react": "8.11.0",
     "@navikt/eessi-kodeverk": "2.4.3",
-    "@navikt/fetch": "7.2.13",
+    "@navikt/fetch": "7.2.15",
     "@navikt/flagg-ikoner": "13.2.2",
     "@navikt/fnrvalidator": "2.2.1",
     "@navikt/land-verktoy": "13.2.2",
