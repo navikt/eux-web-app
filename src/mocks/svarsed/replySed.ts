@@ -24,6 +24,7 @@ import { H021Sed } from 'declarations/h021'
 import { H065Sed } from 'declarations/h065'
 import { H120Sed } from 'declarations/h120'
 import { X002Sed } from 'declarations/x002'
+import { X013Sed } from 'declarations/x013'
 import f001 from '../seds/f001.json'
 import f002 from '../seds/f002.json'
 import f003 from '../seds/f003.json'
@@ -46,6 +47,7 @@ import x010 from '../seds/x010.json'
 import x011 from '../seds/x011.json'
 import x012 from '../seds/x012.json'
 import x003 from '../seds/x003.json'
+import x013 from '../seds/x013.json'
 
 const seds: {[k in SedTypes]: ReplySed} = {
   F001: <F001Sed>f001,
@@ -69,7 +71,8 @@ const seds: {[k in SedTypes]: ReplySed} = {
   X009: <X009Sed>x009,
   X010: <X010Sed>x010,
   X011: <X011Sed>x011,
-  X012: <X012Sed>x012
+  X012: <X012Sed>x012,
+  X013: <X013Sed>x013
 }
 
 const getReplySed = (sedType: string): ReplySed | null | undefined => Object.prototype.hasOwnProperty.call(seds, sedType)

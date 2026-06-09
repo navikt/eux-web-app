@@ -60,13 +60,15 @@ export const isX011Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean
 
 export const isX012Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X012'
 
+export const isX013Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X013'
+
 export const getSedCategory = (replySed: ReplySed | PDU1 | null | undefined): string => (replySed as ReplySed)?.sedType?.substring(0, 1) ?? ''
 
 export const isPreviewableSed = (sedType: string): boolean =>
-  ['F001', 'F002', 'F003', 'F026', 'F027', 'H001', 'H002', 'H021', 'H065', 'H120', 'S040', 'S046', 'U002', 'U004', 'U017', 'X001', 'X002', 'X003', 'X008', 'X009', 'X010', 'X011', 'X012'].indexOf(sedType) >= 0
+  ['F001', 'F002', 'F003', 'F026', 'F027', 'H001', 'H002', 'H021', 'H065', 'H120', 'S040', 'S046', 'U002', 'U004', 'U017', 'X001', 'X002', 'X003', 'X008', 'X009', 'X010', 'X011', 'X012', 'X013'].indexOf(sedType) >= 0
 
 export const usesTypedSedApi = (sedType: string | null | undefined): boolean =>
-  ['H021', 'H120', 'H065', 'X002', 'X003'].indexOf(sedType ?? '') >= 0
+  ['H021', 'H120', 'H065', 'X002', 'X003', 'X013'].indexOf(sedType ?? '') >= 0
 
 export const cleanReplySed = (replySed: ReplySed): ReplySed => {
   const newReplySed = _.cloneDeep(replySed)

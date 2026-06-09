@@ -5,7 +5,7 @@ import {JaNei, ReplySed, Statsborgerskap} from 'declarations/sed'
 import {Context, Item} from "@navikt/tabell";
 
 export type StorageTypes = PDU1 | ReplySed
-export type SedAction = 'X002' | 'X003' | 'X008' | 'X010' | 'X011' | 'X012' | 'U002' | 'U004' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants' | 'Participants_Send'
+export type SedAction = 'X002' | 'X003' | 'X008' | 'X010' | 'X011' | 'X012' | 'X013' | 'U002' | 'U004' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants' | 'Participants_Send'
 
 export interface ArbeidsperiodeFraAA {
   fraDato?: string
