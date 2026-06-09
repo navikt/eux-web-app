@@ -1,0 +1,24 @@
+{
+  "bruker": {
+    "fornavn": "æøå",
+    "etternavn": "æøå",
+    "kjoenn": "M",
+    "foedselsdato": "2002-02-02"
+  },
+  "sedType": "X013",
+  "sedVersjon": "4.4",
+  "svarPaaSedId": "1111111111111111111111111111111a",
+  "klargjoeringer": [
+    {
+      "punkt": "1",
+      "del": "a",
+      "klargjoering": ""
+    },
+    {
+      "punkt": "2",
+      "del": "b",
+      "klargjoering": ""
+    }
+  ],
+  "kanIkkeKlargjoere": []
+}
