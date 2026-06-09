@@ -442,7 +442,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-adresse'), value: 'adresseH120', component: Adresse, type: ['H120'], adult: true },
                   { label: t('el:option-mainform-adresse'), value: 'adresse', component: Adresser, type: ['S'], options: {singleAdress: true}},
                   { label: t('el:option-mainform-adresseH001'), value: 'adresseAnmodning', component: AnmodningOmAdresse, type: ['H001'], adult: true, barn: true, condition: () => CDM_VERSJON >= 4.4 },
-                  { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
+                  { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: ['F', 'H120'], adult: true },
                   { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
                   { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F026', 'F027'], adult: true },
                   { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetogtrygdeperioder', component: AktivitetOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => CDM_VERSJON <= 4.3 },

@@ -1,4 +1,4 @@
-import { Adresse, BaseReplySed, PersonInfo } from 'declarations/sed'
+import {Adresse, BaseReplySed, Epost, PersonInfo, Telefon} from 'declarations/sed'
 
 // ===== Berørt ytelse (Section 2) =====
 
@@ -121,6 +121,8 @@ export interface FamilieYtelse {
 export interface Bruker {
   personInfo: PersonInfo
   adresse?: Adresse
+  epost?: Array<Epost>
+  telefon?: Array<Telefon>
 }
 
 // ===== H120 SED =====

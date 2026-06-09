@@ -29,7 +29,25 @@
       "postnummer": "0101",
       "by": "Oslo",
       "landkode": "NOR"
-    }
+    },
+    "epost": [
+      {
+        "adresse": "homer@simpsons.com"
+      },
+      {
+        "adresse": "homer.simpson@springfield-npp.com"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "hjem",
+        "nummer": "+4790000001"
+      },
+      {
+        "type": "mobil",
+        "nummer": "+4790000002"
+      }
+    ]
   },
   "beroertYtelse": "sykepenger_som_kontantytelse_i_forbindelse_med_arbeidsuførhet",
   "kravetsArt": {
