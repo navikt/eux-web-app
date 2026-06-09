@@ -6,7 +6,7 @@ import { State } from 'declarations/reducers'
 import { X003Sed } from 'declarations/x003'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React from 'react'
+import React, {JSX} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
@@ -66,8 +66,8 @@ const SvarGjenaapning: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -80,7 +80,7 @@ const SvarGjenaapning: React.FC<MainFormProps> = ({
           legend={t('label:svargjenaapning-er-godkjent')}
           onChange={setErGodkjent}
         >
-          <VStack gap="2">
+          <VStack gap="space-8">
             <RadioPanel value='ja'>{t('el:option-svargjenaapning-godkjent')}</RadioPanel>
             <RadioPanel value='nei'>{t('el:option-svargjenaapning-avvist')}</RadioPanel>
           </VStack>
@@ -94,7 +94,7 @@ const SvarGjenaapning: React.FC<MainFormProps> = ({
           legend={t('label:svargjenaapning-grunn')}
           onChange={setGrunnType}
         >
-          <VStack gap="2">
+          <VStack gap="space-8">
             <RadioPanel value='ny_informasjon_ble_tilgjengelig'>{t('el:option-gjenaapning-01')}</RadioPanel>
             <RadioPanel value='feilaktig_informasjon_levert'>{t('el:option-gjenaapning-02')}</RadioPanel>
             <RadioPanel value='saken_ble_utilsiktet_avsluttet'>{t('el:option-gjenaapning-03')}</RadioPanel>
