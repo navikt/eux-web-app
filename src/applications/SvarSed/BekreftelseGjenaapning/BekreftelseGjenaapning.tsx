@@ -59,8 +59,8 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
+    <Box padding="space-16">
+      <VStack gap="space-16">
         <Heading size='small'>
           {label}
         </Heading>
@@ -73,7 +73,7 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
           legend={t('label:bekreftelsegjenaapning-skal-gjenaapnes')}
           onChange={setSkalGjenaapnes}
         >
-          <VStack gap="2">
+          <VStack gap="space-8">
             <RadioPanel value='ja'>{t('el:option-bekreftelsegjenaapning-ja')}</RadioPanel>
             <RadioPanel value='nei'>{t('el:option-bekreftelsegjenaapning-nei')}</RadioPanel>
           </VStack>
@@ -88,7 +88,7 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
             legend={t('label:bekreftelsegjenaapning-grunn')}
             onChange={setGrunnType}
           >
-            <VStack gap="2">
+            <VStack gap="space-8">
               <RadioPanel value='alle_deltakerne_kan_ikke_gjenåpne_saken'>{t('el:option-bekreftelsegjenaapning-grunn-01')}</RadioPanel>
             </VStack>
           </RadioGroup>
