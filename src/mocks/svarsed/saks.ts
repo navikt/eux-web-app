@@ -57,6 +57,15 @@ export default (saksnummer: string, type: string) => {
           svarsedType: 'X002',
           sedHandlinger: ['X002', 'X008', 'Read']
         }, {
+          sedTittel: 'Klargjør',
+          sedType: 'X012',
+          sedId: '1111111111111111111111111111111a',
+          sedUrl: 'https://rina-ss1-q.adeo.no/portal_new/case-management/1441020',
+          status: 'received',
+          sistEndretDato: '2022-07-18',
+          svarsedType: 'X013',
+          sedHandlinger: ['X013', 'Read']
+        }, {
           sedTittel: 'Påminnelse',
           sedType: 'X009',
           sedId: '46f4ea863edd4106bd20b36675315008',

@@ -76,6 +76,8 @@
   "noGender": "Kjønn er ikke valgt",
   "noGrunn": "Ingen grunn oppgitt",
   "noGrunnAnnet": "Du må taste inn en beskivelse",
+  "noGrunnType": "Du må velge en grunn",
+  "noKlargjoering": "Du må taste inn en klargjøring",
   "noGrunnOpphorType": "Du må velge grunn til opphør",
   "noIban": "IBAN er påkrevd",
   "noId": "Du må skrive identifikatoren",

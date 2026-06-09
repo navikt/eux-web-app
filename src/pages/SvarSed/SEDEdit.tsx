@@ -27,6 +27,7 @@ import GrunnlagForBosetting from 'applications/SvarSed/GrunnlagForBosetting/Grun
 import GrunnTilOpphør from 'applications/SvarSed/GrunnTilOpphør/GrunnTilOpphør'
 import InntektForm from 'applications/SvarSed/InntektForm/InntektForm'
 import Klargjør from 'applications/SvarSed/Klargjør/Klargjør'
+import SvarKlargjoering from 'applications/SvarSed/SvarKlargjoering/SvarKlargjoering'
 import Kontaktinformasjon from 'applications/SvarSed/Kontaktinformasjon/Kontaktinformasjon'
 import Kontoopplysning from 'applications/SvarSed/Kontoopplysning/Kontoopplysning'
 import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
@@ -478,7 +479,8 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
                   { label: t('el:option-mainform-svarpåminnelse'), value: 'svarpåminnelse', component: SvarPåminnelse, type: 'X010' },
                   { label: t('el:option-mainform-avvis'), value: 'avvis', component: Avvis, type: 'X011' },
-                  { label: t('el:option-mainform-klargjør'), value: 'klargjør', component: Klargjør, type: 'X012' }
+                  { label: t('el:option-mainform-klargjør'), value: 'klargjør', component: Klargjør, type: 'X012' },
+                  { label: t('el:option-mainform-svarklargjøring'), value: 'svarklargjøring', component: SvarKlargjoering, type: 'X013' }
                 ]}
                 replySed={replySed}
                 updateReplySed={updateReplySed}

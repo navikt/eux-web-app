@@ -38,6 +38,7 @@ import {
   ValidationLoennsopplysningerProps
 } from 'applications/SvarSed/InntektForm/validation'
 import { validateKlargjør, ValidationKlargjørProps } from 'applications/SvarSed/Klargjør/validation'
+import { validateSvarKlargjoering, ValidationSvarKlargjoeringProps } from 'applications/SvarSed/SvarKlargjoering/validation'
 import {
   ValidateEposterProps,
   validateKontaktsinformasjonEposter,
@@ -109,6 +110,7 @@ import {
 } from 'declarations/sed'
 import { H120Sed } from 'declarations/h120'
 import { X002Sed } from 'declarations/x002'
+import { X013Sed } from 'declarations/x013'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
 import _ from 'lodash'
@@ -129,7 +131,7 @@ import {
   isX002Sed,
   isX008Sed,
   isX009Sed,
-  isX010Sed, isX011Sed, isX012Sed,
+  isX010Sed, isX011Sed, isX012Sed, isX013Sed,
   isXSed
 } from 'utils/sed'
 import { checkLength } from 'utils/validation'
@@ -530,6 +532,11 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     if (isX012Sed(replySed)) {
       hasErrors.push(performValidation<ValidationKlargjørProps>(v, `svarsed-${personID}-klargjør`, validateKlargjør, {
         replySed: (replySed as X012Sed), personName
+      }, true))
+    }
+    if (isX013Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationSvarKlargjoeringProps>(v, `svarsed-${personID}-svarklargjoering`, validateSvarKlargjoering, {
+        replySed: (replySed as X013Sed), personName
       }, true))
     }
   }
