@@ -330,7 +330,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
             </HGrid>
           )}
           {showFoedested &&
-            <VStack>
+            <>
               <Heading size='small'>
                 {t('label:fødested')}
               </Heading>
@@ -341,7 +341,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
                 personName={personName}
                 validation={validation}
               />
-            </VStack>
+            </>
           }
         </VStack>
       </Box>

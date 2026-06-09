@@ -24,14 +24,28 @@
         }
       ]
     },
-    "adresser": [
+    "adresse": {
+      "gate": "Storgata 1",
+      "postnummer": "0101",
+      "by": "Oslo",
+      "landkode": "NOR"
+    },
+    "epost": [
       {
-        "type": "bosted",
-        "gate": "Storgata 1",
-        "postnummer": "0101",
-        "by": "Oslo",
-        "land": "NO",
-        "landkode": "NOR"
+        "adresse": "homer@simpsons.com"
+      },
+      {
+        "adresse": "homer.simpson@springfield-npp.com"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "hjem",
+        "nummer": "+4790000001"
+      },
+      {
+        "type": "mobil",
+        "nummer": "+4790000002"
       }
     ]
   },
@@ -42,15 +56,12 @@
     ],
     "etterspurtDokumentasjon": [
       "standard_medisinsk_rapport"
-    ],
-    "annenDokumentasjon": "",
-    "spesielleKravTilDokumentasjon": ""
+    ]
   },
-  "anmodningInfo": {
-    "gjelderArbeidsufoerhet": true,
+  "arbeidsufoer": {
     "periodeStartdato": "2025-01-01",
     "periodeSluttdato": "2025-06-30",
-    "dekningKostnader": "ja"
+    "dekkesKostnader": "ja"
   },
-  "ytterligereInformasjon": ""
+  "ytterligereInfo": ""
 }

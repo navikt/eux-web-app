@@ -20,7 +20,11 @@ export const validateAnmodningInfo = (
   const hasErrors: Array<boolean> = []
   const sed = replySed as H120Sed
 
-  if (sed.anmodningInfo?.gjelderArbeidsufoerhet === undefined || sed.anmodningInfo?.gjelderArbeidsufoerhet === null) {
+  const isArbeidsufoer = sed.arbeidsufoer !== undefined
+  const isArbeidsdyktig = sed.arbeidsdyktig !== undefined
+  const hasSelection = isArbeidsufoer || isArbeidsdyktig
+
+  if (!hasSelection) {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: undefined,
       id: namespace + '-gjelderArbeidsufoerhet',
@@ -29,24 +33,33 @@ export const validateAnmodningInfo = (
     }))
   }
 
-  if (sed.anmodningInfo?.gjelderArbeidsufoerhet === true) {
+  if (isArbeidsufoer) {
     hasErrors.push(validatePeriode(v, namespace, {
       periode: {
-        startdato: sed.anmodningInfo?.periodeStartdato ?? '',
-        sluttdato: sed.anmodningInfo?.periodeSluttdato ?? ''
+        startdato: sed.arbeidsufoer?.periodeStartdato ?? '',
+        sluttdato: sed.arbeidsufoer?.periodeSluttdato ?? ''
       },
       mandatoryStartdato: true,
       mandatorySluttdato: true,
       periodeType: 'simple'
     }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: sed.arbeidsufoer?.dekkesKostnader,
+      id: namespace + '-dekkesKostnader',
+      message: 'validation:noDekningKostnader',
+      personName
+    }))
   }
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: sed.anmodningInfo?.dekningKostnader,
-    id: namespace + '-dekningKostnader',
-    message: 'validation:noDekningKostnader',
-    personName
-  }))
+  if (isArbeidsdyktig) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: sed.arbeidsdyktig?.dekkesKostnader,
+      id: namespace + '-dekkesKostnader',
+      message: 'validation:noDekningKostnader',
+      personName
+    }))
+  }
 
   return hasErrors.find(value => value) !== undefined
 }

@@ -20,7 +20,7 @@ export const validateAWODSpoersmaal = (
   const sed = replySed as H120Sed
 
   hasErrors.push(checkLength(v, {
-    needle: sed.arbeidsulykkeyrkessykdom?.brukerStatusAnnet,
+    needle: sed.yrkesskade?.brukerStatusAnnet,
     max: 65,
     id: namespace + '-brukerStatusAnnet',
     message: 'validation:textOverX',
@@ -28,7 +28,7 @@ export const validateAWODSpoersmaal = (
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: sed.arbeidsulykkeyrkessykdom?.sykdomKode,
+    needle: sed.yrkesskade?.sykdomKode,
     max: 25,
     id: namespace + '-sykdomKode',
     message: 'validation:textOverX',
@@ -36,7 +36,7 @@ export const validateAWODSpoersmaal = (
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: sed.arbeidsulykkeyrkessykdom?.sykdomKodingssystem,
+    needle: sed.yrkesskade?.sykdomKodingssystem,
     max: 65,
     id: namespace + '-sykdomKodingssystem',
     message: 'validation:textOverX',
@@ -44,14 +44,14 @@ export const validateAWODSpoersmaal = (
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: sed.arbeidsulykkeyrkessykdom?.konsekvensEllerBeskrivelse,
+    needle: sed.yrkesskade?.konsekvensEllerBeskrivelse,
     max: 255,
     id: namespace + '-konsekvensEllerBeskrivelse',
     message: 'validation:textOverX',
     personName
   }))
 
-  const awod = sed.arbeidsulykkeyrkessykdom
+  const awod = sed.yrkesskade
   const adresse = awod?.arbeidsgiver?.adresse
   const hasAnyAdresseField = !!(
     adresse?.gate?.trim() || adresse?.bygning?.trim() || adresse?.postnummer?.trim() ||

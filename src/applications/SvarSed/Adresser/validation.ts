@@ -8,6 +8,7 @@ export interface ValidationAdresseProps {
   index?: number
   checkAdresseType: boolean
   personName?: string
+  optional?: boolean
 }
 
 export interface ValidationAdresserProps {
@@ -23,34 +24,42 @@ export const validateAdresse = (
     adresse,
     index,
     checkAdresseType,
-    personName
+    personName,
+    optional
   }: ValidationAdresseProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  if (checkAdresseType) {
+  const hasAnyField = !!(
+    adresse?.gate?.trim() || adresse?.bygning?.trim() || adresse?.postnummer?.trim() ||
+    adresse?.by?.trim() || adresse?.region?.trim() || adresse?.landkode?.trim()
+  )
+
+  if (!optional || hasAnyField) {
+    if (checkAdresseType) {
+      hasErrors.push(checkIfNotEmpty(v, {
+        needle: adresse?.type,
+        id: namespace + idx + '-type',
+        message: 'validation:noAddressType',
+        personName
+      }))
+    }
+
     hasErrors.push(checkIfNotEmpty(v, {
-      needle: adresse?.type,
-      id: namespace + idx + '-type',
-      message: 'validation:noAddressType',
+      needle: adresse?.landkode,
+      id: namespace + idx + '-land',
+      message: 'validation:noAddressCountry',
+      personName
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: adresse?.by,
+      id: namespace + idx + '-by',
+      message: 'validation:noAddressCity',
       personName
     }))
   }
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: adresse?.landkode,
-    id: namespace + idx + '-land',
-    message: 'validation:noAddressCountry',
-    personName
-  }))
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: adresse?.by,
-    id: namespace + idx + '-by',
-    message: 'validation:noAddressCity',
-    personName
-  }))
 
   hasErrors.push(checkLength(v, {
     needle: adresse?.gate,

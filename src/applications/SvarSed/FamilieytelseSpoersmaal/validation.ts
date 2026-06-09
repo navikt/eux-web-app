@@ -19,9 +19,9 @@ export const validateFamilieytelseSpoersmaal = (
   const hasErrors: Array<boolean> = []
   const sed = replySed as H120Sed
 
-  if (sed.familie?.annenDokumentasjon?.trim()) {
+  if (sed.familieYtelse?.annenDokumentasjon?.trim()) {
     hasErrors.push(checkIfNotEmpty(v, {
-      needle: sed.familie?.etterspurtDokumentasjon,
+      needle: sed.familieYtelse?.etterspurtDokumentasjon,
       id: namespace + '-etterspurtDokumentasjon',
       message: 'validation:noEtterspurtDokumentasjonFamilieytelser',
       personName
@@ -29,7 +29,7 @@ export const validateFamilieytelseSpoersmaal = (
   }
 
   hasErrors.push(checkLength(v, {
-    needle: sed.familie?.annenDokumentasjon,
+    needle: sed.familieYtelse?.annenDokumentasjon,
     max: 500,
     id: namespace + '-annenDokumentasjon',
     message: 'validation:textOverX',
