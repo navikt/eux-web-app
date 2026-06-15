@@ -1,5 +1,5 @@
 import React from "react";
-import CountrySelect, {CountrySelectProps} from "@navikt/landvelger";
+import CountrySelect, {CountrySelectProps} from "../landvelger";
 import {State} from "../../declarations/reducers";
 import {ReplySed} from "../../declarations/sed";
 import {useAppSelector} from "../../store";
