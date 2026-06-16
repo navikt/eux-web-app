@@ -1,4 +1,4 @@
-import { Box, Heading, RadioGroup, VStack } from '@navikt/ds-react'
+import { BodyShort, Box, Heading, Label, RadioGroup, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import RadioPanel from 'components/RadioPanel/RadioPanel'
@@ -43,18 +43,16 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
 
   const setSkalGjenaapnes = (skalGjenaapnes: string) => {
     dispatch(updateReplySed('gjenaapning.skalGjenaapnes', skalGjenaapnes.trim()))
-    if (skalGjenaapnes === 'ja') {
+    if (skalGjenaapnes === 'nei') {
+      dispatch(updateReplySed('gjenaapning.grunnType', 'alle_deltakerne_kan_ikke_gjenåpne_saken'))
+      if (validation[namespace + '-grunnType']) {
+        dispatch(resetValidation(namespace + '-grunnType'))
+      }
+    } else {
       dispatch(updateReplySed('gjenaapning.grunnType', ''))
     }
     if (validation[namespace + '-skalGjenaapnes']) {
       dispatch(resetValidation(namespace + '-skalGjenaapnes'))
-    }
-  }
-
-  const setGrunnType = (grunnType: string) => {
-    dispatch(updateReplySed('gjenaapning.grunnType', grunnType.trim()))
-    if (validation[namespace + '-grunnType']) {
-      dispatch(resetValidation(namespace + '-grunnType'))
     }
   }
 
@@ -80,18 +78,14 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
         </RadioGroup>
 
         {sed.gjenaapning?.skalGjenaapnes === 'nei' && (
-          <RadioGroup
-            value={sed.gjenaapning?.grunnType ?? ''}
-            data-testid={namespace + '-grunnType'}
-            error={validation[namespace + '-grunnType']?.feilmelding}
-            id={namespace + '-grunnType'}
-            legend={t('label:bekreftelsegjenaapning-grunn')}
-            onChange={setGrunnType}
-          >
-            <VStack gap="space-8">
-              <RadioPanel value='alle_deltakerne_kan_ikke_gjenåpne_saken'>{t('el:option-bekreftelsegjenaapning-grunn-01')}</RadioPanel>
-            </VStack>
-          </RadioGroup>
+          <Box>
+            <Label as='p' size='small'>
+              {t('label:bekreftelsegjenaapning-grunn')}
+            </Label>
+            <BodyShort>
+              {t('el:option-bekreftelsegjenaapning-grunn-01')}
+            </BodyShort>
+          </Box>
         )}
       </VStack>
     </Box>
