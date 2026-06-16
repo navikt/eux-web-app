@@ -1,6 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Box, Button, HGrid, HStack, Label, Spacer, VStack } from '@navikt/ds-react'
-import { Currency } from '@navikt/land-verktoy'
+import { Currency } from 'components/land-verktoy'
 import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'

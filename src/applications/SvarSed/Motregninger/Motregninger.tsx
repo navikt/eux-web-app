@@ -18,7 +18,7 @@ import {validateMotregning, validateMotregninger, ValidationMotregningerProps, V
 import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
 import TextArea from "../../../components/Forms/TextArea";
-import {Currency} from "@navikt/land-verktoy";
+import {Currency} from "components/land-verktoy";
 import performValidation from "../../../utils/performValidation";
 import {periodeSort} from "../../../utils/sort";
 import {updateReplySed} from "../../../actions/svarsed";

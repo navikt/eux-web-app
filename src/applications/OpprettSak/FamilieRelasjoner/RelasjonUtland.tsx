@@ -2,7 +2,7 @@ import React, { useEffect, useState, JSX } from "react";
 import {Kodeverk, PersonInfoUtland, Validation} from "../../../declarations/types";
 import {BodyLong, Box, Button, HGrid, Select, TextField, VStack} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";
-import {Country} from "@navikt/land-verktoy";
+import {Country} from "components/land-verktoy";
 import CountryDropdown from "../../../components/CountryDropdown/CountryDropdown";
 import DateField from "../../../components/DateField/DateField";
 import useLocalValidation from "../../../hooks/useLocalValidation";

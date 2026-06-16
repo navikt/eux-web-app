@@ -1,6 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import {BodyLong, Box, Button, Heading, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
-import { Country } from '@navikt/land-verktoy'
+import { Country } from 'components/land-verktoy'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'

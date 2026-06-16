@@ -1,6 +1,6 @@
 import React, { JSX } from "react";
-import Flag from "@navikt/flagg-ikoner";
-import CountryData from "@navikt/land-verktoy";
+import Flag from "../flagg-ikoner";
+import CountryData from "../land-verktoy";
 import {State} from "../../declarations/reducers";
 import {useAppSelector} from "../../store";
 import {HStack} from "@navikt/ds-react";

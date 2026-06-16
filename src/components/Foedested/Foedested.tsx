@@ -1,6 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import {BodyLong, Box, Button, HStack, Label, Spacer} from '@navikt/ds-react'
-import {Country} from '@navikt/land-verktoy'
+import {Country} from 'components/land-verktoy'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'

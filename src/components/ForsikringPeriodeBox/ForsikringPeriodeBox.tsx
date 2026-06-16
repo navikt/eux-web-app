@@ -1,5 +1,5 @@
 import {Accordion, BodyLong, Box, Checkbox, Heading, HGrid, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
-import { Currency } from '@navikt/land-verktoy'
+import { Currency } from 'components/land-verktoy'
 import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/Identifikator/Identifikator'

@@ -1,7 +1,7 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import RadioPanel from 'components/RadioPanel/RadioPanel'
-import CountryData, { Currency } from '@navikt/land-verktoy'
+import CountryData, { Currency } from 'components/land-verktoy'
 import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
