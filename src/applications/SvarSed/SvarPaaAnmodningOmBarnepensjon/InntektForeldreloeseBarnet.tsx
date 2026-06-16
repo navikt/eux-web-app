@@ -10,7 +10,7 @@ import {sanitizeAmount} from "../../../utils/amount";
 import {SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from "../../../declarations/sed";
 import Input from "../../../components/Forms/Input";
 import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
-import {Currency} from "@navikt/land-verktoy";
+import {Currency} from "components/land-verktoy";
 import useUnmount from "../../../hooks/useUnmount";
 import performValidation from "../../../utils/performValidation";
 import {

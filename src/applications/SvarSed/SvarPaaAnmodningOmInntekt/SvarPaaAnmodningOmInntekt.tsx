@@ -11,7 +11,7 @@ import {useTranslation} from "react-i18next";
 import Input from "../../../components/Forms/Input";
 import DateField from "../../../components/DateField/DateField";
 import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
-import {Currency} from "@navikt/land-verktoy";
+import {Currency} from "components/land-verktoy";
 import useUnmount from "../../../hooks/useUnmount";
 import performValidation from "../../../utils/performValidation";
 import {setValidation} from "../../../actions/validation";

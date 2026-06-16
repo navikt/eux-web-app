@@ -10,7 +10,7 @@ import TextArea from 'components/Forms/TextArea'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { H120Sed } from 'declarations/h120'
-import { Country } from '@navikt/land-verktoy'
+import { Country } from 'components/land-verktoy'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { JSX } from 'react';

@@ -1,5 +1,5 @@
 import {Alert, BodyLong, Button, Heading, HGrid, Loader, Page, Select, HStack, VStack, Box} from '@navikt/ds-react'
-import { Country } from '@navikt/land-verktoy'
+import { Country } from 'components/land-verktoy'
 import * as appActions from 'actions/app'
 import * as personActions from 'actions/person'
 import { personReset } from 'actions/person'

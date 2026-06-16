@@ -1,5 +1,5 @@
 import {BodyLong, Box, Tag} from '@navikt/ds-react'
-import CountryData from '@navikt/land-verktoy'
+import CountryData from '../land-verktoy'
 import { Adresse } from 'declarations/sed'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

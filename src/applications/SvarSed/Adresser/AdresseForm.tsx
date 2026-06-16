@@ -1,7 +1,7 @@
 import Input from 'components/Forms/Input'
 import { Adresse, AdresseType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { Country } from '@navikt/land-verktoy'
+import { Country } from 'components/land-verktoy'
 import _ from 'lodash'
 import React, {useEffect} from 'react'
 import { useTranslation } from 'react-i18next'

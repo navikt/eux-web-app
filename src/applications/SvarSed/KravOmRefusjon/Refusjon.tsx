@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import {ArrowRightLeftIcon, PlusCircleIcon} from "@navikt/aksel-icons";
 import Input from "../../../components/Forms/Input";
 import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
-import {Currency} from "@navikt/land-verktoy";
+import {Currency} from "components/land-verktoy";
 import {Validation} from "../../../declarations/types";
 import {getIdx} from "../../../utils/namespace";
 import useLocalValidation from "../../../hooks/useLocalValidation";

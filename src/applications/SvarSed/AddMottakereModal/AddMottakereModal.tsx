@@ -1,6 +1,6 @@
 import { TrashIcon } from '@navikt/aksel-icons';
 import {Alert, Button, Loader, Select, Box, HGrid, VStack, HStack, Spacer} from '@navikt/ds-react'
-import { Country } from '@navikt/land-verktoy'
+import { Country } from 'components/land-verktoy'
 import { addMottakere, resetMottakere } from 'actions/svarsed'
 import * as types from 'constants/actionTypes'
 import { ErrorElement } from 'declarations/app'
