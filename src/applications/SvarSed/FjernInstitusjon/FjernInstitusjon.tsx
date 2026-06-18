@@ -38,7 +38,7 @@ const FjernInstitusjon: React.FC<MainFormProps> = ({
       clonedValidation, namespace, validateFjernInstitusjon, {
         replySed: sed,
         personName
-      }
+      }, true
     )
     dispatch(setValidation(clonedValidation))
   })
