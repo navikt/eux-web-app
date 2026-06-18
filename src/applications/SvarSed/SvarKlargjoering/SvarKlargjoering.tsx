@@ -45,7 +45,7 @@ const SvarKlargjoering: React.FC<MainFormProps> = ({
       clonedValidation, namespace, validateSvarKlargjoering, {
         replySed: sed,
         personName
-      }
+      }, true
     )
     dispatch(setValidation(clonedValidation))
   })
