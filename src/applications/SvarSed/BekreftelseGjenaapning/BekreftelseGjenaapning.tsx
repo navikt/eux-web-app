@@ -1,4 +1,4 @@
-import { BodyShort, Box, Heading, Label, RadioGroup, VStack } from '@navikt/ds-react'
+import { BodyShort, Box, Heading, HStack, Label, RadioGroup, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import RadioPanel from 'components/RadioPanel/RadioPanel'
@@ -43,14 +43,7 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
 
   const setSkalGjenaapnes = (skalGjenaapnes: string) => {
     dispatch(updateReplySed('gjenaapning.skalGjenaapnes', skalGjenaapnes.trim()))
-    if (skalGjenaapnes === 'nei') {
-      dispatch(updateReplySed('gjenaapning.grunnType', 'alle_deltakerne_kan_ikke_gjenåpne_saken'))
-      if (validation[namespace + '-grunnType']) {
-        dispatch(resetValidation(namespace + '-grunnType'))
-      }
-    } else {
-      dispatch(updateReplySed('gjenaapning.grunnType', ''))
-    }
+    dispatch(updateReplySed('gjenaapning.grunnType', skalGjenaapnes === 'nei' ? 'alle_deltakerne_kan_ikke_gjenåpne_saken' : ''))
     if (validation[namespace + '-skalGjenaapnes']) {
       dispatch(resetValidation(namespace + '-skalGjenaapnes'))
     }
@@ -71,15 +64,15 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
           legend={t('label:bekreftelsegjenaapning-skal-gjenaapnes')}
           onChange={setSkalGjenaapnes}
         >
-          <VStack gap="space-8">
+          <HStack gap="space-8">
             <RadioPanel value='ja'>{t('el:option-bekreftelsegjenaapning-ja')}</RadioPanel>
             <RadioPanel value='nei'>{t('el:option-bekreftelsegjenaapning-nei')}</RadioPanel>
-          </VStack>
+          </HStack>
         </RadioGroup>
 
         {sed.gjenaapning?.skalGjenaapnes === 'nei' && (
           <Box>
-            <Label as='p' size='small'>
+            <Label as='p'>
               {t('label:bekreftelsegjenaapning-grunn')}
             </Label>
             <BodyShort>
