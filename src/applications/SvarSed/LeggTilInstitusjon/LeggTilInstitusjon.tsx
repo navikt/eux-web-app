@@ -57,7 +57,7 @@ const LeggTilInstitusjon: React.FC<MainFormProps> = ({
       clonedValidation, namespace, validateLeggTilInstitusjon, {
         replySed: sed,
         personName
-      }
+      }, true
     )
     dispatch(setValidation(clonedValidation))
   })
