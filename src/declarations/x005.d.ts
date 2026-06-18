@@ -10,6 +10,7 @@ export interface LeggTilInstitusjon {
   institusjonNavn?: string
   grunnType?: string
   grunnAnnet?: string
+  __landkode?: string
 }
 
 export interface X005Sed extends XSed {
