@@ -10,7 +10,7 @@ import { Institusjon } from 'declarations/types'
 import { X005Sed } from 'declarations/x005'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { useState, JSX } from 'react'
+import React, { useEffect, useState, JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
@@ -42,7 +42,14 @@ const LeggTilInstitusjon: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-leggtilinstitusjon`
   const sed = replySed as X005Sed
   const bucType = sed.sak?.sakType
-  const [landkode, setLandkode] = useState<string | undefined>(undefined)
+  const [landkode, setLandkode] = useState<string | undefined>(sed.leggTilInstitusjon?.__landkode)
+
+  useEffect(() => {
+    if (bucType && landkode && _.isEmpty(institusjonList)) {
+      dispatch(getInstitusjoner(bucType, landkode))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -57,6 +64,7 @@ const LeggTilInstitusjon: React.FC<MainFormProps> = ({
 
   const onLandkodeChange = (country: Country): void => {
     setLandkode(country.value)
+    dispatch(updateReplySed('leggTilInstitusjon.__landkode', country.value))
     if (bucType && country.value) {
       dispatch(getInstitusjoner(bucType, country.value))
     }

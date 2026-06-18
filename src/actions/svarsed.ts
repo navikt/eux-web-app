@@ -17,7 +17,7 @@ import { usesTypedSedApi } from 'utils/sed'
 import { sprintf } from 'sprintf-js';
 import {API_SED_PREVIEW_BY_TYPE_URL} from "constants/urls";
 
-const INTERNAL_PROPS = ['__index', '__type', 'undefined']
+const INTERNAL_PROPS = ['__index', '__type', '__landkode', 'undefined']
 
 const stripInternalProps = (obj: any): any => {
   if (Array.isArray(obj)) {
