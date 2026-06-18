@@ -51,7 +51,7 @@ const Videresend: React.FC<MainFormProps> = ({
       clonedValidation, namespace, validateVideresend, {
         replySed: sed,
         personName
-      }
+      }, true
     )
     dispatch(setValidation(clonedValidation))
   })
