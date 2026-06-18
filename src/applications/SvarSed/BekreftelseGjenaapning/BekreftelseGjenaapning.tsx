@@ -36,7 +36,7 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
       clonedValidation, namespace, validateBekreftelseGjenaapning, {
         replySed: sed,
         personName
-      }
+      }, true
     )
     dispatch(setValidation(clonedValidation))
   })
