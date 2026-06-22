@@ -20,6 +20,7 @@ export interface AdresseFromPDLProps {
   selectedAdresser: Array<Adresse>
   onAdresserChanged: (selectedAdresser: Array<Adresse>) => void
   singleAdress?: boolean
+  allowReSearch?: boolean
 }
 
 const mapState = (state: State): AdresseFromPDLSelector => ({
@@ -30,7 +31,7 @@ const mapState = (state: State): AdresseFromPDLSelector => ({
 export type AdresseMap = {[k in AdresseType]?: Array<Adresse>}
 
 const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
-  personName, fnr, selectedAdresser, onAdresserChanged, singleAdress
+  personName, fnr, selectedAdresser, onAdresserChanged, singleAdress, allowReSearch
 }: AdresseFromPDLProps) => {
   const { t } = useTranslation()
   const { adresser, gettingAdresser } = useAppSelector(mapState)
@@ -132,7 +133,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
       <HStack gap="space-16">
         <Button
           variant='primary'
-          disabled={gettingAdresser || _.isNil(fnr) || (singleAdress && selectedAdresser ? selectedAdresser.length > 0 : false)}
+          disabled={gettingAdresser || _.isNil(fnr) || (singleAdress && !allowReSearch && selectedAdresser ? selectedAdresser.length > 0 : false)}
           onClick={getAdresse}
           icon={<MagnifyingGlassIcon/>}
         >
