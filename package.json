@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "14.2.0",
+  "version": "14.3.0-TEN-1712-UPGRADE-HTTP-PROXY-MIDDLEWARE",
   "private": true,
   "type": "module",
   "scripts": {
@@ -48,7 +48,7 @@
     "eux-schema": "0.4.0",
     "express": "5.2.1",
     "file-saver": "2.0.5",
-    "http-proxy-middleware": "2.0.9",
+    "http-proxy-middleware": "^3.0.7",
     "i18next": "25.10.10",
     "i18next-browser-languagedetector": "8.2.1",
     "i18next-http-backend": "3.0.6",
@@ -204,5 +204,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@14.2.0"
+  "_id": "neessi@14.3.0-TEN-1712-UPGRADE-HTTP-PROXY-MIDDLEWARE"
 }
