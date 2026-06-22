@@ -40,7 +40,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
   const [_open, _setOpen] = useState<boolean>(false)
   const [adresseMap, setAdresseMap] = useState<AdresseMap>({})
 
-  const hasAddress = (a: Adresse) : boolean => _.some(selectedAdresser, a)
+  const hasAddress = (a: Adresse): boolean => selectedAdresser.some(item => _.isEqual(item, a))
 
   const onCheckboxChanged = (adresse: Adresse, checked: boolean) => {
     let newSelectedAdresser: Array<Adresse> | undefined = _.cloneDeep(selectedAdresser) as Array<Adresse> | undefined
