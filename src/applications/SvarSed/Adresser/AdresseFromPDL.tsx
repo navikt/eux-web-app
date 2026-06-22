@@ -41,6 +41,8 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
   const [adresseMap, setAdresseMap] = useState<AdresseMap>({})
 
   const FORM_EDITABLE_FIELDS: Array<keyof Adresse> = ['gate', 'bygning', 'postnummer', 'by', 'region', 'landkode']
+  const getAdresseId = (a: Adresse | undefined): string =>
+    a ? FORM_EDITABLE_FIELDS.map(field => a[field] ?? '').join('|') : ''
   const hasAddress = (a: Adresse): boolean =>
     selectedAdresser.some(item => FORM_EDITABLE_FIELDS.every(field => _.isEqual(item[field], a[field])))
 
@@ -94,9 +96,8 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
         <Radio
           key={key + '-adresser-checkbox-' + adresse.gate}
           name={key + '-adresser'}
-          checked={hasAddress(adresse)}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onAdresserChanged([adresse])}
-          value={adresse}
+          onChange={() => onAdresserChanged([adresse])}
+          value={getAdresseId(adresse)}
         >
           <AdresseBox
             border={false}
@@ -179,7 +180,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
               </>
             }
             {singleAdress &&
-              <RadioGroup value={selectedAdresser[0]} legend="Adresser" hideLegend={true}>
+              <RadioGroup value={selectedAdresser[0] ? getAdresseId(selectedAdresser[0]) : null} legend="Adresser" hideLegend={true}>
                 {adresseMap.bosted && renderAdressesRadio('bosted', adresseMap.bosted)}
                 {adresseMap.opphold && renderAdressesRadio('opphold', adresseMap.opphold)}
                 {adresseMap.kontakt && renderAdressesRadio('kontakt', adresseMap.kontakt)}
