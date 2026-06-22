@@ -58,7 +58,8 @@ const Adresse: React.FC<MainFormProps> = ({
   }
 
   const setPDLAdresse = (selectedAdresser: Array<IAdresse>) => {
-    dispatch(updateReplySed(target, selectedAdresser[0]))
+    const { type: _type, ...adresseUtenType } = selectedAdresser[0]
+    dispatch(updateReplySed(target, adresseUtenType))
   }
 
   return (

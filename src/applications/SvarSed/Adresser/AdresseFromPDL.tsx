@@ -40,7 +40,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
   const [_open, _setOpen] = useState<boolean>(false)
   const [adresseMap, setAdresseMap] = useState<AdresseMap>({})
 
-  const FORM_EDITABLE_FIELDS: Array<keyof Adresse> = ['gate', 'bygning', 'postnummer', 'by', 'region', 'landkode', 'type']
+  const FORM_EDITABLE_FIELDS: Array<keyof Adresse> = ['gate', 'bygning', 'postnummer', 'by', 'region', 'landkode']
   const hasAddress = (a: Adresse): boolean =>
     selectedAdresser.some(item => FORM_EDITABLE_FIELDS.every(field => _.isEqual(item[field], a[field])))
 
