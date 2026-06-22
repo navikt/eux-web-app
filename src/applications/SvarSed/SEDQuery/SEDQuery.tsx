@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import useLocalValidation from 'hooks/useLocalValidation'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { validateSEDQuery } from './validation'
+import { validateSEDQuery, isInternationalId } from './validation'
 import {validateFnrDnrNpid} from "../../../utils/fnrValidator";
 
 const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit, frontpage=false}: any) => {
@@ -25,6 +25,9 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
       if (q.match(/^\d+$/)) {
         queryType = 'saksnummer'
         message = t('label:saksnummer')
+      } else if (isInternationalId(q)) {
+        queryType = 'internationalId'
+        message = t('label:valid-international-id')
       }
     } else {
       if (result.type === 'fnr') {

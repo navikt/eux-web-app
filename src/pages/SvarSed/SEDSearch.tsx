@@ -58,7 +58,7 @@ const SEDSearch = (): JSX.Element => {
     if (_query && !_.isNil(deletedSak)) {
       // if we are deleting a sak, and query was saksnummer, then we are deleting the same sak, nothing to query
       // but if we are querying fnr/dnr, we have to query again so we can have a sak list without the deleted sak
-      if (_queryType !== 'saksnummer') {
+      if (_queryType !== 'saksnummer' && _queryType !== 'internationalId') {
         dispatch(querySaks(_query!, 'new', false, signal))
       }
     }
@@ -70,9 +70,9 @@ const SEDSearch = (): JSX.Element => {
     }
   }, [deletedSak])
 
-  /** if we get 1 sed by querying a saksnummer, then set it as currentSak */
+  /** if we get 1 sed by querying a saksnummer or international id, then set it as currentSak */
   useEffect(() => {
-    if (saks?.length === 1 && _queryType === 'saksnummer') {
+    if (saks?.length === 1 && (_queryType === 'saksnummer' || _queryType === 'internationalId')) {
       dispatch(setCurrentSak(saks[0]))
       navigate({
         pathname: '/svarsed/view/sak/' + saks[0].sakId,
