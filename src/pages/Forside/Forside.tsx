@@ -79,7 +79,7 @@ const Forside: React.FC = (): JSX.Element => {
   }, [_query])
 
   useEffect(() => {
-    if (saks?.length === 1 && _queryType === 'saksnummer') {
+    if (saks?.length === 1 && (_queryType === 'saksnummer' || _queryType === 'internationalId')) {
       dispatch(setCurrentSak(saks[0]))
       navigate({
         pathname: '/svarsed/view/sak/' + saks[0].sakId,

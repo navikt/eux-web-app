@@ -121,7 +121,7 @@
   "noSaksId": "Du må velge fagsak",
   "noSaksnummer": "Du må taste inn et RINA saksnummer",
   "noSaksnummerOrFnr": "Ingen saksnummer eller f.nr./d.nr.",
-  "invalidSaksnummerOrFnr": "Søket må være et saksnummer (kun tall) eller et gyldig fødselsnummer/d-nummer",
+  "invalidSaksnummerOrFnr": "Søket må være et saksnummer (kun tall), et gyldig fødselsnummer/d-nummer eller en internasjonal ID (UUID)",
   "noSedtype": "Du må velge SED type",
   "noSektor": "Du må velge sektor",
   "noSisteNavKontor": "Du må skrive inn siste NAV kontor",
