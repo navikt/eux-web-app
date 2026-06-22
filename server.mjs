@@ -123,24 +123,24 @@ const apiAuth = function (scope) {
   }
 }
 
-const apiProxy = function (target, pathRewrite) {
+const apiProxy = function (target, mountPath) {
   //logger.debug('On apiProxy, with target ' + target)
-  return createProxyMiddleware( {
-    target: target,
-    logLevel: 'silent',
+  return createProxyMiddleware({
+    // v3: req.url no longer includes the mount path, so append it to target
+    target: target + mountPath,
     changeOrigin: true,
     xfwd: true,
-//    pathRewrite: pathRewrite,
-    onProxyReq: function onProxyReq(proxyReq, req, res) {
-      //logger.debug('proxy frontend: adding header auth ' + res.locals.on_behalf_of_authorization)
-      proxyReq.setHeader(
-        "Authorization",
-        res.locals.on_behalf_of_authorization
-      )
-      proxyReq.removeHeader('io.nais.wonderwall.session')
-      proxyReq.removeHeader('JSESSIONID')
-      proxyReq.removeHeader('cookie')
-      req.cookies
+    on: {
+      proxyReq: function (proxyReq, req, res) {
+        //logger.debug('proxy frontend: adding header auth ' + res.locals.on_behalf_of_authorization)
+        proxyReq.setHeader(
+          "Authorization",
+          res.locals.on_behalf_of_authorization
+        )
+        proxyReq.removeHeader('io.nais.wonderwall.session')
+        proxyReq.removeHeader('JSESSIONID')
+        proxyReq.removeHeader('cookie')
+      }
     }
   })
 }
@@ -189,27 +189,27 @@ app.get(["/oauth2/login"], async (req, res) => {
 app.use('/api',
   timedOut,
   apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
-  apiProxy(process.env.VITE_NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
+  apiProxy(process.env.VITE_NEESSI_BACKEND_URL, '/api')
 )
 app.use('/v2',
   timedOut,
   apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
-  apiProxy(process.env.VITE_NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
+  apiProxy(process.env.VITE_NEESSI_BACKEND_URL, '/v2')
 )
 app.use('/v3',
   timedOut,
   apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
-  apiProxy(process.env.VITE_NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
+  apiProxy(process.env.VITE_NEESSI_BACKEND_URL, '/v3')
 )
 app.use('/v4',
   timedOut,
   apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
-  apiProxy(process.env.VITE_NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
+  apiProxy(process.env.VITE_NEESSI_BACKEND_URL, '/v4')
 )
 app.use('/v5',
   timedOut,
   apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
-  apiProxy(process.env.VITE_NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
+  apiProxy(process.env.VITE_NEESSI_BACKEND_URL, '/v5')
 )
 
 // app.use('/websocket', socketProxy)
