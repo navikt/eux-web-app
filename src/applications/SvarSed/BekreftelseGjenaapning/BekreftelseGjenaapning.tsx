@@ -1,4 +1,4 @@
-import { BodyShort, Box, Heading, HStack, Label, RadioGroup, VStack } from '@navikt/ds-react'
+import { Box, Heading, HStack, RadioGroup, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import RadioPanel from 'components/RadioPanel/RadioPanel'
@@ -43,9 +43,16 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
 
   const setSkalGjenaapnes = (skalGjenaapnes: string) => {
     dispatch(updateReplySed('gjenaapning.skalGjenaapnes', skalGjenaapnes.trim()))
-    dispatch(updateReplySed('gjenaapning.grunnType', skalGjenaapnes === 'nei' ? 'alle_deltakerne_kan_ikke_gjenåpne_saken' : ''))
+    dispatch(updateReplySed('gjenaapning.grunnType', ''))
     if (validation[namespace + '-skalGjenaapnes']) {
       dispatch(resetValidation(namespace + '-skalGjenaapnes'))
+    }
+  }
+
+  const setGrunnType = (grunnType: string) => {
+    dispatch(updateReplySed('gjenaapning.grunnType', grunnType.trim()))
+    if (validation[namespace + '-grunnType']) {
+      dispatch(resetValidation(namespace + '-grunnType'))
     }
   }
 
@@ -71,14 +78,19 @@ const BekreftelseGjenaapning: React.FC<MainFormProps> = ({
         </RadioGroup>
 
         {sed.gjenaapning?.skalGjenaapnes === 'nei' && (
-          <Box>
-            <Label as='p'>
-              {t('label:bekreftelsegjenaapning-grunn')}
-            </Label>
-            <BodyShort>
-              {t('el:option-bekreftelsegjenaapning-grunn-01')}
-            </BodyShort>
-          </Box>
+          <RadioGroup
+            value={sed.gjenaapning?.grunnType ?? ''}
+            data-testid={namespace + '-grunnType'}
+            error={validation[namespace + '-grunnType']?.feilmelding}
+            id={namespace + '-grunnType'}
+            legend={t('label:bekreftelsegjenaapning-grunn')}
+            onChange={setGrunnType}
+          >
+            <VStack gap="space-8">
+              <RadioPanel value='alle_deltakerne_kan_ikke_gjenåpne_saken'>{t('el:option-bekreftelsegjenaapning-grunn-01')}</RadioPanel>
+              <RadioPanel value='noen_deltakere_kan_ikke_gjenåpne_saken'>{t('el:option-bekreftelsegjenaapning-grunn-02')}</RadioPanel>
+            </VStack>
+          </RadioGroup>
         )}
       </VStack>
     </Box>

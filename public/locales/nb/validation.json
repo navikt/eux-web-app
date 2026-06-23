@@ -196,5 +196,6 @@
   "noErGodkjent": "Du må angi om gjenåpning er godkjent",
   "noAarsakType": "Grunn er påkrevd",
   "noAarsakAnnet": "Annen grunn er påkrevd",
-  "noSkalGjenaapnes": "Du må angi om saken skal gjenåpnes"
+  "noSkalGjenaapnes": "Du må angi om saken skal gjenåpnes",
+  "noGrunnType": "Du må velge en grunn"
 }

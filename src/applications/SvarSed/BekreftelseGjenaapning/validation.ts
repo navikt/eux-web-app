@@ -24,5 +24,14 @@ export const validateBekreftelseGjenaapning = (
     personName
   }))
 
+  if (replySed.gjenaapning?.skalGjenaapnes === 'nei') {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: replySed.gjenaapning?.grunnType,
+      id: namespace + '-grunnType',
+      message: 'validation:noGrunnType',
+      personName
+    }))
+  }
+
   return hasErrors.find(value => value) !== undefined
 }
