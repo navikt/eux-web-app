@@ -1,7 +1,7 @@
 import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import {checkIfDuplicate, checkIfNotEmpty, checkIfValidLand, checkLength} from 'utils/validation'
+import {checkIfNotEmpty, checkIfValidLand, checkLength} from 'utils/validation'
 
 export interface ValidationUtenlandskPinProps {
   pin: Pin | null | undefined
@@ -20,7 +20,6 @@ export const validateUtenlandskPin = (
   namespace: string,
   {
     pin,
-    utenlandskePins,
     index,
     personName
   }: ValidationUtenlandskPinProps
@@ -54,25 +53,6 @@ export const validateUtenlandskPin = (
     needle: pin?.landkode,
     id: namespace + idx + '-land',
     message: 'validation:invalidLand'
-  }))
-
-/*
-  hasErrors.push(checkIfNotGB(v, {
-    needle: pin?.landkode,
-    id: namespace + idx + '-land',
-    message: 'validation:invalidLand',
-    personName
-  }))
-*/
-
-  hasErrors.push(checkIfDuplicate(v, {
-    needle: pin?.landkode,
-    haystack: utenlandskePins,
-    matchFn: (_pin: Pin) => _pin.landkode === pin?.landkode,
-    index,
-    id: namespace + idx + '-land',
-    message: 'validation:duplicateLand',
-    personName
   }))
 
   return hasErrors.find(value => value) !== undefined
