@@ -422,10 +422,9 @@
   "option-h021-avslaggrunn-ikke_mottatt_svar_på_forespørsel": "Ikke mottatt svar på forespørsel",
   "option-h021-avslaggrunn-informasjon_ikke_i_overensstemmelse": "Informasjon som er mottatt er ikke i overensstemmelse med originalforespørsel",
   "option-h021-avslaggrunn-annet": "Annet",
-  "option-gjenaapning-01": "Ny informasjon ble tilgjengelig",
-  "option-gjenaapning-02": "Feilaktig informasjon levert",
-  "option-gjenaapning-03": "Saken ble utilsiktet avsluttet",
-  "option-gjenaapning-99": "Annet",
-  "option-svargjenaapning-godkjent": "Ja, gjenåpning godkjent",
-  "option-svargjenaapning-avvist": "Nei, gjenåpning avvist"
+  "option-svargjenaapning-godkjent": "Ja",
+  "option-svargjenaapning-avvist": "Nei",
+  "option-svargjenaapning-grunn-01": "Statsborgeren er død",
+  "option-svargjenaapning-grunn-02": "Saken ble arkivert",
+  "option-svargjenaapning-grunn-99": "Annet"
 }

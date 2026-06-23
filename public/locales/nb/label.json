@@ -620,9 +620,9 @@
   "refusjon": "Refusjon",
   "gjenaapning-aarsak": "Årsak til anmodning om gjenåpning",
   "gjenaapning-aarsak-annet": "Begrunnelse for gjenåpning",
-  "svargjenaapning-er-godkjent": "Er gjenåpning godkjent?",
-  "svargjenaapning-grunn": "Grunn for gjenåpning",
-  "svargjenaapning-grunn-annet": "Annen grunn",
+  "svargjenaapning-er-godkjent": "Avtale om gjenåpning",
+  "svargjenaapning-grunn": "Grunn",
+  "svargjenaapning-grunn-annet": "Gi nærmere opplysninger hvis du velger '99- Annet'.",
   "bekreftelsegjenaapning-skal-gjenaapnes": "Skal saken gjenåpnes?",
   "bekreftelsegjenaapning-grunn": "Begrunnelse"
 }

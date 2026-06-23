@@ -95,10 +95,9 @@ const SvarGjenaapning: React.FC<MainFormProps> = ({
           onChange={setGrunnType}
         >
           <VStack gap="space-8">
-            <RadioPanel value='ny_informasjon_ble_tilgjengelig'>{t('el:option-gjenaapning-01')}</RadioPanel>
-            <RadioPanel value='feilaktig_informasjon_levert'>{t('el:option-gjenaapning-02')}</RadioPanel>
-            <RadioPanel value='saken_ble_utilsiktet_avsluttet'>{t('el:option-gjenaapning-03')}</RadioPanel>
-            <RadioPanel value='annet'>{t('el:option-gjenaapning-99')}</RadioPanel>
+            <RadioPanel value='statsborgeren_er_død'>{t('el:option-svargjenaapning-grunn-01')}</RadioPanel>
+            <RadioPanel value='saken_ble_arkivert'>{t('el:option-svargjenaapning-grunn-02')}</RadioPanel>
+            <RadioPanel value='annet'>{t('el:option-svargjenaapning-grunn-99')}</RadioPanel>
           </VStack>
         </RadioGroup>
 
