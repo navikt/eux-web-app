@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "14.4.0-TEN-1711-H120-PDL-ADRESSE-SEARCH",
+  "version": "14.4.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -153,5 +153,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@14.4.0-TEN-1711-H120-PDL-ADRESSE-SEARCH"
+  "_id": "neessi@14.4.0"
 }
