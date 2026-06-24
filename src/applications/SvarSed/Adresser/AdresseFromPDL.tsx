@@ -20,6 +20,7 @@ export interface AdresseFromPDLProps {
   selectedAdresser: Array<Adresse>
   onAdresserChanged: (selectedAdresser: Array<Adresse>) => void
   singleAdress?: boolean
+  allowReSearch?: boolean
 }
 
 const mapState = (state: State): AdresseFromPDLSelector => ({
@@ -30,7 +31,7 @@ const mapState = (state: State): AdresseFromPDLSelector => ({
 export type AdresseMap = {[k in AdresseType]?: Array<Adresse>}
 
 const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
-  personName, fnr, selectedAdresser, onAdresserChanged, singleAdress
+  personName, fnr, selectedAdresser, onAdresserChanged, singleAdress, allowReSearch
 }: AdresseFromPDLProps) => {
   const { t } = useTranslation()
   const { adresser, gettingAdresser } = useAppSelector(mapState)
@@ -39,7 +40,10 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
   const [_open, _setOpen] = useState<boolean>(false)
   const [adresseMap, setAdresseMap] = useState<AdresseMap>({})
 
-  const hasAddress = (a: Adresse) : boolean => _.some(selectedAdresser, a)
+  const FORM_EDITABLE_FIELDS: Array<keyof Adresse> = ['gate', 'bygning', 'postnummer', 'by', 'region', 'landkode']
+  const getAdresseId = (a: Adresse | undefined): string =>
+    a ? FORM_EDITABLE_FIELDS.map(field => a[field] ?? '').join('|') : ''
+  const hasAddress = (a: Adresse): boolean => _.some(selectedAdresser, a)
 
   const onCheckboxChanged = (adresse: Adresse, checked: boolean) => {
     let newSelectedAdresser: Array<Adresse> | undefined = _.cloneDeep(selectedAdresser) as Array<Adresse> | undefined
@@ -91,9 +95,8 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
         <Radio
           key={key + '-adresser-checkbox-' + adresse.gate}
           name={key + '-adresser'}
-          checked={hasAddress(adresse)}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onAdresserChanged([adresse])}
-          value={adresse}
+          onChange={() => onAdresserChanged([adresse])}
+          value={getAdresseId(adresse)}
         >
           <AdresseBox
             border={false}
@@ -132,7 +135,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
       <HStack gap="space-16">
         <Button
           variant='primary'
-          disabled={gettingAdresser || _.isNil(fnr) || (singleAdress && selectedAdresser ? selectedAdresser.length > 0 : false)}
+          disabled={gettingAdresser || _.isNil(fnr) || (singleAdress && !allowReSearch && selectedAdresser ? selectedAdresser.length > 0 : false)}
           onClick={getAdresse}
           icon={<MagnifyingGlassIcon/>}
         >
@@ -176,7 +179,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
               </>
             }
             {singleAdress &&
-              <RadioGroup value={selectedAdresser[0]} legend="Adresser" hideLegend={true}>
+              <RadioGroup value={selectedAdresser[0] ? getAdresseId(selectedAdresser[0]) : null} legend="Adresser" hideLegend={true}>
                 {adresseMap.bosted && renderAdressesRadio('bosted', adresseMap.bosted)}
                 {adresseMap.opphold && renderAdressesRadio('opphold', adresseMap.opphold)}
                 {adresseMap.kontakt && renderAdressesRadio('kontakt', adresseMap.kontakt)}

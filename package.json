@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "14.3.0",
+  "version": "14.4.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,8 +13,6 @@
     "build": "npm-run-all -s patch:init patch:env patch:nodelocal echo:env -p build:js",
     "build:javalocal": "npm-run-all -s patch:init patch:env patch:javalocal echo:env -p build:js",
     "build:js": "NODE_OPTIONS=--max-old-space-size=4096 vite build",
-    "lint": "standardx './src/**/*.ts' './src/**/*.tsx'",
-    "lint:fix": "standardx './src/**/*.ts' './src/**/*.tsx' --fix",
     "start": "cross-env NODE_ENV=development npm-run-all -s patch:init patch:env patch:nodelocal echo:env -p start:js",
     "start:javalocal": "cross-env NODE_ENV=development npm-run-all -s patch:init patch:env patch:javalocal echo:env -p start:js",
     "start:js": "cross-env PORT=3003 NODE_OPTIONS=--max-old-space-size=4096 vite",
@@ -89,8 +87,6 @@
     "cross-env": "7.0.3",
     "dotenv-save": "1.2.0",
     "eslint": "8.31.0",
-    "eslint-config-standard": "17.1.0",
-    "eslint-config-standard-jsx": "11.0.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "jest": "29.7.0",
     "jest-environment-jsdom": "30.4.1",
@@ -100,7 +96,6 @@
     "read-pkg": "7.1.0",
     "shelljs": "0.10.0",
     "simple-git": "3.36.0",
-    "standardx": "7.0.0",
     "ts-jest": "29.4.11",
     "typescript": "5.9.3",
     "vite": "8.0.16",
@@ -153,56 +148,10 @@
       ]
     }
   },
-  "standardx": {
-    "ignore": [
-      "public/",
-      "*.snap"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "sourceType": "module"
-    },
-    "plugins": [
-      "@typescript-eslint",
-      "react-hooks"
-    ],
-    "extends": [
-      "plugin:jsx-a11y/recommended"
-    ],
-    "globals": [
-      "act",
-      "afterAll",
-      "afterEach",
-      "beforeAll",
-      "beforeEach",
-      "Blob",
-      "CustomEvent",
-      "Event",
-      "describe",
-      "expect",
-      "FileReader",
-      "fetch",
-      "Element",
-      "HTMLCanvasElement",
-      "HTMLButtonElement",
-      "HTMLInputElement",
-      "HTMLSelectElement",
-      "HTMLTextAreaElement",
-      "it",
-      "jest",
-      "JSX",
-      "Location",
-      "mount",
-      "ReactDOM",
-      "render",
-      "renderer",
-      "shallow"
-    ]
-  },
   "browserslist": [
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@14.3.0"
+  "_id": "neessi@14.4.0"
 }
