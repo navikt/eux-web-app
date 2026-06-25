@@ -622,5 +622,9 @@
   "gjenaapning-aarsak-annet": "Begrunnelse for gjenåpning",
   "svargjenaapning-er-godkjent": "Er gjenåpning godkjent?",
   "svargjenaapning-grunn": "Grunn for gjenåpning",
-  "svargjenaapning-grunn-annet": "Annen grunn"
+  "svargjenaapning-grunn-annet": "Annen grunn",
+  "leggtilinstitusjon-grunn": "Grunn for å legge til institusjonen",
+  "leggtilinstitusjon-grunn-annet": "Begrunnelse",
+  "fjerninstitusjon-grunn": "Grunn for å fjerne institusjonen",
+  "fjerninstitusjon-grunn-annet": "Begrunnelse"
 }
