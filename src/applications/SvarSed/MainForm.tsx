@@ -191,11 +191,10 @@ const MainForm = <T extends StorageTypes>({
   const getPersonName = (replySed: ReplySed | PDU1 | null | undefined, personId: string) => {
     const p = _.get(replySed, personId)
     if (p) {
-      if (p.personInfo) {
-        return p.personInfo.fornavn + ' ' + (p.personInfo.etternavn ?? '')
-      } else {
-        return (replySed?.bruker as Pdu1Person)?.fornavn + ' ' + ((replySed?.bruker as Pdu1Person)?.etternavn ?? '')
-      }
+      const nameParts = p.personInfo
+        ? [p.personInfo.fornavn, p.personInfo.etternavn]
+        : [(replySed?.bruker as Pdu1Person)?.fornavn, (replySed?.bruker as Pdu1Person)?.etternavn]
+      return nameParts.filter(Boolean).join(' ').trim() || '-'
     }
     return '-'
   }
@@ -338,11 +337,12 @@ const MainForm = <T extends StorageTypes>({
       setCurrentMenuOption(initialMenuOption)
     }
     const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family pr pdu1
+    const nameParts = personInfo
+      ? [(personInfo as PersonInfo).fornavn, (personInfo as PersonInfo).etternavn]
+      : [(replySed as PDU1)?.bruker?.fornavn, (replySed as PDU1)?.bruker?.etternavn]
     const personName = personId === 'familie'
       ? t('label:hele-familien')
-      : personInfo
-        ? (personInfo as PersonInfo).fornavn + ' ' + ((personInfo as PersonInfo).etternavn ?? '')
-        : (replySed as PDU1).bruker.fornavn + ' ' + ((replySed as PDU1).bruker.etternavn ?? '')
+      : (nameParts.filter(Boolean).join(' ').trim() || '-')
 
     const open: boolean = _.find(openMenus, _id => _id === personId) !== undefined
     const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + personId))

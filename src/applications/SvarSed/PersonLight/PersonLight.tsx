@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validatePersonLight, ValidationPersonLightProps } from './validation'
-import {isXSed} from "../../../utils/sed";
+import {isX007Sed, isXSed} from "../../../utils/sed";
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -38,11 +38,15 @@ const PersonLightFC: React.FC<MainFormProps> = ({
   const norwegianPin: Pin | undefined = _.find(personLight?.pin, p => p.landkode === 'NOR')
   const [gradering, setGradering] = useState<string | null>(null)
 
+  // X007 person context is part of an xsd:choice on the backend, so person fields are optional
+  const optional: boolean = isX007Sed(replySed)
+
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
     performValidation<ValidationPersonLightProps>(clonedValidation, namespace, validatePersonLight, {
       personLight,
-      personName
+      personName,
+      optional
     })
     dispatch(setValidation(clonedValidation))
   })
@@ -162,7 +166,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
             label={t('label:fornavn')}
             namespace={namespace}
             onChanged={setFornavn}
-            required
+            required={!optional}
             value={personLight?.fornavn ?? ''}
           />
           <Input
@@ -171,7 +175,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
             label={t('label:etternavn')}
             namespace={namespace}
             onChanged={setEtternavn}
-            required
+            required={!optional}
             value={personLight?.etternavn ?? ''}
           />
           <DateField
@@ -180,7 +184,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
             label={t('label:fødselsdato')}
             namespace={namespace}
             onChanged={setFodselsdato}
-            required
+            required={!optional}
             dateValue={personLight?.foedselsdato ?? ''}
           />
         </HGrid>
@@ -190,7 +194,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
           data-testid={namespace + '-kjoenn'}
           error={validation[namespace + '-kjoenn']?.feilmelding}
           id={namespace + '-kjoenn'}
-          legend={t('label:kjønn') + ' *'}
+          legend={t('label:kjønn') + (optional ? '' : ' *')}
           name={namespace + '-kjoenn'}
           onChange={setKjoenn}
         >

@@ -7,6 +7,8 @@ import {validateFnrDnrNpid} from "../../../utils/fnrValidator";
 export interface ValidationPersonLightProps {
   personLight: PersonLight | undefined
   personName?: string
+  // when true, person fields are not required (only their format is validated if filled)
+  optional?: boolean
 }
 
 export const validatePersonLight = (
@@ -14,29 +16,32 @@ export const validatePersonLight = (
   namespace: string,
   {
     personLight,
-    personName
+    personName,
+    optional = false
   }: ValidationPersonLightProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: personLight?.fornavn?.trim(),
-    id: namespace + '-fornavn',
-    message: 'validation:noFornavn'
-  }))
+  if (!optional) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: personLight?.fornavn?.trim(),
+      id: namespace + '-fornavn',
+      message: 'validation:noFornavn'
+    }))
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: personLight?.etternavn?.trim(),
-    id: namespace + '-etternavn',
-    message: 'validation:noEtternavn'
-  }))
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: personLight?.etternavn?.trim(),
+      id: namespace + '-etternavn',
+      message: 'validation:noEtternavn'
+    }))
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: personLight?.foedselsdato?.trim(),
-    id: namespace + '-foedselsdato',
-    message: 'validation:noFoedselsdato',
-    personName
-  }))
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: personLight?.foedselsdato?.trim(),
+      id: namespace + '-foedselsdato',
+      message: 'validation:noFoedselsdato',
+      personName
+    }))
+  }
 
   hasErrors.push(checkValidDateFormat(v, {
     needle: personLight?.foedselsdato?.trim(),
@@ -45,12 +50,14 @@ export const validatePersonLight = (
     personName
   }))
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: personLight?.kjoenn?.trim(),
-    id: namespace + '-kjoenn',
-    message: 'validation:noKjoenn',
-    personName
-  }))
+  if (!optional) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: personLight?.kjoenn?.trim(),
+      id: namespace + '-kjoenn',
+      message: 'validation:noKjoenn',
+      personName
+    }))
+  }
 
   const norwegianPin: Pin | undefined = _.find(personLight?.pin, p => p.landkode === 'NOR')
 

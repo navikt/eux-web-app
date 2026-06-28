@@ -165,7 +165,7 @@ const Videresend: React.FC<MainFormProps> = ({
           <option value=''>{t('label:velg')}</option>
           {_.orderBy(motparter, 'motpartNavn').map((m: Motpart) => (
             <option value={m.motpartId} key={m.motpartId}>
-              {m.formatertNavn ?? m.motpartNavn}
+              {m.motpartNavn}
             </option>
           ))}
         </Select>
