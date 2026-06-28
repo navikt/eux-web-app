@@ -80,7 +80,7 @@ const Videresend: React.FC<MainFormProps> = ({
     const id = event.target.value
     const motpart = _.find(motparter, (m: Motpart) => m.motpartId === id)
     dispatch(updateReplySed('videresend.fjernInstitusjonId', id))
-    dispatch(updateReplySed('videresend.fjernInstitusjonNavn', motpart?.motpartNavn ?? ''))
+    dispatch(updateReplySed('videresend.fjernInstitusjonNavn', motpart ? `${motpart.motpartId} - ${motpart.motpartNavn}` : ''))
     if (validation[namespace + '-fjernInstitusjon']) {
       dispatch(resetValidation(namespace + '-fjernInstitusjon'))
     }
@@ -165,7 +165,7 @@ const Videresend: React.FC<MainFormProps> = ({
           <option value=''>{t('label:velg')}</option>
           {_.orderBy(motparter, 'motpartNavn').map((m: Motpart) => (
             <option value={m.motpartId} key={m.motpartId}>
-              {m.motpartNavn}
+              {`${m.motpartId} - ${m.motpartNavn}`}
             </option>
           ))}
         </Select>
