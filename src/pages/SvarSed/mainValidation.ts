@@ -135,7 +135,7 @@ import {
   isX010Sed, isX011Sed, isX012Sed,
   isXSed
 } from 'utils/sed'
-import { checkLength, checkValidDateFormat } from 'utils/validation'
+import { checkLength } from 'utils/validation'
 import {getAllArbeidsPerioderHaveSluttDato, getNrOfArbeidsPerioder} from "../../utils/arbeidsperioder";
 import {validateYtterligereInfo, ValidationYtterligereInfoProps} from "../../applications/SvarSed/YtterligereInfo/validation";
 import { validateVedtak as validateVedtakF003, ValidationVedtakProps as ValidationVedtakF003Props } from 'applications/SvarSed/VedtakForF003/validation'
@@ -677,11 +677,12 @@ export const validateSEDEdit = (
     hasErrors.push(performValidation<ValidationForespoerselProps>(v, 'forespoersel-sykdom', validateForespoersel, {
       sykdom: (replySed as S040Sed).sykdom
     }, true))
-    hasErrors.push(checkValidDateFormat(v, {
-      needle: _.get(replySed, `bruker.botidilandetsiden`),
-      id: `svarsed-bruker-adresser-botidilandetsiden`,
-      message: 'validation:invalidDateFormat'
-    }))
+    hasErrors.push(performValidation<ValidationAdresserProps>(v, 'svarsed-bruker-adresser', validateAdresser, {
+      adresser: undefined,
+      checkAdresseType: false,
+      replySed,
+      botidilandetsiden: _.get(replySed, 'bruker.botidilandetsiden')
+    }, true))
   }
 
   if(isS046Sed(replySed)){

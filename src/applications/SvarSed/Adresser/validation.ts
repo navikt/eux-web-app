@@ -1,7 +1,8 @@
-import { Adresse } from 'declarations/sed'
+import { Adresse, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import {checkIfNotEmpty, checkLength} from 'utils/validation'
+import { isS040Sed } from 'utils/sed'
+import {checkIfNotEmpty, checkLength, checkValidDateFormat} from 'utils/validation'
 
 export interface ValidationAdresseProps {
   adresse: Adresse | undefined
@@ -15,6 +16,8 @@ export interface ValidationAdresserProps {
   adresser: Array<Adresse> | undefined
   checkAdresseType: boolean
   personName?: string
+  replySed?: ReplySed
+  botidilandetsiden?: string
 }
 
 export const validateAdresse = (
@@ -105,7 +108,9 @@ export const validateAdresser = (
   {
     adresser,
     checkAdresseType,
-    personName
+    personName,
+    replySed,
+    botidilandetsiden
   }: ValidationAdresserProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -117,6 +122,15 @@ export const validateAdresser = (
       personName
     }))
   })
+
+  if (isS040Sed(replySed)) {
+    hasErrors.push(checkValidDateFormat(validation, {
+      needle: botidilandetsiden,
+      id: namespace + '-botidilandetsiden',
+      message: 'validation:invalidDateFormat',
+      personName
+    }))
+  }
 
   return hasErrors.find(value => value) !== undefined
 }
