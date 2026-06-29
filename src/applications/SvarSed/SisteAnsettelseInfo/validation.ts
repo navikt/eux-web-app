@@ -41,20 +41,21 @@ export const validateUtbetaling = (
   }))
 
   if (!_.isEmpty(etterbetalinger?.utbetalingType?.trim())) {
-    if (etterbetalinger?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' &&
-      _.isEmpty(etterbetalinger?.loennTilDato?.trim())) {
-      hasErrors.push(addError(v, {
-        id: namespace + idx + '-loennTilDato',
-        message: 'validation:noLoennTilDato',
-        personName
-      }))
-    } else if (etterbetalinger?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet') {
-      hasErrors.push(checkValidDateFormat(v, {
-        needle: etterbetalinger?.loennTilDato,
-        id: namespace + idx + '-loennTilDato',
-        message: 'validation:invalidDateFormat',
-        personName
-      }))
+    if (etterbetalinger?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet') {
+      if(_.isEmpty(etterbetalinger?.loennTilDato?.trim())) {
+        hasErrors.push(addError(v, {
+          id: namespace + idx + '-loennTilDato',
+          message: 'validation:noLoennTilDato',
+          personName
+        }))
+      } else {
+        hasErrors.push(checkValidDateFormat(v, {
+          needle: etterbetalinger?.loennTilDato,
+          id: namespace + idx + '-loennTilDato',
+          message: 'validation:invalidDateFormat',
+          personName
+        }))
+      }
     }
   }
 
