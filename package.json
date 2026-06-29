@@ -25,7 +25,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "8.13.0",
+    "@navikt/aksel-icons": "8.13.1",
     "@navikt/ds-css": "8.13.0",
     "@navikt/ds-react": "8.13.0",
     "@navikt/eessi-kodeverk": "2.4.3",
