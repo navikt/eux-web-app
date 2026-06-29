@@ -678,7 +678,7 @@ export const validateSEDEdit = (
       sykdom: (replySed as S040Sed).sykdom
     }, true))
     hasErrors.push(performValidation<ValidationAdresserProps>(v, 'svarsed-bruker-adresser', validateAdresser, {
-      adresser: undefined,
+      adresser: _.get(replySed, 'bruker.adresser'),
       checkAdresseType: false,
       replySed,
       botidilandetsiden: _.get(replySed, 'bruker.botidilandetsiden')
