@@ -6,7 +6,7 @@ import {
 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import {checkIfDuplicate, checkIfNotEmpty, checkLength} from 'utils/validation'
+import {checkIfDuplicate, checkIfNotEmpty, checkLength, checkValidDateFormat} from 'utils/validation'
 import {ValidationYtelseTilForeldreloeseProps} from "../validation";
 
 export interface ValidationRelasjonProps {
@@ -40,6 +40,12 @@ export const validateRelasjon = (
   hasErrors.push(validatePeriode(v, namespace + idx + '-periode', {
     periode: relasjon?.periode,
     mandatoryStartdato: false,
+  }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: relasjon?.relasjonsstartdato,
+    id: namespace + idx + '-relasjonsstartdato',
+    message: 'validation:invalidDateFormat'
   }))
 
   hasErrors.push(checkIfDuplicate(v, {

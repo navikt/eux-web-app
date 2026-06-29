@@ -677,6 +677,12 @@ export const validateSEDEdit = (
     hasErrors.push(performValidation<ValidationForespoerselProps>(v, 'forespoersel-sykdom', validateForespoersel, {
       sykdom: (replySed as S040Sed).sykdom
     }, true))
+    hasErrors.push(performValidation<ValidationAdresserProps>(v, 'svarsed-bruker-adresser', validateAdresser, {
+      adresser: _.get(replySed, 'bruker.adresser'),
+      checkAdresseType: false,
+      replySed,
+      botidilandetsiden: _.get(replySed, 'bruker.botidilandetsiden')
+    }, true))
   }
 
   if(isS046Sed(replySed)){

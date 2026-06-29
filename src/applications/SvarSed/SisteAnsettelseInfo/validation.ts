@@ -2,7 +2,7 @@ import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
-import {addError, checkIfInteger, checkIfNotEmpty, checkIfNotNumber, checkLength} from 'utils/validation'
+import {addError, checkIfInteger, checkIfNotEmpty, checkIfNotNumber, checkLength, checkValidDateFormat} from 'utils/validation'
 
 
 export interface ValidationUtbetalingProps {
@@ -41,13 +41,21 @@ export const validateUtbetaling = (
   }))
 
   if (!_.isEmpty(etterbetalinger?.utbetalingType?.trim())) {
-    if (etterbetalinger?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' &&
-      _.isEmpty(etterbetalinger?.loennTilDato?.trim())) {
-      hasErrors.push(addError(v, {
-        id: namespace + idx + '-loennTilDato',
-        message: 'validation:noLoennTilDato',
-        personName
-      }))
+    if (etterbetalinger?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet') {
+      if(_.isEmpty(etterbetalinger?.loennTilDato?.trim())) {
+        hasErrors.push(addError(v, {
+          id: namespace + idx + '-loennTilDato',
+          message: 'validation:noLoennTilDato',
+          personName
+        }))
+      } else {
+        hasErrors.push(checkValidDateFormat(v, {
+          needle: etterbetalinger?.loennTilDato,
+          id: namespace + idx + '-loennTilDato',
+          message: 'validation:invalidDateFormat',
+          personName
+        }))
+      }
     }
   }
 
