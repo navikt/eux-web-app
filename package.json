@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "14.5.0-TEN-1578-DATE-FORMAT-VALIDATION",
+  "version": "14.5.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -153,5 +153,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@14.5.0-TEN-1578-DATE-FORMAT-VALIDATION"
+  "_id": "neessi@14.5.0"
 }
