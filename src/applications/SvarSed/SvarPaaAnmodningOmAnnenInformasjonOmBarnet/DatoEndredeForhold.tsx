@@ -57,7 +57,7 @@ const DatoEndredeForhold: React.FC<MainFormProps> = ({
           <DateField
             error={validation[namespace + '-dato-for-endrede-forhold']?.feilmelding}
             namespace={namespace}
-            id={namespace + '-dato-for-endrede-forhold'}
+            id={'dato-for-endrede-forhold'}
             label={t('label:dato-for-endrede-forhold')}
             hideLabel={true}
             onChanged={(v) => setAnnenInformasjonBarnetProperty('datoEndredeForhold', v)}
