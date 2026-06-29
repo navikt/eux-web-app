@@ -256,7 +256,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
       const adresser: Array<Adresse> | undefined = _.get(replySed, `${personID}.adresser`)
       hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
-        adresser, checkAdresseType: false, personName
+        adresser, checkAdresseType: false, personName, botidilandetsiden: _.get(replySed, `${personID}.botidilandetsiden`)
       }, true))
     }
 
@@ -429,7 +429,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     }, true))
     if (!isH120Sed(replySed)) {
       hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
-        adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName
+        adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName, botidilandetsiden: _.get(replySed, `${personID}.botidilandetsiden`)
       }, true))
     }
     if (isH120Sed(replySed)) {

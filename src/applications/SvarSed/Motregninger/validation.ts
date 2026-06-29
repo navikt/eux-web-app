@@ -1,4 +1,4 @@
-import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
+import { addError, checkIfNotEmpty, checkLength, checkValidDateFormat } from 'utils/validation'
 import { validatePeriode } from 'components/Forms/validation'
 import {F002Sed, Motregning, Motregninger, ReplySed} from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -106,6 +106,13 @@ export const validateMotregning = (
     periodeType: 'simple',
     mandatoryStartdato: true,
     mandatorySluttdato: true,
+    personName: formalName
+  }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: motregning?.vedtaksdato,
+    id: namespace + (nsIndex ?? type) + '-vedtaksdato',
+    message: 'validation:invalidDateFormat',
     personName: formalName
   }))
 

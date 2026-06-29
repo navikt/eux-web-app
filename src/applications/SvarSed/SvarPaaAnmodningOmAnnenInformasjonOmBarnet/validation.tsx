@@ -3,7 +3,7 @@ import {
   AnnenInformasjonBarnet_V42,
   AnnenInformasjonBarnet_V43
 } from "../../../declarations/sed";
-import {checkIfFilledOut, checkIfNotEmpty, checkLength, doNothing} from "../../../utils/validation";
+import {checkIfFilledOut, checkIfNotEmpty, checkLength, checkValidDateFormat} from "../../../utils/validation";
 import performValidation from "../../../utils/performValidation";
 
 export interface ValidationAnnenInformasjonBarnetProps {
@@ -226,10 +226,10 @@ export const validateDatoForEndredeForhold = (
 
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(doNothing(v, {
-    needle: annenInformasjonBarnet,
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: (annenInformasjonBarnet as AnnenInformasjonBarnet_V42)?.datoEndredeForhold,
     id: namespace + '-dato-for-endrede-forhold',
-    message: 'dummy'
+    message: 'validation:invalidDateFormat'
   }))
 
   return hasErrors.find(value => value) !== undefined

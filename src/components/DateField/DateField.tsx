@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from 'react'
 
 import { TextField } from '@navikt/ds-react'
-import {useAppDispatch} from "../../store";
+import _ from 'lodash'
+import {useAppDispatch, useAppSelector} from "../../store";
 import {setTextFieldDirty} from "../../actions/ui";
+import {resetValidation, setValidation} from "../../actions/validation";
+import {addError} from "../../utils/validation";
+import { State } from "declarations/reducers";
+import { Validation } from "declarations/types";
 import moment, {Moment} from "moment/moment";
 import {useTranslation} from "react-i18next";
 
@@ -72,11 +77,35 @@ const DateField = ({
 
 }: DateFieldProps) => {
   const dispatch = useAppDispatch()
+  const validation: Validation = useAppSelector((state: State) => state.validation.status)
   const { t } = useTranslation()
   const [_dato, _setDato] = useState<string>(() => isDateValidFormat(dateValue) ? toDateFormat(dateValue, uiFormat!) : dateValue ? dateValue : '')
   const [_error, _setError] = useState<string | undefined>(() => undefined)
   const [_blurred, _setBlurred] = useState<boolean>(() => false)
 
+  const skjemaelementId = namespace + '-' + id
+
+  const onDateBlur = () => {
+    if(isDateValidFormat(_dato)){
+      _setError(undefined)
+      const date = toDateFormat(_dato, finalFormat!)
+      onChanged(date)
+      dispatch(setTextFieldDirty(false))
+      if (validation[skjemaelementId]) {
+        dispatch(resetValidation(skjemaelementId))
+      }
+    } else {
+      _setError(t('validation:invalidDateFormat'))
+      onChanged(_dato)
+      const clonedValidation: Validation = _.cloneDeep(validation)
+      addError(clonedValidation, {
+        id: skjemaelementId,
+        message: 'validation:invalidDateFormat'
+      })
+      dispatch(setValidation(clonedValidation))
+    }
+    _setBlurred(!_blurred)
+  }
 
   useEffect(() => {
     if(isDateValidFormat(dateValue)){
@@ -94,19 +123,6 @@ const DateField = ({
       _setError(undefined)
     }
   }, [resetError])
-
-  const onDateBlur = () => {
-    if(isDateValidFormat(_dato)){
-      _setError(undefined)
-      const date = toDateFormat(_dato, finalFormat!)
-      onChanged(date)
-      dispatch(setTextFieldDirty(false))
-    } else {
-      _setError(t('validation:invalidDateFormat'))
-      onChanged(_dato)
-    }
-    _setBlurred(!_blurred)
-  }
 
   const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     _setDato(e.target.value)
