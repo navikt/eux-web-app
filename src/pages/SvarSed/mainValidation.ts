@@ -135,7 +135,7 @@ import {
   isX010Sed, isX011Sed, isX012Sed,
   isXSed
 } from 'utils/sed'
-import { checkLength } from 'utils/validation'
+import { checkLength, checkValidDateFormat } from 'utils/validation'
 import {getAllArbeidsPerioderHaveSluttDato, getNrOfArbeidsPerioder} from "../../utils/arbeidsperioder";
 import {validateYtterligereInfo, ValidationYtterligereInfoProps} from "../../applications/SvarSed/YtterligereInfo/validation";
 import { validateVedtak as validateVedtakF003, ValidationVedtakProps as ValidationVedtakF003Props } from 'applications/SvarSed/VedtakForF003/validation'
@@ -256,7 +256,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
       const adresser: Array<Adresse> | undefined = _.get(replySed, `${personID}.adresser`)
       hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
-        adresser, checkAdresseType: false, personName, botidilandetsiden: _.get(replySed, `${personID}.botidilandetsiden`)
+        adresser, checkAdresseType: false, personName
       }, true))
     }
 
@@ -429,7 +429,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     }, true))
     if (!isH120Sed(replySed)) {
       hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
-        adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName, botidilandetsiden: _.get(replySed, `${personID}.botidilandetsiden`)
+        adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName
       }, true))
     }
     if (isH120Sed(replySed)) {
@@ -677,6 +677,11 @@ export const validateSEDEdit = (
     hasErrors.push(performValidation<ValidationForespoerselProps>(v, 'forespoersel-sykdom', validateForespoersel, {
       sykdom: (replySed as S040Sed).sykdom
     }, true))
+    hasErrors.push(checkValidDateFormat(v, {
+      needle: _.get(replySed, `bruker.botidilandetsiden`),
+      id: `svarsed-bruker-adresser-botidilandetsiden`,
+      message: 'validation:invalidDateFormat'
+    }))
   }
 
   if(isS046Sed(replySed)){
