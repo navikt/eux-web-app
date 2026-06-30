@@ -14,7 +14,6 @@ import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validateVideresend, ValidationVideresendProps } from './validation'
 
-// Mottaker må være i samme land som avsender (gjeldende NAV-institusjon), dvs. Norge (ISO alfa-3).
 const MOTTAKER_LANDKODE = 'NOR'
 
 interface VideresendSelector {
@@ -43,12 +42,10 @@ const Videresend: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-videresend`
   const sed = replySed as X007Sed
   const bucType = sed.sak?.sakType
-  // Avsender er låst til gjeldende (egen) institusjon
   const navinstitusjon: NavInstitusjon | undefined = sed.sak?.navinstitusjon
   const avsenderNavn = sed.videresend?.fjernInstitusjonNavn ??
     (navinstitusjon ? `${navinstitusjon.id} - ${navinstitusjon.navn}` : '')
 
-  // Lås avsender til gjeldende institusjon, og hent kvalifiserte norske mottakere for BUC-typen
   useEffect(() => {
     if (navinstitusjon && _.isEmpty(sed.videresend?.fjernInstitusjonId)) {
       dispatch(updateReplySed('videresend.fjernInstitusjonId', navinstitusjon.id))
