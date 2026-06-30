@@ -43,6 +43,12 @@ const SvarGjenaapning: React.FC<MainFormProps> = ({
 
   const setErGodkjent = (erGodkjent: string) => {
     dispatch(updateReplySed('svarGjenaapning.erGodkjent', erGodkjent.trim()))
+    if (erGodkjent.trim() !== 'nei') {
+      dispatch(updateReplySed('svarGjenaapning.grunnType', ''))
+      dispatch(updateReplySed('svarGjenaapning.grunnAnnet', ''))
+      dispatch(resetValidation(namespace + '-grunnType'))
+      dispatch(resetValidation(namespace + '-grunnAnnet'))
+    }
     if (validation[namespace + '-erGodkjent']) {
       dispatch(resetValidation(namespace + '-erGodkjent'))
     }
@@ -86,31 +92,35 @@ const SvarGjenaapning: React.FC<MainFormProps> = ({
           </VStack>
         </RadioGroup>
 
-        <RadioGroup
-          value={sed.svarGjenaapning?.grunnType ?? ''}
-          data-testid={namespace + '-grunnType'}
-          error={validation[namespace + '-grunnType']?.feilmelding}
-          id={namespace + '-grunnType'}
-          legend={t('label:svargjenaapning-grunn')}
-          onChange={setGrunnType}
-        >
-          <VStack gap="space-8">
-            <RadioPanel value='statsborgeren_er_død'>{t('el:option-svargjenaapning-grunn-01')}</RadioPanel>
-            <RadioPanel value='saken_ble_arkivert'>{t('el:option-svargjenaapning-grunn-02')}</RadioPanel>
-            <RadioPanel value='annet'>{t('el:option-svargjenaapning-grunn-99')}</RadioPanel>
-          </VStack>
-        </RadioGroup>
+        {sed.svarGjenaapning?.erGodkjent === 'nei' && (
+          <>
+            <RadioGroup
+              value={sed.svarGjenaapning?.grunnType ?? ''}
+              data-testid={namespace + '-grunnType'}
+              error={validation[namespace + '-grunnType']?.feilmelding}
+              id={namespace + '-grunnType'}
+              legend={t('label:svargjenaapning-grunn')}
+              onChange={setGrunnType}
+            >
+              <VStack gap="space-8">
+                <RadioPanel value='statsborgeren_er_død'>{t('el:option-svargjenaapning-grunn-01')}</RadioPanel>
+                <RadioPanel value='saken_ble_arkivert'>{t('el:option-svargjenaapning-grunn-02')}</RadioPanel>
+                <RadioPanel value='annet'>{t('el:option-svargjenaapning-grunn-99')}</RadioPanel>
+              </VStack>
+            </RadioGroup>
 
-        {sed.svarGjenaapning?.grunnType === 'annet' && (
-          <Textarea
-            error={validation[namespace + '-grunnAnnet']?.feilmelding}
-            id={namespace + '-grunnAnnet'}
-            label={t('label:svargjenaapning-grunn-annet')}
-            maxLength={255}
-            resize
-            value={sed.svarGjenaapning?.grunnAnnet ?? ''}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setGrunnAnnet(e.target.value)}
-          />
+            {sed.svarGjenaapning?.grunnType === 'annet' && (
+              <Textarea
+                error={validation[namespace + '-grunnAnnet']?.feilmelding}
+                id={namespace + '-grunnAnnet'}
+                label={t('label:svargjenaapning-grunn-annet')}
+                maxLength={255}
+                resize
+                value={sed.svarGjenaapning?.grunnAnnet ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setGrunnAnnet(e.target.value)}
+              />
+            )}
+          </>
         )}
       </VStack>
     </Box>
