@@ -85,8 +85,6 @@ const Videresend: React.FC<MainFormProps> = ({
     if (bucType && country.value) {
       dispatch(getFjernInstitusjoner(bucType, country.value))
     }
-    dispatch(updateReplySed('videresend.fjernInstitusjonId', ''))
-    dispatch(updateReplySed('videresend.fjernInstitusjonNavn', ''))
   }
 
   const onLeggTilInstitusjonChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
