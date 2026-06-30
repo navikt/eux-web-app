@@ -116,20 +116,6 @@ export const getInstitusjoner = (
   })
 }
 
-export const getFjernInstitusjoner = (
-  buctype: string, landkode: string
-): ActionWithPayload<Institusjoner> => {
-  return call({
-    url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
-    expectedPayload: mockInstitusjon(),
-    type: {
-      request: types.SAK_FJERN_INSTITUSJONER_REQUEST,
-      success: types.SAK_FJERN_INSTITUSJONER_SUCCESS,
-      failure: types.SAK_FJERN_INSTITUSJONER_FAILURE
-    }
-  })
-}
-
 export const resetFilloutInfo = () => ({
   type: types.SAK_FILLOUTINFO_RESET
 })

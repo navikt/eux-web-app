@@ -14,7 +14,6 @@ export interface SakState {
   fnr: string | undefined
   institusjon: string | undefined
   institusjonList: Array<Institusjon> | undefined
-  fjernInstitusjonList: Array<Institusjon> | undefined
   landkoder: Array<string> | undefined
   landkode: string | undefined
   opprettetSak: OpprettetSak | undefined
@@ -36,7 +35,6 @@ export const initialSakState: SakState = {
   fnr: undefined,
   institusjonList: undefined,
   institusjon: undefined,
-  fjernInstitusjonList: undefined,
   landkoder: undefined,
   landkode: undefined,
   opprettetSak: undefined,
@@ -145,12 +143,6 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
       return {
         ...state,
         institusjonList: (action as ActionWithPayload).payload,
-      }
-
-    case types.SAK_FJERN_INSTITUSJONER_SUCCESS:
-      return {
-        ...state,
-        fjernInstitusjonList: (action as ActionWithPayload).payload,
       }
 
 

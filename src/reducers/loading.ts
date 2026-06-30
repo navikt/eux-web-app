@@ -20,7 +20,6 @@ export const initialLoadingState: LoadingState = {
   gettingFagsaker: false,
   gettingInntekter: false,
   gettingInstitusjoner: false,
-  gettingFjernInstitusjoner: false,
   gettingJoarkList: false,
   gettingJoarkFile: false,
   gettingAttachmentFile: false,
@@ -227,19 +226,6 @@ const loadingReducer = (
       return {
         ...state,
         gettingInstitusjoner: false
-      }
-
-    case types.SAK_FJERN_INSTITUSJONER_REQUEST:
-      return {
-        ...state,
-        gettingFjernInstitusjoner: true
-      }
-
-    case types.SAK_FJERN_INSTITUSJONER_SUCCESS:
-    case types.SAK_FJERN_INSTITUSJONER_FAILURE:
-      return {
-        ...state,
-        gettingFjernInstitusjoner: false
       }
 
     case types.INNTEKT_REQUEST:
