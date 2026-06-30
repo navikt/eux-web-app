@@ -26,8 +26,8 @@
   },
   "dependencies": {
     "@navikt/aksel-icons": "8.13.1",
-    "@navikt/ds-css": "8.13.0",
-    "@navikt/ds-react": "8.13.0",
+    "@navikt/ds-css": "8.13.1",
+    "@navikt/ds-react": "8.13.1",
     "@navikt/eessi-kodeverk": "2.4.3",
     "@navikt/fetch": "7.2.17",
     "@navikt/flagg-ikoner": "13.2.4",
@@ -68,7 +68,7 @@
     "stacktracey": "2.2.0",
     "url": "0.11.4",
     "winston": "3.19.0",
-    "worker-timers": "8.0.31"
+    "worker-timers": "8.0.32"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "6.9.1",
@@ -78,7 +78,7 @@
     "@types/jest": "28.1.8",
     "@types/lodash": "4.17.24",
     "@types/md5": "2.3.6",
-    "@types/node": "24.13.1",
+    "@types/node": "24.13.2",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "@typescript-eslint/eslint-plugin": "5.62.0",
