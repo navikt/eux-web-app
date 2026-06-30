@@ -508,7 +508,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
   if (isXSed(replySed)) {
     hasErrors.push(performValidation<ValidationPersonLightProps>(v, `svarsed-${personID}-personlight`, validatePersonLight, {
-      personLight: (replySed as X001Sed).bruker, personName, optional: isX007Sed(replySed)
+      personLight: (replySed as X001Sed).bruker, personName
     }, true))
 
     if (isX001Sed(replySed)) {
