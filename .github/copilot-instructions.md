@@ -1,15 +1,29 @@
-# Copilot Instructions for eux-web-app (NEESSI)
+  # Copilot Instructions for eux-web-app (NEESSI)
 
 ## NEVER
 - Do not commit and push to main/master directly. Always create a feature branch and open a pull request for code review.
 - If we are on master/main, always ask before committing and pushing. We want to avoid accidental commits to main.
+- Do not commit or push at all unless explicitly asked. Default to leaving changes for the user to QA locally first. Create a feature branch *before* editing when starting implementation work.
 
 ## Build, Test, and Lint
 
 ```bash
 npm run build          # Full build (patches env, then runs vite build)
 npm run typecheck      # TypeScript check (tsc --noEmit)
+npm test               # Run the Jest test suite
+npx jest <pattern>     # Run a single test file / matching tests
 ```
+
+Linting is run automatically in IntelliJ (ESLint from node_modules); there is no separate lint script.
+
+### Verify before declaring done
+Do not report a change as working until you have verified it. After UI/state changes:
+- Run `npm run typecheck`.
+- Trace the Redux wiring end to end (action type triple → reducer slice → `useAppSelector`/props) so the component actually receives the data.
+- Re-check the user-facing flow you touched (e.g. click → radio select → save) so you don't introduce a regression. Several past sessions delivered "fixes" that threw `Cannot read properties of undefined` or broke radio selection because the wiring wasn't traced.
+
+### CI / npm install note
+`npm ci` can pass locally but fail in GitHub Actions due to lockfile / optional-dependency mismatches (e.g. rollup optional deps after a React major upgrade). Prefer `npm install --include=optional` over deleting `package-lock.json`.
 
 ## Architecture
 
@@ -75,6 +89,16 @@ Uses NAV's Aksel design system (`@navikt/ds-react`, `@navikt/ds-css`, `@navikt/a
 ### SvarSed form components
 
 Form sub-components in `applications/SvarSed/` receive `MainFormProps` which includes `replySed`, `updateReplySed`, `parentNamespace`, and `personName`. They read validation state via `useAppSelector(mapState)` from `MainForm.tsx`.
+
+### SED-specific types and components
+
+Do **not** prefix domain types or shared components with the SED code. Use generic names (`Bruker`, not `H021Bruker`; `Adresse`, not `AdresseH120`) — the filename/context already conveys the SED. Extend shared base types for SED-specific fields (e.g. `Bruker extends PersonInfo`) rather than duplicating them, and reuse the standard shared components across SEDs instead of cloning per-SED variants.
+
+Branch SED-specific behavior at runtime with the guards in `utils/sed.ts` (`isHSed`, `isH021Sed`, `isH120Sed`), e.g. wrap a typed-SED-only MainForm in `isH021Sed(replySed)` rather than baking it into the common MainForm.
+
+### CJS/UMD default imports under Vite
+
+Some `@navikt` packages ship as CJS/UMD bundles (e.g. `@navikt/landvelger`, `@navikt/land-verktoy`, `CountryData`). Under Vite/Rolldown the interop default may be wrapped in an object, so the default import must be unwrapped via `.default` (otherwise React throws `Element type is invalid … got: object`, or you get `X.getCountryInstance is not a function`). See `src/components/landvelger.ts` for the pattern.
 
 ### i18n
 
