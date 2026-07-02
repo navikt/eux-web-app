@@ -43,7 +43,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
     performValidation<ValidationPersonLightProps>(clonedValidation, namespace, validatePersonLight, {
       personLight,
       personName
-    })
+    }, true)
     dispatch(setValidation(clonedValidation))
   })
 
