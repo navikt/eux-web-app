@@ -174,6 +174,8 @@
   "option-mainform-avvis": "Avvis SED",
   "option-mainform-gjenaapning": "Anmodning om gjenåpning",
   "option-mainform-videresend": "Videresend sak",
+  "option-mainform-leggtilinstitusjon": "Legg til institusjon",
+  "option-mainform-fjerninstitusjon": "Fjern institusjon",
   "option-mainform-klargjør": "Klargjør innhold",
   "option-mainform-kontakt": "Kontaktinformasjon",
   "option-mainform-kontoopplysninger": "Kontoopplysninger",
@@ -431,5 +433,11 @@
   "option-svargjenaapning-avvist": "Nei",
   "option-svargjenaapning-grunn-01": "Statsborgeren er død",
   "option-svargjenaapning-grunn-02": "Saken ble arkivert",
-  "option-svargjenaapning-grunn-99": "Annet"
+  "option-svargjenaapning-grunn-99": "Annet",
+  "option-leggtilinstitusjon-grunn-01": "Personen arbeider eller har arbeidet i dette landet",
+  "option-leggtilinstitusjon-grunn-02": "En annen institusjon er kompetent institusjon i saken",
+  "option-leggtilinstitusjon-grunn-99": "Annet",
+  "option-fjerninstitusjon-grunn-01": "Personen arbeider ikke eller har ikke arbeidet i dette landet",
+  "option-fjerninstitusjon-grunn-02": "En annen institusjon er ikke kompetent til å behandle denne saken",
+  "option-fjerninstitusjon-grunn-99": "Annet"
 }
