@@ -1,7 +1,7 @@
 import { Box, Heading, Loader, RadioGroup, Select, Textarea, TextField, VStack } from '@navikt/ds-react'
 import { getInstitusjoner } from 'actions/sak'
 import { resetValidation, setValidation } from 'actions/validation'
-import { MainFormProps } from 'applications/SvarSed/MainForm'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { State } from 'declarations/reducers'
 import { Institusjon, NavInstitusjon } from 'declarations/types'
@@ -16,16 +16,15 @@ import { validateVideresend, ValidationVideresendProps } from './validation'
 
 const MOTTAKER_LANDKODE = 'NOR'
 
-interface VideresendSelector {
-  validation: State['validation']['status']
-  institusjonList: State['sak']['institusjonList']
-  gettingInstitusjoner: State['loading']['gettingInstitusjoner']
+interface VideresendSelector extends MainFormSelector {
+  institusjonList: Array<Institusjon> | undefined
+  gettingInstitusjoner: boolean
 }
 
 const mapState = (state: State): VideresendSelector => ({
-  validation: state.validation.status,
   institusjonList: state.sak.institusjonList,
-  gettingInstitusjoner: state.loading.gettingInstitusjoner
+  gettingInstitusjoner: state.loading.gettingInstitusjoner,
+  validation: state.validation.status
 })
 
 const Videresend: React.FC<MainFormProps> = ({
