@@ -59,6 +59,7 @@
   "noDate": "Ingen dato valgt",
   "noDel": "Ingen del",
   "noAnnetDokument": "Du må fylle ut annet dokument når 'Annet' er valgt",
+  "noDoedsdato": "Dødsdato mangler",
   "noAnnenYtelse": "Du må fylle ut annen ytelse når 'Annen ytelse' er valgt",
   "noDokumentID": "Du må taste inn en dokumentID",
   "noEpost": "Du må taste inn epost adresse",

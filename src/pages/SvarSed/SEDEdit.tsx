@@ -59,6 +59,9 @@ import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
 import YtterligereInfoOmKrav from 'applications/SvarSed/YtterligereInfoOmKrav/YtterligereInfoOmKrav'
 import GrunnerForOverfoering from 'applications/SvarSed/GrunnerForOverfoering/GrunnerForOverfoering'
 import DokumenterVedlagt from 'applications/SvarSed/DokumenterVedlagt/DokumenterVedlagt'
+import MeldingOmDoedsfall from 'applications/SvarSed/MeldingOmDoedsfall/MeldingOmDoedsfall'
+import YtterligereInformasjon from 'applications/SvarSed/YtterligereInformasjon/YtterligereInformasjon'
+import VedlagtDokumentasjon from 'applications/SvarSed/VedlagtDokumentasjon/VedlagtDokumentasjon'
 import BeroertYtelse from 'applications/SvarSed/BeroertYtelse/BeroertYtelse'
 import KravetsArt from 'applications/SvarSed/KravetsArt/KravetsArt'
 import AnmodningInfo from 'applications/SvarSed/AnmodningInfo/AnmodningInfo'
@@ -89,6 +92,7 @@ import {
   isH002Sed,
   isH021Sed,
   isH065Sed,
+  isH070Sed,
   isH120Sed,
   isPreviewableSed,
   isS040Sed,
@@ -442,7 +446,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-personopplyninger'), value: 'personopplysningerH021', component: PersonOpplysninger, type: 'H021', options: { showFoedested: false, showUtenlandskPin: false, showH021Pins: true } },
                   { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
                   { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H', 'S'], adult: true, barn: true, condition: () => !isH021Sed(replySed) },
-                  { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true, condition: () => !isH120Sed(replySed) && !isH021Sed(replySed) },
+                  { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true, condition: () => !isH120Sed(replySed) && !isH021Sed(replySed) && !isH070Sed(replySed) },
                   { label: t('el:option-mainform-adresse'), value: 'adresseH120', component: Adresse, type: ['H120'], adult: true },
                   { label: t('el:option-mainform-adresse'), value: 'adresse', component: Adresser, type: ['S'], options: {singleAdress: true}},
                   { label: t('el:option-mainform-adresseH001'), value: 'adresseAnmodning', component: AnmodningOmAdresse, type: ['H001'], adult: true, barn: true, condition: () => CDM_VERSJON >= 4.4 },
@@ -473,6 +477,9 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-ytterligereinfoomkrav'), value: 'ytterligereinfoomkrav', component: YtterligereInfoOmKrav, type: 'H065' },
                   { label: t('el:option-mainform-grunnerforoverfoering'), value: 'grunnerforoverfoering', component: GrunnerForOverfoering, type: 'H065' },
                   { label: t('el:option-mainform-dokumentervedlagt'), value: 'dokumentervedlagt', component: DokumenterVedlagt, type: 'H065' },
+                  { label: t('el:option-mainform-meldingomdoedsfall'), value: 'meldingomdoedsfall', component: MeldingOmDoedsfall, type: 'H070' },
+                  { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereinformasjon', component: YtterligereInformasjon, type: 'H070' },
+                  { label: t('el:option-mainform-vedlagtdokumentasjon'), value: 'vedlagtdokumentasjon', component: VedlagtDokumentasjon, type: 'H070' },
                   { label: t('el:option-mainform-beroertytelse'), value: 'beroertytelse', component: BeroertYtelse, type: 'H120' },
                   { label: t('el:option-mainform-kravetsart'), value: 'kravetsart', component: KravetsArt, type: 'H120' },
                   { label: t('el:option-mainform-anmodninginfo'), value: 'anmodninginfo', component: AnmodningInfo, type: 'H120' },

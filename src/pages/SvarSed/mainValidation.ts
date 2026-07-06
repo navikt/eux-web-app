@@ -19,6 +19,9 @@ import { validateEndredeForhold, ValidationEndredeForholdProps } from 'applicati
 import { validateYtterligereInfoOmKrav, ValidationYtterligereInfoOmKravProps } from 'applications/SvarSed/YtterligereInfoOmKrav/validation'
 import { validateGrunnerForOverfoering, ValidationGrunnerForOverfoeringProps } from 'applications/SvarSed/GrunnerForOverfoering/validation'
 import { validateDokumenterVedlagt, ValidationDokumenterVedlagtProps } from 'applications/SvarSed/DokumenterVedlagt/validation'
+import { validateMeldingOmDoedsfall, ValidationMeldingOmDoedsfallProps } from 'applications/SvarSed/MeldingOmDoedsfall/validation'
+import { validateYtterligereInformasjon, ValidationYtterligereInformasjonProps } from 'applications/SvarSed/YtterligereInformasjon/validation'
+import { validateVedlagtDokumentasjon, ValidationVedlagtDokumentasjonProps } from 'applications/SvarSed/VedlagtDokumentasjon/validation'
 import { validateBeroertYtelse, ValidationBeroertYtelseProps } from 'applications/SvarSed/BeroertYtelse/validation'
 import { validateKravetsArt, ValidationKravetsArtProps } from 'applications/SvarSed/KravetsArt/validation'
 import { validateAnmodningInfo, ValidationAnmodningInfoProps } from 'applications/SvarSed/AnmodningInfo/validation'
@@ -130,6 +133,7 @@ import {
   isH002Sed,
   isH021Sed,
   isH065Sed,
+  isH070Sed,
   isH120Sed,
   isHSed,
   isS040Sed,
@@ -439,7 +443,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
       statsborgerskaper, personName
     }, true))
-    if (!isH120Sed(replySed)) {
+    if (!isH120Sed(replySed) && !isH070Sed(replySed)) {
       hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
         adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName
       }, true))
@@ -481,6 +485,20 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       hasErrors.push(performValidation<ValidationDokumenterVedlagtProps>(v, `svarsed-${personID}-dokumentervedlagt`, validateDokumenterVedlagt, {
         replySed,
         personName: i18n.t('label:dokumenter-vedlagt').toLowerCase()
+      }, true))
+    }
+    if (isH070Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationMeldingOmDoedsfallProps>(v, `svarsed-${personID}-meldingomdoedsfall`, validateMeldingOmDoedsfall, {
+        replySed,
+        personName: i18n.t('label:melding-om-doedsfall').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationYtterligereInformasjonProps>(v, `svarsed-${personID}-ytterligereinformasjon`, validateYtterligereInformasjon, {
+        replySed,
+        personName: i18n.t('label:ytterligere-informasjon').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationVedlagtDokumentasjonProps>(v, `svarsed-${personID}-vedlagtdokumentasjon`, validateVedlagtDokumentasjon, {
+        replySed,
+        personName: i18n.t('label:vedlagt-dokumentasjon').toLowerCase()
       }, true))
     }
     if (isH120Sed(replySed)) {
