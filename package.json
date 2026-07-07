@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "14.6.0-TEN-1733-H070-SED",
+  "version": "14.6.0",
   "private": true,
   "type": "module",
   "scripts": {
