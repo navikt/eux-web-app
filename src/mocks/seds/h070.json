@@ -23,16 +23,16 @@
             ]
         }
     },
-    "doedsfall": {
-        "doedsdato": "2024-01-15",
-        "doedssted": {
-            "gate": "æøå",
-            "bygning": "æøå",
-            "by": "æøå",
-            "postnummer": "æøå",
-            "region": "æøå",
-            "landkode": "NOR"
-        },
+    "doedsdato": "2024-01-15",
+    "doedssted": {
+        "gate": "æøå",
+        "bygning": "æøå",
+        "by": "æøå",
+        "postnummer": "æøå",
+        "region": "æøå",
+        "landkode": "NOR"
+    },
+    "dokument": {
         "forhaandsdefinerteDokumenter": [
             "dødsattest"
         ],

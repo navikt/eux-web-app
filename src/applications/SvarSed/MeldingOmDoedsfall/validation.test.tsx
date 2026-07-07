@@ -25,10 +25,8 @@ describe('applications/SvarSed/MeldingOmDoedsfall/validation', () => {
       replySed: {
         sedType: 'H070',
         sedVersjon: '4.4',
-        doedsfall: {
-          doedsdato: 'notadate',
-          doedssted: { by: 'Oslo', landkode: 'NOR' }
-        }
+        doedsdato: 'notadate',
+        doedssted: { by: 'Oslo', landkode: 'NOR' }
       } as unknown as ReplySed
     })
     expect(hasErrors).toBeTruthy()
@@ -41,10 +39,8 @@ describe('applications/SvarSed/MeldingOmDoedsfall/validation', () => {
       replySed: {
         sedType: 'H070',
         sedVersjon: '4.4',
-        doedsfall: {
-          doedsdato: '2024-01-15',
-          doedssted: { by: 'Oslo', landkode: 'NOR' }
-        }
+        doedsdato: '2024-01-15',
+        doedssted: { by: 'Oslo', landkode: 'NOR' }
       } as unknown as ReplySed
     })
     expect(hasErrors).toBeFalsy()

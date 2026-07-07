@@ -31,7 +31,7 @@ const MeldingOmDoedsfall: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-meldingomdoedsfall`
   const sed = replySed as H070Sed
-  const doedssted: IAdresse | undefined = sed.doedsfall?.doedssted
+  const doedssted: IAdresse | undefined = sed.doedssted
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
@@ -45,14 +45,14 @@ const MeldingOmDoedsfall: React.FC<MainFormProps> = ({
   })
 
   const setDoedsdato = (dato: string) => {
-    dispatch(updateReplySed('doedsfall.doedsdato', dato))
+    dispatch(updateReplySed('doedsdato', dato))
     if (validation[namespace + '-doedsdato']) {
       dispatch(resetValidation(namespace + '-doedsdato'))
     }
   }
 
   const setDoedssted = (adresse: IAdresse, whatChanged: string | undefined) => {
-    dispatch(updateReplySed('doedsfall.doedssted', adresse))
+    dispatch(updateReplySed('doedssted', adresse))
     if (whatChanged && validation[namespace + '-doedssted-' + whatChanged]) {
       dispatch(resetValidation(namespace + '-doedssted-' + whatChanged))
     }
@@ -71,7 +71,7 @@ const MeldingOmDoedsfall: React.FC<MainFormProps> = ({
           label={t('label:doedsdato')}
           required
           onChanged={setDoedsdato}
-          dateValue={sed.doedsfall?.doedsdato}
+          dateValue={sed.doedsdato}
         />
         <Heading size='xsmall'>
           {t('label:doedssted')}

@@ -63,16 +63,16 @@ const VedlagtDokumentasjon: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedvalidation))
   })
 
-  const forhaandsdefinerteDokumenter = sed.doedsfall?.forhaandsdefinerteDokumenter ?? []
-  const annetDokumenter: Array<string> = sed.doedsfall?.annetDokument ?? []
+  const forhaandsdefinerteDokumenter = sed.dokument?.forhaandsdefinerteDokumenter ?? []
+  const annetDokumenter: Array<string> = sed.dokument?.annetDokument ?? []
 
   const setForhaandsdefinertDokument = (value: ForhaandsdefinertDokumentType, checked: boolean) => {
     const updated = checked
       ? [...forhaandsdefinerteDokumenter, value]
       : forhaandsdefinerteDokumenter.filter(v => v !== value)
-    dispatch(updateReplySed('doedsfall.forhaandsdefinerteDokumenter', updated.length > 0 ? updated : undefined))
+    dispatch(updateReplySed('dokument.forhaandsdefinerteDokumenter', updated.length > 0 ? updated : undefined))
     if (value === 'annet' && !checked) {
-      dispatch(updateReplySed('doedsfall.annetDokument', undefined))
+      dispatch(updateReplySed('dokument.annetDokument', undefined))
     }
   }
 
@@ -119,7 +119,7 @@ const VedlagtDokumentasjon: React.FC<MainFormProps> = ({
     if (!_.isEmpty(trimmed) && !hasErrors) {
       const newAnnetDokumenter: Array<string> = _.cloneDeep(annetDokumenter)
       newAnnetDokumenter[_editIndex!] = trimmed!
-      dispatch(updateReplySed('doedsfall.annetDokument', newAnnetDokumenter))
+      dispatch(updateReplySed('dokument.annetDokument', newAnnetDokumenter))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
       dispatch(setValidation(clonedValidation))
@@ -129,7 +129,7 @@ const VedlagtDokumentasjon: React.FC<MainFormProps> = ({
   const onRemove = (index: number) => {
     const newAnnetDokumenter: Array<string> = _.cloneDeep(annetDokumenter)
     newAnnetDokumenter.splice(index, 1)
-    dispatch(updateReplySed('doedsfall.annetDokument', newAnnetDokumenter.length > 0 ? newAnnetDokumenter : undefined))
+    dispatch(updateReplySed('dokument.annetDokument', newAnnetDokumenter.length > 0 ? newAnnetDokumenter : undefined))
   }
 
   const onAddNew = () => {
@@ -141,7 +141,7 @@ const VedlagtDokumentasjon: React.FC<MainFormProps> = ({
     if (!_.isEmpty(trimmed) && valid) {
       const newAnnetDokumenter: Array<string> = _.cloneDeep(annetDokumenter)
       newAnnetDokumenter.push(trimmed!)
-      dispatch(updateReplySed('doedsfall.annetDokument', newAnnetDokumenter))
+      dispatch(updateReplySed('dokument.annetDokument', newAnnetDokumenter))
       dispatch(resetValidation(namespace + '-annetDokument'))
       onCloseNew()
     }

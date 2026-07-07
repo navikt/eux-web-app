@@ -57,8 +57,8 @@ export const validateVedlagtDokumentasjon = (
   const hasErrors: Array<boolean> = []
   const sed = replySed as H070Sed
 
-  const isAnnetSelected = sed.doedsfall?.forhaandsdefinerteDokumenter?.includes('annet')
-  const annetDokumenter = sed.doedsfall?.annetDokument
+  const isAnnetSelected = sed.dokument?.forhaandsdefinerteDokumenter?.includes('annet')
+  const annetDokumenter = sed.dokument?.annetDokument
 
   if (isAnnetSelected) {
     if (_.isEmpty(annetDokumenter)) {

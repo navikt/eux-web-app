@@ -6,11 +6,9 @@ export type ForhaandsdefinertDokumentType =
   | 'medisinsk_informasjon'
   | 'annet'
 
-// ===== Melding om dødsfall (Section 2) + Vedlagt dokumentasjon av dødsfall (Section 4) =====
+// ===== Vedlagt dokumentasjon (Section 4) =====
 
-export interface Doedsfall {
-  doedsdato?: string
-  doedssted?: Adresse
+export interface Dokument {
   forhaandsdefinerteDokumenter?: Array<ForhaandsdefinertDokumentType>
   annetDokument?: Array<string>
 }
@@ -26,5 +24,7 @@ export interface Bruker {
 export interface H070Sed extends BaseReplySed {
   bruker: Bruker
   ytterligereInfo?: string
-  doedsfall?: Doedsfall
+  doedsdato?: string
+  doedssted?: Adresse
+  dokument?: Dokument
 }

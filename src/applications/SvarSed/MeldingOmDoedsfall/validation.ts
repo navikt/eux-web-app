@@ -21,21 +21,21 @@ export const validateMeldingOmDoedsfall = (
   const sed = replySed as H070Sed
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: sed.doedsfall?.doedsdato,
+    needle: sed.doedsdato,
     id: namespace + '-doedsdato',
     message: 'validation:noDoedsdato',
     personName
   }))
 
   hasErrors.push(checkValidDateFormat(v, {
-    needle: sed.doedsfall?.doedsdato,
+    needle: sed.doedsdato,
     id: namespace + '-doedsdato',
     message: 'validation:invalidDateFormat',
     personName
   }))
 
   hasErrors.push(validateAdresse(v, namespace + '-doedssted', {
-    adresse: sed.doedsfall?.doedssted,
+    adresse: sed.doedssted,
     checkAdresseType: false,
     optional: false,
     personName
