@@ -1,4 +1,4 @@
-import { Adresse, HSed } from 'declarations/sed'
+import { Adresse, BaseReplySed, PersonInfo } from 'declarations/sed'
 
 // ===== Forhåndsdefinerte dokumenter (Section 4) =====
 export type ForhaandsdefinertDokumentType =
@@ -15,9 +15,16 @@ export interface Doedsfall {
   annetDokument?: Array<string>
 }
 
-// ===== H070 SED =====
-// bruker (PersonTypeH) og ytterligereInfo arves fra HSed.
+// ===== H070 Bruker =====
 
-export interface H070Sed extends HSed {
+export interface Bruker {
+  personInfo: PersonInfo
+}
+
+// ===== H070 SED =====
+
+export interface H070Sed extends BaseReplySed {
+  bruker: Bruker
+  ytterligereInfo?: string
   doedsfall?: Doedsfall
 }
