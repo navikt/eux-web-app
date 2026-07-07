@@ -8,7 +8,7 @@ export type ForhaandsdefinertDokumentType =
 
 // ===== Vedlagt dokumentasjon (Section 4) =====
 
-export interface Dokument {
+export interface VedlagtDokumentasjon {
   forhaandsdefinerteDokumenter?: Array<ForhaandsdefinertDokumentType>
   annetDokument?: Array<string>
 }
@@ -26,5 +26,5 @@ export interface H070Sed extends BaseReplySed {
   ytterligereInfo?: string
   doedsdato?: string
   doedssted?: Adresse
-  vedlagtDokumentasjon?: Dokument
+  vedlagtDokumentasjon?: VedlagtDokumentasjon
 }
