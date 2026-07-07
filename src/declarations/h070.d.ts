@@ -26,5 +26,5 @@ export interface H070Sed extends BaseReplySed {
   ytterligereInfo?: string
   doedsdato?: string
   doedssted?: Adresse
-  dokument?: Dokument
+  vedlagtDokumentasjon?: Dokument
 }

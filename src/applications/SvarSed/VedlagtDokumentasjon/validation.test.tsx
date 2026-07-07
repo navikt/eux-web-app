@@ -14,7 +14,7 @@ describe('applications/SvarSed/VedlagtDokumentasjon/validation', () => {
       replySed: {
         sedType: 'H070',
         sedVersjon: '4.4',
-        dokument: {
+        vedlagtDokumentasjon: {
           forhaandsdefinerteDokumenter: ['annet']
         }
       } as unknown as ReplySed
@@ -29,7 +29,7 @@ describe('applications/SvarSed/VedlagtDokumentasjon/validation', () => {
       replySed: {
         sedType: 'H070',
         sedVersjon: '4.4',
-        dokument: {
+        vedlagtDokumentasjon: {
           forhaandsdefinerteDokumenter: ['annet'],
           annetDokument: ['a'.repeat(256)]
         }
@@ -45,7 +45,7 @@ describe('applications/SvarSed/VedlagtDokumentasjon/validation', () => {
       replySed: {
         sedType: 'H070',
         sedVersjon: '4.4',
-        dokument: {
+        vedlagtDokumentasjon: {
           forhaandsdefinerteDokumenter: ['annet'],
           annetDokument: ['Et vedlagt dokument']
         }
@@ -61,7 +61,7 @@ describe('applications/SvarSed/VedlagtDokumentasjon/validation', () => {
       replySed: {
         sedType: 'H070',
         sedVersjon: '4.4',
-        dokument: {
+        vedlagtDokumentasjon: {
           forhaandsdefinerteDokumenter: ['dødsattest']
         }
       } as unknown as ReplySed
