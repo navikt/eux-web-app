@@ -37,7 +37,7 @@ export const validateMeldingOmDoedsfall = (
   hasErrors.push(validateAdresse(v, namespace + '-doedssted', {
     adresse: sed.doedssted,
     checkAdresseType: false,
-    optional: false,
+    optional: true,
     personName
   }))
 

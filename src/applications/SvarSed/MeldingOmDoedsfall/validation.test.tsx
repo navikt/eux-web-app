@@ -8,13 +8,28 @@ jest.mock('i18n', () => ({
 }))
 
 describe('applications/SvarSed/MeldingOmDoedsfall/validation', () => {
-  it('Empty form: failed validation (doedsdato + doedssted required)', () => {
+  it('Empty form: only doedsdato required, doedssted optional', () => {
     const validation: Validation = {}
     const hasErrors: boolean = validateMeldingOmDoedsfall(validation, 'test-mock', {
       replySed: { sedType: 'H070', sedVersjon: '4.4' } as unknown as ReplySed
     })
     expect(hasErrors).toBeTruthy()
     expect(validation['test-mock-doedsdato']?.feilmelding).toEqual('validation:noDoedsdato')
+    expect(validation['test-mock-doedssted-land']).toBeUndefined()
+    expect(validation['test-mock-doedssted-by']).toBeUndefined()
+  })
+
+  it('doedssted partially filled: by and land required', () => {
+    const validation: Validation = {}
+    const hasErrors: boolean = validateMeldingOmDoedsfall(validation, 'test-mock', {
+      replySed: {
+        sedType: 'H070',
+        sedVersjon: '4.4',
+        doedsdato: '2024-01-15',
+        doedssted: { gate: 'Storgata 1' }
+      } as unknown as ReplySed
+    })
+    expect(hasErrors).toBeTruthy()
     expect(validation['test-mock-doedssted-land']?.feilmelding).toEqual('validation:noAddressCountry')
     expect(validation['test-mock-doedssted-by']?.feilmelding).toEqual('validation:noAddressCity')
   })
