@@ -8,7 +8,7 @@ jest.mock('i18n', () => ({
 }))
 
 describe('applications/SvarSed/VedlagtDokumentasjon/validation', () => {
-  it("'Annet' selected but annetDokument empty: failed validation", () => {
+  it("'Annet' selected but no annetDokument added: failed validation", () => {
     const validation: Validation = {}
     const hasErrors: boolean = validateVedlagtDokumentasjon(validation, 'test-mock', {
       replySed: {
@@ -31,12 +31,28 @@ describe('applications/SvarSed/VedlagtDokumentasjon/validation', () => {
         sedVersjon: '4.4',
         doedsfall: {
           forhaandsdefinerteDokumenter: ['annet'],
-          annetDokument: 'a'.repeat(256)
+          annetDokument: ['a'.repeat(256)]
         }
       } as unknown as ReplySed
     })
     expect(hasErrors).toBeTruthy()
-    expect(validation['test-mock-annetDokument']?.feilmelding).toEqual('validation:textOverX')
+    expect(validation['test-mock[0]-annetDokument']?.feilmelding).toEqual('validation:textOverX')
+  })
+
+  it("'Annet' selected with a valid annetDokument: success validation", () => {
+    const validation: Validation = {}
+    const hasErrors: boolean = validateVedlagtDokumentasjon(validation, 'test-mock', {
+      replySed: {
+        sedType: 'H070',
+        sedVersjon: '4.4',
+        doedsfall: {
+          forhaandsdefinerteDokumenter: ['annet'],
+          annetDokument: ['Et vedlagt dokument']
+        }
+      } as unknown as ReplySed
+    })
+    expect(hasErrors).toBeFalsy()
+    expect(validation).toEqual({})
   })
 
   it('Valid form (no annet): success validation', () => {

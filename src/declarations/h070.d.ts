@@ -12,7 +12,7 @@ export interface Doedsfall {
   doedsdato?: string
   doedssted?: Adresse
   forhaandsdefinerteDokumenter?: Array<ForhaandsdefinertDokumentType>
-  annetDokument?: string
+  annetDokument?: Array<string>
 }
 
 // ===== H070 SED =====

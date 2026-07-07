@@ -36,7 +36,9 @@
         "forhaandsdefinerteDokumenter": [
             "dødsattest"
         ],
-        "annetDokument": "æøå"
+        "annetDokument": [
+            "æøå"
+        ]
     },
     "ytterligereInfo": "æøå"
 }
