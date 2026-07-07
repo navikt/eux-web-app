@@ -171,7 +171,6 @@ const VedlagtDokumentasjon: React.FC<MainFormProps> = ({
                   namespace={_namespace}
                   id='annetDokument'
                   label={t('label:annet-dokument')}
-                  hideLabel
                   maxLength={255}
                   onChanged={(value: string) => setAnnetDokument(value, index)}
                   value={_annetDokument ?? ''}

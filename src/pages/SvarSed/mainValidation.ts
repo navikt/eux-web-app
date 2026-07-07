@@ -20,7 +20,6 @@ import { validateYtterligereInfoOmKrav, ValidationYtterligereInfoOmKravProps } f
 import { validateGrunnerForOverfoering, ValidationGrunnerForOverfoeringProps } from 'applications/SvarSed/GrunnerForOverfoering/validation'
 import { validateDokumenterVedlagt, ValidationDokumenterVedlagtProps } from 'applications/SvarSed/DokumenterVedlagt/validation'
 import { validateMeldingOmDoedsfall, ValidationMeldingOmDoedsfallProps } from 'applications/SvarSed/MeldingOmDoedsfall/validation'
-import { validateYtterligereInformasjon, ValidationYtterligereInformasjonProps } from 'applications/SvarSed/YtterligereInformasjon/validation'
 import { validateVedlagtDokumentasjon, ValidationVedlagtDokumentasjonProps } from 'applications/SvarSed/VedlagtDokumentasjon/validation'
 import { validateBeroertYtelse, ValidationBeroertYtelseProps } from 'applications/SvarSed/BeroertYtelse/validation'
 import { validateKravetsArt, ValidationKravetsArtProps } from 'applications/SvarSed/KravetsArt/validation'
@@ -491,10 +490,6 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       hasErrors.push(performValidation<ValidationMeldingOmDoedsfallProps>(v, `svarsed-${personID}-meldingomdoedsfall`, validateMeldingOmDoedsfall, {
         replySed,
         personName: i18n.t('label:melding-om-doedsfall').toLowerCase()
-      }, true))
-      hasErrors.push(performValidation<ValidationYtterligereInformasjonProps>(v, `svarsed-${personID}-ytterligereinformasjon`, validateYtterligereInformasjon, {
-        replySed,
-        personName: i18n.t('label:ytterligere-informasjon').toLowerCase()
       }, true))
       hasErrors.push(performValidation<ValidationVedlagtDokumentasjonProps>(v, `svarsed-${personID}-vedlagtdokumentasjon`, validateVedlagtDokumentasjon, {
         replySed,

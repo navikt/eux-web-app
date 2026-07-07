@@ -60,7 +60,6 @@ import YtterligereInfoOmKrav from 'applications/SvarSed/YtterligereInfoOmKrav/Yt
 import GrunnerForOverfoering from 'applications/SvarSed/GrunnerForOverfoering/GrunnerForOverfoering'
 import DokumenterVedlagt from 'applications/SvarSed/DokumenterVedlagt/DokumenterVedlagt'
 import MeldingOmDoedsfall from 'applications/SvarSed/MeldingOmDoedsfall/MeldingOmDoedsfall'
-import YtterligereInformasjon from 'applications/SvarSed/YtterligereInformasjon/YtterligereInformasjon'
 import VedlagtDokumentasjon from 'applications/SvarSed/VedlagtDokumentasjon/VedlagtDokumentasjon'
 import BeroertYtelse from 'applications/SvarSed/BeroertYtelse/BeroertYtelse'
 import KravetsArt from 'applications/SvarSed/KravetsArt/KravetsArt'
@@ -478,7 +477,6 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-grunnerforoverfoering'), value: 'grunnerforoverfoering', component: GrunnerForOverfoering, type: 'H065' },
                   { label: t('el:option-mainform-dokumentervedlagt'), value: 'dokumentervedlagt', component: DokumenterVedlagt, type: 'H065' },
                   { label: t('el:option-mainform-meldingomdoedsfall'), value: 'meldingomdoedsfall', component: MeldingOmDoedsfall, type: 'H070' },
-                  { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereinformasjon', component: YtterligereInformasjon, type: 'H070' },
                   { label: t('el:option-mainform-vedlagtdokumentasjon'), value: 'vedlagtdokumentasjon', component: VedlagtDokumentasjon, type: 'H070' },
                   { label: t('el:option-mainform-beroertytelse'), value: 'beroertytelse', component: BeroertYtelse, type: 'H120' },
                   { label: t('el:option-mainform-kravetsart'), value: 'kravetsart', component: KravetsArt, type: 'H120' },
@@ -719,7 +717,7 @@ const SEDEdit = (): JSX.Element => {
               />
             </>
           }
-          {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isH065Sed(replySed) || isH120Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
+          {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isH065Sed(replySed) || isH070Sed(replySed) || isH120Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
             <TextArea
               namespace={namespace}
               error={validation[namespace + '-ytterligereInfo']?.feilmelding}
