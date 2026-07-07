@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons'
-import { Box, Button, Checkbox, Heading, HStack, Label, VStack } from '@navikt/ds-react'
+import { Box, Button, Checkbox, Heading, HStack, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import commonStyles from 'assets/css/common.module.css'
@@ -142,6 +142,7 @@ const VedlagtDokumentasjon: React.FC<MainFormProps> = ({
       const newAnnetDokumenter: Array<string> = _.cloneDeep(annetDokumenter)
       newAnnetDokumenter.push(trimmed!)
       dispatch(updateReplySed('doedsfall.annetDokument', newAnnetDokumenter))
+      dispatch(resetValidation(namespace + '-annetDokument'))
       onCloseNew()
     }
   }
@@ -170,6 +171,7 @@ const VedlagtDokumentasjon: React.FC<MainFormProps> = ({
                   namespace={_namespace}
                   id='annetDokument'
                   label={t('label:annet-dokument')}
+                  hideLabel
                   maxLength={255}
                   onChanged={(value: string) => setAnnetDokument(value, index)}
                   value={_annetDokument ?? ''}
@@ -180,10 +182,7 @@ const VedlagtDokumentasjon: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-annetDokument']?.feilmelding}
                   id={_namespace + '-annetDokument'}
                 >
-                  <HStack gap="space-8" align="start">
-                    <Label>{t('label:annet-dokument') + ':'}</Label>
-                    {_annetDokument}
-                  </HStack>
+                  {_annetDokument}
                 </FormText>
                 )}
           </Box>
@@ -246,7 +245,7 @@ const VedlagtDokumentasjon: React.FC<MainFormProps> = ({
                     onClick={() => _setNewForm(true)}
                     icon={<PlusCircleIcon/>}
                   >
-                    {t('el:button-add-new-x', { x: t('label:annet-dokument').toLowerCase() })}
+                    {t('el:button-add-x', { x: t('label:annet-dokument').toLowerCase() })}
                   </Button>
                 </Box>
                 )}
