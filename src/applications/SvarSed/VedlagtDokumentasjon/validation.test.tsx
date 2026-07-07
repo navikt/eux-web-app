@@ -1,0 +1,72 @@
+import { ReplySed } from 'declarations/sed'
+import { Validation } from 'declarations/types'
+import { validateVedlagtDokumentasjon } from './validation'
+
+jest.mock('i18n', () => ({
+  __esModule: true,
+  default: { t: (key: string) => key }
+}))
+
+describe('applications/SvarSed/VedlagtDokumentasjon/validation', () => {
+  it("'Annet' selected but no annetDokument added: failed validation", () => {
+    const validation: Validation = {}
+    const hasErrors: boolean = validateVedlagtDokumentasjon(validation, 'test-mock', {
+      replySed: {
+        sedType: 'H070',
+        sedVersjon: '4.4',
+        vedlagtDokumentasjon: {
+          forhaandsdefinerteDokumenter: ['annet']
+        }
+      } as unknown as ReplySed
+    })
+    expect(hasErrors).toBeTruthy()
+    expect(validation['test-mock-annetDokument']?.feilmelding).toEqual('validation:noAnnetDokument')
+  })
+
+  it('annetDokument over 255 chars: failed validation', () => {
+    const validation: Validation = {}
+    const hasErrors: boolean = validateVedlagtDokumentasjon(validation, 'test-mock', {
+      replySed: {
+        sedType: 'H070',
+        sedVersjon: '4.4',
+        vedlagtDokumentasjon: {
+          forhaandsdefinerteDokumenter: ['annet'],
+          annetDokument: ['a'.repeat(256)]
+        }
+      } as unknown as ReplySed
+    })
+    expect(hasErrors).toBeTruthy()
+    expect(validation['test-mock[0]-annetDokument']?.feilmelding).toEqual('validation:textOverX')
+  })
+
+  it("'Annet' selected with a valid annetDokument: success validation", () => {
+    const validation: Validation = {}
+    const hasErrors: boolean = validateVedlagtDokumentasjon(validation, 'test-mock', {
+      replySed: {
+        sedType: 'H070',
+        sedVersjon: '4.4',
+        vedlagtDokumentasjon: {
+          forhaandsdefinerteDokumenter: ['annet'],
+          annetDokument: ['Et vedlagt dokument']
+        }
+      } as unknown as ReplySed
+    })
+    expect(hasErrors).toBeFalsy()
+    expect(validation).toEqual({})
+  })
+
+  it('Valid form (no annet): success validation', () => {
+    const validation: Validation = {}
+    const hasErrors: boolean = validateVedlagtDokumentasjon(validation, 'test-mock', {
+      replySed: {
+        sedType: 'H070',
+        sedVersjon: '4.4',
+        vedlagtDokumentasjon: {
+          forhaandsdefinerteDokumenter: ['dødsattest']
+        }
+      } as unknown as ReplySed
+    })
+    expect(hasErrors).toBeFalsy()
+    expect(validation).toEqual({})
+  })
+})
