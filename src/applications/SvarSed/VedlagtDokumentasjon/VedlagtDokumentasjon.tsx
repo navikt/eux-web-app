@@ -31,10 +31,9 @@ const VedlagtDokumentasjon: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-vedlagtdokumentasjon`
   const sed = replySed as H070Sed
 
-  // Verdikodene mappes videre av eux-rina-api, derfor samsvarer ikke verdi og etikett.
   const dokumentTypeOptions: Options = [
-    { label: t('el:option-forhaandsdefinertdokument-soeknad'), value: 'søknad' },
     { label: t('el:option-forhaandsdefinertdokument-doedsattest'), value: 'dødsattest' },
+    { label: t('el:option-forhaandsdefinertdokument-medisinsk-informasjon'), value: 'medisinsk_informasjon' },
     { label: t('el:option-forhaandsdefinertdokument-annet'), value: 'annet' }
   ]
 
