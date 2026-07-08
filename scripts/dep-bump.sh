@@ -44,22 +44,59 @@ die() {
   exit 1
 }
 
-# Extract dependency name and versions from a Dependabot PR title
-# e.g. "dependabot-bump(deps): Bump @navikt/ds-react from 8.6.0 to 8.8.0"
+# Extract dependency name and versions from a Dependabot PR title, e.g.
+#   "dependabot-bump(deps): bump @navikt/ds-react from 8.6.0 to 8.8.0"
+#   "dependabot-bump(deps-dev): Bump vite from 8.0.16 to 8.1.0"
+#
+# The dependency name is always the last whitespace-separated token before
+# " from ", so we key off " from "/" to " rather than the "bump" verb. The verb
+# has inconsistent casing and the word "bump" also appears inside the
+# "dependabot-bump(...)" prefix, which broke earlier prefix-stripping attempts.
 parse_pr_title() {
   local title="$1"
-  # Strip the "dependabot-bump(deps): Bump " or "dependabot-bump(deps-dev): Bump " prefix
-  local body="${title#*Bump }"
 
-  # Dependency: everything before " from "
-  PR_DEP="${body%% from *}"
+  # Dependency: last token of the segment before " from "
+  # e.g. "dependabot-bump(deps): bump @navikt/ds-css" -> "@navikt/ds-css"
+  local left="${title%% from *}"
+  PR_DEP="${left##* }"
 
-  # From version: between "from " and " to "
-  local after_from="${body#*from }"
-  PR_FROM_VER="${after_from%% to *}"
+  # Versions: the "<from> to <to>" tail after " from "
+  local right="${title#* from }"
+  PR_FROM_VER="${right%% to *}"
+  PR_TO_VER="${right##* to }"
+}
 
-  # To version: after " to "
-  PR_TO_VER="${body##*to }"
+# Echo the version string of a dependency from package.json (searching
+# dependencies, devDependencies and optionalDependencies). Non-zero if absent.
+get_dep_version() {
+  local dep="$1" section cur
+  for section in dependencies devDependencies optionalDependencies; do
+    cur=$(npm pkg get "${section}.${dep}" 2>/dev/null) || cur="{}"
+    if [[ "$cur" != "{}" && -n "$cur" ]]; then
+      print -- "${cur//\"/}"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Set a dependency to a target version in package.json, preserving any existing
+# range prefix (e.g. ^, ~). Searches dependencies, devDependencies and
+# optionalDependencies. Returns non-zero if the dependency isn't found.
+#
+# Used to re-apply a single PR's bump after a package.json merge conflict
+# WITHOUT clobbering bumps already accumulated from sibling PRs.
+set_dep_version() {
+  local dep="$1" ver="$2" section cur prefix
+  for section in dependencies devDependencies optionalDependencies; do
+    cur=$(npm pkg get "${section}.${dep}" 2>/dev/null) || cur="{}"
+    if [[ "$cur" != "{}" && -n "$cur" ]]; then
+      cur="${cur//\"/}"          # strip the JSON quotes npm pkg get adds
+      prefix="${cur%%[0-9]*}"    # keep any leading range specifier (^, ~, >=)
+      npm pkg set "${section}.${dep}=${prefix}${ver}" 2>/dev/null && return 0
+    fi
+  done
+  return 1
 }
 
 # -- Semver / risk helpers ----------------------------------------------------
@@ -315,6 +352,7 @@ merge_branches() {
     local number="${PR_NUMBERS[$i]}"
     local branch="${PR_BRANCHES[$i]}"
     local dep="${PR_DEPS[$i]}"
+    local to="${PR_TO[$i]}"
 
     info "Merging PR #$number ($dep) — origin/$branch"
 
@@ -343,9 +381,17 @@ merge_branches() {
         exit 1
       fi
 
-      warn "Lock file conflict in PR #$number — resolving..."
-      git checkout --theirs package-lock.json 2>/dev/null
-      git checkout --theirs package.json 2>/dev/null
+      warn "Manifest/lock conflict in PR #$number — resolving..."
+      # A wholesale `git checkout --theirs package.json` would take the incoming
+      # branch's ENTIRE manifest, reverting bumps already merged from sibling
+      # PRs whenever they share an adjacent package.json line/hunk (e.g. the
+      # @navikt/ds-* packages, which are declared next to each other and bumped
+      # together). Instead keep the bumps accumulated so far (--ours) and
+      # re-apply just this PR's bump by its known target version.
+      git checkout --ours package.json 2>/dev/null || true
+      git checkout --ours package-lock.json 2>/dev/null || true
+      set_dep_version "$dep" "$to" || warn "Could not find $dep in package.json to set $to"
+      # Reconcile the lock file with the merged manifest.
       npm install --include=optional --package-lock-only --quiet 2>/dev/null
       git add package-lock.json package.json
       git commit --no-edit --quiet
@@ -354,6 +400,44 @@ merge_branches() {
       ok "PR #$number conflict resolved and merged"
     fi
   done
+
+  # -- Safety net -------------------------------------------------------------
+  # Enforce every intended version explicitly and verify. Merges can silently
+  # drop a bump (e.g. adjacent package.json lines), so this guarantees the
+  # combined branch actually contains all the updates before we build/push.
+  header "Step 4b: Verifying all target versions landed"
+
+  for i in $(seq 1 $TOTAL_COUNT); do
+    set_dep_version "${PR_DEPS[$i]}" "${PR_TO[$i]}" || \
+      warn "Could not set ${PR_DEPS[$i]} to ${PR_TO[$i]} in package.json"
+  done
+
+  if [[ -n "$(git status --porcelain package.json 2>/dev/null)" ]]; then
+    warn "Reconciling version bumps dropped during merges..."
+    npm install --include=optional --package-lock-only --quiet 2>/dev/null
+    git add package.json package-lock.json
+    git commit -m "chore: reconcile combined dependency versions" --quiet
+  fi
+
+  local missing=""
+  for i in $(seq 1 $TOTAL_COUNT); do
+    local dep="${PR_DEPS[$i]}" to="${PR_TO[$i]}" cur curnum
+    cur=$(get_dep_version "$dep") || cur=""
+    curnum="${cur#"${cur%%[0-9]*}"}"   # strip any leading range specifier (^, ~)
+    if [[ "$curnum" != "$to" ]]; then
+      missing+="    - $dep: expected $to, found ${cur:-<not found>}\n"
+    else
+      ok "$dep @ $cur"
+    fi
+  done
+
+  if [[ -n "$missing" ]]; then
+    fail "Some target versions are NOT applied in package.json:"
+    print -P "$missing"
+    fail "Aborting so the combined PR is not created with missing updates."
+    git checkout "$DEFAULT_BRANCH" --quiet
+    exit 1
+  fi
 
   print ""
   ok "All $MERGED_COUNT of $TOTAL_COUNT branches merged successfully"
