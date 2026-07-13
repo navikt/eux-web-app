@@ -62,9 +62,7 @@ import DokumenterVedlagt from 'applications/SvarSed/DokumenterVedlagt/Dokumenter
 import MeldingOmDoedsfall from 'applications/SvarSed/MeldingOmDoedsfall/MeldingOmDoedsfall'
 import VedlagtDokumentasjon from 'applications/SvarSed/VedlagtDokumentasjon/VedlagtDokumentasjon'
 import AnmodningOmInformasjon from 'applications/SvarSed/AnmodningOmInformasjon/AnmodningOmInformasjon'
-import AdresserBosted from 'applications/SvarSed/AdresserBosted/AdresserBosted'
-import AktivitetOgStatus from 'applications/SvarSed/AktivitetOgStatus/AktivitetOgStatus'
-import BostedOgFamilie from 'applications/SvarSed/BostedOgFamilie/BostedOgFamilie'
+import FastslaaBosted from 'applications/SvarSed/FastslaaBosted/FastslaaBosted'
 import BeroertYtelse from 'applications/SvarSed/BeroertYtelse/BeroertYtelse'
 import KravetsArt from 'applications/SvarSed/KravetsArt/KravetsArt'
 import AnmodningInfo from 'applications/SvarSed/AnmodningInfo/AnmodningInfo'
@@ -484,9 +482,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-meldingomdoedsfall'), value: 'meldingomdoedsfall', component: MeldingOmDoedsfall, type: 'H070' },
                   { label: t('el:option-mainform-vedlagtdokumentasjon'), value: 'vedlagtdokumentasjon', component: VedlagtDokumentasjon, type: 'H070' },
                   { label: t('el:option-mainform-anmodningominformasjon'), value: 'anmodningominformasjon', component: AnmodningOmInformasjon, type: 'H005' },
-                  { label: t('el:option-mainform-adresserbosted'), value: 'adresserbosted', component: AdresserBosted, type: 'H005' },
-                  { label: t('el:option-mainform-aktivitetogstatus'), value: 'aktivitetogstatus', component: AktivitetOgStatus, type: 'H005' },
-                  { label: t('el:option-mainform-bostedogfamilie'), value: 'bostedogfamilie', component: BostedOgFamilie, type: 'H005' },
+                  { label: t('el:option-mainform-fastslaabosted'), value: 'fastslaabosted', component: FastslaaBosted, type: 'H005' },
                   { label: t('el:option-mainform-beroertytelse'), value: 'beroertytelse', component: BeroertYtelse, type: 'H120' },
                   { label: t('el:option-mainform-kravetsart'), value: 'kravetsart', component: KravetsArt, type: 'H120' },
                   { label: t('el:option-mainform-anmodninginfo'), value: 'anmodninginfo', component: AnmodningInfo, type: 'H120' },

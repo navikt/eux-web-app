@@ -506,15 +506,15 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         replySed,
         personName: i18n.t('label:anmodning-om-informasjon').toLowerCase()
       }, true))
-      hasErrors.push(performValidation<ValidationAdresserBostedProps>(v, `svarsed-${personID}-adresserbosted`, validateAdresserBosted, {
+      hasErrors.push(performValidation<ValidationAdresserBostedProps>(v, `svarsed-${personID}-fastslaabosted-adresser`, validateAdresserBosted, {
         adresser: _.get(replySed, 'informasjonFastslaaBosted.adresser'),
         personName: i18n.t('label:adresse').toLowerCase()
       }, true))
-      hasErrors.push(performValidation<ValidationAktivitetOgStatusProps>(v, `svarsed-${personID}-aktivitetogstatus`, validateAktivitetOgStatus, {
+      hasErrors.push(performValidation<ValidationAktivitetOgStatusProps>(v, `svarsed-${personID}-fastslaabosted-status`, validateAktivitetOgStatus, {
         replySed,
         personName: i18n.t('label:personens-status').toLowerCase()
       }, true))
-      hasErrors.push(performValidation<ValidationBostedOgFamilieProps>(v, `svarsed-${personID}-bostedogfamilie`, validateBostedOgFamilie, {
+      hasErrors.push(performValidation<ValidationBostedOgFamilieProps>(v, `svarsed-${personID}-fastslaabosted-familie`, validateBostedOgFamilie, {
         replySed,
         personName: i18n.t('label:familiestatus').toLowerCase()
       }, true))

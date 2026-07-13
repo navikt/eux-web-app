@@ -28,7 +28,7 @@ const BostedOgFamilie: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-${personID}-bostedogfamilie`
+  const namespace = `${parentNamespace}-${personID}-fastslaabosted-familie`
   const sed = replySed as H005Sed
   const informasjonFastslaaBosted: InformasjonFastslaaBosted | undefined = sed.informasjonFastslaaBosted
 
@@ -51,7 +51,7 @@ const BostedOgFamilie: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="space-16">
+    <Box padding="space-16" borderWidth="1" borderColor="neutral-subtle" borderRadius="8">
       <VStack gap="space-16">
         <Heading size='small'>
           {label}
