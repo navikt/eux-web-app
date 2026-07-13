@@ -9,7 +9,7 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { Options } from 'declarations/app'
-import { H005Aktivitet, H005AktivitetType, H005InformasjonFastslaaBosted, H005PersonensStatus, H005Sed } from 'declarations/h005'
+import { Aktivitet, AktivitetType, InformasjonFastslaaBosted, PersonensStatus, H005Sed } from 'declarations/h005'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -46,8 +46,8 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-aktivitetogstatus`
   const target = 'informasjonFastslaaBosted.aktiviteter'
   const sed = replySed as H005Sed
-  const informasjonFastslaaBosted: H005InformasjonFastslaaBosted | undefined = sed.informasjonFastslaaBosted
-  const aktiviteter: Array<H005Aktivitet> | undefined = informasjonFastslaaBosted?.aktiviteter
+  const informasjonFastslaaBosted: InformasjonFastslaaBosted | undefined = sed.informasjonFastslaaBosted
+  const aktiviteter: Array<Aktivitet> | undefined = informasjonFastslaaBosted?.aktiviteter
 
   const personensStatusOptions: Options = [
     { label: t('el:option-h005-status-ansatt'), value: 'ansatt' },
@@ -66,12 +66,12 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
     { label: t('el:option-h005-aktivitettype-ikke_inntektsgivende_virksomhet'), value: 'ikke_inntektsgivende_virksomhet' }
   ]
 
-  const getId = (a: H005Aktivitet | null | undefined): string => a
+  const getId = (a: Aktivitet | null | undefined): string => a
     ? (a?.beskrivelse ?? '') + '-' + (a?.sted ?? '')
     : 'new'
 
-  const [_newAktivitet, _setNewAktivitet] = useState<H005Aktivitet | undefined>(undefined)
-  const [_editAktivitet, _setEditAktivitet] = useState<H005Aktivitet | undefined>(undefined)
+  const [_newAktivitet, _setNewAktivitet] = useState<Aktivitet | undefined>(undefined)
+  const [_editAktivitet, _setEditAktivitet] = useState<Aktivitet | undefined>(undefined)
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_seeNewForm, _setNewForm] = useState<boolean>(false)
@@ -89,7 +89,7 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
   })
 
   const setPersonensStatus = (value: string) => {
-    const newStatus = (value.trim() || undefined) as H005PersonensStatus | undefined
+    const newStatus = (value.trim() || undefined) as PersonensStatus | undefined
     dispatch(updateReplySed('informasjonFastslaaBosted.personensStatus', newStatus))
     if (newStatus !== 'annet') {
       dispatch(updateReplySed('informasjonFastslaaBosted.personensStatusAnnet', undefined))
@@ -106,7 +106,7 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
     }
   }
 
-  const setAktivitetField = (changes: Partial<H005Aktivitet>, fieldId: string, index: number) => {
+  const setAktivitetField = (changes: Partial<Aktivitet>, fieldId: string, index: number) => {
     if (index < 0) {
       _setNewAktivitet((prev) => ({ ...prev, ...changes }))
       _resetValidation(namespace + '-' + fieldId)
@@ -130,7 +130,7 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
     _resetValidation()
   }
 
-  const onStartEdit = (aktivitet: H005Aktivitet, index: number) => {
+  const onStartEdit = (aktivitet: Aktivitet, index: number) => {
     // reset any validation that exists from a cancelled edited item
     if (_editIndex !== undefined) {
       dispatch(resetValidation(namespace + getIdx(_editIndex)))
@@ -155,8 +155,8 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
     }
   }
 
-  const onRemove = (removedAktivitet: H005Aktivitet) => {
-    const newAktiviteter: Array<H005Aktivitet> = _.reject(aktiviteter, (a: H005Aktivitet) => _.isEqual(removedAktivitet, a))
+  const onRemove = (removedAktivitet: Aktivitet) => {
+    const newAktiviteter: Array<Aktivitet> = _.reject(aktiviteter, (a: Aktivitet) => _.isEqual(removedAktivitet, a))
     dispatch(updateReplySed(target, newAktiviteter))
   }
 
@@ -166,7 +166,7 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
       personName
     })
     if (!!_newAktivitet && valid) {
-      let newAktiviteter: Array<H005Aktivitet> | undefined = _.cloneDeep(aktiviteter)
+      let newAktiviteter: Array<Aktivitet> | undefined = _.cloneDeep(aktiviteter)
       if (_.isNil(newAktiviteter)) {
         newAktiviteter = []
       }
@@ -176,14 +176,14 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
     }
   }
 
-  const renderRow = (aktivitet: H005Aktivitet | null, index: number) => {
+  const renderRow = (aktivitet: Aktivitet | null, index: number) => {
     const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
     const _aktivitet = index < 0 ? _newAktivitet : (inEditMode ? _editAktivitet : aktivitet)
 
     const addremovepanel = (
-      <AddRemovePanel<H005Aktivitet>
+      <AddRemovePanel<Aktivitet>
         item={aktivitet}
         marginTop={false}
         index={index}
@@ -217,7 +217,7 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-type']?.feilmelding}
                   label={t('label:aktivitet-type')}
                   value={_aktivitet?.type ?? ''}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setAktivitetField({ type: (e.target.value || undefined) as H005AktivitetType | undefined }, 'type', index)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setAktivitetField({ type: (e.target.value || undefined) as AktivitetType | undefined }, 'type', index)}
                 >
                   <option value="" key="">{t('el:placeholder-select-default')}</option>
                   {aktivitetTypeOptions.map((o) => (

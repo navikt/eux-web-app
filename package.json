@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "14.8.0-FIX-TEN-1595-H005-SED",
+  "version": "14.8.0",
   "private": true,
   "type": "module",
   "scripts": {

@@ -1,17 +1,17 @@
 import { validateAdresse } from 'applications/SvarSed/Adresser/validation'
-import { H005AdresseMedVarighet } from 'declarations/h005'
+import { AdresseMedVarighet } from 'declarations/h005'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkLength } from 'utils/validation'
 
 export interface ValidationAdresseBostedItemProps {
-  item: H005AdresseMedVarighet | undefined
+  item: AdresseMedVarighet | undefined
   index?: number
   personName?: string
 }
 
 export interface ValidationAdresserBostedProps {
-  adresser: Array<H005AdresseMedVarighet> | undefined
+  adresser: Array<AdresseMedVarighet> | undefined
   personName?: string
 }
 
@@ -60,7 +60,7 @@ export const validateAdresserBosted = (
   }: ValidationAdresserBostedProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  adresser?.forEach((item: H005AdresseMedVarighet, index: number) => {
+  adresser?.forEach((item: AdresseMedVarighet, index: number) => {
     hasErrors.push(validateAdresseBostedItem(v, namespace, {
       item,
       index,

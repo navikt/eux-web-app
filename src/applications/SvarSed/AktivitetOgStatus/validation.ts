@@ -1,11 +1,11 @@
-import { H005Aktivitet, H005Sed } from 'declarations/h005'
+import { Aktivitet, H005Sed } from 'declarations/h005'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationAktivitetItemProps {
-  aktivitet: H005Aktivitet | undefined
+  aktivitet: Aktivitet | undefined
   index?: number
   personName?: string
 }
@@ -91,7 +91,7 @@ export const validateAktivitetOgStatus = (
     }))
   }
 
-  info?.aktiviteter?.forEach((aktivitet: H005Aktivitet, index: number) => {
+  info?.aktiviteter?.forEach((aktivitet: Aktivitet, index: number) => {
     hasErrors.push(validateAktivitetItem(v, namespace, {
       aktivitet,
       index,

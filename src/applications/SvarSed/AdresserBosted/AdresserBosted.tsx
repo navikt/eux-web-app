@@ -9,7 +9,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
-import { H005AdresseMedVarighet, H005Sed } from 'declarations/h005'
+import { AdresseMedVarighet, H005Sed } from 'declarations/h005'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -47,14 +47,14 @@ const AdresserBosted: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-adresserbosted`
   const target = 'informasjonFastslaaBosted.adresser'
   const sed = replySed as H005Sed
-  const adresser: Array<H005AdresseMedVarighet> | undefined = sed.informasjonFastslaaBosted?.adresser
+  const adresser: Array<AdresseMedVarighet> | undefined = sed.informasjonFastslaaBosted?.adresser
 
-  const getId = (item: H005AdresseMedVarighet | null | undefined): string => item
+  const getId = (item: AdresseMedVarighet | null | undefined): string => item
     ? (item?.adresse?.type ?? '') + '-' + (item?.adresse?.by ?? '') + '-' + (item?.adresse?.landkode ?? '')
     : 'new'
 
-  const [_newItem, _setNewItem] = useState<H005AdresseMedVarighet | undefined>(undefined)
-  const [_editItem, _setEditItem] = useState<H005AdresseMedVarighet | undefined>(undefined)
+  const [_newItem, _setNewItem] = useState<AdresseMedVarighet | undefined>(undefined)
+  const [_editItem, _setEditItem] = useState<AdresseMedVarighet | undefined>(undefined)
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_seeNewForm, _setNewForm] = useState<boolean>(false)
@@ -81,7 +81,7 @@ const AdresserBosted: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace + getIdx(index)))
   }
 
-  const setItemVarighet = (changes: Partial<H005AdresseMedVarighet>, fieldId: string, index: number) => {
+  const setItemVarighet = (changes: Partial<AdresseMedVarighet>, fieldId: string, index: number) => {
     if (index < 0) {
       _setNewItem((prev) => ({ ...prev, ...changes }))
       _resetValidation(namespace + '-' + fieldId)
@@ -105,7 +105,7 @@ const AdresserBosted: React.FC<MainFormProps> = ({
     _resetValidation()
   }
 
-  const onStartEdit = (item: H005AdresseMedVarighet, index: number) => {
+  const onStartEdit = (item: AdresseMedVarighet, index: number) => {
     // reset any validation that exists from a cancelled edited item
     if (_editIndex !== undefined) {
       dispatch(resetValidation(namespace + getIdx(_editIndex)))
@@ -130,8 +130,8 @@ const AdresserBosted: React.FC<MainFormProps> = ({
     }
   }
 
-  const onRemove = (removedItem: H005AdresseMedVarighet) => {
-    const newItems: Array<H005AdresseMedVarighet> = _.reject(adresser, (a: H005AdresseMedVarighet) => _.isEqual(removedItem, a))
+  const onRemove = (removedItem: AdresseMedVarighet) => {
+    const newItems: Array<AdresseMedVarighet> = _.reject(adresser, (a: AdresseMedVarighet) => _.isEqual(removedItem, a))
     dispatch(updateReplySed(target, newItems))
   }
 
@@ -141,7 +141,7 @@ const AdresserBosted: React.FC<MainFormProps> = ({
       personName
     })
     if (!!_newItem && valid) {
-      let newItems: Array<H005AdresseMedVarighet> | undefined = _.cloneDeep(adresser)
+      let newItems: Array<AdresseMedVarighet> | undefined = _.cloneDeep(adresser)
       if (_.isNil(newItems)) {
         newItems = []
       }
@@ -151,14 +151,14 @@ const AdresserBosted: React.FC<MainFormProps> = ({
     }
   }
 
-  const renderRow = (item: H005AdresseMedVarighet | null, index: number) => {
+  const renderRow = (item: AdresseMedVarighet | null, index: number) => {
     const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
     const _item = index < 0 ? _newItem : (inEditMode ? _editItem : item)
 
     const addremovepanel = (
-      <AddRemovePanel<H005AdresseMedVarighet>
+      <AddRemovePanel<AdresseMedVarighet>
         item={item}
         marginTop={false}
         index={index}

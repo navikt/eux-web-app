@@ -3,7 +3,7 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
-import { H005InformasjonFastslaaBosted, H005Sed } from 'declarations/h005'
+import { InformasjonFastslaaBosted, H005Sed } from 'declarations/h005'
 import { State } from 'declarations/reducers'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -30,7 +30,7 @@ const BostedOgFamilie: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-bostedogfamilie`
   const sed = replySed as H005Sed
-  const informasjonFastslaaBosted: H005InformasjonFastslaaBosted | undefined = sed.informasjonFastslaaBosted
+  const informasjonFastslaaBosted: InformasjonFastslaaBosted | undefined = sed.informasjonFastslaaBosted
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
