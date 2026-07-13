@@ -38,14 +38,16 @@ export const validateAdresseBostedItem = (
     needle: item?.oppholdetsVarighet,
     id: namespace + idx + '-oppholdetsVarighet',
     max: 65,
-    message: 'validation:textOverX'
+    message: 'validation:textOverX',
+    personName
   }))
 
   hasErrors.push(checkLength(v, {
     needle: item?.varighetUavbruttOpphold,
     id: namespace + idx + '-varighetUavbruttOpphold',
     max: 65,
-    message: 'validation:textOverX'
+    message: 'validation:textOverX',
+    personName
   }))
 
   return hasErrors.find(value => value) !== undefined
