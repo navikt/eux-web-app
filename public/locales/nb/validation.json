@@ -28,6 +28,8 @@
   "noAapenPeriodeType": "Ingen åpen/ukjent dato info",
   "noAarsakType": "Ingen årsak valgt",
   "noAarsakAnnet": "Mangler begrunnelse for årsak",
+  "noAnmodningOmInformasjon": "Ingen anmodning om informasjon er angitt",
+  "noPersonensStatusAnnet": "Mangler beskrivelse for personens status «Annet»",
   "noAddress": "Mangler adresse eller anmodning om adresse",
   "noAddressCity": "Poststed/By mangler",
   "noAddressCountry": "Land mangler",

@@ -20,6 +20,10 @@ import { validateYtterligereInfoOmKrav, ValidationYtterligereInfoOmKravProps } f
 import { validateGrunnerForOverfoering, ValidationGrunnerForOverfoeringProps } from 'applications/SvarSed/GrunnerForOverfoering/validation'
 import { validateDokumenterVedlagt, ValidationDokumenterVedlagtProps } from 'applications/SvarSed/DokumenterVedlagt/validation'
 import { validateMeldingOmDoedsfall, ValidationMeldingOmDoedsfallProps } from 'applications/SvarSed/MeldingOmDoedsfall/validation'
+import { validateAnmodningOmInformasjon, ValidationAnmodningOmInformasjonProps } from 'applications/SvarSed/AnmodningOmInformasjon/validation'
+import { validateAdresserBosted, ValidationAdresserBostedProps } from 'applications/SvarSed/AdresserBosted/validation'
+import { validateAktivitetOgStatus, ValidationAktivitetOgStatusProps } from 'applications/SvarSed/AktivitetOgStatus/validation'
+import { validateBostedOgFamilie, ValidationBostedOgFamilieProps } from 'applications/SvarSed/BostedOgFamilie/validation'
 import { validateVedlagtDokumentasjon, ValidationVedlagtDokumentasjonProps } from 'applications/SvarSed/VedlagtDokumentasjon/validation'
 import { validateBeroertYtelse, ValidationBeroertYtelseProps } from 'applications/SvarSed/BeroertYtelse/validation'
 import { validateKravetsArt, ValidationKravetsArtProps } from 'applications/SvarSed/KravetsArt/validation'
@@ -130,6 +134,7 @@ import {
   isFSed,
   isH001Sed,
   isH002Sed,
+  isH005Sed,
   isH021Sed,
   isH065Sed,
   isH070Sed,
@@ -442,7 +447,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
       statsborgerskaper, personName
     }, true))
-    if (!isH120Sed(replySed) && !isH070Sed(replySed)) {
+    if (!isH120Sed(replySed) && !isH070Sed(replySed) && !isH005Sed(replySed)) {
       hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
         adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName
       }, true))
@@ -494,6 +499,24 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       hasErrors.push(performValidation<ValidationVedlagtDokumentasjonProps>(v, `svarsed-${personID}-vedlagtdokumentasjon`, validateVedlagtDokumentasjon, {
         replySed,
         personName: i18n.t('label:vedlagt-dokumentasjon').toLowerCase()
+      }, true))
+    }
+    if (isH005Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationAnmodningOmInformasjonProps>(v, `svarsed-${personID}-anmodningominformasjon`, validateAnmodningOmInformasjon, {
+        replySed,
+        personName: i18n.t('label:anmodning-om-informasjon').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationAdresserBostedProps>(v, `svarsed-${personID}-adresserbosted`, validateAdresserBosted, {
+        adresser: _.get(replySed, 'informasjonFastslaaBosted.adresser'),
+        personName: i18n.t('label:adresse').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationAktivitetOgStatusProps>(v, `svarsed-${personID}-aktivitetogstatus`, validateAktivitetOgStatus, {
+        replySed,
+        personName: i18n.t('label:personens-status').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationBostedOgFamilieProps>(v, `svarsed-${personID}-bostedogfamilie`, validateBostedOgFamilie, {
+        replySed,
+        personName: i18n.t('label:familiestatus').toLowerCase()
       }, true))
     }
     if (isH120Sed(replySed)) {

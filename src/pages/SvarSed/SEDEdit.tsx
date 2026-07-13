@@ -61,6 +61,10 @@ import GrunnerForOverfoering from 'applications/SvarSed/GrunnerForOverfoering/Gr
 import DokumenterVedlagt from 'applications/SvarSed/DokumenterVedlagt/DokumenterVedlagt'
 import MeldingOmDoedsfall from 'applications/SvarSed/MeldingOmDoedsfall/MeldingOmDoedsfall'
 import VedlagtDokumentasjon from 'applications/SvarSed/VedlagtDokumentasjon/VedlagtDokumentasjon'
+import AnmodningOmInformasjon from 'applications/SvarSed/AnmodningOmInformasjon/AnmodningOmInformasjon'
+import AdresserBosted from 'applications/SvarSed/AdresserBosted/AdresserBosted'
+import AktivitetOgStatus from 'applications/SvarSed/AktivitetOgStatus/AktivitetOgStatus'
+import BostedOgFamilie from 'applications/SvarSed/BostedOgFamilie/BostedOgFamilie'
 import BeroertYtelse from 'applications/SvarSed/BeroertYtelse/BeroertYtelse'
 import KravetsArt from 'applications/SvarSed/KravetsArt/KravetsArt'
 import AnmodningInfo from 'applications/SvarSed/AnmodningInfo/AnmodningInfo'
@@ -89,6 +93,7 @@ import {
   isF026Sed,
   isF027Sed,
   isH002Sed,
+  isH005Sed,
   isH021Sed,
   isH065Sed,
   isH070Sed,
@@ -445,7 +450,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-personopplyninger'), value: 'personopplysningerH021', component: PersonOpplysninger, type: 'H021', options: { showFoedested: false, showUtenlandskPin: false, showH021Pins: true } },
                   { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
                   { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H', 'S'], adult: true, barn: true, condition: () => !isH021Sed(replySed) },
-                  { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true, condition: () => !isH120Sed(replySed) && !isH021Sed(replySed) && !isH070Sed(replySed) },
+                  { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true, condition: () => !isH120Sed(replySed) && !isH021Sed(replySed) && !isH070Sed(replySed) && !isH005Sed(replySed) },
                   { label: t('el:option-mainform-adresse'), value: 'adresseH120', component: Adresse, type: ['H120'], adult: true },
                   { label: t('el:option-mainform-adresse'), value: 'adresse', component: Adresser, type: ['S'], options: {singleAdress: true}},
                   { label: t('el:option-mainform-adresseH001'), value: 'adresseAnmodning', component: AnmodningOmAdresse, type: ['H001'], adult: true, barn: true, condition: () => CDM_VERSJON >= 4.4 },
@@ -478,6 +483,10 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-dokumentervedlagt'), value: 'dokumentervedlagt', component: DokumenterVedlagt, type: 'H065' },
                   { label: t('el:option-mainform-meldingomdoedsfall'), value: 'meldingomdoedsfall', component: MeldingOmDoedsfall, type: 'H070' },
                   { label: t('el:option-mainform-vedlagtdokumentasjon'), value: 'vedlagtdokumentasjon', component: VedlagtDokumentasjon, type: 'H070' },
+                  { label: t('el:option-mainform-anmodningominformasjon'), value: 'anmodningominformasjon', component: AnmodningOmInformasjon, type: 'H005' },
+                  { label: t('el:option-mainform-adresserbosted'), value: 'adresserbosted', component: AdresserBosted, type: 'H005' },
+                  { label: t('el:option-mainform-aktivitetogstatus'), value: 'aktivitetogstatus', component: AktivitetOgStatus, type: 'H005' },
+                  { label: t('el:option-mainform-bostedogfamilie'), value: 'bostedogfamilie', component: BostedOgFamilie, type: 'H005' },
                   { label: t('el:option-mainform-beroertytelse'), value: 'beroertytelse', component: BeroertYtelse, type: 'H120' },
                   { label: t('el:option-mainform-kravetsart'), value: 'kravetsart', component: KravetsArt, type: 'H120' },
                   { label: t('el:option-mainform-anmodninginfo'), value: 'anmodninginfo', component: AnmodningInfo, type: 'H120' },
@@ -717,7 +726,7 @@ const SEDEdit = (): JSX.Element => {
               />
             </>
           }
-          {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isH065Sed(replySed) || isH070Sed(replySed) || isH120Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
+          {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isH005Sed(replySed) || isH065Sed(replySed) || isH070Sed(replySed) || isH120Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
             <TextArea
               namespace={namespace}
               error={validation[namespace + '-ytterligereInfo']?.feilmelding}

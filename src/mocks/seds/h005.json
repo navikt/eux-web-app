@@ -1,0 +1,71 @@
+{
+    "sedType": "H005",
+    "sedVersjon": "4.4",
+    "bruker": {
+        "personInfo": {
+            "fornavn": "æøå",
+            "etternavn": "æøå",
+            "kjoenn": "M",
+            "foedselsdato": "1990-01-15",
+            "statsborgerskap": [
+                {
+                    "landkode": "NOR"
+                }
+            ],
+            "pin": [
+                {
+                    "land": "NO",
+                    "landkode": "NOR",
+                    "identifikator": "æøå",
+                    "institusjonsid": "æøå",
+                    "institusjonsnavn": "æøå"
+                }
+            ]
+        }
+    },
+    "anmodningOmInformasjon": "æøå",
+    "informasjonFastslaaBosted": {
+        "adresser": [
+            {
+                "adresse": {
+                    "type": "bosted",
+                    "gate": "æøå",
+                    "bygning": "æøå",
+                    "by": "æøå",
+                    "postnummer": "æøå",
+                    "region": "æøå",
+                    "landkode": "NOR"
+                },
+                "oppholdetsVarighet": "æøå",
+                "varighetUavbruttOpphold": "æøå"
+            }
+        ],
+        "personensStatus": "ansatt",
+        "personensStatusAnnet": "æøå",
+        "aktiviteter": [
+            {
+                "type": "inntektsgivende_virksomhet",
+                "beskrivelse": "æøå",
+                "sted": "æøå",
+                "varighet": "æøå",
+                "art": "æøå"
+            }
+        ],
+        "inntektskildeStudenter": "æøå",
+        "bosituasjonHvorPermanent": "æøå",
+        "permanentOppholdSkattemessig": "æøå",
+        "familiestatus": {
+            "ektefelle": {
+                "familiemedlem": "æøå",
+                "bosted": "æøå"
+            },
+            "barn": {
+                "familiemedlem": "æøå",
+                "bosted": "æøå",
+                "skolekrets": "æøå"
+            }
+        },
+        "grunnForFlytting": "æøå"
+    },
+    "ytterligereInfo": "æøå"
+}
