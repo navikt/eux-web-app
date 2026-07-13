@@ -1,7 +1,7 @@
 import { BodyLong, Box, Heading, VStack } from '@navikt/ds-react'
 import AdresserBosted from 'applications/SvarSed/AdresserBosted/AdresserBosted'
 import AktivitetOgStatus from 'applications/SvarSed/AktivitetOgStatus/AktivitetOgStatus'
-import BostedOgFamilie from 'applications/SvarSed/BostedOgFamilie/BostedOgFamilie'
+import Familiestatus from 'applications/SvarSed/Familiestatus/Familiestatus'
 import { MainFormProps } from 'applications/SvarSed/MainForm'
 import React, { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -39,7 +39,7 @@ const FastslaaBosted: React.FC<MainFormProps> = ({
 
         <AdresserBosted {...childProps} label={t('label:adresser')} />
         <AktivitetOgStatus {...childProps} label={t('label:personens-status-og-aktivitet')} />
-        <BostedOgFamilie {...childProps} label={t('label:bosituasjon-og-familiestatus')} />
+        <Familiestatus {...childProps} label={t('label:familiestatus')} />
       </VStack>
     </Box>
   )

@@ -23,7 +23,7 @@ import { validateMeldingOmDoedsfall, ValidationMeldingOmDoedsfallProps } from 'a
 import { validateAnmodningOmInformasjon, ValidationAnmodningOmInformasjonProps } from 'applications/SvarSed/AnmodningOmInformasjon/validation'
 import { validateAdresserBosted, ValidationAdresserBostedProps } from 'applications/SvarSed/AdresserBosted/validation'
 import { validateAktivitetOgStatus, ValidationAktivitetOgStatusProps } from 'applications/SvarSed/AktivitetOgStatus/validation'
-import { validateBostedOgFamilie, ValidationBostedOgFamilieProps } from 'applications/SvarSed/BostedOgFamilie/validation'
+import { validateFamiliestatus, ValidationFamiliestatusProps } from 'applications/SvarSed/Familiestatus/validation'
 import { validateVedlagtDokumentasjon, ValidationVedlagtDokumentasjonProps } from 'applications/SvarSed/VedlagtDokumentasjon/validation'
 import { validateBeroertYtelse, ValidationBeroertYtelseProps } from 'applications/SvarSed/BeroertYtelse/validation'
 import { validateKravetsArt, ValidationKravetsArtProps } from 'applications/SvarSed/KravetsArt/validation'
@@ -504,19 +504,19 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     if (isH005Sed(replySed)) {
       hasErrors.push(performValidation<ValidationAnmodningOmInformasjonProps>(v, `svarsed-${personID}-anmodningominformasjon`, validateAnmodningOmInformasjon, {
         replySed,
-        personName: i18n.t('label:anmodning-om-informasjon').toLowerCase()
+        personName
       }, true))
       hasErrors.push(performValidation<ValidationAdresserBostedProps>(v, `svarsed-${personID}-fastslaabosted-adresser`, validateAdresserBosted, {
         adresser: _.get(replySed, 'informasjonFastslaaBosted.adresser'),
-        personName: i18n.t('label:adresse').toLowerCase()
+        personName
       }, true))
       hasErrors.push(performValidation<ValidationAktivitetOgStatusProps>(v, `svarsed-${personID}-fastslaabosted-status`, validateAktivitetOgStatus, {
         replySed,
-        personName: i18n.t('label:personens-status').toLowerCase()
+        personName
       }, true))
-      hasErrors.push(performValidation<ValidationBostedOgFamilieProps>(v, `svarsed-${personID}-fastslaabosted-familie`, validateBostedOgFamilie, {
+      hasErrors.push(performValidation<ValidationFamiliestatusProps>(v, `svarsed-${personID}-fastslaabosted-familie`, validateFamiliestatus, {
         replySed,
-        personName: i18n.t('label:familiestatus').toLowerCase()
+        personName
       }, true))
     }
     if (isH120Sed(replySed)) {

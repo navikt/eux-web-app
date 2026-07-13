@@ -106,6 +106,13 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
     }
   }
 
+  const setInfoField = (id: string, value: string) => {
+    dispatch(updateReplySed(`informasjonFastslaaBosted.${id}`, value.trim() || undefined))
+    if (validation[namespace + '-' + id]) {
+      dispatch(resetValidation(namespace + '-' + id))
+    }
+  }
+
   const setAktivitetField = (changes: Partial<Aktivitet>, fieldId: string, index: number) => {
     if (index < 0) {
       _setNewAktivitet((prev) => ({ ...prev, ...changes }))
@@ -318,6 +325,35 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
             required
           />
         )}
+
+        <TextArea
+          error={validation[namespace + '-inntektskildeStudenter']?.feilmelding}
+          namespace={namespace}
+          id='inntektskildeStudenter'
+          label={t('label:inntektskilde-studenter')}
+          maxLength={155}
+          onChanged={(value: string) => setInfoField('inntektskildeStudenter', value)}
+          value={informasjonFastslaaBosted?.inntektskildeStudenter}
+        />
+        <TextArea
+          error={validation[namespace + '-bosituasjonHvorPermanent']?.feilmelding}
+          namespace={namespace}
+          id='bosituasjonHvorPermanent'
+          label={t('label:bosituasjon-hvor-permanent')}
+          maxLength={155}
+          onChanged={(value: string) => setInfoField('bosituasjonHvorPermanent', value)}
+          value={informasjonFastslaaBosted?.bosituasjonHvorPermanent}
+        />
+        <HGrid columns={{ xs: 1, md: 2 }} gap="space-16" align="start">
+          <Input
+            error={validation[namespace + '-permanentOppholdSkattemessig']?.feilmelding}
+            namespace={namespace}
+            id='permanentOppholdSkattemessig'
+            label={t('label:permanent-opphold-skattemessig')}
+            onChanged={(value: string) => setInfoField('permanentOppholdSkattemessig', value)}
+            value={informasjonFastslaaBosted?.permanentOppholdSkattemessig}
+          />
+        </HGrid>
 
         <Heading size='xsmall'>
           {t('label:aktiviteter')}

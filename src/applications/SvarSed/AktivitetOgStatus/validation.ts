@@ -91,6 +91,30 @@ export const validateAktivitetOgStatus = (
     }))
   }
 
+  hasErrors.push(checkLength(v, {
+    needle: info?.inntektskildeStudenter,
+    id: namespace + '-inntektskildeStudenter',
+    max: 155,
+    message: 'validation:textOverX',
+    personName
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: info?.bosituasjonHvorPermanent,
+    id: namespace + '-bosituasjonHvorPermanent',
+    max: 155,
+    message: 'validation:textOverX',
+    personName
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: info?.permanentOppholdSkattemessig,
+    id: namespace + '-permanentOppholdSkattemessig',
+    max: 65,
+    message: 'validation:textOverX',
+    personName
+  }))
+
   info?.aktiviteter?.forEach((aktivitet: Aktivitet, index: number) => {
     hasErrors.push(validateAktivitetItem(v, namespace, {
       aktivitet,

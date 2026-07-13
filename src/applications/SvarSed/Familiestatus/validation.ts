@@ -3,46 +3,22 @@ import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { checkLength } from 'utils/validation'
 
-export interface ValidationBostedOgFamilieProps {
+export interface ValidationFamiliestatusProps {
   replySed: ReplySed
   personName?: string
 }
 
-export const validateBostedOgFamilie = (
+export const validateFamiliestatus = (
   v: Validation,
   namespace: string,
   {
     replySed,
     personName
-  }: ValidationBostedOgFamilieProps
+  }: ValidationFamiliestatusProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const sed = replySed as H005Sed
   const info = sed.informasjonFastslaaBosted
-
-  hasErrors.push(checkLength(v, {
-    needle: info?.inntektskildeStudenter,
-    id: namespace + '-inntektskildeStudenter',
-    max: 155,
-    message: 'validation:textOverX',
-    personName
-  }))
-
-  hasErrors.push(checkLength(v, {
-    needle: info?.bosituasjonHvorPermanent,
-    id: namespace + '-bosituasjonHvorPermanent',
-    max: 155,
-    message: 'validation:textOverX',
-    personName
-  }))
-
-  hasErrors.push(checkLength(v, {
-    needle: info?.permanentOppholdSkattemessig,
-    id: namespace + '-permanentOppholdSkattemessig',
-    max: 65,
-    message: 'validation:textOverX',
-    personName
-  }))
 
   hasErrors.push(checkLength(v, {
     needle: info?.grunnForFlytting,
