@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons'
-import { BodyLong, Box, Button, Heading, HStack, Select, Spacer, VStack } from '@navikt/ds-react'
+import { BodyLong, Box, Button, Heading, HGrid, HStack, Select, Spacer, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -224,30 +224,33 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
                     <option value={o.value} key={o.value}>{o.label}</option>
                   ))}
                 </Select>
-                <Input
+                <TextArea
                   error={_v[_namespace + '-beskrivelse']?.feilmelding}
                   namespace={_namespace}
                   id='beskrivelse'
                   label={t('label:aktivitet-beskrivelse')}
+                  maxLength={155}
                   onChanged={(value: string) => setAktivitetField({ beskrivelse: value.trim() || undefined }, 'beskrivelse', index)}
                   value={_aktivitet?.beskrivelse}
                 />
-                <Input
-                  error={_v[_namespace + '-sted']?.feilmelding}
-                  namespace={_namespace}
-                  id='sted'
-                  label={t('label:aktivitet-sted')}
-                  onChanged={(value: string) => setAktivitetField({ sted: value.trim() || undefined }, 'sted', index)}
-                  value={_aktivitet?.sted}
-                />
-                <Input
-                  error={_v[_namespace + '-varighet']?.feilmelding}
-                  namespace={_namespace}
-                  id='varighet'
-                  label={t('label:aktivitet-varighet')}
-                  onChanged={(value: string) => setAktivitetField({ varighet: value.trim() || undefined }, 'varighet', index)}
-                  value={_aktivitet?.varighet}
-                />
+                <HGrid columns={{ xs: 1, md: 2 }} gap="space-16" align="start">
+                  <Input
+                    error={_v[_namespace + '-sted']?.feilmelding}
+                    namespace={_namespace}
+                    id='sted'
+                    label={t('label:aktivitet-sted')}
+                    onChanged={(value: string) => setAktivitetField({ sted: value.trim() || undefined }, 'sted', index)}
+                    value={_aktivitet?.sted}
+                  />
+                  <Input
+                    error={_v[_namespace + '-varighet']?.feilmelding}
+                    namespace={_namespace}
+                    id='varighet'
+                    label={t('label:aktivitet-varighet')}
+                    onChanged={(value: string) => setAktivitetField({ varighet: value.trim() || undefined }, 'varighet', index)}
+                    value={_aktivitet?.varighet}
+                  />
+                </HGrid>
                 <TextArea
                   error={_v[_namespace + '-art']?.feilmelding}
                   namespace={_namespace}

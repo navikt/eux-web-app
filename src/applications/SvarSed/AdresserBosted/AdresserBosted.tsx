@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons'
-import { BodyLong, Box, Button, Heading, HStack, Spacer, VStack } from '@navikt/ds-react'
+import { BodyLong, Box, Button, Heading, HGrid, HStack, Spacer, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -195,22 +195,24 @@ const AdresserBosted: React.FC<MainFormProps> = ({
                   onAdressChanged={(a: Adresse) => setItemAdresse(a, index)}
                   validation={_v}
                 />
-                <Input
-                  error={_v[_namespace + '-oppholdetsVarighet']?.feilmelding}
-                  namespace={_namespace}
-                  id='oppholdetsVarighet'
-                  label={t('label:oppholdets-varighet')}
-                  onChanged={(value: string) => setItemVarighet({ oppholdetsVarighet: value.trim() || undefined }, 'oppholdetsVarighet', index)}
-                  value={_item?.oppholdetsVarighet}
-                />
-                <Input
-                  error={_v[_namespace + '-varighetUavbruttOpphold']?.feilmelding}
-                  namespace={_namespace}
-                  id='varighetUavbruttOpphold'
-                  label={t('label:varighet-uavbrutt-opphold')}
-                  onChanged={(value: string) => setItemVarighet({ varighetUavbruttOpphold: value.trim() || undefined }, 'varighetUavbruttOpphold', index)}
-                  value={_item?.varighetUavbruttOpphold}
-                />
+                <HGrid columns={{ xs: 1, md: 2 }} gap="space-16" align="start">
+                  <Input
+                    error={_v[_namespace + '-oppholdetsVarighet']?.feilmelding}
+                    namespace={_namespace}
+                    id='oppholdetsVarighet'
+                    label={t('label:oppholdets-varighet')}
+                    onChanged={(value: string) => setItemVarighet({ oppholdetsVarighet: value.trim() || undefined }, 'oppholdetsVarighet', index)}
+                    value={_item?.oppholdetsVarighet}
+                  />
+                  <Input
+                    error={_v[_namespace + '-varighetUavbruttOpphold']?.feilmelding}
+                    namespace={_namespace}
+                    id='varighetUavbruttOpphold'
+                    label={t('label:varighet-uavbrutt-opphold')}
+                    onChanged={(value: string) => setItemVarighet({ varighetUavbruttOpphold: value.trim() || undefined }, 'varighetUavbruttOpphold', index)}
+                    value={_item?.varighetUavbruttOpphold}
+                  />
+                </HGrid>
               </VStack>
               )
             : (

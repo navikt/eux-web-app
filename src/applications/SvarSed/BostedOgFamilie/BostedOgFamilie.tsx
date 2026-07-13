@@ -57,23 +57,25 @@ const BostedOgFamilie: React.FC<MainFormProps> = ({
           {label}
         </Heading>
 
+        <TextArea
+          error={validation[namespace + '-inntektskildeStudenter']?.feilmelding}
+          namespace={namespace}
+          id='inntektskildeStudenter'
+          label={t('label:inntektskilde-studenter')}
+          maxLength={155}
+          onChanged={(value: string) => setField('inntektskildeStudenter', 'inntektskildeStudenter', value)}
+          value={informasjonFastslaaBosted?.inntektskildeStudenter}
+        />
+        <TextArea
+          error={validation[namespace + '-bosituasjonHvorPermanent']?.feilmelding}
+          namespace={namespace}
+          id='bosituasjonHvorPermanent'
+          label={t('label:bosituasjon-hvor-permanent')}
+          maxLength={155}
+          onChanged={(value: string) => setField('bosituasjonHvorPermanent', 'bosituasjonHvorPermanent', value)}
+          value={informasjonFastslaaBosted?.bosituasjonHvorPermanent}
+        />
         <HGrid columns={{ xs: 1, md: 2 }} gap="space-16" align="start">
-          <Input
-            error={validation[namespace + '-inntektskildeStudenter']?.feilmelding}
-            namespace={namespace}
-            id='inntektskildeStudenter'
-            label={t('label:inntektskilde-studenter')}
-            onChanged={(value: string) => setField('inntektskildeStudenter', 'inntektskildeStudenter', value)}
-            value={informasjonFastslaaBosted?.inntektskildeStudenter}
-          />
-          <Input
-            error={validation[namespace + '-bosituasjonHvorPermanent']?.feilmelding}
-            namespace={namespace}
-            id='bosituasjonHvorPermanent'
-            label={t('label:bosituasjon-hvor-permanent')}
-            onChanged={(value: string) => setField('bosituasjonHvorPermanent', 'bosituasjonHvorPermanent', value)}
-            value={informasjonFastslaaBosted?.bosituasjonHvorPermanent}
-          />
           <Input
             error={validation[namespace + '-permanentOppholdSkattemessig']?.feilmelding}
             namespace={namespace}
@@ -83,16 +85,6 @@ const BostedOgFamilie: React.FC<MainFormProps> = ({
             value={informasjonFastslaaBosted?.permanentOppholdSkattemessig}
           />
         </HGrid>
-
-        <TextArea
-          error={validation[namespace + '-grunnForFlytting']?.feilmelding}
-          namespace={namespace}
-          id='grunnForFlytting'
-          label={t('label:grunn-for-flytting')}
-          maxLength={155}
-          onChanged={(value: string) => setField('grunnForFlytting', 'grunnForFlytting', value)}
-          value={informasjonFastslaaBosted?.grunnForFlytting}
-        />
 
         <Heading size='xsmall'>
           {t('label:familiestatus')}
@@ -140,6 +132,16 @@ const BostedOgFamilie: React.FC<MainFormProps> = ({
             value={informasjonFastslaaBosted?.familiestatus?.barn?.skolekrets}
           />
         </HGrid>
+
+        <TextArea
+          error={validation[namespace + '-grunnForFlytting']?.feilmelding}
+          namespace={namespace}
+          id='grunnForFlytting'
+          label={t('label:grunn-for-flytting')}
+          maxLength={155}
+          onChanged={(value: string) => setField('grunnForFlytting', 'grunnForFlytting', value)}
+          value={informasjonFastslaaBosted?.grunnForFlytting}
+        />
       </VStack>
     </Box>
   )
