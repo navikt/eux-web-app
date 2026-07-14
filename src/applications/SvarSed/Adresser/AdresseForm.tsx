@@ -21,8 +21,6 @@ export interface AdresseFormProps {
   keyForCity ?: string
   keyforZipCode ?: string
   labelforZipCode ?: string
-  typeLabelKey ?: string
-  gateLabelKey ?: string
 }
 
 const AdresseForm: React.FC<AdresseFormProps> = ({
@@ -38,8 +36,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   keyForCity = 'by',
   keyforZipCode = 'postnummer',
   labelforZipCode = 'postnr',
-  typeLabelKey = 'adresse-type',
-  gateLabelKey = 'gateadresse',
 }: AdresseFormProps) => {
   const { t } = useTranslation()
 
@@ -111,7 +107,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
           data-testid={namespace + '-type'}
           error={validation[namespace + '-type']?.feilmelding}
           id={namespace + '-type'}
-          legend={t('label:' + typeLabelKey) + (required.indexOf('type') >= 0 ? ' *' : '')}
+          legend={t('label:adresse-type') + (required.indexOf('type') >= 0 ? ' *' : '')}
           name={namespace + '-type'}
           required={required.indexOf('type') >= 0}
           onChange={(e: string) => setType((e as AdresseType))}
@@ -129,7 +125,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
           error={validation[namespace + '-gate']?.feilmelding}
           namespace={namespace}
           id='gate'
-          label={t('label:' + gateLabelKey)}
+          label={t('label:gateadresse')}
           onChanged={setGate}
           required={required.indexOf('gate') >= 0}
           value={adresse?.gate}

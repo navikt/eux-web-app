@@ -24,9 +24,6 @@ import { validateAnmodningOmInformasjon, ValidationAnmodningOmInformasjonProps }
 import { validateAdresserBosted, ValidationAdresserBostedProps } from 'applications/SvarSed/AdresserBosted/validation'
 import { validateAktivitetOgStatus, ValidationAktivitetOgStatusProps } from 'applications/SvarSed/AktivitetOgStatus/validation'
 import { validateFamiliestatus, ValidationFamiliestatusProps } from 'applications/SvarSed/Familiestatus/validation'
-import { validateAdresserPositivtSvar, ValidationAdresserPositivtSvarProps } from 'applications/SvarSed/AdresserPositivtSvar/validation'
-import { validateAktivitetOgStatusPositivtSvar, ValidationAktivitetOgStatusPositivtSvarProps } from 'applications/SvarSed/AktivitetOgStatusPositivtSvar/validation'
-import { validateFamiliestatusPositivtSvar, ValidationFamiliestatusPositivtSvarProps } from 'applications/SvarSed/FamiliestatusPositivtSvar/validation'
 import { validateNegativtSvar, ValidationNegativtSvarProps } from 'applications/SvarSed/NegativtSvar/validation'
 import { validateVedlagtDokumentasjon, ValidationVedlagtDokumentasjonProps } from 'applications/SvarSed/VedlagtDokumentasjon/validation'
 import { validateBeroertYtelse, ValidationBeroertYtelseProps } from 'applications/SvarSed/BeroertYtelse/validation'
@@ -130,6 +127,7 @@ import { X007Sed } from 'declarations/x007'
 import { X005Sed } from 'declarations/x005'
 import { X006Sed } from 'declarations/x006'
 import { Validation } from 'declarations/types.d'
+import { BostedInformasjon } from 'declarations/hbuc02a'
 import i18n from 'i18n'
 import _ from 'lodash'
 import performValidation from 'utils/performValidation'
@@ -513,28 +511,34 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
       hasErrors.push(performValidation<ValidationAdresserBostedProps>(v, `svarsed-${personID}-fastslaabosted-adresser`, validateAdresserBosted, {
         adresser: _.get(replySed, 'informasjonFastslaaBosted.adresser'),
+        showVarighet: true,
         personName
       }, true))
       hasErrors.push(performValidation<ValidationAktivitetOgStatusProps>(v, `svarsed-${personID}-fastslaabosted-status`, validateAktivitetOgStatus, {
-        replySed,
+        info: _.get(replySed, 'informasjonFastslaaBosted'),
+        inntektskildeStudenterMaxLength: 155,
         personName
       }, true))
       hasErrors.push(performValidation<ValidationFamiliestatusProps>(v, `svarsed-${personID}-fastslaabosted-familie`, validateFamiliestatus, {
-        replySed,
+        info: _.get(replySed, 'informasjonFastslaaBosted'),
+        grunnForFlyttingMaxLength: 155,
         personName
       }, true))
     }
     if (isH006Sed(replySed)) {
-      hasErrors.push(performValidation<ValidationAdresserPositivtSvarProps>(v, `svarsed-${personID}-positivtsvar-adresser`, validateAdresserPositivtSvar, {
+      hasErrors.push(performValidation<ValidationAdresserBostedProps>(v, `svarsed-${personID}-positivtsvar-adresser`, validateAdresserBosted, {
         adresser: _.get(replySed, 'positivtSvar.adresser'),
+        showVarighet: false,
         personName
       }, true))
-      hasErrors.push(performValidation<ValidationAktivitetOgStatusPositivtSvarProps>(v, `svarsed-${personID}-positivtsvar-status`, validateAktivitetOgStatusPositivtSvar, {
-        replySed,
+      hasErrors.push(performValidation<ValidationAktivitetOgStatusProps>(v, `svarsed-${personID}-positivtsvar-status`, validateAktivitetOgStatus, {
+        info: _.get(replySed, 'positivtSvar') as BostedInformasjon | undefined,
+        inntektskildeStudenterMaxLength: 65,
         personName
       }, true))
-      hasErrors.push(performValidation<ValidationFamiliestatusPositivtSvarProps>(v, `svarsed-${personID}-positivtsvar-familie`, validateFamiliestatusPositivtSvar, {
-        replySed,
+      hasErrors.push(performValidation<ValidationFamiliestatusProps>(v, `svarsed-${personID}-positivtsvar-familie`, validateFamiliestatus, {
+        info: _.get(replySed, 'positivtSvar') as BostedInformasjon | undefined,
+        grunnForFlyttingMaxLength: 255,
         personName
       }, true))
       hasErrors.push(performValidation<ValidationNegativtSvarProps>(v, `svarsed-${personID}-negativtsvar`, validateNegativtSvar, {

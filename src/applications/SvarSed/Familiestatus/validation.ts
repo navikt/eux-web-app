@@ -1,10 +1,10 @@
-import { H005Sed } from 'declarations/h005'
-import { ReplySed } from 'declarations/sed'
+import { BostedInformasjon } from 'declarations/hbuc02a'
 import { Validation } from 'declarations/types'
 import { checkLength } from 'utils/validation'
 
 export interface ValidationFamiliestatusProps {
-  replySed: ReplySed
+  info: BostedInformasjon | undefined
+  grunnForFlyttingMaxLength: number
   personName?: string
 }
 
@@ -12,18 +12,17 @@ export const validateFamiliestatus = (
   v: Validation,
   namespace: string,
   {
-    replySed,
+    info,
+    grunnForFlyttingMaxLength,
     personName
   }: ValidationFamiliestatusProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  const sed = replySed as H005Sed
-  const info = sed.informasjonFastslaaBosted
 
   hasErrors.push(checkLength(v, {
     needle: info?.grunnForFlytting,
     id: namespace + '-grunnForFlytting',
-    max: 155,
+    max: grunnForFlyttingMaxLength,
     message: 'validation:textOverX',
     personName
   }))

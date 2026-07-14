@@ -1,5 +1,4 @@
-import { Aktivitet, H005Sed } from 'declarations/h005'
-import { ReplySed } from 'declarations/sed'
+import { Aktivitet, BostedInformasjon } from 'declarations/hbuc02a'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty, checkLength } from 'utils/validation'
@@ -11,7 +10,8 @@ export interface ValidationAktivitetItemProps {
 }
 
 export interface ValidationAktivitetOgStatusProps {
-  replySed: ReplySed
+  info: BostedInformasjon | undefined
+  inntektskildeStudenterMaxLength: number
   personName?: string
 }
 
@@ -66,13 +66,12 @@ export const validateAktivitetOgStatus = (
   v: Validation,
   namespace: string,
   {
-    replySed,
+    info,
+    inntektskildeStudenterMaxLength,
     personName
   }: ValidationAktivitetOgStatusProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  const sed = replySed as H005Sed
-  const info = sed.informasjonFastslaaBosted
 
   if (info?.personensStatus === 'annet') {
     hasErrors.push(checkIfNotEmpty(v, {
@@ -94,7 +93,7 @@ export const validateAktivitetOgStatus = (
   hasErrors.push(checkLength(v, {
     needle: info?.inntektskildeStudenter,
     id: namespace + '-inntektskildeStudenter',
-    max: 155,
+    max: inntektskildeStudenterMaxLength,
     message: 'validation:textOverX',
     personName
   }))

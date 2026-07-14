@@ -1,7 +1,7 @@
 import { BodyLong, Box, Heading, VStack } from '@navikt/ds-react'
-import AdresserPositivtSvar from 'applications/SvarSed/AdresserPositivtSvar/AdresserPositivtSvar'
-import AktivitetOgStatusPositivtSvar from 'applications/SvarSed/AktivitetOgStatusPositivtSvar/AktivitetOgStatusPositivtSvar'
-import FamiliestatusPositivtSvar from 'applications/SvarSed/FamiliestatusPositivtSvar/FamiliestatusPositivtSvar'
+import AdresserBosted from 'applications/SvarSed/AdresserBosted/AdresserBosted'
+import AktivitetOgStatus from 'applications/SvarSed/AktivitetOgStatus/AktivitetOgStatus'
+import Familiestatus from 'applications/SvarSed/Familiestatus/Familiestatus'
 import { MainFormProps } from 'applications/SvarSed/MainForm'
 import React, { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -25,6 +25,8 @@ const PositivtSvar: React.FC<MainFormProps> = ({
     updateReplySed
   }
 
+  const positivt = { parentKey: 'positivtSvar', namespaceInfix: 'positivtsvar' }
+
   return (
     <Box padding="space-16">
       <VStack gap="space-16">
@@ -37,9 +39,9 @@ const PositivtSvar: React.FC<MainFormProps> = ({
           </BodyLong>
         </VStack>
 
-        <AdresserPositivtSvar {...childProps} label={t('label:adresser')} />
-        <AktivitetOgStatusPositivtSvar {...childProps} label={t('label:personens-status-og-aktivitet')} />
-        <FamiliestatusPositivtSvar {...childProps} label={t('label:familiestatus')} />
+        <AdresserBosted {...childProps} label={t('label:adresser')} options={{ ...positivt, showVarighet: false }} />
+        <AktivitetOgStatus {...childProps} label={t('label:personens-status-og-aktivitet')} options={{ ...positivt, inntektskildeStudenterMaxLength: 65 }} />
+        <Familiestatus {...childProps} label={t('label:familiestatus')} options={{ ...positivt, grunnForFlyttingMaxLength: 255 }} />
       </VStack>
     </Box>
   )

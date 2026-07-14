@@ -3,7 +3,7 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
-import { InformasjonFastslaaBosted, H005Sed } from 'declarations/h005'
+import { BostedInformasjon } from 'declarations/hbuc02a'
 import { State } from 'declarations/reducers'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -17,8 +17,13 @@ const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
+// Shared H_BUC_02a familiestatus section, used by both H005 (target
+// «informasjonFastslaaBosted») and H006 (target «positivtSvar»). The SED-specific
+// target key, namespace infix and «grunn for flytting» max length are supplied via
+// `options` by the FastslaaBosted / PositivtSvar containers.
 const Familiestatus: React.FC<MainFormProps> = ({
   label,
+  options,
   parentNamespace,
   personID,
   personName,
@@ -28,15 +33,16 @@ const Familiestatus: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-${personID}-fastslaabosted-familie`
-  const sed = replySed as H005Sed
-  const informasjonFastslaaBosted: InformasjonFastslaaBosted | undefined = sed.informasjonFastslaaBosted
+  const { parentKey, namespaceInfix, grunnForFlyttingMaxLength } = options
+  const namespace = `${parentNamespace}-${personID}-${namespaceInfix}-familie`
+  const info = _.get(replySed, parentKey) as BostedInformasjon | undefined
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
     performValidation<ValidationFamiliestatusProps>(
       clonedvalidation, namespace, validateFamiliestatus, {
-        replySed: sed,
+        info,
+        grunnForFlyttingMaxLength,
         personName
       }, true
     )
@@ -44,7 +50,7 @@ const Familiestatus: React.FC<MainFormProps> = ({
   })
 
   const setField = (target: string, id: string, value: string) => {
-    dispatch(updateReplySed(`informasjonFastslaaBosted.${target}`, value.trim() || undefined))
+    dispatch(updateReplySed(`${parentKey}.${target}`, value.trim() || undefined))
     if (validation[namespace + '-' + id]) {
       dispatch(resetValidation(namespace + '-' + id))
     }
@@ -63,7 +69,7 @@ const Familiestatus: React.FC<MainFormProps> = ({
           id='ektefelleFamiliemedlem'
           label={t('label:familiemedlem-ektefelle')}
           onChanged={(value: string) => setField('familiestatus.ektefelle.familiemedlem', 'ektefelleFamiliemedlem', value)}
-          value={informasjonFastslaaBosted?.familiestatus?.ektefelle?.familiemedlem}
+          value={info?.familiestatus?.ektefelle?.familiemedlem}
         />
         <TextArea
           error={validation[namespace + '-ektefelleBosted']?.feilmelding}
@@ -72,7 +78,7 @@ const Familiestatus: React.FC<MainFormProps> = ({
           label={t('label:bosted-ektefelle')}
           maxLength={255}
           onChanged={(value: string) => setField('familiestatus.ektefelle.bosted', 'ektefelleBosted', value)}
-          value={informasjonFastslaaBosted?.familiestatus?.ektefelle?.bosted}
+          value={info?.familiestatus?.ektefelle?.bosted}
         />
 
         <Input
@@ -81,7 +87,7 @@ const Familiestatus: React.FC<MainFormProps> = ({
           id='barnFamiliemedlem'
           label={t('label:familiemedlem-barn')}
           onChanged={(value: string) => setField('familiestatus.barn.familiemedlem', 'barnFamiliemedlem', value)}
-          value={informasjonFastslaaBosted?.familiestatus?.barn?.familiemedlem}
+          value={info?.familiestatus?.barn?.familiemedlem}
         />
         <TextArea
           error={validation[namespace + '-barnBosted']?.feilmelding}
@@ -90,7 +96,7 @@ const Familiestatus: React.FC<MainFormProps> = ({
           label={t('label:bosted-barn')}
           maxLength={255}
           onChanged={(value: string) => setField('familiestatus.barn.bosted', 'barnBosted', value)}
-          value={informasjonFastslaaBosted?.familiestatus?.barn?.bosted}
+          value={info?.familiestatus?.barn?.bosted}
         />
         <Input
           error={validation[namespace + '-barnSkolekrets']?.feilmelding}
@@ -98,7 +104,7 @@ const Familiestatus: React.FC<MainFormProps> = ({
           id='barnSkolekrets'
           label={t('label:skolekrets-barn')}
           onChanged={(value: string) => setField('familiestatus.barn.skolekrets', 'barnSkolekrets', value)}
-          value={informasjonFastslaaBosted?.familiestatus?.barn?.skolekrets}
+          value={info?.familiestatus?.barn?.skolekrets}
         />
 
         <TextArea
@@ -106,9 +112,9 @@ const Familiestatus: React.FC<MainFormProps> = ({
           namespace={namespace}
           id='grunnForFlytting'
           label={t('label:grunn-for-flytting')}
-          maxLength={155}
+          maxLength={grunnForFlyttingMaxLength}
           onChanged={(value: string) => setField('grunnForFlytting', 'grunnForFlytting', value)}
-          value={informasjonFastslaaBosted?.grunnForFlytting}
+          value={info?.grunnForFlytting}
         />
       </VStack>
     </Box>

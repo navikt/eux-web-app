@@ -25,6 +25,8 @@ const FastslaaBosted: React.FC<MainFormProps> = ({
     updateReplySed
   }
 
+  const bosted = { parentKey: 'informasjonFastslaaBosted', namespaceInfix: 'fastslaabosted' }
+
   return (
     <Box padding="space-16">
       <VStack gap="space-16">
@@ -37,9 +39,9 @@ const FastslaaBosted: React.FC<MainFormProps> = ({
           </BodyLong>
         </VStack>
 
-        <AdresserBosted {...childProps} label={t('label:adresser')} />
-        <AktivitetOgStatus {...childProps} label={t('label:personens-status-og-aktivitet')} />
-        <Familiestatus {...childProps} label={t('label:familiestatus')} />
+        <AdresserBosted {...childProps} label={t('label:adresser')} options={{ ...bosted, showVarighet: true }} />
+        <AktivitetOgStatus {...childProps} label={t('label:personens-status-og-aktivitet')} options={{ ...bosted, inntektskildeStudenterMaxLength: 155 }} />
+        <Familiestatus {...childProps} label={t('label:familiestatus')} options={{ ...bosted, grunnForFlyttingMaxLength: 155 }} />
       </VStack>
     </Box>
   )

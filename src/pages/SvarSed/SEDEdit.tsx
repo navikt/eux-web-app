@@ -484,7 +484,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-dokumentervedlagt'), value: 'dokumentervedlagt', component: DokumenterVedlagt, type: 'H065' },
                   { label: t('el:option-mainform-meldingomdoedsfall'), value: 'meldingomdoedsfall', component: MeldingOmDoedsfall, type: 'H070' },
                   { label: t('el:option-mainform-vedlagtdokumentasjon'), value: 'vedlagtdokumentasjon', component: VedlagtDokumentasjon, type: 'H070' },
-                  { label: t('el:option-mainform-anmodningominformasjon'), value: 'anmodningominformasjon', component: AnmodningOmInformasjon, type: 'H005' },
+                  { label: t('el:option-mainform-anmodning'), value: 'anmodningominformasjon', component: AnmodningOmInformasjon, type: 'H005' },
                   { label: t('el:option-mainform-fastslaabosted'), value: 'fastslaabosted', component: FastslaaBosted, type: 'H005' },
                   { label: t('el:option-mainform-positivtsvar'), value: 'positivtsvar', component: PositivtSvar, type: 'H006' },
                   { label: t('el:option-mainform-negativtsvar'), value: 'negativtsvar', component: NegativtSvar, type: 'H006' },
