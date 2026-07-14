@@ -303,7 +303,7 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
           id={namespace + '-personensStatus'}
           name={namespace + '-personensStatus'}
           error={validation[namespace + '-personensStatus']?.feilmelding}
-          label={t('label:personens-status-fastslaabosted')}
+          label={t('label:personens-status')}
           value={informasjonFastslaaBosted?.personensStatus ?? ''}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPersonensStatus(e.target.value)}
         >
