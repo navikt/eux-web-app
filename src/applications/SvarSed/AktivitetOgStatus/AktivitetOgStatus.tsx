@@ -326,6 +326,33 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
           />
         )}
 
+        <Heading size='xsmall'>
+          {t('label:aktiviteter')}
+        </Heading>
+        {_.isEmpty(aktiviteter)
+          ? (
+            <Box borderWidth={"1 0"} paddingBlock="space-8">
+              <BodyLong>
+                {t('message:warning-no-aktivitet')}
+              </BodyLong>
+            </Box>
+            )
+          : aktiviteter?.map(renderRow)}
+        {_seeNewForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:aktivitet').toLowerCase() })}
+              </Button>
+            </Box>
+            )
+        }
+
         <TextArea
           error={validation[namespace + '-inntektskildeStudenter']?.feilmelding}
           namespace={namespace}
@@ -354,33 +381,6 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
             value={informasjonFastslaaBosted?.permanentOppholdSkattemessig}
           />
         </HGrid>
-
-        <Heading size='xsmall'>
-          {t('label:aktiviteter')}
-        </Heading>
-        {_.isEmpty(aktiviteter)
-          ? (
-            <Box borderWidth={"1 0"} paddingBlock="space-8">
-              <BodyLong>
-                {t('message:warning-no-aktivitet')}
-              </BodyLong>
-            </Box>
-            )
-          : aktiviteter?.map(renderRow)}
-        {_seeNewForm
-          ? renderRow(null, -1)
-          : (
-            <Box>
-              <Button
-                variant='tertiary'
-                onClick={() => _setNewForm(true)}
-                icon={<PlusCircleIcon/>}
-              >
-                {t('el:button-add-new-x', { x: t('label:aktivitet').toLowerCase() })}
-              </Button>
-            </Box>
-            )
-        }
       </VStack>
     </Box>
   )

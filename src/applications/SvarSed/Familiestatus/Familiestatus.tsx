@@ -57,16 +57,6 @@ const Familiestatus: React.FC<MainFormProps> = ({
           {label}
         </Heading>
 
-        <TextArea
-          error={validation[namespace + '-grunnForFlytting']?.feilmelding}
-          namespace={namespace}
-          id='grunnForFlytting'
-          label={t('label:grunn-for-flytting')}
-          maxLength={155}
-          onChanged={(value: string) => setField('grunnForFlytting', 'grunnForFlytting', value)}
-          value={informasjonFastslaaBosted?.grunnForFlytting}
-        />
-
         <Input
           error={validation[namespace + '-ektefelleFamiliemedlem']?.feilmelding}
           namespace={namespace}
@@ -109,6 +99,16 @@ const Familiestatus: React.FC<MainFormProps> = ({
           label={t('label:skolekrets-barn')}
           onChanged={(value: string) => setField('familiestatus.barn.skolekrets', 'barnSkolekrets', value)}
           value={informasjonFastslaaBosted?.familiestatus?.barn?.skolekrets}
+        />
+
+        <TextArea
+          error={validation[namespace + '-grunnForFlytting']?.feilmelding}
+          namespace={namespace}
+          id='grunnForFlytting'
+          label={t('label:grunn-for-flytting')}
+          maxLength={155}
+          onChanged={(value: string) => setField('grunnForFlytting', 'grunnForFlytting', value)}
+          value={informasjonFastslaaBosted?.grunnForFlytting}
         />
       </VStack>
     </Box>

@@ -187,16 +187,10 @@ const AdresserBosted: React.FC<MainFormProps> = ({
             ? (
               <VStack gap="space-16">
                 <AdresseForm
-                  type
-                  required={['type', 'by', 'land']}
-                  options={{ bygning: true, region: true }}
                   namespace={_namespace}
                   adresse={_item?.adresse}
                   onAdressChanged={(a: Adresse) => setItemAdresse(a, index)}
                   validation={_v}
-                  typeLabelKey='adresse-fastslaabosted'
-                  gateLabelKey='adresse-gate-fastslaabosted'
-                  labelforZipCode='adresse-postnummer-fastslaabosted'
                 />
                 <HGrid columns={{ xs: 1, md: 2 }} gap="space-16" align="start">
                   <Input
