@@ -22,11 +22,7 @@ export interface AdresseFormProps {
   keyforZipCode ?: string
   labelforZipCode ?: string
   typeLabelKey ?: string
-  bostedLabelKey ?: string
-  oppholdLabelKey ?: string
-  kontaktLabelKey ?: string
   gateLabelKey ?: string
-  bygningLabelKey ?: string
 }
 
 const AdresseForm: React.FC<AdresseFormProps> = ({
@@ -43,11 +39,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   keyforZipCode = 'postnummer',
   labelforZipCode = 'postnr',
   typeLabelKey = 'adresse-type',
-  bostedLabelKey = 'bosted',
-  oppholdLabelKey = 'opphold',
-  kontaktLabelKey = 'kontakt',
   gateLabelKey = 'gateadresse',
-  bygningLabelKey = 'bygning',
 }: AdresseFormProps) => {
   const { t } = useTranslation()
 
@@ -125,9 +117,9 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
           onChange={(e: string) => setType((e as AdresseType))}
         >
           <HStack gap="space-16">
-            <RadioPanel value='bosted'>{t('label:' + bostedLabelKey)}</RadioPanel>
-            <RadioPanel value='opphold'>{t('label:' + oppholdLabelKey)}</RadioPanel>
-            <RadioPanel value='kontakt'>{t('label:' + kontaktLabelKey)}</RadioPanel>
+            <RadioPanel value='bosted'>{t('label:bosted')}</RadioPanel>
+            <RadioPanel value='opphold'>{t('label:opphold')}</RadioPanel>
+            <RadioPanel value='kontakt'>{t('label:kontakt')}</RadioPanel>
           </HStack>
         </RadioGroup>
       )}
@@ -148,7 +140,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             error={validation[namespace + '-bygning']?.feilmelding}
             namespace={namespace}
             id='bygning'
-            label={t('label:' + bygningLabelKey)}
+            label={t('label:bygning')}
             onChanged={setBygning}
             required={required.indexOf('bygning') >= 0}
             value={adresse?.bygning}
