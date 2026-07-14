@@ -194,6 +194,10 @@ const AdresserBosted: React.FC<MainFormProps> = ({
                   adresse={_item?.adresse}
                   onAdressChanged={(a: Adresse) => setItemAdresse(a, index)}
                   validation={_v}
+                  typeLabelKey='adresse-fastslaabosted'
+                  bostedLabelKey='adresse-bostedsland'
+                  oppholdLabelKey='adresse-oppholdsland'
+                  kontaktLabelKey='adresse-personens-kontaktadresse'
                 />
                 <HGrid columns={{ xs: 1, md: 2 }} gap="space-16" align="start">
                   <Input

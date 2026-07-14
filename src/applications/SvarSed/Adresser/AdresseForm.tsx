@@ -21,6 +21,10 @@ export interface AdresseFormProps {
   keyForCity ?: string
   keyforZipCode ?: string
   labelforZipCode ?: string
+  typeLabelKey ?: string
+  bostedLabelKey ?: string
+  oppholdLabelKey ?: string
+  kontaktLabelKey ?: string
 }
 
 const AdresseForm: React.FC<AdresseFormProps> = ({
@@ -36,6 +40,10 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   keyForCity = 'by',
   keyforZipCode = 'postnummer',
   labelforZipCode = 'postnr',
+  typeLabelKey = 'adresse-type',
+  bostedLabelKey = 'bosted',
+  oppholdLabelKey = 'opphold',
+  kontaktLabelKey = 'kontakt',
 }: AdresseFormProps) => {
   const { t } = useTranslation()
 
@@ -107,15 +115,15 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
           data-testid={namespace + '-type'}
           error={validation[namespace + '-type']?.feilmelding}
           id={namespace + '-type'}
-          legend={t('label:adresse-type') + (required.indexOf('type') >= 0 ? ' *' : '')}
+          legend={t('label:' + typeLabelKey) + (required.indexOf('type') >= 0 ? ' *' : '')}
           name={namespace + '-type'}
           required={required.indexOf('type') >= 0}
           onChange={(e: string) => setType((e as AdresseType))}
         >
           <HStack gap="space-16">
-            <RadioPanel value='bosted'>{t('label:bosted')}</RadioPanel>
-            <RadioPanel value='opphold'>{t('label:opphold')}</RadioPanel>
-            <RadioPanel value='kontakt'>{t('label:kontakt')}</RadioPanel>
+            <RadioPanel value='bosted'>{t('label:' + bostedLabelKey)}</RadioPanel>
+            <RadioPanel value='opphold'>{t('label:' + oppholdLabelKey)}</RadioPanel>
+            <RadioPanel value='kontakt'>{t('label:' + kontaktLabelKey)}</RadioPanel>
           </HStack>
         </RadioGroup>
       )}
