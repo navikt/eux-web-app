@@ -198,6 +198,9 @@ const AdresserBosted: React.FC<MainFormProps> = ({
                   bostedLabelKey='adresse-bostedsland'
                   oppholdLabelKey='adresse-oppholdsland'
                   kontaktLabelKey='adresse-personens-kontaktadresse'
+                  gateLabelKey='adresse-gate-fastslaabosted'
+                  bygningLabelKey='adresse-bygning-fastslaabosted'
+                  labelforZipCode='adresse-postnummer-fastslaabosted'
                 />
                 <HGrid columns={{ xs: 1, md: 2 }} gap="space-16" align="start">
                   <Input

@@ -25,6 +25,8 @@ export interface AdresseFormProps {
   bostedLabelKey ?: string
   oppholdLabelKey ?: string
   kontaktLabelKey ?: string
+  gateLabelKey ?: string
+  bygningLabelKey ?: string
 }
 
 const AdresseForm: React.FC<AdresseFormProps> = ({
@@ -44,6 +46,8 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   bostedLabelKey = 'bosted',
   oppholdLabelKey = 'opphold',
   kontaktLabelKey = 'kontakt',
+  gateLabelKey = 'gateadresse',
+  bygningLabelKey = 'bygning',
 }: AdresseFormProps) => {
   const { t } = useTranslation()
 
@@ -133,7 +137,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
           error={validation[namespace + '-gate']?.feilmelding}
           namespace={namespace}
           id='gate'
-          label={t('label:gateadresse')}
+          label={t('label:' + gateLabelKey)}
           onChanged={setGate}
           required={required.indexOf('gate') >= 0}
           value={adresse?.gate}
@@ -144,7 +148,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             error={validation[namespace + '-bygning']?.feilmelding}
             namespace={namespace}
             id='bygning'
-            label={t('label:bygning')}
+            label={t('label:' + bygningLabelKey)}
             onChanged={setBygning}
             required={required.indexOf('bygning') >= 0}
             value={adresse?.bygning}
