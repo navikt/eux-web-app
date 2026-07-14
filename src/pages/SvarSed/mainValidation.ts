@@ -24,6 +24,10 @@ import { validateAnmodningOmInformasjon, ValidationAnmodningOmInformasjonProps }
 import { validateAdresserBosted, ValidationAdresserBostedProps } from 'applications/SvarSed/AdresserBosted/validation'
 import { validateAktivitetOgStatus, ValidationAktivitetOgStatusProps } from 'applications/SvarSed/AktivitetOgStatus/validation'
 import { validateFamiliestatus, ValidationFamiliestatusProps } from 'applications/SvarSed/Familiestatus/validation'
+import { validateAdresserPositivtSvar, ValidationAdresserPositivtSvarProps } from 'applications/SvarSed/AdresserPositivtSvar/validation'
+import { validateAktivitetOgStatusPositivtSvar, ValidationAktivitetOgStatusPositivtSvarProps } from 'applications/SvarSed/AktivitetOgStatusPositivtSvar/validation'
+import { validateFamiliestatusPositivtSvar, ValidationFamiliestatusPositivtSvarProps } from 'applications/SvarSed/FamiliestatusPositivtSvar/validation'
+import { validateNegativtSvar, ValidationNegativtSvarProps } from 'applications/SvarSed/NegativtSvar/validation'
 import { validateVedlagtDokumentasjon, ValidationVedlagtDokumentasjonProps } from 'applications/SvarSed/VedlagtDokumentasjon/validation'
 import { validateBeroertYtelse, ValidationBeroertYtelseProps } from 'applications/SvarSed/BeroertYtelse/validation'
 import { validateKravetsArt, ValidationKravetsArtProps } from 'applications/SvarSed/KravetsArt/validation'
@@ -135,6 +139,7 @@ import {
   isH001Sed,
   isH002Sed,
   isH005Sed,
+  isH006Sed,
   isH021Sed,
   isH065Sed,
   isH070Sed,
@@ -447,7 +452,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
       statsborgerskaper, personName
     }, true))
-    if (!isH120Sed(replySed) && !isH070Sed(replySed) && !isH005Sed(replySed)) {
+    if (!isH120Sed(replySed) && !isH070Sed(replySed) && !isH005Sed(replySed) && !isH006Sed(replySed)) {
       hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
         adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName
       }, true))
@@ -515,6 +520,24 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         personName
       }, true))
       hasErrors.push(performValidation<ValidationFamiliestatusProps>(v, `svarsed-${personID}-fastslaabosted-familie`, validateFamiliestatus, {
+        replySed,
+        personName
+      }, true))
+    }
+    if (isH006Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationAdresserPositivtSvarProps>(v, `svarsed-${personID}-positivtsvar-adresser`, validateAdresserPositivtSvar, {
+        adresser: _.get(replySed, 'positivtSvar.adresser'),
+        personName
+      }, true))
+      hasErrors.push(performValidation<ValidationAktivitetOgStatusPositivtSvarProps>(v, `svarsed-${personID}-positivtsvar-status`, validateAktivitetOgStatusPositivtSvar, {
+        replySed,
+        personName
+      }, true))
+      hasErrors.push(performValidation<ValidationFamiliestatusPositivtSvarProps>(v, `svarsed-${personID}-positivtsvar-familie`, validateFamiliestatusPositivtSvar, {
+        replySed,
+        personName
+      }, true))
+      hasErrors.push(performValidation<ValidationNegativtSvarProps>(v, `svarsed-${personID}-negativtsvar`, validateNegativtSvar, {
         replySed,
         personName
       }, true))
