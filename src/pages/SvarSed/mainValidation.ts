@@ -21,6 +21,7 @@ import { validateGrunnerForOverfoering, ValidationGrunnerForOverfoeringProps } f
 import { validateDokumenterVedlagt, ValidationDokumenterVedlagtProps } from 'applications/SvarSed/DokumenterVedlagt/validation'
 import { validateMeldingOmDoedsfall, ValidationMeldingOmDoedsfallProps } from 'applications/SvarSed/MeldingOmDoedsfall/validation'
 import { validateAnmodningOmInformasjon, ValidationAnmodningOmInformasjonProps } from 'applications/SvarSed/AnmodningOmInformasjon/validation'
+import { validateTypeInformasjon, ValidationTypeInformasjonProps } from 'applications/SvarSed/TypeInformasjon/validation'
 import { validateAdresserBosted, ValidationAdresserBostedProps } from 'applications/SvarSed/AdresserBosted/validation'
 import { validateAktivitetOgStatus, ValidationAktivitetOgStatusProps } from 'applications/SvarSed/AktivitetOgStatus/validation'
 import { validateFamiliestatus, ValidationFamiliestatusProps } from 'applications/SvarSed/Familiestatus/validation'
@@ -136,6 +137,7 @@ import {
   isFSed,
   isH001Sed,
   isH002Sed,
+  isH003Sed,
   isH005Sed,
   isH006Sed,
   isH021Sed,
@@ -478,6 +480,12 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       hasErrors.push(performValidation<ValidationEndredeForholdProps>(v, `svarsed-${personID}-endredeforhold`, validateEndredeForhold, {
         replySed,
         personName: i18n.t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
+      }, true))
+    }
+    if (isH003Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationTypeInformasjonProps>(v, `svarsed-${personID}-typeinformasjon`, validateTypeInformasjon, {
+        replySed,
+        personName
       }, true))
     }
     if (isH065Sed(replySed)) {

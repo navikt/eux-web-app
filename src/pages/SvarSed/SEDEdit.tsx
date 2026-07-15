@@ -70,6 +70,7 @@ import KravetsArt from 'applications/SvarSed/KravetsArt/KravetsArt'
 import AnmodningInfo from 'applications/SvarSed/AnmodningInfo/AnmodningInfo'
 import FamilieytelseSpoersmaal from 'applications/SvarSed/FamilieytelseSpoersmaal/FamilieytelseSpoersmaal'
 import AWODSpoersmaal from 'applications/SvarSed/AWODSpoersmaal/AWODSpoersmaal'
+import TypeInformasjon from 'applications/SvarSed/TypeInformasjon/TypeInformasjon'
 import TextArea from 'components/Forms/TextArea'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
@@ -93,6 +94,7 @@ import {
   isF026Sed,
   isF027Sed,
   isH002Sed,
+  isH003Sed,
   isH005Sed,
   isH006Sed,
   isH021Sed,
@@ -484,6 +486,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-dokumentervedlagt'), value: 'dokumentervedlagt', component: DokumenterVedlagt, type: 'H065' },
                   { label: t('el:option-mainform-meldingomdoedsfall'), value: 'meldingomdoedsfall', component: MeldingOmDoedsfall, type: 'H070' },
                   { label: t('el:option-mainform-vedlagtdokumentasjon'), value: 'vedlagtdokumentasjon', component: VedlagtDokumentasjon, type: 'H070' },
+                  { label: t('el:option-mainform-typeinformasjon'), value: 'typeinformasjon', component: TypeInformasjon, type: 'H003' },
                   { label: t('el:option-mainform-anmodning'), value: 'anmodningominformasjon', component: AnmodningOmInformasjon, type: 'H005' },
                   { label: t('el:option-mainform-fastslaabosted'), value: 'fastslaabosted', component: FastslaaBosted, type: 'H005' },
                   { label: t('el:option-mainform-positivtsvar'), value: 'positivtsvar', component: PositivtSvar, type: 'H006' },
@@ -727,7 +730,7 @@ const SEDEdit = (): JSX.Element => {
               />
             </>
           }
-          {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isH005Sed(replySed) || isH006Sed(replySed) || isH065Sed(replySed) || isH070Sed(replySed) || isH120Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
+          {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isH003Sed(replySed) || isH005Sed(replySed) || isH006Sed(replySed) || isH065Sed(replySed) || isH070Sed(replySed) || isH120Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
             <TextArea
               namespace={namespace}
               error={validation[namespace + '-ytterligereInfo']?.feilmelding}
