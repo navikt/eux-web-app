@@ -16,6 +16,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: 'abvcdefghijklm',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
+      startDato: '2020-01-01',
       erSakseier: true,
       navinstitusjon: {
         id: "NO:NAVAT07",
@@ -168,6 +169,7 @@ export default (saksnummer: string, type: string) => {
       sakId: '1166593',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
+      startDato: '2020-01-01',
       erSakseier: false,
       navinstitusjon: {
         id: "NO:NAVAT07",
@@ -244,6 +246,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: "2663a13d3fa443ca8970be821c7ba2cc",
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
       sistEndretDato: '2021-04-07',
+      startDato: '2020-01-01',
       erSakseier: true,
       sakseier: {
         id: "NO:NAVAT07",
@@ -368,6 +371,7 @@ export default (saksnummer: string, type: string) => {
       sakId: '398792',
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398792?rightView=filtering',
       sistEndretDato: '2021-04-07',
+      startDato: '2020-01-01',
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -424,6 +428,7 @@ export default (saksnummer: string, type: string) => {
         "system": "AO11"
       },
       "sistEndretDato": "2022-10-03",
+      "startDato": "2020-01-01",
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"

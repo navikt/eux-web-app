@@ -308,6 +308,7 @@ export interface Sak {
   motpartInstitusjon?: string
   navinstitusjon: NavInstitusjon
   sistEndretDato: string
+  startDato?: string
   sakshandlinger?: Array<string>
   sensitiv?: boolean
   fagsak?: Fagsak | null

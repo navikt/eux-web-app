@@ -161,7 +161,7 @@ const SEDView = (): JSX.Element => {
             {currentSak.ikkeJournalfoerteSed && currentSak.ikkeJournalfoerteSed.length > 0 &&
               <IkkeJournalfoerteSed sak={currentSak} bucer={bucer}/>
             }
-            {!_.isEmpty(currentSak.sedUnderJournalfoeringEllerUkjentStatus) &&
+            {!_.isEmpty(currentSak.sedUnderJournalfoeringEllerUkjentStatus) && !!currentSak.startDato && moment(currentSak.startDato).year() >= 2024 &&
               <SedUnderJournalfoeringEllerUkjentStatus sak={currentSak}/>
             }
             {currentSak.relaterteRinasakIder && currentSak.relaterteRinasakIder.length > 0 &&
