@@ -96,7 +96,7 @@
     "read-pkg": "7.1.0",
     "shelljs": "0.10.0",
     "simple-git": "3.36.0",
-    "ts-jest": "29.4.11",
+    "ts-jest": "29.4.12",
     "typescript": "5.9.3",
     "vite": "8.1.0",
     "vite-plugin-svgr": "4.5.0",
