@@ -20,16 +20,6 @@ const mapState = (state: State): MainFormSelector => ({
 
 type Status = 'klargjor' | 'kanikke'
 
-interface Row {
-  status: Status
-  index: number
-  punkt?: string
-  del?: string
-  klargjoering?: string
-  grunnType?: string
-  grunnAnnet?: string
-}
-
 const SvarKlargjoering: React.FC<MainFormProps> = ({
   label,
   parentNamespace,
@@ -60,15 +50,6 @@ const SvarKlargjoering: React.FC<MainFormProps> = ({
 
   const rowKey = (status: Status, index: number): string => `${namespace}-${status}-${index}`
 
-  const rows: Array<Row> = [
-    ...klargjoeringer.map((k: Klargjoering, index: number): Row => ({
-      status: 'klargjor', index, punkt: k.punkt, del: k.del, klargjoering: k.klargjoering
-    })),
-    ...kanIkkeKlargjoere.map((k: KanIkkeKlargjoere, index: number): Row => ({
-      status: 'kanikke', index, punkt: k.punkt, del: k.del, grunnType: k.grunnType, grunnAnnet: k.grunnAnnet
-    }))
-  ]
-
   const setPunkt = (status: Status, index: number, punkt: string) => {
     const array = status === 'klargjor' ? 'klargjoeringer' : 'kanIkkeKlargjoere'
     dispatch(updateReplySed(`${array}[${index}].punkt`, punkt.trim()))
@@ -77,25 +58,6 @@ const SvarKlargjoering: React.FC<MainFormProps> = ({
   const setDel = (status: Status, index: number, del: string) => {
     const array = status === 'klargjor' ? 'klargjoeringer' : 'kanIkkeKlargjoere'
     dispatch(updateReplySed(`${array}[${index}].del`, del.trim()))
-  }
-
-  const setStatus = (row: Row, status: Status) => {
-    if (status === row.status) return
-
-    let newKlargjoeringer: Array<Klargjoering> = _.cloneDeep(klargjoeringer)
-    let newKanIkke: Array<KanIkkeKlargjoere> = _.cloneDeep(kanIkkeKlargjoere)
-
-    if (status === 'klargjor') {
-      newKanIkke = newKanIkke.filter((_x, i) => i !== row.index)
-      newKlargjoeringer = [...newKlargjoeringer, { punkt: row.punkt, del: row.del, klargjoering: '' }]
-    } else {
-      newKlargjoeringer = newKlargjoeringer.filter((_x, i) => i !== row.index)
-      newKanIkke = [...newKanIkke, { punkt: row.punkt, del: row.del, grunnType: '', grunnAnnet: '' }]
-    }
-
-    dispatch(updateReplySed('klargjoeringer', newKlargjoeringer))
-    dispatch(updateReplySed('kanIkkeKlargjoere', newKanIkke))
-    dispatch(resetValidation(rowKey(row.status, row.index)))
   }
 
   const setKlargjoering = (index: number, klargjoering: string) => {
@@ -125,108 +87,110 @@ const SvarKlargjoering: React.FC<MainFormProps> = ({
     }
   }
 
-  const onAddPoint = () => {
+  const onAddKlargjoering = () => {
     dispatch(updateReplySed('klargjoeringer', [
       ...klargjoeringer,
       { punkt: '', del: '', klargjoering: '' }
     ]))
   }
 
-  const onRemovePoint = (row: Row) => {
-    const array = row.status === 'klargjor' ? 'klargjoeringer' : 'kanIkkeKlargjoere'
-    const source = row.status === 'klargjor' ? klargjoeringer : kanIkkeKlargjoere
-    dispatch(updateReplySed(array, source.filter((_x, i) => i !== row.index)))
-    dispatch(resetValidation(rowKey(row.status, row.index)))
+  const onAddKanIkke = () => {
+    dispatch(updateReplySed('kanIkkeKlargjoere', [
+      ...kanIkkeKlargjoere,
+      { punkt: '', del: '', grunnType: '', grunnAnnet: '' }
+    ]))
   }
 
-  const renderRow = (row: Row): JSX.Element => {
-    const key = rowKey(row.status, row.index)
-    const relKey = `${row.status}-${row.index}`
+  const onRemove = (status: Status, index: number) => {
+    const array = status === 'klargjor' ? 'klargjoeringer' : 'kanIkkeKlargjoere'
+    const source = status === 'klargjor' ? klargjoeringer : kanIkkeKlargjoere
+    dispatch(updateReplySed(array, source.filter((_x, i) => i !== index)))
+    dispatch(resetValidation(rowKey(status, index)))
+  }
 
+  const renderPunktDel = (status: Status, index: number, punkt?: string, del?: string): JSX.Element => {
+    const key = rowKey(status, index)
+    const relKey = `${status}-${index}`
+    return (
+      <HStack gap="space-16" align="end">
+        <Input
+          error={validation[key + '-punkt']?.feilmelding}
+          namespace={namespace}
+          id={relKey + '-punkt'}
+          label={t('label:punkt')}
+          onChanged={(value: string) => setPunkt(status, index, value)}
+          value={punkt ?? ''}
+        />
+        <Input
+          error={validation[key + '-del']?.feilmelding}
+          namespace={namespace}
+          id={relKey + '-del'}
+          label={t('label:del')}
+          onChanged={(value: string) => setDel(status, index, value)}
+          value={del ?? ''}
+        />
+        <Spacer />
+        <Button
+          variant='tertiary'
+          icon={<TrashIcon aria-hidden />}
+          onClick={() => onRemove(status, index)}
+        >
+          {t('el:button-remove')}
+        </Button>
+      </HStack>
+    )
+  }
+
+  const renderKlargjoeringRow = (k: Klargjoering, index: number): JSX.Element => {
+    const key = rowKey('klargjor', index)
     return (
       <Box padding="space-16" borderWidth="1" borderColor="neutral" borderRadius="2" key={key}>
         <VStack gap="space-16">
-          <HStack gap="space-16" align="end">
-            <Input
-              error={validation[key + '-punkt']?.feilmelding}
-              namespace={namespace}
-              id={relKey + '-punkt'}
-              label={t('label:punkt')}
-              onChanged={(value: string) => setPunkt(row.status, row.index, value)}
-              value={row.punkt ?? ''}
-            />
-            <Input
-              error={validation[key + '-del']?.feilmelding}
-              namespace={namespace}
-              id={relKey + '-del'}
-              label={t('label:del')}
-              onChanged={(value: string) => setDel(row.status, row.index, value)}
-              value={row.del ?? ''}
-            />
-            <Spacer />
-            <Button
-              variant='tertiary'
-              icon={<TrashIcon aria-hidden />}
-              onClick={() => onRemovePoint(row)}
-            >
-              {t('el:button-remove')}
-            </Button>
-          </HStack>
+          {renderPunktDel('klargjor', index, k.punkt, k.del)}
+          <Textarea
+            error={validation[key + '-klargjoering']?.feilmelding}
+            id={key + '-klargjoering'}
+            label={t('label:svarklargjoering-klargjoering')}
+            maxLength={255}
+            resize
+            value={k.klargjoering ?? ''}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setKlargjoering(index, e.target.value)}
+          />
+        </VStack>
+      </Box>
+    )
+  }
 
+  const renderKanIkkeRow = (k: KanIkkeKlargjoere, index: number): JSX.Element => {
+    const key = rowKey('kanikke', index)
+    return (
+      <Box padding="space-16" borderWidth="1" borderColor="neutral" borderRadius="2" key={key}>
+        <VStack gap="space-16">
+          {renderPunktDel('kanikke', index, k.punkt, k.del)}
           <RadioGroup
-            value={row.status}
-            data-testid={key + '-status'}
-            id={key + '-status'}
-            legend={t('label:svarklargjoering-status')}
-            onChange={(value: string) => setStatus(row, value as Status)}
+            value={k.grunnType ?? ''}
+            data-testid={key + '-grunnType'}
+            error={validation[key + '-grunnType']?.feilmelding}
+            id={key + '-grunnType'}
+            legend={t('label:svarklargjoering-grunn')}
+            onChange={(value: string) => setGrunnType(index, value)}
           >
             <VStack gap="space-4">
-              <RadioPanel value='klargjor'>{t('el:option-svarklargjoering-status-klargjor')}</RadioPanel>
-              <RadioPanel value='kanikke'>{t('el:option-svarklargjoering-status-kanikke')}</RadioPanel>
+              <RadioPanel value='kan_ikke_fremlegge_etterspurt_støttedokumentasjon_klargjøring'>{t('el:option-kanikkeklargjoere-grunn-01')}</RadioPanel>
+              <RadioPanel value='personen_samarbeidet_ikke'>{t('el:option-kanikkeklargjoere-grunn-02')}</RadioPanel>
+              <RadioPanel value='annet'>{t('el:option-kanikkeklargjoere-grunn-99')}</RadioPanel>
             </VStack>
           </RadioGroup>
-
-          {row.status === 'klargjor' && (
+          {k.grunnType === 'annet' && (
             <Textarea
-              error={validation[key + '-klargjoering']?.feilmelding}
-              id={key + '-klargjoering'}
-              label={t('label:svarklargjoering-klargjoering')}
+              error={validation[key + '-grunnAnnet']?.feilmelding}
+              id={key + '-grunnAnnet'}
+              label={t('label:svarklargjoering-grunn-annet')}
               maxLength={255}
               resize
-              value={row.klargjoering ?? ''}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setKlargjoering(row.index, e.target.value)}
+              value={k.grunnAnnet ?? ''}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setGrunnAnnet(index, e.target.value)}
             />
-          )}
-
-          {row.status === 'kanikke' && (
-            <>
-              <RadioGroup
-                value={row.grunnType ?? ''}
-                data-testid={key + '-grunnType'}
-                error={validation[key + '-grunnType']?.feilmelding}
-                id={key + '-grunnType'}
-                legend={t('label:svarklargjoering-grunn')}
-                onChange={(value: string) => setGrunnType(row.index, value)}
-              >
-                <VStack gap="space-4">
-                  <RadioPanel value='kan_ikke_fremlegge_etterspurt_støttedokumentasjon_klargjøring'>{t('el:option-kanikkeklargjoere-grunn-01')}</RadioPanel>
-                  <RadioPanel value='personen_samarbeidet_ikke'>{t('el:option-kanikkeklargjoere-grunn-02')}</RadioPanel>
-                  <RadioPanel value='annet'>{t('el:option-kanikkeklargjoere-grunn-99')}</RadioPanel>
-                </VStack>
-              </RadioGroup>
-
-              {row.grunnType === 'annet' && (
-                <Textarea
-                  error={validation[key + '-grunnAnnet']?.feilmelding}
-                  id={key + '-grunnAnnet'}
-                  label={t('label:svarklargjoering-grunn-annet')}
-                  maxLength={255}
-                  resize
-                  value={row.grunnAnnet ?? ''}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setGrunnAnnet(row.index, e.target.value)}
-                />
-              )}
-            </>
           )}
         </VStack>
       </Box>
@@ -240,13 +204,29 @@ const SvarKlargjoering: React.FC<MainFormProps> = ({
           {label}
         </Heading>
 
-        {rows.map(renderRow)}
-
+        <Heading size='xsmall'>
+          {t('label:svarklargjoering-klargjor-heading')}
+        </Heading>
+        {klargjoeringer.map(renderKlargjoeringRow)}
         <HStack>
           <Button
             variant='secondary'
             icon={<PlusCircleIcon aria-hidden />}
-            onClick={onAddPoint}
+            onClick={onAddKlargjoering}
+          >
+            {t('el:button-add-new-x2', { x: t('label:punkt').toLowerCase() })}
+          </Button>
+        </HStack>
+
+        <Heading size='xsmall'>
+          {t('label:svarklargjoering-kanikke-heading')}
+        </Heading>
+        {kanIkkeKlargjoere.map(renderKanIkkeRow)}
+        <HStack>
+          <Button
+            variant='secondary'
+            icon={<PlusCircleIcon aria-hidden />}
+            onClick={onAddKanIkke}
           >
             {t('el:button-add-new-x2', { x: t('label:punkt').toLowerCase() })}
           </Button>

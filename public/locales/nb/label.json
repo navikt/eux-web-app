@@ -443,6 +443,8 @@
   "sendt": "Sendt",
   "sensitivt": "Sensitivt",
   "svarklargjoering-status": "Status",
+  "svarklargjoering-klargjor-heading": "Punkter som klargjøres",
+  "svarklargjoering-kanikke-heading": "Punkter som ikke kan klargjøres",
   "svarklargjoering-klargjoering": "Klargjøring",
   "svarklargjoering-grunn": "Grunn til at det ikke kan klargjøres",
   "svarklargjoering-grunn-annet": "Beskrivelse",
