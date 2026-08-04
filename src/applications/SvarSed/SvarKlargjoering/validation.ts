@@ -7,8 +7,8 @@ export interface ValidationSvarKlargjoeringProps {
   personName?: string | undefined
 }
 
-const pointKey = (namespace: string, punkt?: string, del?: string): string =>
-  `${namespace}-${punkt ?? ''}-${del ?? ''}`
+const rowKey = (namespace: string, status: 'klargjor' | 'kanikke', index: number): string =>
+  `${namespace}-${status}-${index}`
 
 export const validateSvarKlargjoering = (
   v: Validation,
@@ -23,8 +23,8 @@ export const validateSvarKlargjoering = (
   const klargjoeringer: Array<Klargjoering> = replySed.klargjoeringer ?? []
   const kanIkkeKlargjoere: Array<KanIkkeKlargjoere> = replySed.kanIkkeKlargjoere ?? []
 
-  klargjoeringer.forEach((k: Klargjoering) => {
-    const key = pointKey(namespace, k.punkt, k.del)
+  klargjoeringer.forEach((k: Klargjoering, index: number) => {
+    const key = rowKey(namespace, 'klargjor', index)
 
     hasErrors.push(checkIfNotEmpty(v, {
       needle: k.klargjoering,
@@ -42,8 +42,8 @@ export const validateSvarKlargjoering = (
     }))
   })
 
-  kanIkkeKlargjoere.forEach((k: KanIkkeKlargjoere) => {
-    const key = pointKey(namespace, k.punkt, k.del)
+  kanIkkeKlargjoere.forEach((k: KanIkkeKlargjoere, index: number) => {
+    const key = rowKey(namespace, 'kanikke', index)
 
     hasErrors.push(checkIfNotEmpty(v, {
       needle: k.grunnType,
