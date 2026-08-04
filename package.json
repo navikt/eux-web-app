@@ -81,13 +81,9 @@
     "@types/node": "24.13.3",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
-    "@typescript-eslint/eslint-plugin": "5.62.0",
-    "@typescript-eslint/parser": "5.62.0",
     "@vitejs/plugin-react": "5.2.0",
     "cross-env": "7.0.3",
     "dotenv-save": "1.2.0",
-    "eslint": "8.31.0",
-    "eslint-plugin-jsx-a11y": "6.10.2",
     "jest": "29.7.0",
     "jest-environment-jsdom": "30.4.1",
     "jest-transformer-svg": "2.1.0",
@@ -104,50 +100,6 @@
     "write-pkg": "5.1.0"
   },
   "resolutions": {},
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "sourceType": "module"
-    },
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "extends": [
-      "plugin:jsx-a11y/recommended"
-    ],
-    "rules": {
-      "no-use-before-define": "off",
-      "@typescript-eslint/no-use-before-define": "off",
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": "error"
-    },
-    "settings": {
-      "react": {
-        "createClass": "createReactClass",
-        "pragma": "React",
-        "fragment": "Fragment",
-        "version": "detect",
-        "flowVersion": "0.53"
-      },
-      "propWrapperFunctions": [
-        "forbidExtraProps",
-        {
-          "property": "freeze",
-          "object": "Object"
-        },
-        {
-          "property": "myFavoriteWrapper"
-        }
-      ],
-      "linkComponents": [
-        "Hyperlink",
-        {
-          "name": "Link",
-          "linkAttribute": "to"
-        }
-      ]
-    }
-  },
   "browserslist": [
     "defaults"
   ],

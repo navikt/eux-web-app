@@ -14,7 +14,7 @@ npm test               # Run the Jest test suite
 npx jest <pattern>     # Run a single test file / matching tests
 ```
 
-Linting is run automatically in IntelliJ (ESLint from node_modules); there is no separate lint script.
+There is no linter in this project. ESLint was removed (it had no npm script and no CI step); `npm run typecheck` and `npm run knip` cover unused imports/exports and type errors.
 
 ### Verify before declaring done
 Do not report a change as working until you have verified it. After UI/state changes:

@@ -12,7 +12,6 @@ jest.mock('react-redux');
 (global as any).render = render;
 (global as any).act = act
 
-// eslint-disable-next-line no-undef
 HTMLCanvasElement.prototype.getContext = jest.fn()
 window.scrollTo = jest.fn()
 
