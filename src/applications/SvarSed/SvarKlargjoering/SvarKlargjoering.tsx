@@ -248,7 +248,7 @@ const SvarKlargjoering: React.FC<MainFormProps> = ({
             icon={<PlusCircleIcon aria-hidden />}
             onClick={onAddPoint}
           >
-            {t('el:button-add-new-x', { x: t('label:punkt').toLowerCase() })}
+            {t('el:button-add-new-x2', { x: t('label:punkt').toLowerCase() })}
           </Button>
         </HStack>
       </VStack>
