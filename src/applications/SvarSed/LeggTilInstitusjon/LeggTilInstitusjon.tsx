@@ -48,7 +48,6 @@ const LeggTilInstitusjon: React.FC<MainFormProps> = ({
     if (bucType && landkode && _.isEmpty(institusjonList)) {
       dispatch(getInstitusjoner(bucType, landkode))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useUnmount(() => {

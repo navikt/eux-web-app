@@ -53,7 +53,6 @@ const Videresend: React.FC<MainFormProps> = ({
     if (bucType) {
       dispatch(getInstitusjoner(bucType, MOTTAKER_LANDKODE))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useUnmount(() => {
