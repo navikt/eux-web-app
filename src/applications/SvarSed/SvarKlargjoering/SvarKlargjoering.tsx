@@ -191,7 +191,7 @@ const SvarKlargjoering: React.FC<MainFormProps> = ({
               error={validation[key + '-klargjoering']?.feilmelding}
               id={key + '-klargjoering'}
               label={t('label:svarklargjoering-klargjoering')}
-              maxLength={16500}
+              maxLength={255}
               resize
               value={row.klargjoering ?? ''}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setKlargjoering(row.index, e.target.value)}

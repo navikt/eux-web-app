@@ -35,7 +35,7 @@ export const validateSvarKlargjoering = (
 
     hasErrors.push(checkLength(v, {
       needle: k.klargjoering,
-      max: 16500,
+      max: 255,
       id: key + '-klargjoering',
       message: 'validation:textOverX',
       personName
