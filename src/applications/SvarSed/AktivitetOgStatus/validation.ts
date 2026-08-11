@@ -1,4 +1,4 @@
-import { Aktivitet, BostedInformasjon } from 'declarations/hbuc02a'
+import { Aktivitet, BostedInformasjon } from '../../../declarations/h'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty, checkLength } from 'utils/validation'

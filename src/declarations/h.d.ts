@@ -1,14 +1,13 @@
 import { Adresse, PersonInfo } from 'declarations/sed'
 
-// Shared domain types for H_BUC_02a (H005 «Anmodning om informasjon om bosted»
-// and H006 «Svar på anmodning om informasjon om bosted»). Both SEDs describe the
-// same bosted domain, so these types are defined once here and reused by both
-// declaration files and the shared section components.
-
 // ===== §1 Person =====
 
-export interface Bruker {
+export interface Person {
   personInfo: PersonInfo
+}
+
+export interface PersonMedAdresser extends Person {
+  adresser?: Array<Adresse>
 }
 
 // ===== §3.2 Personens status =====

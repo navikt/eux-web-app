@@ -1,4 +1,4 @@
-import { BostedInformasjon } from 'declarations/hbuc02a'
+import { BostedInformasjon } from '../../../declarations/h'
 import { Validation } from 'declarations/types'
 import { checkLength } from 'utils/validation'
 

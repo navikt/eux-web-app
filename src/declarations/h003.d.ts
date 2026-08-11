@@ -1,4 +1,5 @@
-import { HSed } from 'declarations/sed'
+import {BaseReplySed} from 'declarations/sed'
+import {PersonMedAdresser} from "./h";
 
 // ===== §3 Type informasjon — valg mellom fremlegg og varsel om bostedsland =====
 
@@ -17,7 +18,9 @@ export interface Bosted {
 // Bruker standard person- og adresseseksjon (bruker: PersonTypeH) og felles
 // ytterligereInfo fra HSed. Kun §3 «type informasjon» er H003-spesifikk.
 
-export interface H003Sed extends HSed {
+export interface H003Sed extends BaseReplySed {
+  bruker: PersonMedAdresser
+  ytterligereInfo?: string
   typeInformasjon?: TypeInformasjon
   fremlegg?: Bosted
   varsel?: Bosted

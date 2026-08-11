@@ -1,5 +1,5 @@
 import { validateAdresse } from 'applications/SvarSed/Adresser/validation'
-import { AdresseMedVarighet } from 'declarations/hbuc02a'
+import { AdresseMedVarighet } from '../../../declarations/h'
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
