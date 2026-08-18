@@ -72,5 +72,5 @@ export interface BostedOpplysninger {
   ektefelle?: Ektefelle
   barn?: BarnBosted
   antattFlyttegrunn?: string
-  skattemessigeGrunn?: string
+  skattemessigGrunn?: string
 }

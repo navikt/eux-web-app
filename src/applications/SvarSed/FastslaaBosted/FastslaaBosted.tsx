@@ -28,7 +28,7 @@ const FastslaaBosted: React.FC<MainFormProps> = ({
   const bosted = {
     parentKey: 'anmodning.bostedOpplysninger',
     namespaceInfix: 'fastslaabosted',
-    skattemessigGrunnKey: 'skattemessigeGrunn'
+    skattemessigGrunnKey: 'skattemessigGrunn'
   }
 
   return (

@@ -525,8 +525,8 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       hasErrors.push(performValidation<ValidationAktivitetProps>(v, `svarsed-${personID}-fastslaabosted-status`, validateAktivitet, {
         bostedOpplysninger: _.get(replySed, 'anmodning.bostedOpplysninger') as BostedOpplysninger | undefined,
         inntektskildeHvisStudentMaxLength: 155,
-        skattemessigGrunn: _.get(replySed, 'anmodning.bostedOpplysninger.skattemessigeGrunn'),
-        skattemessigGrunnId: 'skattemessigeGrunn',
+        skattemessigGrunn: _.get(replySed, 'anmodning.bostedOpplysninger.skattemessigGrunn'),
+        skattemessigGrunnId: 'skattemessigGrunn',
         personName
       }, true))
       hasErrors.push(performValidation<ValidationFamilieopplysningerProps>(v, `svarsed-${personID}-fastslaabosted-familie`, validateFamilieopplysninger, {
