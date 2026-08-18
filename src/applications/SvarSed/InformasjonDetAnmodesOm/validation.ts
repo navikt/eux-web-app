@@ -3,33 +3,33 @@ import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { checkIfNotEmpty, checkLength } from 'utils/validation'
 
-export interface ValidationAnmodningOmInformasjonProps {
+export interface ValidationInformasjonDetAnmodesOmProps {
   replySed: ReplySed
   personName?: string
 }
 
-export const validateAnmodningOmInformasjon = (
+export const validateInformasjonDetAnmodesOm = (
   v: Validation,
   namespace: string,
   {
     replySed,
     personName
-  }: ValidationAnmodningOmInformasjonProps
+  }: ValidationInformasjonDetAnmodesOmProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const sed = replySed as H005Sed
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: sed.anmodningOmInformasjon,
-    id: namespace + '-anmodningOmInformasjon',
+    needle: sed.informasjonDetAnmodesOm,
+    id: namespace + '-informasjonDetAnmodesOm',
     message: 'validation:noAnmodningOmInformasjon',
     personName
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: sed.anmodningOmInformasjon,
+    needle: sed.informasjonDetAnmodesOm,
     max: 255,
-    id: namespace + '-anmodningOmInformasjon',
+    id: namespace + '-informasjonDetAnmodesOm',
     message: 'validation:textOverX',
     personName
   }))

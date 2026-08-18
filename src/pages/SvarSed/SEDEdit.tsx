@@ -61,7 +61,7 @@ import GrunnerForOverfoering from 'applications/SvarSed/GrunnerForOverfoering/Gr
 import DokumenterVedlagt from 'applications/SvarSed/DokumenterVedlagt/DokumenterVedlagt'
 import MeldingOmDoedsfall from 'applications/SvarSed/MeldingOmDoedsfall/MeldingOmDoedsfall'
 import VedlagtDokumentasjon from 'applications/SvarSed/VedlagtDokumentasjon/VedlagtDokumentasjon'
-import AnmodningOmInformasjon from 'applications/SvarSed/AnmodningOmInformasjon/AnmodningOmInformasjon'
+import InformasjonDetAnmodesOm from 'applications/SvarSed/InformasjonDetAnmodesOm/InformasjonDetAnmodesOm'
 import FastslaaBosted from 'applications/SvarSed/FastslaaBosted/FastslaaBosted'
 import PositivtSvar from 'applications/SvarSed/PositivtSvar/PositivtSvar'
 import NegativtSvar from 'applications/SvarSed/NegativtSvar/NegativtSvar'
@@ -487,7 +487,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-meldingomdoedsfall'), value: 'meldingomdoedsfall', component: MeldingOmDoedsfall, type: 'H070' },
                   { label: t('el:option-mainform-vedlagtdokumentasjon'), value: 'vedlagtdokumentasjon', component: VedlagtDokumentasjon, type: 'H070' },
                   { label: t('el:option-mainform-typeinformasjon'), value: 'typeinformasjon', component: TypeInformasjon, type: 'H003' },
-                  { label: t('el:option-mainform-anmodning'), value: 'anmodningominformasjon', component: AnmodningOmInformasjon, type: 'H005' },
+                  { label: t('el:option-mainform-anmodning'), value: 'anmodningominformasjon', component: InformasjonDetAnmodesOm, type: 'H005' },
                   { label: t('el:option-mainform-fastslaabosted'), value: 'fastslaabosted', component: FastslaaBosted, type: 'H005' },
                   { label: t('el:option-mainform-positivtsvar'), value: 'positivtsvar', component: PositivtSvar, type: 'H006' },
                   { label: t('el:option-mainform-negativtsvar'), value: 'negativtsvar', component: NegativtSvar, type: 'H006' },

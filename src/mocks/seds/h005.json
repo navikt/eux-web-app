@@ -23,9 +23,10 @@
             ]
         }
     },
-    "anmodningOmInformasjon": "æøå",
-    "informasjonFastslaaBosted": {
-        "adresser": [
+    "informasjonDetAnmodesOm": "æøå",
+    "anmodning": {
+        "bostedOpplysninger": {
+            "oppholdssteder": [
             {
                 "adresse": {
                     "type": "bosted",
@@ -39,33 +40,34 @@
                 "oppholdetsVarighet": "æøå",
                 "varighetUavbruttOpphold": "æøå"
             }
-        ],
-        "personensStatus": "ansatt",
-        "personensStatusAnnet": "æøå",
-        "aktiviteter": [
-            {
-                "type": "inntektsgivende_virksomhet",
-                "beskrivelse": "æøå",
-                "sted": "æøå",
-                "varighet": "æøå",
-                "art": "æøå"
-            }
-        ],
-        "inntektskildeStudenter": "æøå",
-        "bosituasjonHvorPermanent": "æøå",
-        "permanentOppholdSkattemessig": "æøå",
-        "familiestatus": {
+            ],
+            "aktivitet": {
+            "type": "ansatt",
+            "annet": "æøå",
+            "presiseringer": [
+                {
+                    "inntektsgivende": "inntektsgivende_virksomhet",
+                    "beskrivelse": "æøå",
+                    "sted": "æøå",
+                    "varighet": "æøå",
+                    "art": "æøå"
+                }
+            ]
+            },
+            "inntektskildeHvisStudent": "æøå",
+            "hvorPermanentBostedetEr": "æøå",
+            "skattemessigeGrunn": "æøå",
             "ektefelle": {
-                "familiemedlem": "æøå",
-                "bosted": "æøå"
+            "navn": "æøå",
+            "bosted": "æøå"
             },
             "barn": {
-                "familiemedlem": "æøå",
-                "bosted": "æøå",
-                "skolekrets": "æøå"
-            }
-        },
-        "grunnForFlytting": "æøå"
+            "navn": "æøå",
+            "bosted": "æøå",
+            "skolested": "æøå"
+            },
+            "antattFlyttegrunn": "æøå"
+        }
     },
     "ytterligereInfo": "æøå"
 }

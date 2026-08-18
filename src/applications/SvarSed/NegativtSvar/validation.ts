@@ -21,16 +21,16 @@ export const validateNegativtSvar = (
   const negativtSvar = sed.negativtSvar
 
   hasErrors.push(checkLength(v, {
-    needle: negativtSvar?.kunneIkkeVideresendeInformasjon,
-    id: namespace + '-kunneIkkeVideresendeInformasjon',
+    needle: negativtSvar?.opplysningerSomIkkeKanOversendes,
+    id: namespace + '-opplysningerSomIkkeKanOversendes',
     max: 65,
     message: 'validation:textOverX',
     personName
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: negativtSvar?.grunner,
-    id: namespace + '-grunner',
+    needle: negativtSvar?.grunn,
+    id: namespace + '-grunn',
     max: 255,
     message: 'validation:textOverX',
     personName

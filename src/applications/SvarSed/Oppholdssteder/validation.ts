@@ -1,38 +1,35 @@
 import { validateAdresse } from 'applications/SvarSed/Adresser/validation'
-import { AdresseMedVarighet } from '../../../declarations/h'
-import { Adresse } from 'declarations/sed'
+import { Oppholdssted } from '../../../declarations/h'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkLength } from 'utils/validation'
 
-type AdresseItem = AdresseMedVarighet | Adresse
-
-export interface ValidationAdresseBostedItemProps {
-  item: AdresseItem | undefined
+export interface ValidationOppholdsstedProps {
+  oppholdssted: Oppholdssted | undefined
   showVarighet: boolean
   index?: number
   personName?: string
 }
 
-export interface ValidationAdresserBostedProps {
-  adresser: Array<AdresseItem> | undefined
+export interface ValidationOppholdsstederProps {
+  oppholdssteder: Array<Oppholdssted> | undefined
   showVarighet: boolean
   personName?: string
 }
 
-export const validateAdresseBostedItem = (
+export const validateOppholdssted = (
   v: Validation,
   namespace: string,
   {
-    item,
+    oppholdssted,
     showVarighet,
     index,
     personName
-  }: ValidationAdresseBostedItemProps
+  }: ValidationOppholdsstedProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
-  const adresse = showVarighet ? (item as AdresseMedVarighet | undefined)?.adresse : (item as Adresse | undefined)
+  const adresse = oppholdssted?.adresse
 
   hasErrors.push(validateAdresse(v, namespace, {
     adresse,
@@ -42,10 +39,8 @@ export const validateAdresseBostedItem = (
   }))
 
   if (showVarighet) {
-    const varighet = item as AdresseMedVarighet | undefined
-
     hasErrors.push(checkLength(v, {
-      needle: varighet?.oppholdetsVarighet,
+      needle: oppholdssted?.oppholdetsVarighet,
       id: namespace + idx + '-oppholdetsVarighet',
       max: 65,
       message: 'validation:textOverX',
@@ -53,7 +48,7 @@ export const validateAdresseBostedItem = (
     }))
 
     hasErrors.push(checkLength(v, {
-      needle: varighet?.varighetUavbruttOpphold,
+      needle: oppholdssted?.varighetUavbruttOpphold,
       id: namespace + idx + '-varighetUavbruttOpphold',
       max: 65,
       message: 'validation:textOverX',
@@ -64,19 +59,19 @@ export const validateAdresseBostedItem = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateAdresserBosted = (
+export const validateOppholdssteder = (
   v: Validation,
   namespace: string,
   {
-    adresser,
+    oppholdssteder,
     showVarighet,
     personName
-  }: ValidationAdresserBostedProps
+  }: ValidationOppholdsstederProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  adresser?.forEach((item: AdresseItem, index: number) => {
-    hasErrors.push(validateAdresseBostedItem(v, namespace, {
-      item,
+  oppholdssteder?.forEach((oppholdssted: Oppholdssted, index: number) => {
+    hasErrors.push(validateOppholdssted(v, namespace, {
+      oppholdssted,
       showVarighet,
       index,
       personName

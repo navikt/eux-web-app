@@ -24,47 +24,51 @@
         }
     },
     "positivtSvar": {
-        "adresser": [
+        "bostedOpplysninger": {
+            "oppholdssteder": [
             {
-                "type": "bosted",
-                "gate": "æøå",
-                "bygning": "æøå",
-                "by": "æøå",
-                "postnummer": "æøå",
-                "region": "æøå",
-                "landkode": "NOR"
+                "adresse": {
+                    "type": "bosted",
+                    "gate": "æøå",
+                    "bygning": "æøå",
+                    "by": "æøå",
+                    "postnummer": "æøå",
+                    "region": "æøå",
+                    "landkode": "NOR"
+                }
             }
-        ],
-        "personensStatus": "ansatt",
-        "personensStatusAnnet": "æøå",
-        "aktiviteter": [
-            {
-                "type": "inntektsgivende_virksomhet",
-                "beskrivelse": "æøå",
-                "sted": "æøå",
-                "varighet": "æøå",
-                "art": "æøå"
-            }
-        ],
-        "inntektskildeStudenter": "æøå",
-        "bosituasjonHvorPermanent": "æøå",
-        "permanentOppholdSkattemessig": "æøå",
-        "familiestatus": {
+            ],
+            "aktivitet": {
+            "type": "ansatt",
+            "annet": "æøå",
+            "presiseringer": [
+                {
+                    "inntektsgivende": "inntektsgivende_virksomhet",
+                    "beskrivelse": "æøå",
+                    "sted": "æøå",
+                    "varighet": "æøå",
+                    "art": "æøå"
+                }
+            ]
+            },
+            "inntektskildeHvisStudent": "æøå",
+            "hvorPermanentBostedetEr": "æøå",
+            "skattemessigGrunn": "æøå",
             "ektefelle": {
-                "familiemedlem": "æøå",
-                "bosted": "æøå"
+            "navn": "æøå",
+            "bosted": "æøå"
             },
             "barn": {
-                "familiemedlem": "æøå",
-                "bosted": "æøå",
-                "skolekrets": "æøå"
-            }
-        },
-        "grunnForFlytting": "æøå"
+            "navn": "æøå",
+            "bosted": "æøå",
+            "skolested": "æøå"
+            },
+            "antattFlyttegrunn": "æøå"
+        }
     },
     "negativtSvar": {
-        "kunneIkkeVideresendeInformasjon": "æøå",
-        "grunner": "æøå"
+        "opplysningerSomIkkeKanOversendes": "æøå",
+        "grunn": "æøå"
     },
     "ytterligereInfo": "æøå"
 }

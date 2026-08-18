@@ -60,21 +60,21 @@ const NegativtSvar: React.FC<MainFormProps> = ({
           {t('label:negativt-svar-beskrivelse')}
         </BodyLong>
         <Input
-          error={validation[namespace + '-kunneIkkeVideresendeInformasjon']?.feilmelding}
+          error={validation[namespace + '-opplysningerSomIkkeKanOversendes']?.feilmelding}
           namespace={namespace}
-          id='kunneIkkeVideresendeInformasjon'
+          id='opplysningerSomIkkeKanOversendes'
           label={t('label:kunne-ikke-videresende-informasjon')}
-          onChanged={(value: string) => setField('kunneIkkeVideresendeInformasjon', value)}
-          value={negativtSvar?.kunneIkkeVideresendeInformasjon}
+          onChanged={(value: string) => setField('opplysningerSomIkkeKanOversendes', value)}
+          value={negativtSvar?.opplysningerSomIkkeKanOversendes}
         />
         <TextArea
-          error={validation[namespace + '-grunner']?.feilmelding}
+          error={validation[namespace + '-grunn']?.feilmelding}
           namespace={namespace}
-          id='grunner'
+          id='grunn'
           label={t('label:negativt-svar-grunner')}
           maxLength={255}
-          onChanged={(value: string) => setField('grunner', value)}
-          value={negativtSvar?.grunner}
+          onChanged={(value: string) => setField('grunn', value)}
+          value={negativtSvar?.grunn}
         />
       </VStack>
     </Box>

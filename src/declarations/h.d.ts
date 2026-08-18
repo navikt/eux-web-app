@@ -30,52 +30,47 @@ export type AktivitetType =
   | 'ikke_inntektsgivende_virksomhet'
 
 export interface Aktivitet {
-  type?: AktivitetType
+  type?: PersonensStatus
+  annet?: string
+  presiseringer?: Array<Presisering>
+}
+
+export interface Presisering {
+  inntektsgivende?: AktivitetType
   beskrivelse?: string
   sted?: string
   varighet?: string
   art?: string
 }
 
-// ===== §3.8 Familiestatus =====
+// ===== Familie =====
 
-export interface Familiemedlem {
-  familiemedlem?: string
+export interface Ektefelle {
+  navn?: string
   bosted?: string
 }
 
-export interface Barn {
-  familiemedlem?: string
+export interface BarnBosted {
+  navn?: string
   bosted?: string
-  skolekrets?: string
+  skolested?: string
 }
 
-export interface Familiestatus {
-  ektefelle?: Familiemedlem
-  barn?: Barn
-}
+// ===== Oppholdssted =====
 
-// ===== §3.1 Adresse med oppholds- og varighetsinformasjon (H005) =====
-
-export interface AdresseMedVarighet {
+export interface Oppholdssted {
   adresse?: Adresse
   oppholdetsVarighet?: string
   varighetUavbruttOpphold?: string
 }
 
-// ===== §3 Bosted-informasjon (felles felt) =====
-// Shared bosted fields common to H005 «informasjonFastslaaBosted» and H006
-// «positivtSvar». The two SEDs differ only in the address list type, which is
-// added by the respective SED-specific interfaces (InformasjonFastslaaBosted /
-// PositivtSvar).
-
-export interface BostedInformasjon {
-  personensStatus?: PersonensStatus
-  personensStatusAnnet?: string
-  aktiviteter?: Array<Aktivitet>
-  inntektskildeStudenter?: string
-  bosituasjonHvorPermanent?: string
-  permanentOppholdSkattemessig?: string
-  familiestatus?: Familiestatus
-  grunnForFlytting?: string
+export interface BostedOpplysninger {
+  oppholdssteder?: Array<Oppholdssted>
+  aktivitet?: Aktivitet
+  inntektskildeHvisStudent?: string
+  hvorPermanentBostedetEr?: string
+  ektefelle?: Ektefelle
+  barn?: BarnBosted
+  antattFlyttegrunn?: string
+  skattemessigeGrunn?: string
 }

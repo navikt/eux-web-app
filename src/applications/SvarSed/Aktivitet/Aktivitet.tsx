@@ -9,7 +9,7 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { Options } from 'declarations/app'
-import { Aktivitet, AktivitetType, BostedInformasjon, PersonensStatus } from '../../../declarations/h'
+import { Presisering, AktivitetType, BostedOpplysninger, PersonensStatus } from '../../../declarations/h'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -22,21 +22,17 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import {
-  validateAktivitetItem,
-  validateAktivitetOgStatus,
-  ValidationAktivitetItemProps,
-  ValidationAktivitetOgStatusProps
+  validatePresisering,
+  validateAktivitet,
+  ValidationPresiseringProps,
+  ValidationAktivitetProps
 } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-// Shared H_BUC_02a status/aktivitet section, used by both H005 (target
-// «informasjonFastslaaBosted») and H006 (target «positivtSvar»). The SED-specific
-// target key, namespace infix and «inntektskilde (studenter)» max length are
-// supplied via `options` by the FastslaaBosted / PositivtSvar containers.
-const AktivitetOgStatus: React.FC<MainFormProps> = ({
+const Aktivitet: React.FC<MainFormProps> = ({
   label,
   options,
   parentNamespace,
@@ -48,11 +44,11 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const { parentKey, namespaceInfix, inntektskildeStudenterMaxLength } = options
+  const { parentKey, namespaceInfix, inntektskildeHvisStudentMaxLength, skattemessigGrunnKey } = options
   const namespace = `${parentNamespace}-${personID}-${namespaceInfix}-status`
-  const target = `${parentKey}.aktiviteter`
-  const info = _.get(replySed, parentKey) as BostedInformasjon | undefined
-  const aktiviteter: Array<Aktivitet> | undefined = info?.aktiviteter
+  const presiseringerTarget = `${parentKey}.aktivitet.presiseringer`
+  const bostedOpplysninger = _.get(replySed, parentKey) as BostedOpplysninger | undefined
+  const presiseringer: Array<Presisering> | undefined = bostedOpplysninger?.aktivitet?.presiseringer
 
   const personensStatusOptions: Options = [
     { label: t('el:option-personens-status-ansatt'), value: 'ansatt' },
@@ -71,23 +67,25 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
     { label: t('el:option-aktivitet-type-ikke_inntektsgivende_virksomhet'), value: 'ikke_inntektsgivende_virksomhet' }
   ]
 
-  const getId = (a: Aktivitet | null | undefined): string => a
-    ? (a?.beskrivelse ?? '') + '-' + (a?.sted ?? '')
+  const getId = (presisering: Presisering | null | undefined): string => presisering
+    ? (presisering.beskrivelse ?? '') + '-' + (presisering.sted ?? '')
     : 'new'
 
-  const [_newAktivitet, _setNewAktivitet] = useState<Aktivitet | undefined>(undefined)
-  const [_editAktivitet, _setEditAktivitet] = useState<Aktivitet | undefined>(undefined)
+  const [_newPresisering, _setNewPresisering] = useState<Presisering | undefined>(undefined)
+  const [_editPresisering, _setEditPresisering] = useState<Presisering | undefined>(undefined)
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_seeNewForm, _setNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAktivitetItemProps>(validateAktivitetItem, namespace)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPresiseringProps>(validatePresisering, namespace)
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
-    performValidation<ValidationAktivitetOgStatusProps>(
-      clonedvalidation, namespace, validateAktivitetOgStatus, {
-        info,
-        inntektskildeStudenterMaxLength,
+    performValidation<ValidationAktivitetProps>(
+      clonedvalidation, namespace, validateAktivitet, {
+        bostedOpplysninger,
+        inntektskildeHvisStudentMaxLength,
+        skattemessigGrunn: _.get(bostedOpplysninger, skattemessigGrunnKey),
+        skattemessigGrunnId: skattemessigGrunnKey,
         personName
       }, true
     )
@@ -96,108 +94,108 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
 
   const setPersonensStatus = (value: string) => {
     const newStatus = (value.trim() || undefined) as PersonensStatus | undefined
-    dispatch(updateReplySed(`${parentKey}.personensStatus`, newStatus))
+    dispatch(updateReplySed(`${parentKey}.aktivitet.type`, newStatus))
     if (newStatus !== 'annet') {
-      dispatch(updateReplySed(`${parentKey}.personensStatusAnnet`, undefined))
+      dispatch(updateReplySed(`${parentKey}.aktivitet.annet`, undefined))
     }
-    if (validation[namespace + '-personensStatus']) {
-      dispatch(resetValidation(namespace + '-personensStatus'))
+    if (validation[namespace + '-aktivitetType']) {
+      dispatch(resetValidation(namespace + '-aktivitetType'))
     }
   }
 
   const setPersonensStatusAnnet = (value: string) => {
-    dispatch(updateReplySed(`${parentKey}.personensStatusAnnet`, value.trim() || undefined))
-    if (validation[namespace + '-personensStatusAnnet']) {
-      dispatch(resetValidation(namespace + '-personensStatusAnnet'))
+    dispatch(updateReplySed(`${parentKey}.aktivitet.annet`, value.trim() || undefined))
+    if (validation[namespace + '-aktivitetAnnet']) {
+      dispatch(resetValidation(namespace + '-aktivitetAnnet'))
     }
   }
 
-  const setInfoField = (id: string, value: string) => {
+  const setBostedOpplysning = (id: string, value: string) => {
     dispatch(updateReplySed(`${parentKey}.${id}`, value.trim() || undefined))
     if (validation[namespace + '-' + id]) {
       dispatch(resetValidation(namespace + '-' + id))
     }
   }
 
-  const setAktivitetField = (changes: Partial<Aktivitet>, fieldId: string, index: number) => {
+  const setPresisering = (changes: Partial<Presisering>, fieldId: string, index: number) => {
     if (index < 0) {
-      _setNewAktivitet((prev) => ({ ...prev, ...changes }))
+      _setNewPresisering((prev) => ({ ...prev, ...changes }))
       _resetValidation(namespace + '-' + fieldId)
       return
     }
-    _setEditAktivitet((prev) => ({ ...prev, ...changes }))
+    _setEditPresisering((prev) => ({ ...prev, ...changes }))
     if (validation[namespace + getIdx(index) + '-' + fieldId]) {
       dispatch(resetValidation(namespace + getIdx(index) + '-' + fieldId))
     }
   }
 
   const onCloseEdit = (namespace: string) => {
-    _setEditAktivitet(undefined)
+    _setEditPresisering(undefined)
     _setEditIndex(undefined)
     dispatch(resetValidation(namespace))
   }
 
   const onCloseNew = () => {
-    _setNewAktivitet(undefined)
+    _setNewPresisering(undefined)
     _setNewForm(false)
     _resetValidation()
   }
 
-  const onStartEdit = (aktivitet: Aktivitet, index: number) => {
+  const onStartEdit = (presisering: Presisering, index: number) => {
     // reset any validation that exists from a cancelled edited item
     if (_editIndex !== undefined) {
       dispatch(resetValidation(namespace + getIdx(_editIndex)))
     }
-    _setEditAktivitet(aktivitet)
+    _setEditPresisering(presisering)
     _setEditIndex(index)
   }
 
   const onSaveEdit = () => {
     const clonedvalidation = _.cloneDeep(validation)
-    const hasErrors = performValidation<ValidationAktivitetItemProps>(
-      clonedvalidation, namespace, validateAktivitetItem, {
-        aktivitet: _editAktivitet,
+    const hasErrors = performValidation<ValidationPresiseringProps>(
+      clonedvalidation, namespace, validatePresisering, {
+        presisering: _editPresisering,
         index: _editIndex,
         personName
       })
     if (!hasErrors) {
-      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editAktivitet))
+      dispatch(updateReplySed(`${presiseringerTarget}[${_editIndex}]`, _editPresisering))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
       dispatch(setValidation(clonedvalidation))
     }
   }
 
-  const onRemove = (removedAktivitet: Aktivitet) => {
-    const newAktiviteter: Array<Aktivitet> = _.reject(aktiviteter, (a: Aktivitet) => _.isEqual(removedAktivitet, a))
-    dispatch(updateReplySed(target, newAktiviteter))
+  const onRemove = (removedPresisering: Presisering) => {
+    const newPresiseringer: Array<Presisering> = _.reject(presiseringer, (presisering: Presisering) => _.isEqual(removedPresisering, presisering))
+    dispatch(updateReplySed(presiseringerTarget, newPresiseringer))
   }
 
   const onAddNew = () => {
     const valid: boolean = _performValidation({
-      aktivitet: _newAktivitet,
+      presisering: _newPresisering,
       personName
     })
-    if (!!_newAktivitet && valid) {
-      let newAktiviteter: Array<Aktivitet> | undefined = _.cloneDeep(aktiviteter)
-      if (_.isNil(newAktiviteter)) {
-        newAktiviteter = []
+    if (!!_newPresisering && valid) {
+      let newPresiseringer: Array<Presisering> | undefined = _.cloneDeep(presiseringer)
+      if (_.isNil(newPresiseringer)) {
+        newPresiseringer = []
       }
-      newAktiviteter.push(_newAktivitet!)
-      dispatch(updateReplySed(target, newAktiviteter))
+      newPresiseringer.push(_newPresisering)
+      dispatch(updateReplySed(presiseringerTarget, newPresiseringer))
       onCloseNew()
     }
   }
 
-  const renderRow = (aktivitet: Aktivitet | null, index: number) => {
+  const renderRow = (presisering: Presisering | null, index: number) => {
     const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
-    const _aktivitet = index < 0 ? _newAktivitet : (inEditMode ? _editAktivitet : aktivitet)
+    const _presisering = index < 0 ? _newPresisering : (inEditMode ? _editPresisering : presisering)
 
     const addremovepanel = (
-      <AddRemovePanel<Aktivitet>
-        item={aktivitet}
+      <AddRemovePanel<Presisering>
+        item={presisering}
         marginTop={false}
         index={index}
         inEditMode={inEditMode}
@@ -214,7 +212,7 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
       <Box
         padding="space-16"
         id={'repeatablerow-' + _namespace}
-        key={getId(aktivitet)}
+        key={getId(presisering)}
         className={classNames(commonStyles.repeatableBox, {
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
@@ -225,12 +223,12 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
             ? (
               <VStack gap="space-16">
                 <Select
-                  id={_namespace + '-type'}
-                  name={_namespace + '-type'}
-                  error={_v[_namespace + '-type']?.feilmelding}
+                  id={_namespace + '-inntektsgivende'}
+                  name={_namespace + '-inntektsgivende'}
+                  error={_v[_namespace + '-inntektsgivende']?.feilmelding}
                   label={t('label:aktivitet-type')}
-                  value={_aktivitet?.type ?? ''}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setAktivitetField({ type: (e.target.value || undefined) as AktivitetType | undefined }, 'type', index)}
+                  value={_presisering?.inntektsgivende ?? ''}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPresisering({ inntektsgivende: (e.target.value || undefined) as AktivitetType | undefined }, 'inntektsgivende', index)}
                 >
                   <option value="" key="">{t('el:placeholder-select-default')}</option>
                   {aktivitetTypeOptions.map((o) => (
@@ -243,8 +241,8 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
                   id='beskrivelse'
                   label={t('label:aktivitet-beskrivelse')}
                   maxLength={155}
-                  onChanged={(value: string) => setAktivitetField({ beskrivelse: value.trim() || undefined }, 'beskrivelse', index)}
-                  value={_aktivitet?.beskrivelse}
+                  onChanged={(value: string) => setPresisering({ beskrivelse: value.trim() || undefined }, 'beskrivelse', index)}
+                  value={_presisering?.beskrivelse}
                 />
                 <HGrid columns={{ xs: 1, md: 2 }} gap="space-16" align="start">
                   <Input
@@ -252,16 +250,16 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
                     namespace={_namespace}
                     id='sted'
                     label={t('label:aktivitet-sted')}
-                    onChanged={(value: string) => setAktivitetField({ sted: value.trim() || undefined }, 'sted', index)}
-                    value={_aktivitet?.sted}
+                    onChanged={(value: string) => setPresisering({ sted: value.trim() || undefined }, 'sted', index)}
+                    value={_presisering?.sted}
                   />
                   <Input
                     error={_v[_namespace + '-varighet']?.feilmelding}
                     namespace={_namespace}
                     id='varighet'
                     label={t('label:aktivitet-varighet')}
-                    onChanged={(value: string) => setAktivitetField({ varighet: value.trim() || undefined }, 'varighet', index)}
-                    value={_aktivitet?.varighet}
+                    onChanged={(value: string) => setPresisering({ varighet: value.trim() || undefined }, 'varighet', index)}
+                    value={_presisering?.varighet}
                   />
                 </HGrid>
                 <TextArea
@@ -270,8 +268,8 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
                   id='art'
                   label={t('label:aktivitet-art')}
                   maxLength={255}
-                  onChanged={(value: string) => setAktivitetField({ art: value.trim() || undefined }, 'art', index)}
-                  value={_aktivitet?.art}
+                  onChanged={(value: string) => setPresisering({ art: value.trim() || undefined }, 'art', index)}
+                  value={_presisering?.art}
                 />
                 <HStack gap="space-16">
                   <Spacer/>
@@ -284,8 +282,8 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
             : (
               <HStack gap="space-16" align="center">
                 <FormText id={_namespace} error={undefined}>
-                  {(_aktivitet?.type ? t('el:option-aktivitet-type-' + _aktivitet.type) : '') +
-                    (_aktivitet?.beskrivelse ? ' - ' + _aktivitet.beskrivelse : '')}
+                  {(_presisering?.inntektsgivende ? t('el:option-aktivitet-type-' + _presisering.inntektsgivende) : '') +
+                    (_presisering?.beskrivelse ? ' - ' + _presisering.beskrivelse : '')}
                 </FormText>
                 <Spacer/>
                 <Box>
@@ -306,11 +304,11 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
         </Heading>
 
         <Select
-          id={namespace + '-personensStatus'}
-          name={namespace + '-personensStatus'}
-          error={validation[namespace + '-personensStatus']?.feilmelding}
+          id={namespace + '-aktivitetType'}
+          name={namespace + '-aktivitetType'}
+          error={validation[namespace + '-aktivitetType']?.feilmelding}
           label={t('label:personens-status')}
-          value={info?.personensStatus ?? ''}
+          value={bostedOpplysninger?.aktivitet?.type ?? ''}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPersonensStatus(e.target.value)}
         >
           <option value="" key="">{t('el:placeholder-select-default')}</option>
@@ -319,15 +317,15 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
           ))}
         </Select>
 
-        {info?.personensStatus === 'annet' && (
+        {bostedOpplysninger?.aktivitet?.type === 'annet' && (
           <TextArea
-            error={validation[namespace + '-personensStatusAnnet']?.feilmelding}
+            error={validation[namespace + '-aktivitetAnnet']?.feilmelding}
             namespace={namespace}
-            id='personensStatusAnnet'
+            id='aktivitetAnnet'
             label={t('label:personens-status-annet')}
             maxLength={500}
             onChanged={setPersonensStatusAnnet}
-            value={info?.personensStatusAnnet}
+            value={bostedOpplysninger?.aktivitet?.annet}
             required
           />
         )}
@@ -335,7 +333,7 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
         <Heading size='xsmall'>
           {t('label:aktiviteter')}
         </Heading>
-        {_.isEmpty(aktiviteter)
+        {_.isEmpty(presiseringer)
           ? (
             <Box borderWidth={"1 0"} paddingBlock="space-8">
               <BodyLong>
@@ -343,7 +341,7 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
               </BodyLong>
             </Box>
             )
-          : aktiviteter?.map(renderRow)}
+          : presiseringer?.map(renderRow)}
         {_seeNewForm
           ? renderRow(null, -1)
           : (
@@ -360,31 +358,31 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
         }
 
         <TextArea
-          error={validation[namespace + '-inntektskildeStudenter']?.feilmelding}
+          error={validation[namespace + '-inntektskildeHvisStudent']?.feilmelding}
           namespace={namespace}
-          id='inntektskildeStudenter'
+          id='inntektskildeHvisStudent'
           label={t('label:inntektskilde-studenter')}
-          maxLength={inntektskildeStudenterMaxLength}
-          onChanged={(value: string) => setInfoField('inntektskildeStudenter', value)}
-          value={info?.inntektskildeStudenter}
+          maxLength={inntektskildeHvisStudentMaxLength}
+          onChanged={(value: string) => setBostedOpplysning('inntektskildeHvisStudent', value)}
+          value={bostedOpplysninger?.inntektskildeHvisStudent}
         />
         <TextArea
-          error={validation[namespace + '-bosituasjonHvorPermanent']?.feilmelding}
+          error={validation[namespace + '-hvorPermanentBostedetEr']?.feilmelding}
           namespace={namespace}
-          id='bosituasjonHvorPermanent'
+          id='hvorPermanentBostedetEr'
           label={t('label:bosituasjon-hvor-permanent')}
           maxLength={155}
-          onChanged={(value: string) => setInfoField('bosituasjonHvorPermanent', value)}
-          value={info?.bosituasjonHvorPermanent}
+          onChanged={(value: string) => setBostedOpplysning('hvorPermanentBostedetEr', value)}
+          value={bostedOpplysninger?.hvorPermanentBostedetEr}
         />
         <HGrid columns={{ xs: 1, md: 2 }} gap="space-16" align="start">
           <Input
-            error={validation[namespace + '-permanentOppholdSkattemessig']?.feilmelding}
+              error={validation[namespace + '-' + skattemessigGrunnKey]?.feilmelding}
             namespace={namespace}
-            id='permanentOppholdSkattemessig'
+              id={skattemessigGrunnKey}
             label={t('label:permanent-opphold-skattemessig')}
-            onChanged={(value: string) => setInfoField('permanentOppholdSkattemessig', value)}
-            value={info?.permanentOppholdSkattemessig}
+              onChanged={(value: string) => setBostedOpplysning(skattemessigGrunnKey, value)}
+              value={_.get(bostedOpplysninger, skattemessigGrunnKey)}
           />
         </HGrid>
       </VStack>
@@ -392,4 +390,4 @@ const AktivitetOgStatus: React.FC<MainFormProps> = ({
   )
 }
 
-export default AktivitetOgStatus
+export default Aktivitet

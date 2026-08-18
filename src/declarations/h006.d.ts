@@ -1,17 +1,15 @@
-import { BostedInformasjon, Person } from './h'
-import { Adresse, BaseReplySed } from 'declarations/sed'
+import { BostedOpplysninger, Person } from './h'
+import { BaseReplySed } from 'declarations/sed'
 
-// ===== §3 Positivt svar på etterspurt informasjon =====
-
-export interface PositivtSvar extends BostedInformasjon {
-  adresser?: Array<Adresse>
+export interface PositivtSvar {
+  bostedOpplysninger?: BostedOpplysninger
 }
 
 // ===== §4 Negativt svar på etterspurt informasjon =====
 
 export interface NegativtSvar {
-  kunneIkkeVideresendeInformasjon?: string
-  grunner?: string
+  opplysningerSomIkkeKanOversendes?: string
+  grunn?: string
 }
 
 // ===== H006 SED — Svar på anmodning om informasjon om bosted (H_BUC_02a) =====

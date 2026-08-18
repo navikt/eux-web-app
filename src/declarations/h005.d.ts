@@ -1,10 +1,8 @@
-import { AdresseMedVarighet, BostedInformasjon, Person } from './h'
+import { BostedOpplysninger, Person } from './h'
 import { BaseReplySed } from 'declarations/sed'
 
-// ===== §3 Informasjon for å fastslå bosted =====
-
-export interface InformasjonFastslaaBosted extends BostedInformasjon {
-  adresser?: Array<AdresseMedVarighet>
+export interface Anmodning {
+  bostedOpplysninger?: BostedOpplysninger
 }
 
 // ===== H005 SED — Anmodning om informasjon om bosted (H_BUC_02a) =====
@@ -12,6 +10,6 @@ export interface InformasjonFastslaaBosted extends BostedInformasjon {
 export interface H005Sed extends BaseReplySed {
   bruker: Person
   ytterligereInfo?: string
-  anmodningOmInformasjon?: string
-  informasjonFastslaaBosted?: InformasjonFastslaaBosted
+  informasjonDetAnmodesOm?: string
+  anmodning?: Anmodning
 }

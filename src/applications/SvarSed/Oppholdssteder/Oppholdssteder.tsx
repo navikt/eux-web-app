@@ -9,7 +9,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
-import { AdresseMedVarighet } from '../../../declarations/h'
+import { Oppholdssted } from '../../../declarations/h'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -23,27 +23,18 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import {
-  validateAdresseBostedItem,
-  validateAdresserBosted,
-  ValidationAdresseBostedItemProps,
-  ValidationAdresserBostedProps
+  validateOppholdssted,
+  validateOppholdssteder,
+  ValidationOppholdsstedProps,
+  ValidationOppholdsstederProps
 } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-// An address list item. H005 wraps the address with «varighet» fields
-// (AdresseMedVarighet); H006 stores a plain Adresse. The `showVarighet` option
-// selects between the two shapes.
-type AdresseItem = AdresseMedVarighet | Adresse
-
-// Shared H_BUC_02a address list, used by both H005 (target
-// «informasjonFastslaaBosted», addresses with «varighet») and H006 (target
-// «positivtSvar», plain addresses). The SED-specific target key, namespace infix
-// and whether the «varighet» fields are shown are supplied via `options` by the
-// FastslaaBosted / PositivtSvar containers.
-const AdresserBosted: React.FC<MainFormProps> = ({
+// Both DTOs wrap addresses in oppholdssteder; only H005 exposes duration fields.
+const Oppholdssteder: React.FC<MainFormProps> = ({
   label,
   options,
   parentNamespace,
@@ -57,34 +48,31 @@ const AdresserBosted: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const { parentKey, namespaceInfix, showVarighet } = options
   const namespace = `${parentNamespace}-${personID}-${namespaceInfix}-adresser`
-  const target = `${parentKey}.adresser`
-  const adresser: Array<AdresseItem> | undefined = _.get(replySed, target)
+  const target = `${parentKey}.oppholdssteder`
+  const oppholdssteder: Array<Oppholdssted> | undefined = _.get(replySed, target)
 
-  // Reads the underlying Adresse whether the item is wrapped (H005) or plain (H006).
-  const getAdresse = (item: AdresseItem | null | undefined): Adresse | undefined =>
-    showVarighet
-      ? (item as AdresseMedVarighet | null | undefined)?.adresse
-      : ((item as Adresse | null | undefined) ?? undefined)
+  const getAdresse = (oppholdssted: Oppholdssted | null | undefined): Adresse | undefined =>
+    oppholdssted?.adresse
 
-  const getId = (item: AdresseItem | null | undefined): string => {
-    const adresse = getAdresse(item)
-    return item
+  const getId = (oppholdssted: Oppholdssted | null | undefined): string => {
+    const adresse = getAdresse(oppholdssted)
+    return oppholdssted
       ? (adresse?.type ?? '') + '-' + (adresse?.by ?? '') + '-' + (adresse?.landkode ?? '')
       : 'new'
   }
 
-  const [_newItem, _setNewItem] = useState<AdresseItem | undefined>(undefined)
-  const [_editItem, _setEditItem] = useState<AdresseItem | undefined>(undefined)
+  const [_newOppholdssted, _setNewOppholdssted] = useState<Oppholdssted | undefined>(undefined)
+  const [_editOppholdssted, _setEditOppholdssted] = useState<Oppholdssted | undefined>(undefined)
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_seeNewForm, _setNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAdresseBostedItemProps>(validateAdresseBostedItem, namespace)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationOppholdsstedProps>(validateOppholdssted, namespace)
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
-    performValidation<ValidationAdresserBostedProps>(
-      clonedvalidation, namespace, validateAdresserBosted, {
-        adresser,
+    performValidation<ValidationOppholdsstederProps>(
+      clonedvalidation, namespace, validateOppholdssteder, {
+        oppholdssteder,
         showVarighet,
         personName
       }, true
@@ -92,102 +80,99 @@ const AdresserBosted: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedvalidation))
   })
 
-  // Writes the Adresse back into the item, preserving any «varighet» fields (H005)
-  // or replacing the plain item (H006).
   const setItemAdresse = (adresse: Adresse, index: number) => {
-    const merge = (prev: AdresseItem | undefined): AdresseItem =>
-      showVarighet ? { ...(prev as AdresseMedVarighet | undefined), adresse } : adresse
+    const merge = (prev: Oppholdssted | undefined): Oppholdssted =>
+      ({ ...prev, adresse })
     if (index < 0) {
-      _setNewItem(merge)
+      _setNewOppholdssted(merge)
       _resetValidation(namespace)
       return
     }
-    _setEditItem(merge)
+    _setEditOppholdssted(merge)
     dispatch(resetValidation(namespace + getIdx(index)))
   }
 
-  const setItemVarighet = (changes: Partial<AdresseMedVarighet>, fieldId: string, index: number) => {
+  const setItemVarighet = (changes: Partial<Oppholdssted>, fieldId: string, index: number) => {
     if (index < 0) {
-      _setNewItem((prev) => ({ ...(prev as AdresseMedVarighet | undefined), ...changes }))
+      _setNewOppholdssted((prev) => ({ ...prev, ...changes }))
       _resetValidation(namespace + '-' + fieldId)
       return
     }
-    _setEditItem((prev) => ({ ...(prev as AdresseMedVarighet | undefined), ...changes }))
+    _setEditOppholdssted((prev) => ({ ...prev, ...changes }))
     if (validation[namespace + getIdx(index) + '-' + fieldId]) {
       dispatch(resetValidation(namespace + getIdx(index) + '-' + fieldId))
     }
   }
 
   const onCloseEdit = (namespace: string) => {
-    _setEditItem(undefined)
+    _setEditOppholdssted(undefined)
     _setEditIndex(undefined)
     dispatch(resetValidation(namespace))
   }
 
   const onCloseNew = () => {
-    _setNewItem(undefined)
+    _setNewOppholdssted(undefined)
     _setNewForm(false)
     _resetValidation()
   }
 
-  const onStartEdit = (item: AdresseItem, index: number) => {
+  const onStartEdit = (oppholdssted: Oppholdssted, index: number) => {
     // reset any validation that exists from a cancelled edited item
     if (_editIndex !== undefined) {
       dispatch(resetValidation(namespace + getIdx(_editIndex)))
     }
-    _setEditItem(item)
+    _setEditOppholdssted(oppholdssted)
     _setEditIndex(index)
   }
 
   const onSaveEdit = () => {
     const clonedvalidation = _.cloneDeep(validation)
-    const hasErrors = performValidation<ValidationAdresseBostedItemProps>(
-      clonedvalidation, namespace, validateAdresseBostedItem, {
-        item: _editItem,
+    const hasErrors = performValidation<ValidationOppholdsstedProps>(
+      clonedvalidation, namespace, validateOppholdssted, {
+        oppholdssted: _editOppholdssted,
         showVarighet,
         index: _editIndex,
         personName
       })
     if (!hasErrors) {
-      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editItem))
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editOppholdssted))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
       dispatch(setValidation(clonedvalidation))
     }
   }
 
-  const onRemove = (removedItem: AdresseItem) => {
-    const newItems: Array<AdresseItem> = _.reject(adresser, (a: AdresseItem) => _.isEqual(removedItem, a))
-    dispatch(updateReplySed(target, newItems))
+  const onRemove = (removedOppholdssted: Oppholdssted) => {
+    const newOppholdssteder: Array<Oppholdssted> = _.reject(oppholdssteder, (oppholdssted: Oppholdssted) => _.isEqual(removedOppholdssted, oppholdssted))
+    dispatch(updateReplySed(target, newOppholdssteder))
   }
 
   const onAddNew = () => {
     const valid: boolean = _performValidation({
-      item: _newItem,
+      oppholdssted: _newOppholdssted,
       showVarighet,
       personName
     })
-    if (!!_newItem && valid) {
-      let newItems: Array<AdresseItem> | undefined = _.cloneDeep(adresser)
-      if (_.isNil(newItems)) {
-        newItems = []
+    if (!!_newOppholdssted && valid) {
+      let newOppholdssteder: Array<Oppholdssted> | undefined = _.cloneDeep(oppholdssteder)
+      if (_.isNil(newOppholdssteder)) {
+        newOppholdssteder = []
       }
-      newItems.push(_newItem!)
-      dispatch(updateReplySed(target, newItems))
+      newOppholdssteder.push(_newOppholdssted)
+      dispatch(updateReplySed(target, newOppholdssteder))
       onCloseNew()
     }
   }
 
-  const renderRow = (item: AdresseItem | null, index: number) => {
+  const renderRow = (oppholdssted: Oppholdssted | null, index: number) => {
     const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
-    const _item = index < 0 ? _newItem : (inEditMode ? _editItem : item)
-    const _varighet = _item as AdresseMedVarighet | undefined
+    const _oppholdssted = index < 0 ? _newOppholdssted : (inEditMode ? _editOppholdssted : oppholdssted)
 
     const addremovepanel = (
-      <AddRemovePanel<AdresseItem>
-        item={item}
+      <AddRemovePanel<Oppholdssted>
+        item={oppholdssted}
         marginTop={false}
         index={index}
         inEditMode={inEditMode}
@@ -204,7 +189,7 @@ const AdresserBosted: React.FC<MainFormProps> = ({
       <Box
         padding="space-16"
         id={'repeatablerow-' + _namespace}
-        key={getId(item)}
+        key={getId(oppholdssted)}
         className={classNames(commonStyles.repeatableBox, {
           [commonStyles.new]: index < 0,
           [commonStyles.error]: hasNamespaceWithErrors(_v, _namespace)
@@ -216,7 +201,7 @@ const AdresserBosted: React.FC<MainFormProps> = ({
               <VStack gap="space-16">
                 <AdresseForm
                   namespace={_namespace}
-                  adresse={getAdresse(_item)}
+                  adresse={getAdresse(_oppholdssted)}
                   onAdressChanged={(a: Adresse) => setItemAdresse(a, index)}
                   validation={_v}
                 />
@@ -228,7 +213,7 @@ const AdresserBosted: React.FC<MainFormProps> = ({
                       id='oppholdetsVarighet'
                       label={t('label:oppholdets-varighet')}
                       onChanged={(value: string) => setItemVarighet({ oppholdetsVarighet: value.trim() || undefined }, 'oppholdetsVarighet', index)}
-                      value={_varighet?.oppholdetsVarighet}
+                      value={_oppholdssted?.oppholdetsVarighet}
                     />
                     <Input
                       error={_v[_namespace + '-varighetUavbruttOpphold']?.feilmelding}
@@ -236,7 +221,7 @@ const AdresserBosted: React.FC<MainFormProps> = ({
                       id='varighetUavbruttOpphold'
                       label={t('label:varighet-uavbrutt-opphold')}
                       onChanged={(value: string) => setItemVarighet({ varighetUavbruttOpphold: value.trim() || undefined }, 'varighetUavbruttOpphold', index)}
-                      value={_varighet?.varighetUavbruttOpphold}
+                      value={_oppholdssted?.varighetUavbruttOpphold}
                     />
                   </HGrid>
                 )}
@@ -246,15 +231,15 @@ const AdresserBosted: React.FC<MainFormProps> = ({
               <HStack gap="space-16">
                 <Box width="65%">
                   <VStack gap="space-8">
-                    <AdresseBox adresse={getAdresse(_item)} seeType />
-                    {showVarighet && _varighet?.oppholdetsVarighet && (
+                    <AdresseBox adresse={getAdresse(_oppholdssted)} seeType />
+                    {showVarighet && _oppholdssted?.oppholdetsVarighet && (
                       <FormText id={_namespace + '-oppholdetsVarighet'} error={undefined}>
-                        {t('label:oppholdets-varighet') + ': ' + _varighet.oppholdetsVarighet}
+                        {t('label:oppholdets-varighet') + ': ' + _oppholdssted.oppholdetsVarighet}
                       </FormText>
                     )}
-                    {showVarighet && _varighet?.varighetUavbruttOpphold && (
+                    {showVarighet && _oppholdssted?.varighetUavbruttOpphold && (
                       <FormText id={_namespace + '-varighetUavbruttOpphold'} error={undefined}>
-                        {t('label:varighet-uavbrutt-opphold') + ': ' + _varighet.varighetUavbruttOpphold}
+                        {t('label:varighet-uavbrutt-opphold') + ': ' + _oppholdssted.varighetUavbruttOpphold}
                       </FormText>
                     )}
                   </VStack>
@@ -284,7 +269,7 @@ const AdresserBosted: React.FC<MainFormProps> = ({
         <Heading size='small'>
           {label}
         </Heading>
-        {_.isEmpty(adresser)
+        {_.isEmpty(oppholdssteder)
           ? (
             <Box borderWidth={"1 0"} paddingBlock="space-8" id="ingenAdresse">
               <BodyLong>
@@ -292,7 +277,7 @@ const AdresserBosted: React.FC<MainFormProps> = ({
               </BodyLong>
             </Box>
             )
-          : adresser?.map(renderRow)}
+          : oppholdssteder?.map(renderRow)}
         {_seeNewForm
           ? renderRow(null, -1)
           : (
@@ -312,4 +297,4 @@ const AdresserBosted: React.FC<MainFormProps> = ({
   )
 }
 
-export default AdresserBosted
+export default Oppholdssteder

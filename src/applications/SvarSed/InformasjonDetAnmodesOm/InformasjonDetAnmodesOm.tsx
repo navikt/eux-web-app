@@ -10,13 +10,13 @@ import React, { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import { validateAnmodningOmInformasjon, ValidationAnmodningOmInformasjonProps } from './validation'
+import { validateInformasjonDetAnmodesOm, ValidationInformasjonDetAnmodesOmProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const AnmodningOmInformasjon: React.FC<MainFormProps> = ({
+const InformasjonDetAnmodesOm: React.FC<MainFormProps> = ({
   label,
   parentNamespace,
   personID,
@@ -32,8 +32,8 @@ const AnmodningOmInformasjon: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
-    performValidation<ValidationAnmodningOmInformasjonProps>(
-      clonedvalidation, namespace, validateAnmodningOmInformasjon, {
+    performValidation<ValidationInformasjonDetAnmodesOmProps>(
+      clonedvalidation, namespace, validateInformasjonDetAnmodesOm, {
         replySed: sed,
         personName
       }, true
@@ -41,35 +41,37 @@ const AnmodningOmInformasjon: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedvalidation))
   })
 
-  const setAnmodningOmInformasjon = (newInfo: string) => {
-    dispatch(updateReplySed('anmodningOmInformasjon', newInfo.trim() || undefined))
-    if (validation[namespace + '-anmodningOmInformasjon']) {
-      dispatch(resetValidation(namespace + '-anmodningOmInformasjon'))
+  const setInformasjonDetAnmodesOm = (newInfo: string) => {
+    dispatch(updateReplySed('informasjonDetAnmodesOm', newInfo.trim() || undefined))
+    if (validation[namespace + '-informasjonDetAnmodesOm']) {
+      dispatch(resetValidation(namespace + '-informasjonDetAnmodesOm'))
     }
   }
 
   return (
     <Box padding="space-16">
       <VStack gap="space-16">
-        <Heading size='small'>
-          {label}
-        </Heading>
-        <BodyLong>
-          {t('label:anmodning-om-informasjon-bosted-beskrivelse')}
-        </BodyLong>
+        <VStack gap="space-4">
+          <Heading size='small'>
+            {label}
+          </Heading>
+          <BodyLong>
+            {t('label:anmodning-om-informasjon-bosted-beskrivelse')}
+          </BodyLong>
+        </VStack>
         <TextArea
-          error={validation[namespace + '-anmodningOmInformasjon']?.feilmelding}
+          error={validation[namespace + '-informasjonDetAnmodesOm']?.feilmelding}
           namespace={namespace}
-          id='anmodningOmInformasjon'
+          id='informasjonDetAnmodesOm'
           label={t('label:anmodning-om-informasjon')}
           maxLength={255}
           required
-          onChanged={setAnmodningOmInformasjon}
-          value={sed.anmodningOmInformasjon ?? ''}
+          onChanged={setInformasjonDetAnmodesOm}
+          value={sed.informasjonDetAnmodesOm ?? ''}
         />
       </VStack>
     </Box>
   )
 }
 
-export default AnmodningOmInformasjon
+export default InformasjonDetAnmodesOm

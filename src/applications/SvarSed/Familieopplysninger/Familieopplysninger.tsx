@@ -3,7 +3,7 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
-import { BostedInformasjon } from '../../../declarations/h'
+import { BostedOpplysninger } from '../../../declarations/h'
 import { State } from 'declarations/reducers'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -11,17 +11,13 @@ import React, { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import { validateFamiliestatus, ValidationFamiliestatusProps } from './validation'
+import { validateFamilieopplysninger, ValidationFamilieopplysningerProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-// Shared H_BUC_02a familiestatus section, used by both H005 (target
-// «informasjonFastslaaBosted») and H006 (target «positivtSvar»). The SED-specific
-// target key, namespace infix and «grunn for flytting» max length are supplied via
-// `options` by the FastslaaBosted / PositivtSvar containers.
-const Familiestatus: React.FC<MainFormProps> = ({
+const Familieopplysninger: React.FC<MainFormProps> = ({
   label,
   options,
   parentNamespace,
@@ -33,16 +29,16 @@ const Familiestatus: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const { parentKey, namespaceInfix, grunnForFlyttingMaxLength } = options
+  const { parentKey, namespaceInfix, antattFlyttegrunnMaxLength } = options
   const namespace = `${parentNamespace}-${personID}-${namespaceInfix}-familie`
-  const info = _.get(replySed, parentKey) as BostedInformasjon | undefined
+  const bostedOpplysninger = _.get(replySed, parentKey) as BostedOpplysninger | undefined
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
-    performValidation<ValidationFamiliestatusProps>(
-      clonedvalidation, namespace, validateFamiliestatus, {
-        info,
-        grunnForFlyttingMaxLength,
+    performValidation<ValidationFamilieopplysningerProps>(
+      clonedvalidation, namespace, validateFamilieopplysninger, {
+        bostedOpplysninger,
+        antattFlyttegrunnMaxLength,
         personName
       }, true
     )
@@ -64,12 +60,12 @@ const Familiestatus: React.FC<MainFormProps> = ({
         </Heading>
 
         <Input
-          error={validation[namespace + '-ektefelleFamiliemedlem']?.feilmelding}
+          error={validation[namespace + '-ektefelleNavn']?.feilmelding}
           namespace={namespace}
-          id='ektefelleFamiliemedlem'
+          id='ektefelleNavn'
           label={t('label:familiemedlem-ektefelle')}
-          onChanged={(value: string) => setField('familiestatus.ektefelle.familiemedlem', 'ektefelleFamiliemedlem', value)}
-          value={info?.familiestatus?.ektefelle?.familiemedlem}
+          onChanged={(value: string) => setField('ektefelle.navn', 'ektefelleNavn', value)}
+          value={bostedOpplysninger?.ektefelle?.navn}
         />
         <TextArea
           error={validation[namespace + '-ektefelleBosted']?.feilmelding}
@@ -77,17 +73,17 @@ const Familiestatus: React.FC<MainFormProps> = ({
           id='ektefelleBosted'
           label={t('label:bosted-ektefelle')}
           maxLength={255}
-          onChanged={(value: string) => setField('familiestatus.ektefelle.bosted', 'ektefelleBosted', value)}
-          value={info?.familiestatus?.ektefelle?.bosted}
+          onChanged={(value: string) => setField('ektefelle.bosted', 'ektefelleBosted', value)}
+          value={bostedOpplysninger?.ektefelle?.bosted}
         />
 
         <Input
-          error={validation[namespace + '-barnFamiliemedlem']?.feilmelding}
+          error={validation[namespace + '-barnNavn']?.feilmelding}
           namespace={namespace}
-          id='barnFamiliemedlem'
+          id='barnNavn'
           label={t('label:familiemedlem-barn')}
-          onChanged={(value: string) => setField('familiestatus.barn.familiemedlem', 'barnFamiliemedlem', value)}
-          value={info?.familiestatus?.barn?.familiemedlem}
+          onChanged={(value: string) => setField('barn.navn', 'barnNavn', value)}
+          value={bostedOpplysninger?.barn?.navn}
         />
         <TextArea
           error={validation[namespace + '-barnBosted']?.feilmelding}
@@ -95,30 +91,30 @@ const Familiestatus: React.FC<MainFormProps> = ({
           id='barnBosted'
           label={t('label:bosted-barn')}
           maxLength={255}
-          onChanged={(value: string) => setField('familiestatus.barn.bosted', 'barnBosted', value)}
-          value={info?.familiestatus?.barn?.bosted}
+          onChanged={(value: string) => setField('barn.bosted', 'barnBosted', value)}
+          value={bostedOpplysninger?.barn?.bosted}
         />
         <Input
-          error={validation[namespace + '-barnSkolekrets']?.feilmelding}
+          error={validation[namespace + '-barnSkolested']?.feilmelding}
           namespace={namespace}
-          id='barnSkolekrets'
+          id='barnSkolested'
           label={t('label:skolekrets-barn')}
-          onChanged={(value: string) => setField('familiestatus.barn.skolekrets', 'barnSkolekrets', value)}
-          value={info?.familiestatus?.barn?.skolekrets}
+          onChanged={(value: string) => setField('barn.skolested', 'barnSkolested', value)}
+          value={bostedOpplysninger?.barn?.skolested}
         />
 
         <TextArea
-          error={validation[namespace + '-grunnForFlytting']?.feilmelding}
+          error={validation[namespace + '-antattFlyttegrunn']?.feilmelding}
           namespace={namespace}
-          id='grunnForFlytting'
+          id='antattFlyttegrunn'
           label={t('label:grunn-for-flytting')}
-          maxLength={grunnForFlyttingMaxLength}
-          onChanged={(value: string) => setField('grunnForFlytting', 'grunnForFlytting', value)}
-          value={info?.grunnForFlytting}
+          maxLength={antattFlyttegrunnMaxLength}
+          onChanged={(value: string) => setField('antattFlyttegrunn', 'antattFlyttegrunn', value)}
+          value={bostedOpplysninger?.antattFlyttegrunn}
         />
       </VStack>
     </Box>
   )
 }
 
-export default Familiestatus
+export default Familieopplysninger

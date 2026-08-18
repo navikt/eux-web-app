@@ -20,11 +20,11 @@ import { validateYtterligereInfoOmKrav, ValidationYtterligereInfoOmKravProps } f
 import { validateGrunnerForOverfoering, ValidationGrunnerForOverfoeringProps } from 'applications/SvarSed/GrunnerForOverfoering/validation'
 import { validateDokumenterVedlagt, ValidationDokumenterVedlagtProps } from 'applications/SvarSed/DokumenterVedlagt/validation'
 import { validateMeldingOmDoedsfall, ValidationMeldingOmDoedsfallProps } from 'applications/SvarSed/MeldingOmDoedsfall/validation'
-import { validateAnmodningOmInformasjon, ValidationAnmodningOmInformasjonProps } from 'applications/SvarSed/AnmodningOmInformasjon/validation'
+import { validateInformasjonDetAnmodesOm, ValidationInformasjonDetAnmodesOmProps } from 'applications/SvarSed/InformasjonDetAnmodesOm/validation'
 import { validateTypeInformasjon, ValidationTypeInformasjonProps } from 'applications/SvarSed/TypeInformasjon/validation'
-import { validateAdresserBosted, ValidationAdresserBostedProps } from 'applications/SvarSed/AdresserBosted/validation'
-import { validateAktivitetOgStatus, ValidationAktivitetOgStatusProps } from 'applications/SvarSed/AktivitetOgStatus/validation'
-import { validateFamiliestatus, ValidationFamiliestatusProps } from 'applications/SvarSed/Familiestatus/validation'
+import { validateOppholdssteder, ValidationOppholdsstederProps } from 'applications/SvarSed/Oppholdssteder/validation'
+import { validateAktivitet, ValidationAktivitetProps } from 'applications/SvarSed/Aktivitet/validation'
+import { validateFamilieopplysninger, ValidationFamilieopplysningerProps } from 'applications/SvarSed/Familieopplysninger/validation'
 import { validateNegativtSvar, ValidationNegativtSvarProps } from 'applications/SvarSed/NegativtSvar/validation'
 import { validateVedlagtDokumentasjon, ValidationVedlagtDokumentasjonProps } from 'applications/SvarSed/VedlagtDokumentasjon/validation'
 import { validateBeroertYtelse, ValidationBeroertYtelseProps } from 'applications/SvarSed/BeroertYtelse/validation'
@@ -128,7 +128,7 @@ import { X007Sed } from 'declarations/x007'
 import { X005Sed } from 'declarations/x005'
 import { X006Sed } from 'declarations/x006'
 import { Validation } from 'declarations/types.d'
-import { BostedInformasjon } from '../../declarations/h'
+import { BostedOpplysninger } from '../../declarations/h'
 import i18n from 'i18n'
 import _ from 'lodash'
 import performValidation from 'utils/performValidation'
@@ -513,40 +513,44 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (isH005Sed(replySed)) {
-      hasErrors.push(performValidation<ValidationAnmodningOmInformasjonProps>(v, `svarsed-${personID}-anmodningominformasjon`, validateAnmodningOmInformasjon, {
+      hasErrors.push(performValidation<ValidationInformasjonDetAnmodesOmProps>(v, `svarsed-${personID}-anmodningominformasjon`, validateInformasjonDetAnmodesOm, {
         replySed,
         personName
       }, true))
-      hasErrors.push(performValidation<ValidationAdresserBostedProps>(v, `svarsed-${personID}-fastslaabosted-adresser`, validateAdresserBosted, {
-        adresser: _.get(replySed, 'informasjonFastslaaBosted.adresser'),
+      hasErrors.push(performValidation<ValidationOppholdsstederProps>(v, `svarsed-${personID}-fastslaabosted-adresser`, validateOppholdssteder, {
+        oppholdssteder: _.get(replySed, 'anmodning.bostedOpplysninger.oppholdssteder'),
         showVarighet: true,
         personName
       }, true))
-      hasErrors.push(performValidation<ValidationAktivitetOgStatusProps>(v, `svarsed-${personID}-fastslaabosted-status`, validateAktivitetOgStatus, {
-        info: _.get(replySed, 'informasjonFastslaaBosted'),
-        inntektskildeStudenterMaxLength: 155,
+      hasErrors.push(performValidation<ValidationAktivitetProps>(v, `svarsed-${personID}-fastslaabosted-status`, validateAktivitet, {
+        bostedOpplysninger: _.get(replySed, 'anmodning.bostedOpplysninger') as BostedOpplysninger | undefined,
+        inntektskildeHvisStudentMaxLength: 155,
+        skattemessigGrunn: _.get(replySed, 'anmodning.bostedOpplysninger.skattemessigeGrunn'),
+        skattemessigGrunnId: 'skattemessigeGrunn',
         personName
       }, true))
-      hasErrors.push(performValidation<ValidationFamiliestatusProps>(v, `svarsed-${personID}-fastslaabosted-familie`, validateFamiliestatus, {
-        info: _.get(replySed, 'informasjonFastslaaBosted'),
-        grunnForFlyttingMaxLength: 155,
+      hasErrors.push(performValidation<ValidationFamilieopplysningerProps>(v, `svarsed-${personID}-fastslaabosted-familie`, validateFamilieopplysninger, {
+        bostedOpplysninger: _.get(replySed, 'anmodning.bostedOpplysninger') as BostedOpplysninger | undefined,
+        antattFlyttegrunnMaxLength: 155,
         personName
       }, true))
     }
     if (isH006Sed(replySed)) {
-      hasErrors.push(performValidation<ValidationAdresserBostedProps>(v, `svarsed-${personID}-positivtsvar-adresser`, validateAdresserBosted, {
-        adresser: _.get(replySed, 'positivtSvar.adresser'),
+      hasErrors.push(performValidation<ValidationOppholdsstederProps>(v, `svarsed-${personID}-positivtsvar-adresser`, validateOppholdssteder, {
+        oppholdssteder: _.get(replySed, 'positivtSvar.bostedOpplysninger.oppholdssteder'),
         showVarighet: false,
         personName
       }, true))
-      hasErrors.push(performValidation<ValidationAktivitetOgStatusProps>(v, `svarsed-${personID}-positivtsvar-status`, validateAktivitetOgStatus, {
-        info: _.get(replySed, 'positivtSvar') as BostedInformasjon | undefined,
-        inntektskildeStudenterMaxLength: 65,
+      hasErrors.push(performValidation<ValidationAktivitetProps>(v, `svarsed-${personID}-positivtsvar-status`, validateAktivitet, {
+        bostedOpplysninger: _.get(replySed, 'positivtSvar.bostedOpplysninger') as BostedOpplysninger | undefined,
+        inntektskildeHvisStudentMaxLength: 65,
+        skattemessigGrunn: _.get(replySed, 'positivtSvar.bostedOpplysninger.skattemessigGrunn'),
+        skattemessigGrunnId: 'skattemessigGrunn',
         personName
       }, true))
-      hasErrors.push(performValidation<ValidationFamiliestatusProps>(v, `svarsed-${personID}-positivtsvar-familie`, validateFamiliestatus, {
-        info: _.get(replySed, 'positivtSvar') as BostedInformasjon | undefined,
-        grunnForFlyttingMaxLength: 255,
+      hasErrors.push(performValidation<ValidationFamilieopplysningerProps>(v, `svarsed-${personID}-positivtsvar-familie`, validateFamilieopplysninger, {
+        bostedOpplysninger: _.get(replySed, 'positivtSvar.bostedOpplysninger') as BostedOpplysninger | undefined,
+        antattFlyttegrunnMaxLength: 255,
         personName
       }, true))
       hasErrors.push(performValidation<ValidationNegativtSvarProps>(v, `svarsed-${personID}-negativtsvar`, validateNegativtSvar, {

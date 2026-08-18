@@ -4,7 +4,7 @@ import { validateAnmodning, ValidationAnmodningProps } from 'applications/SvarSe
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import { State } from 'declarations/reducers'
-import { H001Svar, ReplySed } from 'declarations/sed'
+import { H001Sed, H001Svar, ReplySed } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { JSX } from 'react';
@@ -29,7 +29,7 @@ const Anmodning: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-anmodning`
   const target = 'anmodning'
-  const anmodning: H001Svar | undefined = _.get(replySed, target)
+  const anmodning: H001Svar | undefined = (replySed as H001Sed).anmodning
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)

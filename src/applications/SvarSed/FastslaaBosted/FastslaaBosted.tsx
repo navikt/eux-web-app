@@ -1,7 +1,7 @@
 import { BodyLong, Box, Heading, VStack } from '@navikt/ds-react'
-import AdresserBosted from 'applications/SvarSed/AdresserBosted/AdresserBosted'
-import AktivitetOgStatus from 'applications/SvarSed/AktivitetOgStatus/AktivitetOgStatus'
-import Familiestatus from 'applications/SvarSed/Familiestatus/Familiestatus'
+import Oppholdssteder from 'applications/SvarSed/Oppholdssteder/Oppholdssteder'
+import Aktivitet from 'applications/SvarSed/Aktivitet/Aktivitet'
+import Familieopplysninger from 'applications/SvarSed/Familieopplysninger/Familieopplysninger'
 import { MainFormProps } from 'applications/SvarSed/MainForm'
 import React, { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -25,13 +25,17 @@ const FastslaaBosted: React.FC<MainFormProps> = ({
     updateReplySed
   }
 
-  const bosted = { parentKey: 'informasjonFastslaaBosted', namespaceInfix: 'fastslaabosted' }
+  const bosted = {
+    parentKey: 'anmodning.bostedOpplysninger',
+    namespaceInfix: 'fastslaabosted',
+    skattemessigGrunnKey: 'skattemessigeGrunn'
+  }
 
   return (
     <Box padding="space-16">
       <VStack gap="space-16">
-        <VStack gap="space-8">
-          <Heading size='medium'>
+        <VStack gap="space-4">
+          <Heading size='small'>
             {t('label:informasjon-fastslaa-bosted')}
           </Heading>
           <BodyLong>
@@ -39,9 +43,9 @@ const FastslaaBosted: React.FC<MainFormProps> = ({
           </BodyLong>
         </VStack>
 
-        <AdresserBosted {...childProps} label={t('label:adresser')} options={{ ...bosted, showVarighet: true }} />
-        <AktivitetOgStatus {...childProps} label={t('label:personens-status-og-aktivitet')} options={{ ...bosted, inntektskildeStudenterMaxLength: 155 }} />
-        <Familiestatus {...childProps} label={t('label:familiestatus')} options={{ ...bosted, grunnForFlyttingMaxLength: 155 }} />
+        <Oppholdssteder {...childProps} label={t('label:adresser')} options={{ ...bosted, showVarighet: true }} />
+        <Aktivitet {...childProps} label={t('label:personens-status-og-aktivitet')} options={{ ...bosted, inntektskildeHvisStudentMaxLength: 155 }} />
+        <Familieopplysninger {...childProps} label={t('label:familiestatus')} options={{ ...bosted, antattFlyttegrunnMaxLength: 155 }} />
       </VStack>
     </Box>
   )

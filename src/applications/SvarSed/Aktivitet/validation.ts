@@ -1,34 +1,36 @@
-import { Aktivitet, BostedInformasjon } from '../../../declarations/h'
+import { Presisering, BostedOpplysninger } from '../../../declarations/h'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty, checkLength } from 'utils/validation'
 
-export interface ValidationAktivitetItemProps {
-  aktivitet: Aktivitet | undefined
+export interface ValidationPresiseringProps {
+  presisering: Presisering | undefined
   index?: number
   personName?: string
 }
 
-export interface ValidationAktivitetOgStatusProps {
-  info: BostedInformasjon | undefined
-  inntektskildeStudenterMaxLength: number
+export interface ValidationAktivitetProps {
+  bostedOpplysninger: BostedOpplysninger | undefined
+  inntektskildeHvisStudentMaxLength: number
+  skattemessigGrunn?: string
+  skattemessigGrunnId: string
   personName?: string
 }
 
-export const validateAktivitetItem = (
+export const validatePresisering = (
   v: Validation,
   namespace: string,
   {
-    aktivitet,
+    presisering,
     index,
     personName
-  }: ValidationAktivitetItemProps
+  }: ValidationPresiseringProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
   hasErrors.push(checkLength(v, {
-    needle: aktivitet?.beskrivelse,
+    needle: presisering?.beskrivelse,
     id: namespace + idx + '-beskrivelse',
     max: 155,
     message: 'validation:textOverX',
@@ -36,7 +38,7 @@ export const validateAktivitetItem = (
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: aktivitet?.sted,
+    needle: presisering?.sted,
     id: namespace + idx + '-sted',
     max: 65,
     message: 'validation:textOverX',
@@ -44,7 +46,7 @@ export const validateAktivitetItem = (
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: aktivitet?.varighet,
+    needle: presisering?.varighet,
     id: namespace + idx + '-varighet',
     max: 65,
     message: 'validation:textOverX',
@@ -52,7 +54,7 @@ export const validateAktivitetItem = (
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: aktivitet?.art,
+    needle: presisering?.art,
     id: namespace + idx + '-art',
     max: 255,
     message: 'validation:textOverX',
@@ -62,28 +64,30 @@ export const validateAktivitetItem = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateAktivitetOgStatus = (
+export const validateAktivitet = (
   v: Validation,
   namespace: string,
   {
-    info,
-    inntektskildeStudenterMaxLength,
+    bostedOpplysninger,
+    inntektskildeHvisStudentMaxLength,
+    skattemessigGrunn,
+    skattemessigGrunnId,
     personName
-  }: ValidationAktivitetOgStatusProps
+  }: ValidationAktivitetProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  if (info?.personensStatus === 'annet') {
+  if (bostedOpplysninger?.aktivitet?.type === 'annet') {
     hasErrors.push(checkIfNotEmpty(v, {
-      needle: info?.personensStatusAnnet,
-      id: namespace + '-personensStatusAnnet',
+      needle: bostedOpplysninger?.aktivitet?.annet,
+      id: namespace + '-aktivitetAnnet',
       message: 'validation:noPersonensStatusAnnet',
       personName
     }))
 
     hasErrors.push(checkLength(v, {
-      needle: info?.personensStatusAnnet,
-      id: namespace + '-personensStatusAnnet',
+      needle: bostedOpplysninger?.aktivitet?.annet,
+      id: namespace + '-aktivitetAnnet',
       max: 500,
       message: 'validation:textOverX',
       personName
@@ -91,32 +95,32 @@ export const validateAktivitetOgStatus = (
   }
 
   hasErrors.push(checkLength(v, {
-    needle: info?.inntektskildeStudenter,
-    id: namespace + '-inntektskildeStudenter',
-    max: inntektskildeStudenterMaxLength,
+    needle: bostedOpplysninger?.inntektskildeHvisStudent,
+    id: namespace + '-inntektskildeHvisStudent',
+    max: inntektskildeHvisStudentMaxLength,
     message: 'validation:textOverX',
     personName
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: info?.bosituasjonHvorPermanent,
-    id: namespace + '-bosituasjonHvorPermanent',
+    needle: bostedOpplysninger?.hvorPermanentBostedetEr,
+    id: namespace + '-hvorPermanentBostedetEr',
     max: 155,
     message: 'validation:textOverX',
     personName
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: info?.permanentOppholdSkattemessig,
-    id: namespace + '-permanentOppholdSkattemessig',
+    needle: skattemessigGrunn,
+    id: namespace + '-' + skattemessigGrunnId,
     max: 65,
     message: 'validation:textOverX',
     personName
   }))
 
-  info?.aktiviteter?.forEach((aktivitet: Aktivitet, index: number) => {
-    hasErrors.push(validateAktivitetItem(v, namespace, {
-      aktivitet,
+  bostedOpplysninger?.aktivitet?.presiseringer?.forEach((presisering: Presisering, index: number) => {
+    hasErrors.push(validatePresisering(v, namespace, {
+      presisering,
       index,
       personName
     }))
