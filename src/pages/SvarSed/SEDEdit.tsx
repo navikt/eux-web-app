@@ -496,7 +496,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-avvis'), value: 'avvis', component: Avvis, type: 'X011' },
                   { label: t('el:option-mainform-klargjør'), value: 'klargjør', component: Klargjør, type: 'X012' },
                   { label: t('el:option-mainform-svargjenaapning'), value: 'svargjenaapning', component: SvarGjenaapning, type: 'X003' },
-                  { label: t('el:option-mainform-svarklargjøring'), value: 'svarklargjøring', component: SvarKlargjoering, type: 'X013' }
+                  { label: t('el:option-mainform-svarklargjøring'), value: 'svarklargjoering', component: SvarKlargjoering, type: 'X013' }
                 ]}
                 replySed={replySed}
                 updateReplySed={updateReplySed}
