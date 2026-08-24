@@ -107,7 +107,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
           data-testid={namespace + '-type'}
           error={validation[namespace + '-type']?.feilmelding}
           id={namespace + '-type'}
-          legend={t('label:adresse-type') + (required.indexOf('type') >= 0 ? ' *' : '')}
+          legend={t('label:type-adresse') + (required.indexOf('type') >= 0 ? ' *' : '')}
           name={namespace + '-type'}
           required={required.indexOf('type') >= 0}
           onChange={(e: string) => setType((e as AdresseType))}
