@@ -107,7 +107,6 @@ import {
   F003Sed,
   F026Sed,
   F027Sed,
-  H001Sed,
   S040Sed,
   USed,
   U002Sed,
@@ -121,6 +120,7 @@ import {
   X012Sed,
   Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse, VedtakF003, Vedtak
 } from 'declarations/sed'
+import { H001Sed } from 'declarations/h001'
 import { H120Sed } from 'declarations/h120'
 import { X002Sed } from 'declarations/x002'
 import { X003Sed } from 'declarations/x003'

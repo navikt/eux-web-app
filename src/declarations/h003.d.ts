@@ -15,8 +15,8 @@ export interface Bosted {
 }
 
 // ===== H003 SED — Forslag/melding om bostedsstat (H_BUC_02a) =====
-// Bruker standard person- og adresseseksjon (bruker: PersonTypeH) og felles
-// ytterligereInfo fra HSed. Kun §3 «type informasjon» er H003-spesifikk.
+// Bruker standard person- og adresseseksjon. Kun §3 «type informasjon» er
+// H003-spesifikk.
 
 export interface H003Sed extends BaseReplySed {
   bruker: PersonMedAdresser

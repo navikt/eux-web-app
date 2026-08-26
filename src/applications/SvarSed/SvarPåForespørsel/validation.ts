@@ -1,4 +1,5 @@
-import { H002Sed, ReplySed } from 'declarations/sed'
+import { ReplySed } from 'declarations/sed'
+import { H002Sed } from 'declarations/h002'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { checkLength } from 'utils/validation'
