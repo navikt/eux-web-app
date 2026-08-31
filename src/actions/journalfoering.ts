@@ -3,7 +3,7 @@ import {CreateSedResponse, Enhet, Fagsak, Fagsaker, Sak} from "../declarations/t
 import * as urls from "../constants/urls";
 import * as types from "../constants/actionTypes";
 import {Action, ActionCreator} from "redux";
-import {H001Sed} from "../declarations/sed";
+import {H001Sed} from "../declarations/h001";
 import {mockJournalfoeringFagsaker} from "../mocks/journalfoeringFagsakList";
 import mockSendSak from "../mocks/sak/sendSak";
 import mockFagsakGenerell from 'mocks/fagsak_generell'

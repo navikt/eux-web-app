@@ -7,7 +7,7 @@ import {setValidation} from "../../../actions/validation";
 import {Box, Checkbox, CheckboxGroup, Heading, HStack, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {useTranslation} from "react-i18next";
-import {AdresseAnmodning} from "../../../declarations/sed";
+import {AdresseTyper} from "../../../declarations/h001";
 import performValidation from "../../../utils/performValidation";
 import {validateAnmodningOmAdresse} from "./validation";
 
@@ -27,18 +27,18 @@ const AnmodningOmAdresse: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-adresseAnmodning`
   const target = 'anmodning.adresse'
 
-  const getAdresseAnmodning = () => {
-    const adresseAnmodning: AdresseAnmodning | undefined = _.get(replySed, target)
-    if (!adresseAnmodning) {
-      const newAdresseAnmodning: AdresseAnmodning = {
+  const getAdresseTyper = () => {
+    const adresseTyper: AdresseTyper | undefined = _.get(replySed, target)
+    if (!adresseTyper) {
+      const newAdresseTyper: AdresseTyper = {
         adresseTyper: []
       }
-      return newAdresseAnmodning
+      return newAdresseTyper
     }
-    return adresseAnmodning
+    return adresseTyper
   }
 
-  const adresseAnmodning: AdresseAnmodning | undefined = getAdresseAnmodning()
+  const adresseTyper: AdresseTyper | undefined = getAdresseTyper()
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -66,7 +66,7 @@ const AnmodningOmAdresse: React.FC<MainFormProps> = ({
                       error={validation[namespace + '-anmodning-type']?.feilmelding}
                       id={namespace + '-anmodning-type'}
                       name={namespace + '-anmodning-type'}
-                      value={adresseAnmodning?.adresseTyper}
+                      value={adresseTyper?.adresseTyper}
                       onChange={(value) => onAdressetypeChange(value)}
                     >
                       <HStack gap="space-16">

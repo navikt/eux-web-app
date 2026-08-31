@@ -9,7 +9,8 @@ import {
 import {AnyAction} from "redux";
 import * as types from "../constants/actionTypes";
 import {ActionWithPayload} from "@navikt/fetch";
-import {H001Sed, Kjoenn} from "../declarations/sed";
+import {Kjoenn} from "../declarations/sed";
+import {H001Sed} from "../declarations/h001";
 import _ from "lodash";
 
 

@@ -7,8 +7,6 @@ import {
   F003Sed,
   F026Sed,
   F027Sed,
-  H001Sed,
-  H002Sed,
   S040Sed,
   S046Sed,
   U002Sed,
@@ -20,11 +18,13 @@ import {
   X011Sed,
   X012Sed
 } from 'declarations/sed'
-import { H021Sed } from 'declarations/h021'
-import { H065Sed } from 'declarations/h065'
+import { H001Sed } from 'declarations/h001'
+import { H002Sed } from 'declarations/h002'
 import { H003Sed } from 'declarations/h003'
 import { H005Sed } from 'declarations/h005'
 import { H006Sed } from 'declarations/h006'
+import { H021Sed } from 'declarations/h021'
+import { H065Sed } from 'declarations/h065'
 import { H070Sed } from 'declarations/h070'
 import { H120Sed } from 'declarations/h120'
 import { X002Sed } from 'declarations/x002'

@@ -1,4 +1,5 @@
-import { H001Sed, ReplySed } from 'declarations/sed'
+import { ReplySed } from 'declarations/sed'
+import { H001Sed } from 'declarations/h001'
 import { Validation } from 'declarations/types'
 import { checkLength } from 'utils/validation'
 

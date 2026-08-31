@@ -1,4 +1,5 @@
-import { HSed } from 'declarations/sed'
+import { BaseReplySed } from 'declarations/sed'
+import { PersonMedAdresser } from './h'
 
 // ===== Overførings-destinasjon (Section 4) =====
 
@@ -86,6 +87,8 @@ export interface OverfoeringInfo {
 
 // ===== H065 SED =====
 
-export interface H065Sed extends HSed {
+export interface H065Sed extends BaseReplySed {
+  bruker: PersonMedAdresser
+  ytterligereInfo?: string
   overfoeringInfo?: OverfoeringInfo
 }

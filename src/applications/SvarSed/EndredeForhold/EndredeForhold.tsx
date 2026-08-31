@@ -5,7 +5,8 @@ import { validateEndredeForhold, ValidationEndredeForholdProps } from 'applicati
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import { State } from 'declarations/reducers'
-import { H001Sed, ReplySed, YtterligereInfoType } from 'declarations/sed'
+import { ReplySed } from 'declarations/sed'
+import { H001Sed, YtterligereInfoType } from 'declarations/h001'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { JSX } from 'react';

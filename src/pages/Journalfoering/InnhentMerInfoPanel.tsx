@@ -16,7 +16,7 @@ import {
   sendH001SedInRina,
   updateH001SedInRina
 } from "../../actions/journalfoering";
-import {H001Sed} from "../../declarations/sed";
+import {H001Sed} from "../../declarations/h001";
 import {State} from "../../declarations/reducers";
 
 export interface InnhentMerInfoPanelProps {

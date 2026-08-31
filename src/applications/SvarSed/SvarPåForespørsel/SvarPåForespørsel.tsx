@@ -8,7 +8,7 @@ import {
 } from 'applications/SvarSed/SvarPåForespørsel/validation'
 import TextArea from 'components/Forms/TextArea'
 import { State } from 'declarations/reducers'
-import { H002Sed, H002Svar, HSvarType } from 'declarations/sed'
+import { H002Sed, HSvarType, Svar } from 'declarations/h002'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { useState, JSX } from 'react';
@@ -64,7 +64,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
     const svarChanged: boolean = needle === 'svar'
     const thisSvar = svarChanged ? value : _svar
     if (thisSvar === 'positivt') {
-      const newPositivtSvar: H002Svar = {
+      const newPositivtSvar: Svar = {
         informasjon: (svarChanged ? (replySed as H002Sed)?.negativtSvar?.informasjon : (replySed as H002Sed)?.positivtSvar?.informasjon) ?? '',
         dokument: (svarChanged ? (replySed as H002Sed)?.negativtSvar?.dokument : (replySed as H002Sed)?.positivtSvar?.dokument) ?? '',
         sed: (svarChanged ? (replySed as H002Sed)?.negativtSvar?.sed : (replySed as H002Sed)?.positivtSvar?.sed) ?? ''

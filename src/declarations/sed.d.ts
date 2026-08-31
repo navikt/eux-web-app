@@ -1,4 +1,6 @@
 import { JoarkBrowserItems } from 'declarations/attachments'
+import { H001Sed } from 'declarations/h001'
+import { H002Sed } from 'declarations/h002'
 import { H003Sed } from 'declarations/h003'
 import { H005Sed } from 'declarations/h005'
 import { H006Sed } from 'declarations/h006'
@@ -42,8 +44,6 @@ export type YtelseNavn = 'Barnetrygd' | 'Kontantstøtte' | 'Utvidet barnetrygd'
 
 export type Utbetalingshyppighet = 'Månedlig'| 'Årlig'
 
-export type HSvarType = 'positivt' | 'negativt'
-
 export type BarnEllerFamilie = 'barn' | 'familie'
 
 export type AnmodningSvarType = 'anmodning_om_motregning_per_barn' | 'svar_på_anmodning_om_motregning_per_barn' | 'anmodning_om_motregning_for_hele_familien' | 'svar_på_anmodning_om_motregning_for_hele_familien'
@@ -63,8 +63,6 @@ export type PeriodeInputType = 'simple' | 'withcheckbox'
 export type AnsettelsesType = 'ansettelsesforhold' | 'selvstendig_næringsvirksomhet'
 
 export type KontoType = 'sepa' | 'ordinaer'
-
-export type YtterligereInfoType = 'melding_om_mer_informasjon' | 'admodning_om_mer_informasjon'
 
 export type PeriodeSort = 'time' | 'group'
 
@@ -413,26 +411,6 @@ export interface RefusjonsKrav extends Periode {
   beloep: string
   valuta: string
   ytterligereinformasjon?: string
-}
-
-export interface H001Svar {
-  dokumentasjon: {
-    informasjon: string
-    dokument: string
-    sed: string
-  },
-  adresse: AdresseAnmodning
-}
-
-export interface AdresseAnmodning {
-  adresseTyper?: Array<AdresseType>
-}
-
-export interface H002Svar {
-  informasjon: string
-  dokument: string
-  sed: string
-  grunn?: string
 }
 
 export interface Barnetilhoerighet extends PeriodePeriode {
@@ -884,25 +862,6 @@ export interface U004Sed extends USed {
 
 export interface U017Sed extends U002Sed {
   rettTilYtelse?: RettTilYtelse
-}
-
-export interface HSed extends BaseReplySed {
-  bruker: PersonTypeH
-  ytterligereInfo?: string
-}
-
-export interface H001Sed extends HSed {
-  anmodning?: H001Svar
-  ytterligereInfoType?: YtterligereInfoType
-}
-
-export interface H002Sed extends HSed {
-  vedlagteDokumenttyper: {
-    dokumenttyper: Array<string>
-    andreDokumenttyper: Array<string>
-  }
-  positivtSvar?: H002Svar
-  negativtSvar?: H002Svar
 }
 
 export interface S040Sed extends BaseReplySed {
