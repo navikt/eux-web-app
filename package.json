@@ -73,7 +73,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
-    "@types/bytes": "3.1.5",
+    "@types/bytes": "3.1.6",
     "@types/file-saver": "2.0.7",
     "@types/jest": "28.1.8",
     "@types/lodash": "4.17.25",
