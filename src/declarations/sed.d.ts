@@ -12,6 +12,7 @@ import { X004Sed } from 'declarations/x004'
 import { X007Sed } from 'declarations/x007'
 import { X005Sed } from 'declarations/x005'
 import { X006Sed } from 'declarations/x006'
+import { X013Sed } from 'declarations/x013'
 import { Sak, Sed } from 'declarations/types'
 
 export type AapenPeriodeType = 'ukjent_sluttdato' | 'åpen_sluttdato'

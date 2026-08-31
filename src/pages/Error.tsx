@@ -30,7 +30,6 @@ export const Error = ({ error }: ErrorProps) => {
     } catch (e) {
       // withSources() pulls in source-map which depends on Node's Buffer;
       // fall back to the plain (un-sourced) stack rather than crashing the error page.
-      // eslint-disable-next-line no-console
       console.error('Error rendering stacktrace with sources, falling back', e)
       try {
         return new StackTracey(error)
@@ -40,7 +39,6 @@ export const Error = ({ error }: ErrorProps) => {
     }
   })()
   // Surface the original error in the console so the masked cause is visible.
-  // eslint-disable-next-line no-console
   console.error('ErrorBoundary caught:', error)
   const msg = convert.toHtml(error.message)
 

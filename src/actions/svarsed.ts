@@ -173,7 +173,7 @@ export const getPreviewFile = (rinaSakId: string, replySed: ReplySed): ActionWit
       success: types.SVARSED_PREVIEW_FILE_SUCCESS,
       failure: types.SVARSED_PREVIEW_FILE_FAILURE
     },
-    body: replySed
+    body: stripInternalProps(_.cloneDeep(replySed))
   })
 }
 

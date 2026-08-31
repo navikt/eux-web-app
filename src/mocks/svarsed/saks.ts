@@ -17,6 +17,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: 'abvcdefghijklm',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
+      startDato: '2020-01-01',
       erSakseier: true,
       sensitiv: true,
       navinstitusjon: {
@@ -72,6 +73,15 @@ export default (saksnummer: string, type: string) => {
           sistEndretDato: '2025-05-20',
           svarsedType: 'X004',
           sedHandlinger: ['X004', 'Read']
+        }, {
+          sedTittel: 'Klargjør',
+          sedType: 'X012',
+          sedId: '1111111111111111111111111111111a',
+          sedUrl: 'https://rina-ss1-q.adeo.no/portal_new/case-management/1441020',
+          status: 'received',
+          sistEndretDato: '2022-07-18',
+          svarsedType: 'X013',
+          sedHandlinger: ['X013', 'Read']
         }, {
           sedTittel: 'Påminnelse',
           sedType: 'X009',
@@ -236,6 +246,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: 'abvcdefghijklm',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
+      startDato: '2020-01-01',
       erSakseier: true,
       sensitiv: true,
       navinstitusjon: {
@@ -429,6 +440,7 @@ export default (saksnummer: string, type: string) => {
       sakId: '1166593',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
+      startDato: '2020-01-01',
       erSakseier: false,
       sensitiv: false,
       navinstitusjon: {
@@ -507,6 +519,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: "2663a13d3fa443ca8970be821c7ba2cc",
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
       sistEndretDato: '2021-04-07',
+      startDato: '2020-01-01',
       erSakseier: true,
       sensitiv: false,
       sakseier: {
@@ -635,6 +648,7 @@ export default (saksnummer: string, type: string) => {
       sakId: '398792',
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398792?rightView=filtering',
       sistEndretDato: '2021-04-07',
+      startDato: '2020-01-01',
       sensitiv: false,
       navinstitusjon: {
         id: "NO:NAVAT07",
@@ -695,6 +709,7 @@ export default (saksnummer: string, type: string) => {
         "fnr": "12345678901"
       },
       "sistEndretDato": "2022-10-03",
+      "startDato": "2020-01-01",
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -792,6 +807,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: 'abvcdefghijklm',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
+      startDato: '2020-01-01',
       erSakseier: true,
       sensitiv: true,
       navinstitusjon: {
@@ -857,6 +873,7 @@ export default (saksnummer: string, type: string) => {
       "internasjonalSakId": "798934cebe4d413b9a93a7a572345ffd",
       "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1451972",
       "sistEndretDato": "2025-04-14",
+      "startDato": "2020-01-01",
       "motparter": [
         {
           "formatertNavn": "NAV ACC 05 (Norge)",
@@ -916,6 +933,7 @@ export default (saksnummer: string, type: string) => {
       "internasjonalSakId": "e42581455ddd4e09802715ddbb32d3ab",
       "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1452402",
       "sistEndretDato": "2025-06-23",
+      "startDato": "2020-01-01",
       "motparter": [
         {
           "formatertNavn": "NAV ACC 05 (Norge)",
@@ -975,6 +993,7 @@ export default (saksnummer: string, type: string) => {
       "internasjonalSakId": "526fdb2aa00142fda4e24bd64839e2de",
       "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1451323",
       "sistEndretDato": "2025-07-30",
+      "startDato": "2020-01-01",
       "motparter": [
         {
           "formatertNavn": "NAV ACC 05 (NO)",

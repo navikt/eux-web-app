@@ -76,6 +76,8 @@ export const isX011Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean
 
 export const isX012Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X012'
 
+export const isX013Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X013'
+
 export const getSedCategory = (replySed: ReplySed | PDU1 | null | undefined): string => (replySed as ReplySed)?.sedType?.substring(0, 1) ?? ''
 
 export const isPreviewableSed = (sedType: string): boolean =>
