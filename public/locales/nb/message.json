@@ -75,6 +75,7 @@
   "warning-case-has-received-sent-cases": "Det er ikke lov å slette sak når vi har enten mottatt eller sendt SED i saken",
   "warning-max-1-utenlandsk-pin": "Maks 1 utenlandsk pin til H001",
   "warning-no-address": "Ingen adresser er registrert",
+  "warning-no-aktivitet": "Ingen aktiviteter er registrert",
   "warning-no-arbeidsgiver-found": "Ingen arbeidsperioder funnet",
   "warning-no-attachments": "Ingen vedlegg er valgt",
   "warning-no-barn": "Ingen barn",
