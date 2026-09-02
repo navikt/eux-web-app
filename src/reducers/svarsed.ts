@@ -185,8 +185,18 @@ const svarsedReducer = (
       // trim fnr - might contain whitespace if entered in RINA
       let bruker = trimPin(payload.bruker)
       let lokaleSakIder;
+      let lokaleSaksnumre;
 
-      if(isUSed(payload)){
+      if (payload.sedType === 'U013') {
+        lokaleSaksnumre = payload.lokaleSaksnumre ? payload.lokaleSaksnumre : []
+        const idParts = state.currentSak?.navinstitusjon.id.split(":")
+        lokaleSaksnumre.push({
+          saksnummer: state.currentSak?.fagsak?._id,
+          institusjonsnavn: state.currentSak?.navinstitusjon.navn,
+          institusjonsid: state.currentSak?.navinstitusjon.id,
+          landkode: idParts ? idParts[0] : ""
+        })
+      } else if (isUSed(payload)) {
         //Add Norsk Saksnummer for U-Seds - TEN-24
         lokaleSakIder = payload.lokaleSakIder ? payload.lokaleSakIder : []
         const idParts = state.currentSak?.navinstitusjon.id.split(":")
@@ -202,6 +212,7 @@ const svarsedReducer = (
         ...payload,
         bruker,
         ...(lokaleSakIder && { lokaleSakIder }),
+        ...(lokaleSaksnumre && { lokaleSaksnumre }),
         sak: (action as ActionWithPayload).context.sak,
         sed: undefined // so we can signal this SED as a SED that needs to be created, not updated
       }
