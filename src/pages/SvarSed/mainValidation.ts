@@ -64,6 +64,10 @@ import {validateKravOmRefusjon, validateRefusjon, ValidationKravOmRefusjonProps,
 import { validateMotregninger, ValidationMotregningerProps } from 'applications/SvarSed/Motregninger/validation'
 import { validateNasjonaliteter, ValidationNasjonaliteterProps } from 'applications/SvarSed/Nasjonaliteter/validation'
 import {
+  validateLokaleSaksnumre,
+  ValidationLokaleSaksnumreProps
+} from 'applications/SvarSed/LokaleSaksnumre/validation'
+import {
   validatePerioderDagpenger,
   ValidatePerioderDagpengerProps
 } from 'applications/SvarSed/PeriodeForDagpenger/validation'
@@ -406,6 +410,9 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (replySed.sedType === 'U013') {
+      hasErrors.push(performValidation<ValidationLokaleSaksnumreProps>(v, `svarsed-${personID}-lokalesaksnumre`, validateLokaleSaksnumre, {
+        lokaleSaksnumre: (replySed as U013Sed).lokaleSaksnumre
+      }, true))
       const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
       hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
         statsborgerskaper, personName

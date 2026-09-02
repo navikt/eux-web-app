@@ -1,13 +1,23 @@
 import { PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons'
+import { resetValidation, setValidation } from 'actions/validation'
 import { Box, Button, Heading, HGrid, HStack, VStack } from '@navikt/ds-react'
-import { MainFormProps } from 'applications/SvarSed/MainForm'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import CountryDropdown from 'components/CountryDropdown/CountryDropdown'
 import Input from 'components/Forms/Input'
 import { Country } from 'components/land-verktoy'
+import { State } from 'declarations/reducers'
 import { LokaltSaksnummer, U013Sed } from 'declarations/u013'
+import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
 import React, { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAppDispatch } from 'store'
+import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
+import { validateLokaleSaksnumre, ValidationLokaleSaksnumreProps } from './validation'
+
+const mapState = (state: State): MainFormSelector => ({
+  validation: state.validation.status
+})
 
 const LokaleSaksnumre: React.FC<MainFormProps> = ({
   label,
@@ -17,8 +27,17 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const { validation } = useAppSelector(mapState)
   const namespace = `${parentNamespace}-bruker-lokalesaksnumre`
   const lokaleSaksnumre = (replySed as U013Sed).lokaleSaksnumre ?? []
+
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationLokaleSaksnumreProps>(
+      clonedValidation, namespace, validateLokaleSaksnumre, { lokaleSaksnumre }, true
+    )
+    dispatch(setValidation(clonedValidation))
+  })
 
   const updateSaksnummer = (
     index: number,
@@ -26,6 +45,7 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
     value?: string
   ) => {
     dispatch(updateReplySed(`lokaleSaksnumre[${index}].${field}`, value))
+    dispatch(resetValidation(`${namespace}-${index}-${field}`))
   }
 
   const leggTilSaksnummer = () => {
@@ -47,6 +67,7 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
                 <CountryDropdown
                   closeMenuOnSelect
                   countryCodeListName="euEftaLand"
+                  error={validation[`${namespace}-${index}-landkode`]?.feilmelding}
                   id={`${namespace}-${index}-landkode`}
                   label={t('label:land')}
                   menuPortalTarget={document.body}
@@ -57,7 +78,8 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
                   namespace={`${namespace}-${index}`}
                   id="saksnummer"
                   label={t('label:saksnummer')}
-                  error={undefined}
+                  error={validation[`${namespace}-${index}-saksnummer`]?.feilmelding}
+                  required
                   onChanged={(value: string) => updateSaksnummer(index, 'saksnummer', value.trim() || undefined)}
                   value={lokaltSaksnummer.saksnummer}
                 />
@@ -65,7 +87,8 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
                   namespace={`${namespace}-${index}`}
                   id="institusjonsid"
                   label={t('label:institusjonens-id')}
-                  error={undefined}
+                  error={validation[`${namespace}-${index}-institusjonsid`]?.feilmelding}
+                  required
                   onChanged={(value: string) => updateSaksnummer(index, 'institusjonsid', value.trim() || undefined)}
                   value={lokaltSaksnummer.institusjonsid}
                 />
@@ -73,7 +96,8 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
                   namespace={`${namespace}-${index}`}
                   id="institusjonsnavn"
                   label={t('label:institusjonens-navn')}
-                  error={undefined}
+                  error={validation[`${namespace}-${index}-institusjonsnavn`]?.feilmelding}
+                  required
                   onChanged={(value: string) => updateSaksnummer(index, 'institusjonsnavn', value.trim() || undefined)}
                   value={lokaltSaksnummer.institusjonsnavn}
                 />
