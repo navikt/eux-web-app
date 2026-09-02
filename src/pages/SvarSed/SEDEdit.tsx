@@ -450,10 +450,10 @@ const SEDEdit = (): JSX.Element => {
                 type='twolevel'
                 namespace='svarsed'
                 loggingNamespace='personmanager'
-                firstForm={isXSed(replySed) ? 'personlight' : isH021Sed(replySed) ? 'personopplysningerH021' : isU013Sed(replySed) ? 'personopplysningerU013' : 'personopplysninger'}
+                firstForm={isXSed(replySed) ? 'personlight' : isH021Sed(replySed) ? 'personopplysningerH021' : 'personopplysninger'}
                 deselectedMenuOption={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menuOption : undefined}
                 forms={[
-                  { label: t('el:option-mainform-personopplysninger-u013'), value: 'personopplysningerU013', component: PersonOpplysninger, type: 'U013' },
+                  { label: t('el:option-mainform-personopplysninger-u013'), value: 'personopplysninger', component: PersonOpplysninger, type: 'U013' },
                   { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H', 'S'], adult: true, barn: true, condition: () => !isH021Sed(replySed) && !isU013Sed(replySed) },
                   { label: t('el:option-mainform-personopplyninger'), value: 'personopplysningerH021', component: PersonOpplysninger, type: 'H021', options: { showFoedested: false, showUtenlandskPin: false, showH021Pins: true } },
                   { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
