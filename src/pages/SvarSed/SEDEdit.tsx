@@ -63,6 +63,7 @@ import DokumenterVedlagt from 'applications/SvarSed/DokumenterVedlagt/Dokumenter
 import MeldingOmDoedsfall from 'applications/SvarSed/MeldingOmDoedsfall/MeldingOmDoedsfall'
 import VedlagtDokumentasjon from 'applications/SvarSed/VedlagtDokumentasjon/VedlagtDokumentasjon'
 import InformasjonDetAnmodesOm from 'applications/SvarSed/InformasjonDetAnmodesOm/InformasjonDetAnmodesOm'
+import LokaleSaksnumre from 'applications/SvarSed/LokaleSaksnumre/LokaleSaksnumre'
 import RegistrertPerson from 'applications/SvarSed/RegistrertPerson/RegistrertPerson'
 import FastslaaBosted from 'applications/SvarSed/FastslaaBosted/FastslaaBosted'
 import PositivtSvar from 'applications/SvarSed/PositivtSvar/PositivtSvar'
@@ -494,6 +495,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-fastslaabosted'), value: 'fastslaabosted', component: FastslaaBosted, type: 'H005' },
                   { label: t('el:option-mainform-positivtsvar'), value: 'positivtsvar', component: PositivtSvar, type: 'H006' },
                   { label: t('el:option-mainform-negativtsvar'), value: 'negativtsvar', component: NegativtSvar, type: 'H006' },
+                  { label: t('el:option-mainform-lokalesaksnumre'), value: 'lokalesaksnumre', component: LokaleSaksnumre, type: 'U013' },
                   { label: t('el:option-mainform-registrertperson'), value: 'registrertperson', component: RegistrertPerson, type: 'U013' },
                   { label: t('el:option-mainform-beroertytelse'), value: 'beroertytelse', component: BeroertYtelse, type: 'H120' },
                   { label: t('el:option-mainform-kravetsart'), value: 'kravetsart', component: KravetsArt, type: 'H120' },
