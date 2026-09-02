@@ -1,5 +1,5 @@
 import { PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons'
-import { Box, Button, Heading, HGrid, VStack } from '@navikt/ds-react'
+import { Box, Button, Heading, HGrid, HStack, VStack } from '@navikt/ds-react'
 import { MainFormProps } from 'applications/SvarSed/MainForm'
 import CountryDropdown from 'components/CountryDropdown/CountryDropdown'
 import Input from 'components/Forms/Input'
@@ -78,15 +78,19 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
                   value={lokaltSaksnummer.institusjonsnavn}
                 />
               </HGrid>
-              <Button size="small" variant="tertiary" onClick={() => fjernSaksnummer(index)} icon={<TrashIcon />}>
-                {t('el:button-remove')}
-              </Button>
+              <HStack justify="end">
+                <Button variant="tertiary" onClick={() => fjernSaksnummer(index)} icon={<TrashIcon />}>
+                  {t('el:button-remove')}
+                </Button>
+              </HStack>
             </VStack>
           </Box>
         ))}
-        <Button size="small" variant="tertiary" onClick={leggTilSaksnummer} icon={<PlusCircleIcon />}>
-          {t('el:button-add-new-x', { x: t('label:lokalt-saksnummer').toLowerCase() })}
-        </Button>
+        <HStack>
+          <Button variant="tertiary" onClick={leggTilSaksnummer} icon={<PlusCircleIcon />}>
+            {t('el:button-add-new-x', { x: t('label:lokalt-saksnummer').toLowerCase() })}
+          </Button>
+        </HStack>
       </VStack>
     </Box>
   )
