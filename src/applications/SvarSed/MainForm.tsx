@@ -66,6 +66,7 @@ export interface MainFormSelector {
 
 export interface Form extends Option {
   component: any
+  validationValue?: string
   type?: string | Array<string>
   barn?: boolean
   family?: boolean
@@ -434,7 +435,8 @@ const MainForm = <T extends StorageTypes>({
           })
           .filter(o => _.isFunction(o.condition) ? o.condition() : true)
           .map((o, i) => {
-            const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + personId + '-' + o.value))
+            const validationValue = o.validationValue ?? o.value
+            const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + personId + '-' + validationValue))
             const isValidated = validationKeys.length > 0
             const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
             return (
