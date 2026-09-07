@@ -30,7 +30,7 @@
   },
   "registrertPerson": {
     "overholdtProsedyrer": "nei",
-    "somRapportertIU10": "ja",
+    "rapportertIU010": "ja",
     "ytterligereInfo": "Ytterligere informasjon"
   }
 }

@@ -3,7 +3,7 @@ import { BaseReplySed, JaNei } from 'declarations/sed'
 
 export interface RegistrertPerson {
   overholdtProsedyrer?: JaNei
-  somRapportertIU10?: JaNei
+  rapportertIU010?: JaNei
   ytterligereInfo?: string
 }
 

@@ -48,7 +48,7 @@ const RegistrertPerson: React.FC<MainFormProps> = ({
   const setOverholdtProsedyrer = (value: JaNei) => {
     setField('overholdtProsedyrer', value)
     if (value === 'ja') {
-      setField('somRapportertIU10', undefined)
+      setField('rapportertIU010', undefined)
     }
   }
 
@@ -68,11 +68,11 @@ const RegistrertPerson: React.FC<MainFormProps> = ({
         </RadioGroup>
         {registrertPerson?.overholdtProsedyrer === 'nei' && (
           <RadioGroup
-            value={registrertPerson.somRapportertIU10 ?? ''}
-            id={`${namespace}-somRapportertIU10`}
+            value={registrertPerson.rapportertIU010 ?? ''}
+            id={`${namespace}-rapportertIU010`}
             legend={t('label:u013-som-rapportert-i-u010')}
-            error={validation[`${namespace}-somRapportertIU10`]?.feilmelding}
-            onChange={(value: string) => setField('somRapportertIU10', value as JaNei)}
+            error={validation[`${namespace}-rapportertIU010`]?.feilmelding}
+            onChange={(value: string) => setField('rapportertIU010', value as JaNei)}
           >
             <Radio value="ja">{t('label:ja')}</Radio>
             <Radio value="nei">{t('label:nei')}</Radio>

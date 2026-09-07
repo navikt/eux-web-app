@@ -31,8 +31,8 @@ export const validateRegistrertPerson = (
 
   if (registrertPerson?.overholdtProsedyrer === 'nei') {
     hasErrors.push(checkIfNotEmpty(v, {
-      needle: registrertPerson.somRapportertIU10,
-      id: `${namespace}-somRapportertIU10`,
+      needle: registrertPerson.rapportertIU010,
+      id: `${namespace}-rapportertIU010`,
       message: 'validation:du-maa-fylle-ut',
       extra: { type: i18n.t('label:u013-som-rapportert-i-u010-field') }
     }))
