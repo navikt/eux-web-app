@@ -244,6 +244,14 @@ export const createFSed = (
   payload: { sedType, sak }
 })
 
+export const createUSed = (
+  sedType: string,
+  sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_USED_CREATE,
+  payload: { sedType, sak }
+})
+
 export const createF002Sed = (
   connectedSed: Sed,
   sedType: string,

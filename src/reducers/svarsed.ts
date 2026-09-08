@@ -467,6 +467,17 @@ const svarsedReducer = (
       }
     }
 
+    case types.SVARSED_USED_CREATE: {
+      const sedType = (action as ActionWithPayload).payload.sedType
+      const sak = (action as ActionWithPayload).payload.sak
+      const replySed: ReplySed = createReplySedTemplate<ReplySed>(sak, sedType)
+      return {
+        ...state,
+        replySed
+      }
+    }
+
+
     case types.SVARSED_F002SED_CREATE_REQUEST: {
       return {
         ...state,
