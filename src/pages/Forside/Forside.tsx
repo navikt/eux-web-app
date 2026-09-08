@@ -10,6 +10,7 @@ import {useAppDispatch, useAppSelector} from 'store'
 import OpprettSak from 'assets/icons/OpprettSak.svg?react'
 import Dokument from 'assets/icons/Dokument.svg?react'
 import Binders from 'assets/icons/Binders.svg?react'
+import { ArrowsCirclepathIcon } from '@navikt/aksel-icons';
 import SEDQuery from "../../applications/SvarSed/SEDQuery/SEDQuery";
 import {appReset} from "../../actions/app";
 import {querySaks, setCurrentSak} from "../../actions/svarsed";
@@ -26,6 +27,7 @@ interface ForsideSelector {
   alertType: string | undefined
   saks: Saks | null | undefined
   saksbehandler: Saksbehandler | undefined
+  saksbehandlerBucer: Array<string> | undefined | null
 }
 
 const mapState = (state: State): ForsideSelector => ({
@@ -35,6 +37,7 @@ const mapState = (state: State): ForsideSelector => ({
   alertType: state.alert.type,
   saks: state.svarsed.saks,
   saksbehandler: state.app.saksbehandler,
+  saksbehandlerBucer: state.app.saksbehandlerBucer
 })
 
 const Forside: React.FC = (): JSX.Element => {
@@ -42,7 +45,7 @@ const Forside: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
-  const { saksbehandler, featureToggles, queryingSaks, alertMessage, alertType, saks}: ForsideSelector = useAppSelector(mapState)
+  const { saksbehandler, saksbehandlerBucer, featureToggles, queryingSaks, alertMessage, alertType, saks}: ForsideSelector = useAppSelector(mapState)
   const params: URLSearchParams = new URLSearchParams(window.location.search)
   const [_query, _setQuery] = useState<string | null>(params.get('q'))
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
@@ -148,6 +151,14 @@ const Forside: React.FC = (): JSX.Element => {
                     </div>
                   </Link>
                 )}
+                {saksbehandlerBucer && saksbehandlerBucer.indexOf("FB_") >= 0 &&
+                  <Link className={styles.styledLink} onClick={() => navigate({ pathname: '/aarligkontroll', search: window.location.search })}>
+                    <div className={styles.square}>
+                      <ArrowsCirclepathIcon className={styles.aarligKontrollIcon}/>
+                      {t('app:page-title-aarlig-kontroll')}
+                    </div>
+                  </Link>
+                }
               </HStack>
             </VStack>
           </Box>
