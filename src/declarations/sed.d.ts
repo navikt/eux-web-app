@@ -8,6 +8,7 @@ import { H021Sed } from 'declarations/h021'
 import { H065Sed } from 'declarations/h065'
 import { H070Sed } from 'declarations/h070'
 import { H120Sed } from 'declarations/h120'
+import { U013Sed } from 'declarations/u013'
 import { X002Sed } from 'declarations/x002'
 import { X003Sed } from 'declarations/x003'
 import { X004Sed } from 'declarations/x004'
@@ -32,9 +33,9 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjem' | 'mobil'
 
-export type ReplySed = F001Sed | F002Sed | F003Sed | F026Sed | F027Sed | H001Sed | H002Sed | H003Sed | H005Sed | H006Sed | H021Sed | H065Sed | H070Sed | H120Sed | S040Sed | U002Sed | U004Sed | U017Sed | X002Sed | X003Sed | X004Sed | X005Sed | X006Sed | X007Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed | X013Sed
+export type ReplySed = F001Sed | F002Sed | F003Sed | F026Sed | F027Sed | H001Sed | H002Sed | H003Sed | H005Sed | H006Sed | H021Sed | H065Sed | H070Sed | H120Sed | S040Sed | U002Sed | U004Sed | U013Sed | U017Sed | X002Sed | X003Sed | X004Sed | X005Sed | X006Sed | X007Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed | X013Sed
 
-export type SedTypes = 'F001' | 'F002' | 'F003' | 'F026' | 'F027' |'H001' | 'H002' | 'H003' | 'H005' | 'H006' | 'H021' | 'H065' | 'H070' | 'H120' | 'S040'| 'S046'| 'U002' | 'U004' | 'U017' | 'X002' | 'X003' | 'X004' | 'X005' | 'X006' | 'X007' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012' | 'X013'
+export type SedTypes = 'F001' | 'F002' | 'F003' | 'F026' | 'F027' |'H001' | 'H002' | 'H003' | 'H005' | 'H006' | 'H021' | 'H065' | 'H070' | 'H120' | 'S040'| 'S046'| 'U002' | 'U004' | 'U013' | 'U017' | 'X002' | 'X003' | 'X004' | 'X005' | 'X006' | 'X007' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012' | 'X013'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -197,6 +198,7 @@ export interface PersonInfo {
   foedselsdato?: string
   statsborgerskap?: Array<Statsborgerskap>
   adressebeskyttelse?: string
+  adressebeskyttelsesgrad?: string
   pin?: Array<Pin>
   pinMangler?: {
     foedested: Foedested

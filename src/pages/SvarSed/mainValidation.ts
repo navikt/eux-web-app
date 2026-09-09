@@ -64,6 +64,10 @@ import {validateKravOmRefusjon, validateRefusjon, ValidationKravOmRefusjonProps,
 import { validateMotregninger, ValidationMotregningerProps } from 'applications/SvarSed/Motregninger/validation'
 import { validateNasjonaliteter, ValidationNasjonaliteterProps } from 'applications/SvarSed/Nasjonaliteter/validation'
 import {
+  validateLokaleSaksnumre,
+  ValidationLokaleSaksnumreProps
+} from 'applications/SvarSed/LokaleSaksnumre/validation'
+import {
   validatePerioderDagpenger,
   ValidatePerioderDagpengerProps
 } from 'applications/SvarSed/PeriodeForDagpenger/validation'
@@ -122,6 +126,7 @@ import {
 } from 'declarations/sed'
 import { H001Sed } from 'declarations/h001'
 import { H120Sed } from 'declarations/h120'
+import { U013Sed } from 'declarations/u013'
 import { X002Sed } from 'declarations/x002'
 import { X003Sed } from 'declarations/x003'
 import { X004Sed } from 'declarations/x004'
@@ -191,6 +196,10 @@ import {
 } from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
 import {validateInformasjonOmUtbetaling, ValidationInformasjonOmUtbetalingProps} from "../../applications/SvarSed/InformasjonOmUtbetaling/validation";
 import {validatePerioderMedRettTilYtelser, ValidationPerioderMedRettTilYtelserProps} from "../../applications/SvarSed/PerioderMedRettTilYtelser/validation";
+import {
+  validateRegistrertPerson,
+  ValidationRegistrertPersonProps
+} from 'applications/SvarSed/RegistrertPerson/validation'
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -395,9 +404,23 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     hasErrors.push(performValidation<ValidationPersonopplysningerProps>(v, `svarsed-${personID}-personopplysninger`, validatePersonopplysninger, {
       personInfo, personName
     }, true))
-    hasErrors.push(performValidation<ValidationReferanseperiodeProps>(v, `svarsed-${personID}-referanseperiode`, validateReferanseperiode, {
-      anmodningsperiode: (replySed as USed)?.anmodningsperiode, personName
-    }, true))
+    if (replySed.sedType !== 'U013') {
+      hasErrors.push(performValidation<ValidationReferanseperiodeProps>(v, `svarsed-${personID}-referanseperiode`, validateReferanseperiode, {
+        anmodningsperiode: (replySed as USed)?.anmodningsperiode, personName
+      }, true))
+    }
+    if (replySed.sedType === 'U013') {
+      hasErrors.push(performValidation<ValidationLokaleSaksnumreProps>(v, `svarsed-${personID}-lokalesaksnumre`, validateLokaleSaksnumre, {
+        lokaleSaksnumre: (replySed as U013Sed).lokaleSaksnumre
+      }, true))
+      const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
+      hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
+        statsborgerskaper, personName
+      }, true))
+      hasErrors.push(performValidation<ValidationRegistrertPersonProps>(v, `svarsed-${personID}-registrertperson`, validateRegistrertPerson, {
+        replySed: replySed as U013Sed
+      }, true))
+    }
     if (replySed.sedType === 'U002' || replySed.sedType === 'U017') {
       hasErrors.push(performValidation<ValidateForsikringProps>(v, `svarsed-${personID}-forsikring`, validateForsikring, {
         replySed: (replySed as USed), personName

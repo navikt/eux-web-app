@@ -41,6 +41,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
 
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.landkode === 'NOR')
   const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.landkode !== 'NOR')
+  const adressebeskyttelsesgrad = personInfo?.adressebeskyttelsesgrad ?? personInfo?.adressebeskyttelse
 
   const [gradering, setGradering] = useState<string | null>(null)
 
@@ -237,9 +238,9 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               {t('label:sensitivPerson', {gradering: gradering})}
             </Alert>
           }
-          {personInfo?.adressebeskyttelse && personInfo?.adressebeskyttelse !== "UGRADERT" && !gradering &&
+          {adressebeskyttelsesgrad && adressebeskyttelsesgrad !== "UGRADERT" && !gradering &&
             <Alert size="small" variant='warning'>
-              {t('label:sensitivPerson', {gradering: personInfo?.adressebeskyttelse})}
+              {t('label:sensitivPerson', {gradering: adressebeskyttelsesgrad})}
             </Alert>
           }
           <HGrid columns={3} gap="space-16" align="start">
