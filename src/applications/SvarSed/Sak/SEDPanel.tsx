@@ -38,8 +38,11 @@ interface SEDPanelSelector {
 }
 
 interface SEDPanelProps {
-  currentSak: Sak
+  currentSak?: Sak
   sed: Sed
+  type?: 'aarligKontroll' | 'aarligKontrollList'
+  onSelect?: () => void
+  selected?: boolean
 }
 
 const mapState = (state: State): SEDPanelSelector => ({
@@ -52,7 +55,10 @@ const mapState = (state: State): SEDPanelSelector => ({
 
 const SEDPanel = ({
   currentSak,
-  sed
+  sed,
+  type,
+  onSelect,
+  selected = false
 }: SEDPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -104,7 +110,7 @@ const SEDPanel = ({
 
   const downloadPDF = () => {
     setIsDownloadingPDF(true)
-    dispatch(previewSed(sed.sedId, currentSak.sakId))
+    dispatch(previewSed(sed.sedId, currentSak!.sakId))
   }
 
   // Handle PDF download when preview file is available
@@ -160,13 +166,13 @@ const SEDPanel = ({
       closeButton: true,
       modalContent: (
         <div style={{ cursor: 'pointer' }}>
-          <AttachmentsFromRinaTable sedId={sed.sedId} rinaSakId={currentSak.sakId} attachmentsFromRina={sed.vedlegg} showHeader={true} hideActions={true}/>
+          <AttachmentsFromRinaTable sedId={sed.sedId} rinaSakId={currentSak!.sakId} attachmentsFromRina={sed.vedlegg} showHeader={true} hideActions={true}/>
         </div>
       )
     })
   }
 
-  const hasIkkeJournalfoerteSed = !!currentSak.ikkeJournalfoerteSed?.length
+  const hasIkkeJournalfoerteSed = !!currentSak?.ikkeJournalfoerteSed?.length
   const showEditButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && sed.status === 'new' && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
   const showUpdateButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active') && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
   const showDeleteButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Delete') >= 0) && sed.status === 'new' && ALLOWED_SED_HANDLINGER.includes("Delete")
@@ -179,8 +185,11 @@ const SEDPanel = ({
 
   const hasSedHandlinger = sed.sedHandlinger && sed.sedHandlinger.length > 0
   const sedHandlingerRINA = sed.sedHandlinger?.filter((h) => !ALLOWED_SED_HANDLINGER.includes(h))
+  const isAarligKontroll = type === 'aarligKontroll'
+  const isAarligKontrollList = type === 'aarligKontrollList'
+  const isAarligKontrollMode = isAarligKontroll || isAarligKontrollList
 
-  const currentFagsak = _.cloneDeep(currentSak.fagsak)
+  const currentFagsak = _.cloneDeep(currentSak?.fagsak)
   delete currentFagsak?._id
   const hasDeviatedFagsak = (
     sed.fagsak?.fnr !== currentFagsak?.fnr ||
@@ -191,7 +200,7 @@ const SEDPanel = ({
     <Box
       borderWidth="1"
       borderRadius="2"
-      borderColor="neutral"
+      borderColor={selected ? 'success' : 'neutral'}
       padding="space-16"
       background="default"
       className={classNames(styles.sedBox, {
@@ -255,52 +264,68 @@ const SEDPanel = ({
             <Heading size='small'>
               {sed.sedType} - {sed.sedTittel}
             </Heading>
-            <PreviewSED
-              short
-              size='small'
-              rinaSakId={currentSak.sakId}
-              sedId={sed.sedId}
-              disabled={!hasSedHandlinger}
-            />
-            <Button
-              variant='tertiary'
-              size='small'
-              disabled={!hasSedHandlinger || isDownloadingPDF}
-              onClick={downloadPDF}
-              icon={<DownloadIcon />}
-              loading={isDownloadingPDF}
-              title={t('label:last-ned-pdf')}
-            >
-            </Button>
-            {sed.vedlegg && sed.vedlegg.length > 0 && (
-              <div className="aksel-button aksel-button--tertiary aksel-button--small aksel-button--icon-only">
-                <Button className={styles.attachmentButton} variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
-                  <PaperclipIcon className={styles.attachmentIcon}/><span>({sed?.vedlegg?.length})</span>
+            {!isAarligKontrollMode && (
+              <>
+                <PreviewSED
+                  short
+                  size='small'
+                  rinaSakId={currentSak!.sakId}
+                  sedId={sed.sedId}
+                  disabled={!hasSedHandlinger}
+                />
+                <Button
+                  variant='tertiary'
+                  size='small'
+                  disabled={!hasSedHandlinger || isDownloadingPDF}
+                  onClick={downloadPDF}
+                  icon={<DownloadIcon />}
+                  loading={isDownloadingPDF}
+                  title={t('label:last-ned-pdf')}
+                >
                 </Button>
-              </div>
+                {sed.vedlegg && sed.vedlegg.length > 0 && (
+                  <div className="aksel-button aksel-button--tertiary aksel-button--small aksel-button--icon-only">
+                    <Button className={styles.attachmentButton} variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
+                      <PaperclipIcon className={styles.attachmentIcon}/><span>({sed?.vedlegg?.length})</span>
+                    </Button>
+                  </div>
+                )}
+                {sedHandlingerRINA && sedHandlingerRINA.length > 0 &&
+                  <HelpText className={styles.myHelpText} title="Handlinger tilgjengelig i RINA" placement={"right"} wrapperClassName="aksel-button aksel-button--tertiary aksel-button--small aksel-button--icon-only">
+                    <Heading size="xsmall">Handlinger tilgjengelig i RINA</Heading>
+                    <ul>
+                      {sedHandlingerRINA.map((sedhandling) => {
+                        return (
+                          <li>{t('sedhandlinger:' + sedhandling, t('sedhandlinger:besvar-med', {SED: sedhandling}))}</li>
+                        )
+                      })}
+                    </ul>
+                  </HelpText>
+                }
+              </>
             )}
-            {sedHandlingerRINA && sedHandlingerRINA.length > 0 &&
-              <HelpText className={styles.myHelpText} title="Handlinger tilgjengelig i RINA" placement={"right"} wrapperClassName="aksel-button aksel-button--tertiary aksel-button--small aksel-button--icon-only">
-                <Heading size="xsmall">Handlinger tilgjengelig i RINA</Heading>
-                <ul>
-                  {sedHandlingerRINA.map((sedhandling) => {
-                    return (
-                      <li>{t('sedhandlinger:' + sedhandling, t('sedhandlinger:besvar-med', {SED: sedhandling}))}</li>
-                    )
-                  })}
-                </ul>
-              </HelpText>
-            }
           </HStack>
 
           <HStack gap="space-8">
+            {isAarligKontroll && (
+              <Button variant="primary">
+                Kopier for årlig kontroll
+              </Button>
+            )}
+            {isAarligKontrollList && (
+              <Button variant={selected ? 'secondary' : 'primary'} disabled={selected} onClick={onSelect}>
+                {selected ? 'Valgt' : 'Velg'}
+              </Button>
+            )}
+            {!isAarligKontrollMode && (
+              <>
             {showEditButton && (
               <>
                 <Button
                   variant='secondary'
                   disabled={_editingSed}
                   onClick={(e: any) => {
-                    onEditingSedClick(sed, currentSak)
+                    onEditingSedClick(sed, currentSak!)
                   }}
                 >
                   {_editingSed
@@ -320,7 +345,7 @@ const SEDPanel = ({
                   variant='secondary'
                   disabled={_updatingSed}
                   onClick={(e: any) => {
-                    onUpdatingSedClick(sed, currentSak)
+                    onUpdatingSedClick(sed, currentSak!)
                   }}
                 >
                   {_updatingSed
@@ -340,7 +365,7 @@ const SEDPanel = ({
                   variant='secondary'
                   disabled={_deletingSed}
                   onClick={(e: any) => {
-                    onDeleteSedClick(currentSak.sakId, sed.sedId, sed.sedType)
+                    onDeleteSedClick(currentSak!.sakId, sed.sedId, sed.sedType)
                   }}
                 >
                   {_deletingSed
@@ -360,7 +385,7 @@ const SEDPanel = ({
                   variant='secondary'
                   disabled={_invalidatingSed}
                   onClick={(e: any) => {
-                    onInvalidatingSedClick(sed, currentSak)
+                    onInvalidatingSedClick(sed, currentSak!)
                   }}
                 >
                   {_invalidatingSed
@@ -380,7 +405,7 @@ const SEDPanel = ({
                   variant='secondary'
                   disabled={_rejectingSed}
                   onClick={(e: any) => {
-                    onRejectingSedClick(sed, currentSak)
+                    onRejectingSedClick(sed, currentSak!)
                   }}
                 >
                   {_rejectingSed
@@ -400,7 +425,7 @@ const SEDPanel = ({
                   variant='secondary'
                   disabled={_clarifyingSed}
                   onClick={(e: any) => {
-                    onClarifyingSedClick(sed, currentSak)
+                    onClarifyingSedClick(sed, currentSak!)
                   }}
                 >
                   {_clarifyingSed
@@ -420,7 +445,7 @@ const SEDPanel = ({
                   variant='primary'
                   disabled={_reminderSed}
                   onClick={(e: any) => {
-                    onRemindSedClick(sed, currentSak)
+                    onRemindSedClick(sed, currentSak!)
                   }}
                 >
                   {_reminderSed
@@ -438,10 +463,10 @@ const SEDPanel = ({
               <>
                 <Button
                   variant='primary'
-                  disabled={_replyingToSed || !!currentSak.ikkeJournalfoerteSed?.length}
-                  title={!!currentSak.ikkeJournalfoerteSed?.length ? t('message:warning-spørre-sed-not-journalført') : ''}
+                  disabled={_replyingToSed || !!currentSak?.ikkeJournalfoerteSed?.length}
+                  title={!!currentSak?.ikkeJournalfoerteSed?.length ? t('message:warning-spørre-sed-not-journalført') : ''}
                   onClick={(e: any) => {
-                    onReplySedClick(sed, currentSak)
+                    onReplySedClick(sed, currentSak!)
                   }}
                 >
                   {_replyingToSed
@@ -455,6 +480,8 @@ const SEDPanel = ({
                       sedtype: sed.svarsedType
                     })}
                 </Button>
+              </>
+            )}
               </>
             )}
           </HStack>
