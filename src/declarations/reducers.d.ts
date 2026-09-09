@@ -1,4 +1,5 @@
 import { AdminState } from 'reducers/admin'
+import { AarligKontrollState } from 'reducers/aarligKontroll'
 import { AdresseState } from 'reducers/adresse'
 import { AlertState } from 'reducers/alert'
 import { AppState } from 'reducers/app'
@@ -18,6 +19,7 @@ import {JournalfoeringState} from "../reducers/journalfoering";
 
 export interface State {
   admin: AdminState,
+  aarligKontroll: AarligKontrollState,
   adresse: AdresseState,
   alert: AlertState,
   app: AppState,
