@@ -81,7 +81,7 @@ const RegistrertPerson: React.FC<MainFormProps> = ({
         <TextArea
           namespace={namespace}
           id="ytterligereInfo"
-          label={t('label:ytterligere-informasjon-til-sed')}
+          label={t('label:ytterligere-informasjon')}
           maxLength={500}
           error={validation[`${namespace}-ytterligereInfo`]?.feilmelding}
           onChanged={(value: string) => setField('ytterligereInfo', value.trim() || undefined)}
