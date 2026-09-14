@@ -201,6 +201,12 @@ export interface Fagsak {
   overstyrtEnhetsnummer?: string | null | undefined
 }
 
+export interface F001SearchResult {
+  sakId: string
+  fagsak: Fagsak
+  sed: Sed
+}
+
 export interface NavRinasak {
   rinasakId?: string | null | undefined
   overstyrtEnhetsnummer?: string | null | undefined

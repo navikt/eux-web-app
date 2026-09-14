@@ -13,7 +13,7 @@ import {
 import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
-import {Sak, Sed, SedAction} from 'declarations/types'
+import {F001SearchResult, Sak, Sed, SedAction} from 'declarations/types'
 import _ from 'lodash'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
@@ -38,7 +38,7 @@ interface SEDPanelSelector {
 }
 
 interface SEDPanelProps {
-  currentSak?: Sak
+  currentSak?: Sak | F001SearchResult
   sed: Sed
   type?: 'aarligKontroll' | 'aarligKontrollList'
   onSelect?: () => void
@@ -172,7 +172,7 @@ const SEDPanel = ({
     })
   }
 
-  const hasIkkeJournalfoerteSed = !!currentSak?.ikkeJournalfoerteSed?.length
+  const hasIkkeJournalfoerteSed = !!(currentSak as Sak)?.ikkeJournalfoerteSed?.length
   const showEditButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && sed.status === 'new' && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
   const showUpdateButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active') && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
   const showDeleteButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Delete') >= 0) && sed.status === 'new' && ALLOWED_SED_HANDLINGER.includes("Delete")
@@ -264,25 +264,27 @@ const SEDPanel = ({
             <Heading size='small'>
               {sed.sedType} - {sed.sedTittel}
             </Heading>
+            <>
+              <PreviewSED
+                short
+                size='small'
+                rinaSakId={currentSak!.sakId}
+                sedId={sed.sedId}
+                disabled={!hasSedHandlinger}
+              />
+              <Button
+                variant='tertiary'
+                size='small'
+                disabled={!hasSedHandlinger || isDownloadingPDF}
+                onClick={downloadPDF}
+                icon={<DownloadIcon />}
+                loading={isDownloadingPDF}
+                title={t('label:last-ned-pdf')}
+              >
+              </Button>
+            </>
             {!isAarligKontrollMode && (
               <>
-                <PreviewSED
-                  short
-                  size='small'
-                  rinaSakId={currentSak!.sakId}
-                  sedId={sed.sedId}
-                  disabled={!hasSedHandlinger}
-                />
-                <Button
-                  variant='tertiary'
-                  size='small'
-                  disabled={!hasSedHandlinger || isDownloadingPDF}
-                  onClick={downloadPDF}
-                  icon={<DownloadIcon />}
-                  loading={isDownloadingPDF}
-                  title={t('label:last-ned-pdf')}
-                >
-                </Button>
                 {sed.vedlegg && sed.vedlegg.length > 0 && (
                   <div className="aksel-button aksel-button--tertiary aksel-button--small aksel-button--icon-only">
                     <Button className={styles.attachmentButton} variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
@@ -325,7 +327,7 @@ const SEDPanel = ({
                   variant='secondary'
                   disabled={_editingSed}
                   onClick={(e: any) => {
-                    onEditingSedClick(sed, currentSak!)
+                    onEditingSedClick(sed, (currentSak as Sak)!)
                   }}
                 >
                   {_editingSed
@@ -345,7 +347,7 @@ const SEDPanel = ({
                   variant='secondary'
                   disabled={_updatingSed}
                   onClick={(e: any) => {
-                    onUpdatingSedClick(sed, currentSak!)
+                    onUpdatingSedClick(sed, (currentSak as Sak)!)
                   }}
                 >
                   {_updatingSed
@@ -385,7 +387,7 @@ const SEDPanel = ({
                   variant='secondary'
                   disabled={_invalidatingSed}
                   onClick={(e: any) => {
-                    onInvalidatingSedClick(sed, currentSak!)
+                    onInvalidatingSedClick(sed, (currentSak as Sak)!)
                   }}
                 >
                   {_invalidatingSed
@@ -405,7 +407,7 @@ const SEDPanel = ({
                   variant='secondary'
                   disabled={_rejectingSed}
                   onClick={(e: any) => {
-                    onRejectingSedClick(sed, currentSak!)
+                    onRejectingSedClick(sed, (currentSak as Sak)!)
                   }}
                 >
                   {_rejectingSed
@@ -425,7 +427,7 @@ const SEDPanel = ({
                   variant='secondary'
                   disabled={_clarifyingSed}
                   onClick={(e: any) => {
-                    onClarifyingSedClick(sed, currentSak!)
+                    onClarifyingSedClick(sed, (currentSak as Sak)!)
                   }}
                 >
                   {_clarifyingSed
@@ -445,7 +447,7 @@ const SEDPanel = ({
                   variant='primary'
                   disabled={_reminderSed}
                   onClick={(e: any) => {
-                    onRemindSedClick(sed, currentSak!)
+                    onRemindSedClick(sed, (currentSak as Sak)!)
                   }}
                 >
                   {_reminderSed
@@ -463,10 +465,10 @@ const SEDPanel = ({
               <>
                 <Button
                   variant='primary'
-                  disabled={_replyingToSed || !!currentSak?.ikkeJournalfoerteSed?.length}
-                  title={!!currentSak?.ikkeJournalfoerteSed?.length ? t('message:warning-spørre-sed-not-journalført') : ''}
+                  disabled={_replyingToSed || !!(currentSak as Sak)?.ikkeJournalfoerteSed?.length}
+                  title={!!(currentSak as Sak)?.ikkeJournalfoerteSed?.length ? t('message:warning-spørre-sed-not-journalført') : ''}
                   onClick={(e: any) => {
-                    onReplySedClick(sed, currentSak!)
+                    onReplySedClick(sed, (currentSak as Sak)!)
                   }}
                 >
                   {_replyingToSed

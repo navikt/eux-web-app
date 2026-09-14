@@ -10,7 +10,7 @@ import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import SEDPanel from 'applications/SvarSed/Sak/SEDPanel'
 import {ModalContent} from 'declarations/components'
 import {State} from 'declarations/reducers'
-import {PersonInfoPDL, Sed} from 'declarations/types'
+import {F001SearchResult, PersonInfoPDL} from 'declarations/types'
 import React, { JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -19,7 +19,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 interface AarligKontrollSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
-  f001s: Array<Sed> | null | undefined
+  f001s: Array<F001SearchResult> | null | undefined
   person: PersonInfoPDL | null | undefined
   searchingF001s: boolean
   searchingPerson: boolean
@@ -46,11 +46,11 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     searchingF001s,
     searchingPerson
   } = useAppSelector(mapState)
-  const [selectedF001, setSelectedF001] = React.useState<Sed | undefined>(undefined)
+  const [selectedF001, setSelectedF001] = React.useState<F001SearchResult | undefined>(undefined)
   const [showF001List, setShowF001List] = React.useState(false)
 
   const sortedF001s = [...(f001s ?? [])]
-    .sort((a, b) => new Date(b.sistEndretDato).getTime() - new Date(a.sistEndretDato).getTime())
+    .sort((a, b) => new Date(b.sed.sistEndretDato).getTime() - new Date(a.sed.sistEndretDato).getTime())
 
   React.useEffect(() => {
     setSelectedF001(sortedF001s[0])
@@ -63,7 +63,7 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     })
   }
 
-  const selectF001 = (f001: Sed) => {
+  const selectF001 = (f001: F001SearchResult) => {
     setSelectedF001(f001)
     setShowF001List(false)
   }
@@ -111,7 +111,7 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
               {selectedF001 && (
                 <VStack gap="space-8">
                   <Heading size="small">Valgt F001</Heading>
-                  <SEDPanel sed={selectedF001} type="aarligKontroll"/>
+                  <SEDPanel currentSak={selectedF001} sed={selectedF001.sed} type="aarligKontroll"/>
                   <Link
                     href="#alle-f001"
                     onClick={(event) => {
@@ -133,10 +133,11 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                     <VStack gap="space-8">
                       {sortedF001s.map((f001) => (
                         <SEDPanel
-                          key={f001.sedId}
-                          sed={f001}
+                          currentSak={f001}
+                          key={f001.sed.sedId}
+                          sed={f001.sed}
                           type="aarligKontrollList"
-                          selected={selectedF001?.sedId === f001.sedId}
+                          selected={selectedF001?.sed.sedId === f001.sed.sedId}
                           onSelect={() => selectF001(f001)}
                         />
                       ))}
