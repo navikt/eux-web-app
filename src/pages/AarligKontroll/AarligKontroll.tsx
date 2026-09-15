@@ -7,7 +7,7 @@ import TopContainer from 'components/TopContainer/TopContainer'
 import Modal from 'components/Modal/Modal'
 import PersonPanel from 'applications/OpprettSak/PersonPanel/PersonPanel'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
-import SEDPanel from 'applications/SvarSed/Sak/SEDPanel'
+import SEDPanel from 'applications/SvarSed/Sak/AarligKontrollSEDPanel'
 import {ModalContent} from 'declarations/components'
 import {State} from 'declarations/reducers'
 import {F001FilteredResult, PersonInfoPDL} from 'declarations/types'
@@ -112,9 +112,8 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                 <VStack gap="space-8">
                   <Heading size="small">Valgt F001</Heading>
                   <SEDPanel
-                    currentSak={selectedF001}
-                    sed={selectedF001.sedListe[0]}
-                    type="aarligKontroll"
+                    f001={selectedF001}
+                    mode="selected"
                   />
                   <Link
                     href="#alle-f001"
@@ -137,10 +136,9 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                     <VStack gap="space-8">
                       {sortedF001s.map((f001) => (
                         <SEDPanel
-                          currentSak={f001}
                           key={f001.sedListe[0].sedId}
-                          sed={f001.sedListe[0]}
-                          type="aarligKontrollList"
+                          f001={f001}
+                          mode="list"
                           selected={selectedF001?.sedListe[0].sedId === f001.sedListe[0].sedId}
                           onSelect={() => selectF001(f001)}
                         />
