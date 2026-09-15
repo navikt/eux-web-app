@@ -13,7 +13,7 @@ import {
 import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
-import {F001SearchResult, Sak, Sed, SedAction} from 'declarations/types'
+import {F001FilteredResult, Sak, Sed, SedAction} from 'declarations/types'
 import _ from 'lodash'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
@@ -38,7 +38,7 @@ interface SEDPanelSelector {
 }
 
 interface SEDPanelProps {
-  currentSak?: Sak | F001SearchResult
+  currentSak?: Sak | F001FilteredResult
   sed: Sed
   type?: 'aarligKontroll' | 'aarligKontrollList'
   onSelect?: () => void

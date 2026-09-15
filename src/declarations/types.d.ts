@@ -201,10 +201,10 @@ export interface Fagsak {
   overstyrtEnhetsnummer?: string | null | undefined
 }
 
-export interface F001SearchResult {
+export interface F001FilteredResult {
   sakId: string
   fagsak: Fagsak
-  sed: Sed
+  sedListe: Array<Sed>
 }
 
 export interface NavRinasak {

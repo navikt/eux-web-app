@@ -128,6 +128,7 @@ const loadingReducer = (
         searchingF001s: false
       }
 
+
     case types.ATTACHMENT_LIST_REQUEST:
       return {
         ...state,
