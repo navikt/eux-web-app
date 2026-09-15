@@ -97,6 +97,13 @@ export default (saksnummer: string, type: string) => {
           sedId: 'f001new',
           sistEndretDato: '2020-01-02',
           sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          fagsak: {
+            "tema": "BAR",
+            "type": "FAGSAK",
+            "nr": "1/2023",
+            "system": "AO11",
+            "fnr": "12345678901"
+          },
           vedlegg: [
             {
               "id": "3666a09dee604440a44dc9a51abf685a",
