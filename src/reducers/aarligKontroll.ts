@@ -1,10 +1,10 @@
 import { ActionWithPayload } from '@navikt/fetch'
 import * as types from 'constants/actionTypes'
-import { F001SearchResult } from 'declarations/types'
+import { F001FilteredResult } from 'declarations/types'
 import { AnyAction } from 'redux'
 
 export interface AarligKontrollState {
-  f001s: Array<F001SearchResult> | null | undefined
+  f001s: Array<F001FilteredResult> | null | undefined
 }
 
 export const initialAarligKontrollState: AarligKontrollState = {

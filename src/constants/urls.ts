@@ -18,8 +18,10 @@ export const API_LANDOGVALUTAKODER_RINA_URL = API_BASE_URL + '/landogvalutakoder
 export const API_INSTITUSJONER_URL= API_BASE_URL + '/institusjoner/%(buctype)s?landkode=%(landkode)s&domene=nav'
 export const API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL = V5_BASE_URL + '/personer/%(fnr)s/rinasaker/oversikt'
 export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = V5_BASE_URL + '/rinasaker/%(rinaSakId)s/oversikt'
-export const API_AARLIG_KONTROLL_F001_URL = V5_BASE_URL + '/personer/%(fnr)s/f001/fornyelse-kandidater'
-export const API_AARLIG_KONTROLL_KOPIER_F001_URL = API_BASE_URL + '/v1/rinasaker/%(rinaSakId)s/f001/%(sedId)s/fornyelse'
+
+export const API_AARLIG_KONTROLL_F001_URL = V5_BASE_URL + '/personer/%(fnr)s/rinasaker/oversikt/filtrert'
+export const API_AARLIG_KONTROLL_KOPIER_F001_URL = API_BASE_URL + '/v1/rinasaker/utkast/%(rinaSakId)s/%(sedType)s/%(sedId)s'
+
 export const API_SAK_SEND_URL = API_BASE_URL + '/rinasak/sed'
 export const API_MOTTAKERE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s/mottakere'
 export const API_SED_SEND_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/send'
