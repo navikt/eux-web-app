@@ -4,21 +4,21 @@ import {previewSed} from 'actions/svarsed'
 import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import SEDPanelBase from 'applications/SvarSed/Sak/SEDPanelBase'
 import {State} from 'declarations/reducers'
-import {F001FilteredResult} from 'declarations/types'
+import {FilteredF001Sak} from 'declarations/types'
 import {saveAs} from 'file-saver'
 import moment from 'moment'
 import React, {JSX, useEffect, useState} from 'react'
 import {useAppDispatch, useAppSelector} from 'store'
 
 interface AarligKontrollSEDPanelProps {
-  f001: F001FilteredResult
+  f001Sak: FilteredF001Sak
   mode: 'selected' | 'list'
   onSelect?: () => void
   selected?: boolean
 }
 
 const AarligKontrollSEDPanel = ({
-  f001,
+  f001Sak,
   mode,
   onSelect,
   selected = false
@@ -29,7 +29,7 @@ const AarligKontrollSEDPanel = ({
     previewFile: state.svarsed.previewFile
   }))
   const [downloading, setDownloading] = useState(false)
-  const sed = f001.sedListe[0]
+  const sed = f001Sak.sedListe[0]
   const hasSedHandlinger = !!sed.sedHandlinger?.length
 
   useEffect(() => {
@@ -41,18 +41,18 @@ const AarligKontrollSEDPanel = ({
 
   const downloadPDF = () => {
     setDownloading(true)
-    dispatch(previewSed(sed.sedId, f001.sakId))
+    dispatch(previewSed(sed.sedId, f001Sak.sakId))
   }
 
   return (
-  <SEDPanelBase currentFagsak={f001.fagsak} sed={sed} selected={selected}>
+  <SEDPanelBase currentFagsak={f001Sak.fagsak} sed={sed} selected={selected}>
     <VStack gap="space-8">
       <HStack align="center">
         <Heading size="small">{sed.sedType} - {sed.sedTittel}</Heading>
         <PreviewSED
           short
           size="small"
-          rinaSakId={f001.sakId}
+          rinaSakId={f001Sak.sakId}
           sedId={sed.sedId}
           disabled={!hasSedHandlinger}
         />

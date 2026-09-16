@@ -201,7 +201,7 @@ export interface Fagsak {
   overstyrtEnhetsnummer?: string | null | undefined
 }
 
-export interface F001FilteredResult {
+export interface FilteredF001Sak {
   sakId: string
   fagsak: Fagsak
   sedListe: Array<Sed>

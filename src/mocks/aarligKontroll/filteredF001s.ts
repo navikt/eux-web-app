@@ -1,6 +1,6 @@
-import { F001FilteredResult } from 'declarations/types'
+import { FilteredF001Sak } from 'declarations/types'
 
-export default (fnr: string): Array<F001FilteredResult> => [
+export default (fnr: string): Array<FilteredF001Sak> => [
   {
     sakId: '123',
     fagsak: {fnr, nr: '1/2025', system: 'AO11', tema: 'KON', type: 'FAGSAK'},

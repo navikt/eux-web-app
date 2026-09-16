@@ -1,14 +1,14 @@
 import { ActionWithPayload } from '@navikt/fetch'
 import * as types from 'constants/actionTypes'
-import { F001FilteredResult } from 'declarations/types'
+import { FilteredF001Sak } from 'declarations/types'
 import { AnyAction } from 'redux'
 
 export interface AarligKontrollState {
-  f001s: Array<F001FilteredResult> | null | undefined
+  filteredF001Saks: Array<FilteredF001Sak> | null | undefined
 }
 
 export const initialAarligKontrollState: AarligKontrollState = {
-  f001s: undefined
+  filteredF001Saks: undefined
 }
 
 const aarligKontrollReducer = (
@@ -17,20 +17,20 @@ const aarligKontrollReducer = (
 ): AarligKontrollState => {
   switch (action.type) {
     case types.APP_RESET:
-    case types.AARLIG_KONTROLL_F001_SEARCH_RESET:
-    case types.AARLIG_KONTROLL_F001_SEARCH_REQUEST:
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_RESET:
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_REQUEST:
       return initialAarligKontrollState
 
-    case types.AARLIG_KONTROLL_F001_SEARCH_SUCCESS:
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_SUCCESS:
       return {
         ...state,
-        f001s: (action as ActionWithPayload).payload
+        filteredF001Saks: (action as ActionWithPayload).payload
       }
 
-    case types.AARLIG_KONTROLL_F001_SEARCH_FAILURE:
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_FAILURE:
       return {
         ...state,
-        f001s: null
+        filteredF001Saks: null
       }
 
     default:
