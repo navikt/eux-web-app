@@ -1,7 +1,7 @@
 import { ActionWithPayload, call } from '@navikt/fetch'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { FilteredF001Sak } from 'declarations/types'
+import { FilteredF001Sak, UtkastF001 } from 'declarations/types'
 import mockFilteredF001s from 'mocks/aarligKontroll/filteredF001s'
 // @ts-ignore
 import { sprintf } from 'sprintf-js'
@@ -25,3 +25,30 @@ export const getFilteredF001Saks = (fnr: string): ActionWithPayload<Array<Filter
 export const resetFilteredF001Saks = () => ({
   type: types.AARLIG_KONTROLL_FILTERED_F001_SAK_RESET
 })
+
+export const resetUtkastF001 = () => ({
+  type: types.AARLIG_KONTROLL_UTKAST_F001_RESET
+})
+
+export const createUtkastF001 = (
+  f001Sak: FilteredF001Sak
+): ActionWithPayload<UtkastF001> => {
+  const sed = f001Sak.sedListe[0]
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_AARLIG_KONTROLL_UTKAST_F001_URL, {
+      rinaSakId: f001Sak.sakId,
+      sedType: sed.sedType,
+      sedId: sed.sedId
+    }),
+    expectedPayload: {
+      sakId: 10001,
+      sedId: 20001
+    },
+    type: {
+      request: types.AARLIG_KONTROLL_UTKAST_F001_REQUEST,
+      success: types.AARLIG_KONTROLL_UTKAST_F001_SUCCESS,
+      failure: types.AARLIG_KONTROLL_UTKAST_F001_FAILURE
+    }
+  })
+}

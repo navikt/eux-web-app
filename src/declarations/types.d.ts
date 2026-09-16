@@ -207,6 +207,11 @@ export interface FilteredF001Sak {
   sedListe: Array<Sed>
 }
 
+export interface UtkastF001 {
+  sakId: number
+  sedId: number
+}
+
 export interface NavRinasak {
   rinasakId?: string | null | undefined
   overstyrtEnhetsnummer?: string | null | undefined
