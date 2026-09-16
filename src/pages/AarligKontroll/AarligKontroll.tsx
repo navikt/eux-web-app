@@ -1,5 +1,5 @@
 import {Alert, Heading, HStack, Link, Loader, Page, Spacer, VStack} from '@navikt/ds-react'
-import {resetF001s, getFilteredF001s} from 'actions/aarligKontroll'
+import {resetFilteredF001Saks, getFilteredF001Saks} from 'actions/aarligKontroll'
 import {appReset} from 'actions/app'
 import {searchPerson} from 'actions/person'
 import * as types from 'constants/actionTypes'
@@ -10,7 +10,7 @@ import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import SEDPanel from 'applications/SvarSed/Sak/AarligKontrollSEDPanel'
 import {ModalContent} from 'declarations/components'
 import {State} from 'declarations/reducers'
-import {F001FilteredResult, PersonInfoPDL} from 'declarations/types'
+import {FilteredF001Sak, PersonInfoPDL} from 'declarations/types'
 import React, { JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -19,18 +19,18 @@ import { useAppDispatch, useAppSelector } from 'store'
 interface AarligKontrollSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
-  f001s: Array<F001FilteredResult> | null | undefined
+  filteredF001Saks: Array<FilteredF001Sak> | null | undefined
   person: PersonInfoPDL | null | undefined
-  searchingF001s: boolean
+  gettingFilteredF001Saks: boolean
   searchingPerson: boolean
 }
 
 const mapState = (state: State): AarligKontrollSelector => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
-  f001s: state.aarligKontroll.f001s,
+  filteredF001Saks: state.aarligKontroll.filteredF001Saks,
   person: state.person.person,
-  searchingF001s: state.loading.searchingF001s,
+  gettingFilteredF001Saks: state.loading.gettingFilteredF001Saks,
   searchingPerson: state.loading.searchingPerson
 })
 
@@ -41,20 +41,20 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
   const {
     alertMessage,
     alertType,
-    f001s,
+    filteredF001Saks,
     person,
-    searchingF001s,
+    gettingFilteredF001Saks,
     searchingPerson
   } = useAppSelector(mapState)
-  const [selectedF001, setSelectedF001] = React.useState<F001FilteredResult | undefined>(undefined)
+  const [selectedF001Sak, setSelectedF001Sak] = React.useState<FilteredF001Sak | undefined>(undefined)
   const [showF001List, setShowF001List] = React.useState(false)
 
-  const sortedF001s = [...(f001s ?? [])]
+  const sortedFilteredF001Saks = [...(filteredF001Saks ?? [])]
     .sort((a, b) => new Date(b.sedListe[0].sistEndretDato).getTime() - new Date(a.sedListe[0].sistEndretDato).getTime())
 
   React.useEffect(() => {
-    setSelectedF001(sortedF001s[0])
-  }, [f001s])
+    setSelectedF001Sak(sortedFilteredF001Saks[0])
+  }, [filteredF001Saks])
 
   const gotoFrontpage = () => {
     dispatch(appReset())
@@ -63,8 +63,8 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     })
   }
 
-  const selectF001 = (f001: F001FilteredResult) => {
-    setSelectedF001(f001)
+  const selectF001Sak = (filteredF001Sak: FilteredF001Sak) => {
+    setSelectedF001Sak(filteredF001Sak)
     setShowF001List(false)
   }
 
@@ -90,12 +90,12 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                 person={person}
                 value=""
                 onFnrChange={() => {
-                  setSelectedF001(undefined)
-                  dispatch(resetF001s())
+                  setSelectedF001Sak(undefined)
+                  dispatch(resetFilteredF001Saks())
                 }}
                 onPersonFound={(foundPerson) => {
                   if (foundPerson.fnr) {
-                    dispatch(getFilteredF001s(foundPerson.fnr))
+                    dispatch(getFilteredF001Saks(foundPerson.fnr))
                   }
                 }}
                 onSearchPerformed={(fnr) => dispatch(searchPerson(fnr))}
@@ -104,15 +104,15 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                 <Alert variant="error" size="small">Personen ble ikke funnet.</Alert>
               )}
               {person && <PersonPanel person={person}/>}
-              {searchingF001s && <Loader title="Henter aktive F001-er" />}
-              {f001s !== undefined && !searchingF001s && sortedF001s.length === 0 && (
+              {gettingFilteredF001Saks && <Loader title="Henter aktive F001-er" />}
+              {filteredF001Saks !== undefined && !gettingFilteredF001Saks && sortedFilteredF001Saks.length === 0 && (
                 <Alert variant="info" size="small">Personen har ingen aktive F001-er.</Alert>
               )}
-              {selectedF001 && (
+              {selectedF001Sak && (
                 <VStack gap="space-8">
                   <Heading size="small">Valgt F001</Heading>
                   <SEDPanel
-                    f001={selectedF001}
+                    f001Sak={selectedF001Sak}
                     mode="selected"
                   />
                   <Link
@@ -134,13 +134,13 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                   modalTitle: 'Velg F001',
                   modalContent: (
                     <VStack gap="space-8">
-                      {sortedF001s.map((f001) => (
+                      {sortedFilteredF001Saks.map((filteredF001Sak) => (
                         <SEDPanel
-                          key={f001.sedListe[0].sedId}
-                          f001={f001}
+                          key={filteredF001Sak.sedListe[0].sedId}
+                          f001Sak={filteredF001Sak}
                           mode="list"
-                          selected={selectedF001?.sedListe[0].sedId === f001.sedListe[0].sedId}
-                          onSelect={() => selectF001(f001)}
+                          selected={selectedF001Sak?.sedListe[0].sedId === filteredF001Sak.sedListe[0].sedId}
+                          onSelect={() => selectF001Sak(filteredF001Sak)}
                         />
                       ))}
                     </VStack>

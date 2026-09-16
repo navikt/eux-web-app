@@ -40,7 +40,7 @@ export const initialLoadingState: LoadingState = {
   searchingPerson: false,
   searchingPersonRelatert: false,
   searchingJournalfoeringPerson: false,
-  searchingF001s: false,
+  gettingFilteredF001Saks: false,
   sendingVedlegg: false,
   sendingSak: false,
   sendingSed: false,
@@ -115,17 +115,17 @@ const loadingReducer = (
     case types.APP_RESET:
       return initialLoadingState
 
-    case types.AARLIG_KONTROLL_F001_SEARCH_REQUEST:
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_REQUEST:
       return {
         ...state,
-        searchingF001s: true
+        gettingFilteredF001Saks: true
       }
 
-    case types.AARLIG_KONTROLL_F001_SEARCH_SUCCESS:
-    case types.AARLIG_KONTROLL_F001_SEARCH_FAILURE:
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_SUCCESS:
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_FAILURE:
       return {
         ...state,
-        searchingF001s: false
+        gettingFilteredF001Saks: false
       }
 
 

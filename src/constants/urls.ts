@@ -19,7 +19,7 @@ export const API_INSTITUSJONER_URL= API_BASE_URL + '/institusjoner/%(buctype)s?l
 export const API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL = V5_BASE_URL + '/personer/%(fnr)s/rinasaker/oversikt'
 export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = V5_BASE_URL + '/rinasaker/%(rinaSakId)s/oversikt'
 
-export const API_AARLIG_KONTROLL_F001_URL = V5_BASE_URL + '/personer/%(fnr)s/rinasaker/oversikt/filtrert'
+export const API_AARLIG_KONTROLL_FILTERED_F001_SAK_URL = V5_BASE_URL + '/personer/%(fnr)s/rinasaker/oversikt/filtrert'
 export const API_AARLIG_KONTROLL_KOPIER_F001_URL = API_BASE_URL + '/v1/rinasaker/utkast/%(rinaSakId)s/%(sedType)s/%(sedId)s'
 
 export const API_SAK_SEND_URL = API_BASE_URL + '/rinasak/sed'
