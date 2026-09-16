@@ -151,7 +151,7 @@ const Forside: React.FC = (): JSX.Element => {
                     </div>
                   </Link>
                 )}
-                {saksbehandlerBucer && saksbehandlerBucer.indexOf("FB_") >= 0 &&
+                {saksbehandlerBucer && saksbehandlerBucer.some((buc: string) => buc.startsWith("FB_")) &&
                   <Link className={styles.styledLink} onClick={() => navigate({ pathname: '/aarligkontroll', search: window.location.search })}>
                     <div className={styles.square}>
                       <ArrowsCirclepathIcon className={styles.aarligKontrollIcon}/>

@@ -11,15 +11,19 @@ import React, {JSX, useEffect, useState} from 'react'
 import {useAppDispatch, useAppSelector} from 'store'
 
 interface AarligKontrollSEDPanelProps {
+  copying?: boolean
   f001Sak: FilteredF001Sak
   mode: 'selected' | 'list'
+  onCopy?: () => void
   onSelect?: () => void
   selected?: boolean
 }
 
 const AarligKontrollSEDPanel = ({
+  copying = false,
   f001Sak,
   mode,
+  onCopy,
   onSelect,
   selected = false
 }: AarligKontrollSEDPanelProps): JSX.Element => {
@@ -67,7 +71,11 @@ const AarligKontrollSEDPanel = ({
         />
       </HStack>
       {mode === 'selected' && (
-        <Button variant="primary">Kopier for årlig kontroll</Button>
+        <HStack>
+          <Button variant="primary" loading={copying} disabled={copying} onClick={onCopy}>
+            Kopier for årlig kontroll
+          </Button>
+        </HStack>
       )}
       {mode === 'list' && (
         <HStack>

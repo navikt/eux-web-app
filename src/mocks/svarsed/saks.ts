@@ -1140,6 +1140,43 @@ export default (saksnummer: string, type: string) => {
       "sedUnderJournalfoeringEllerUkjentStatus": [],
       "sensitiv": false,
       "cdmVersjon": "4.4"
+    },
+    {
+      cdmVersjon: '4.4',
+      fornavn: 'Ola',
+      etternavn: 'Nordmenn',
+      kjoenn: 'M',
+      foedselsdato: '1970-01-01',
+      fnr: '12345678901',
+      sakTittel: 'Utkast til årlig kontroll',
+      sakType: 'FB_BUC_01',
+      sakId: '10001',
+      sakUrl: 'http://foo.com',
+      sistEndretDato: '2026-09-16',
+      erSakseier: true,
+      sensitiv: false,
+      navinstitusjon: {
+        id: 'NO:NAVAT07',
+        navn: 'NAV ACC 07'
+      },
+      motparter: [],
+      fagsak: {
+        tema: 'KON',
+        type: 'FAGSAK',
+        nr: '1/2026',
+        system: 'AO11',
+        fnr: '12345678901'
+      },
+      sedListe: [
+        {
+          sedTittel: 'Anmodning om opplysninger ved årlig kontroll',
+          sedType: 'F001',
+          sedId: '20001',
+          status: 'new',
+          sistEndretDato: '2026-09-16',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+        }
+      ]
     }
   ]
 
