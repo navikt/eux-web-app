@@ -201,6 +201,17 @@ export interface Fagsak {
   overstyrtEnhetsnummer?: string | null | undefined
 }
 
+export interface FilteredF001Sak {
+  sakId: string
+  fagsak: Fagsak
+  sedListe: Array<Sed>
+}
+
+export interface UtkastF001 {
+  sakId: number
+  sedId: number
+}
+
 export interface NavRinasak {
   rinasakId?: string | null | undefined
   overstyrtEnhetsnummer?: string | null | undefined

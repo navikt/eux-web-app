@@ -5,6 +5,7 @@ import SvarSed from './SvarSed/SvarSed'
 import PDU1 from './PDU1/PDU1'
 import Journalfoering from "./Journalfoering/Journalfoering";
 import AdminPage from "./AdminPage/AdminPage";
+import AarligKontroll from "./AarligKontroll/AarligKontroll";
 
 export default {
   Forside,
@@ -13,5 +14,6 @@ export default {
   SvarSed,
   JournalFoering: Journalfoering,
   PDU1,
-  AdminPage
+  AdminPage,
+  AarligKontroll
 }

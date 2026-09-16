@@ -13,6 +13,7 @@ export const initialLoadingState: LoadingState = {
   creatingSvarSed: false,
   creatingPdu1: false,
   deletingSak: false,
+  editingSvarSed: false,
   fetchingPdu1: false,
   gettingAdresser: false,
   gettingArbeidsperioder: false,
@@ -40,6 +41,8 @@ export const initialLoadingState: LoadingState = {
   searchingPerson: false,
   searchingPersonRelatert: false,
   searchingJournalfoeringPerson: false,
+  gettingFilteredF001Saks: false,
+  creatingUtkastF001: false,
   sendingVedlegg: false,
   sendingSak: false,
   sendingSed: false,
@@ -113,6 +116,32 @@ const loadingReducer = (
 
     case types.APP_RESET:
       return initialLoadingState
+
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_REQUEST:
+      return {
+        ...state,
+        gettingFilteredF001Saks: true
+      }
+
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_SUCCESS:
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_FAILURE:
+      return {
+        ...state,
+        gettingFilteredF001Saks: false
+      }
+
+    case types.AARLIG_KONTROLL_UTKAST_F001_REQUEST:
+      return {
+        ...state,
+        creatingUtkastF001: true
+      }
+
+    case types.AARLIG_KONTROLL_UTKAST_F001_SUCCESS:
+    case types.AARLIG_KONTROLL_UTKAST_F001_FAILURE:
+      return {
+        ...state,
+        creatingUtkastF001: false
+      }
 
     case types.ATTACHMENT_LIST_REQUEST:
       return {
@@ -383,6 +412,19 @@ const loadingReducer = (
       return {
         ...state,
         deletingSak: false
+      }
+
+    case types.SVARSED_EDIT_REQUEST:
+      return {
+        ...state,
+        editingSvarSed: true
+      }
+
+    case types.SVARSED_EDIT_SUCCESS:
+    case types.SVARSED_EDIT_FAILURE:
+      return {
+        ...state,
+        editingSvarSed: false
       }
 
     case types.SVARSED_SAKS_REQUEST:
