@@ -38,7 +38,7 @@ export const createUtkastF001 = (
     method: 'POST',
     url: sprintf(urls.API_AARLIG_KONTROLL_UTKAST_F001_URL, {
       rinaSakId: f001Sak.sakId,
-      sedType: sed.sedType,
+      sedType: sed.sedType.toLowerCase(),
       sedId: sed.sedId
     }),
     expectedPayload: {
