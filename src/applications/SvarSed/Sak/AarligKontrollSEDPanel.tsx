@@ -1,5 +1,5 @@
 import {DownloadIcon} from '@navikt/aksel-icons'
-import {Button, Heading, HStack, VStack} from '@navikt/ds-react'
+import {Alert, Button, Heading, HStack, VStack} from '@navikt/ds-react'
 import {previewSed} from 'actions/svarsed'
 import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import SEDPanelBase from 'applications/SvarSed/Sak/SEDPanelBase'
@@ -33,18 +33,26 @@ const AarligKontrollSEDPanel = ({
     previewFile: state.svarsed.previewFile
   }))
   const [downloading, setDownloading] = useState(false)
+  const [downloadFailed, setDownloadFailed] = useState(false)
   const sed = f001Sak.sedListe[0]
   const hasSedHandlinger = !!sed.sedHandlinger?.length
 
   useEffect(() => {
-    if (downloading && previewFile && !gettingPreviewFile) {
+    if (!downloading || gettingPreviewFile) {
+      return
+    }
+    if (previewFile) {
       saveAs(previewFile, `SED_${sed.sedId}_${moment(sed.sistEndretDato).format('YYYYMMDD_HHmmss')}.pdf`)
       setDownloading(false)
+    } else if (previewFile === null) {
+      setDownloading(false)
+      setDownloadFailed(true)
     }
   }, [downloading, gettingPreviewFile, previewFile, sed.sedId, sed.sistEndretDato])
 
   const downloadPDF = () => {
     setDownloading(true)
+    setDownloadFailed(false)
     dispatch(previewSed(sed.sedId, f001Sak.sakId))
   }
 
@@ -70,6 +78,9 @@ const AarligKontrollSEDPanel = ({
           title="Last ned PDF"
         />
       </HStack>
+      {downloadFailed && (
+        <Alert variant="error" size="small">Kunne ikke laste ned PDF-en. Prøv igjen.</Alert>
+      )}
       {mode === 'selected' && (
         <HStack>
           <Button variant="primary" loading={copying} disabled={copying} onClick={onCopy}>

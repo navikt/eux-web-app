@@ -1,7 +1,8 @@
 import {Alert, Heading, HStack, Link, Loader, Page, Spacer, VStack} from '@navikt/ds-react'
 import {createUtkastF001, getFilteredF001Saks, resetFilteredF001Saks, resetUtkastF001} from 'actions/aarligKontroll'
+import {alertReset} from 'actions/alert'
 import {appReset} from 'actions/app'
-import {searchPerson} from 'actions/person'
+import {personReset, searchPerson} from 'actions/person'
 import {cleanUpSvarSed, querySaks} from 'actions/svarsed'
 import * as types from 'constants/actionTypes'
 import TopContainer from 'components/TopContainer/TopContainer'
@@ -73,6 +74,12 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
   const sortedFilteredF001Saks = (filteredF001Saks ?? [])
     .filter((filteredF001Sak) => !!filteredF001Sak.sedListe?.length)
     .sort((a, b) => new Date(b.sedListe[0].sistEndretDato).getTime() - new Date(a.sedListe[0].sistEndretDato).getTime())
+
+  React.useEffect(() => {
+    dispatch(personReset())
+    dispatch(alertReset())
+    dispatch(resetFilteredF001Saks())
+  }, [])
 
   React.useEffect(() => {
     setSelectedF001Sak(sortedFilteredF001Saks[0])
@@ -158,12 +165,12 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                 }}
                 onSearchPerformed={(fnr) => dispatch(searchPerson(fnr))}
               />
-              {person === null && (
-                <Alert variant="error" size="small">Personen ble ikke funnet.</Alert>
-              )}
               {person && <PersonPanel person={person}/>}
               {gettingFilteredF001Saks && <Loader title="Henter aktive F001-er" />}
-              {filteredF001Saks !== undefined && !gettingFilteredF001Saks && sortedFilteredF001Saks.length === 0 && (
+              {filteredF001Saks === null && !gettingFilteredF001Saks && (
+                <Alert variant="error" size="small">Kunne ikke hente F001-er for personen. Prøv igjen.</Alert>
+              )}
+              {filteredF001Saks && !gettingFilteredF001Saks && sortedFilteredF001Saks.length === 0 && (
                 <Alert variant="info" size="small">Personen har ingen aktive F001-er.</Alert>
               )}
               {selectedF001Sak && (
