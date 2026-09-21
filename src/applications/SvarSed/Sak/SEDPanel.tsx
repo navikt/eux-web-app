@@ -109,9 +109,14 @@ const SEDPanel = ({
 
   // Handle PDF download when preview file is available
   useEffect(() => {
-    if (isDownloadingPDF && previewFile && !gettingPreviewFile) {
+    if (!isDownloadingPDF || gettingPreviewFile) {
+      return
+    }
+    if (previewFile) {
       const fileName = `SED_${sed.sedId}_${moment(sed.sistEndretDato).format('YYYYMMDD_HHmmss')}.pdf`
       saveAs(previewFile, fileName)
+      setIsDownloadingPDF(false)
+    } else if (previewFile === null) {
       setIsDownloadingPDF(false)
     }
   }, [isDownloadingPDF, previewFile, gettingPreviewFile, sed.sedId, sed.sistEndretDato])
@@ -196,12 +201,12 @@ const SEDPanel = ({
               size='small'
               rinaSakId={currentSak.sakId}
               sedId={sed.sedId}
-              disabled={!hasSedHandlinger}
+              disabled={!hasSedHandlinger || isDownloadingPDF}
             />
             <Button
               variant='tertiary'
               size='small'
-              disabled={!hasSedHandlinger || isDownloadingPDF}
+              disabled={!hasSedHandlinger || isDownloadingPDF || gettingPreviewFile}
               onClick={downloadPDF}
               icon={<DownloadIcon />}
               loading={isDownloadingPDF}
