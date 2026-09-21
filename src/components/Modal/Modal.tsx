@@ -26,11 +26,25 @@ const ModalFC: React.FC<ModalProps> = ({
   modal,
   width
 }: ModalProps): JSX.Element => {
+  const dialogRef = React.useRef<HTMLDialogElement>(null)
+
+  /**
+   * React dispatches the non-bubbling `close` event through the React tree, so a nested modal
+   * (rendered inside this modal's content) would otherwise close this one as well.
+   */
+  const handleClose = (e: React.SyntheticEvent<HTMLDialogElement>) => {
+    if (e.target !== dialogRef.current) {
+      return
+    }
+    onModalClose()
+  }
+
   return (
     <Modal
+      ref={dialogRef}
       className={className}
       open={open}
-      onClose={onModalClose}
+      onClose={handleClose}
       onBeforeClose={onBeforeClose}
       portal={true}
       id="neessiModal"
