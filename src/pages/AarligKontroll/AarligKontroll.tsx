@@ -1,4 +1,4 @@
-import {Alert, Heading, HStack, Link, Loader, Page, Spacer, VStack} from '@navikt/ds-react'
+import {Alert, Button, Heading, HStack, Loader, Page, Spacer, VStack} from '@navikt/ds-react'
 import {createUtkastF001, getFilteredF001Saks, resetFilteredF001Saks, resetUtkastF001} from 'actions/aarligKontroll'
 import {alertReset} from 'actions/alert'
 import {appReset} from 'actions/app'
@@ -49,12 +49,12 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const {
-    alertMessage,
+    alertMessage: storeAlertMessage,
     alertType,
-    filteredF001Saks,
+    filteredF001Saks: storeFilteredF001Saks,
     utkastF001,
     currentSak,
-    person,
+    person: storePerson,
     gettingFilteredF001Saks,
     creatingUtkastF001,
     queryingSaks,
@@ -64,12 +64,18 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
   const [showF001List, setShowF001List] = React.useState(false)
   const [copyStep, setCopyStep] = React.useState<'idle' | 'fetchingSak'>('idle')
   const [copyError, setCopyError] = React.useState<string | undefined>(undefined)
+  const [resetDone, setResetDone] = React.useState(false)
   const copyingF001 = creatingUtkastF001 || copyStep !== 'idle'
   const resetCopyWorkflow = (errorMessage?: string) => {
     setCopyStep('idle')
     setCopyError(errorMessage)
     dispatch(resetUtkastF001())
   }
+
+  /** the store is reset on mount, so ignore leftovers from a previous visit until that has happened */
+  const alertMessage = resetDone ? storeAlertMessage : undefined
+  const person = resetDone ? storePerson : undefined
+  const filteredF001Saks = resetDone ? storeFilteredF001Saks : undefined
 
   const sortedFilteredF001Saks = (filteredF001Saks ?? [])
     .filter((filteredF001Sak) => !!filteredF001Sak.sedListe?.length)
@@ -79,6 +85,8 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     dispatch(personReset())
     dispatch(alertReset())
     dispatch(resetFilteredF001Saks())
+    dispatch(resetUtkastF001())
+    setResetDone(true)
   }, [])
 
   React.useEffect(() => {
@@ -86,15 +94,18 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
   }, [filteredF001Saks])
 
   React.useEffect(() => {
+    if (!resetDone) {
+      return
+    }
     if (utkastF001 === null) {
-      resetCopyWorkflow('Kunne ikke opprette et utkast av den valgte F001-en. Prøv igjen.')
+      resetCopyWorkflow(t('message:error-aarlig-kontroll-utkast'))
       return
     }
     if (utkastF001 && copyStep === 'idle') {
       setCopyStep('fetchingSak')
       dispatch(querySaks(String(utkastF001.sakId), 'refresh'))
     }
-  }, [utkastF001])
+  }, [resetDone, utkastF001])
 
   React.useEffect(() => {
     if (copyStep !== 'fetchingSak' || !utkastF001 || queryingSaks) {
@@ -102,13 +113,13 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     }
 
     if (currentSak?.sakId !== String(utkastF001.sakId)) {
-      resetCopyWorkflow('Fant ikke den nye saken som ble opprettet. Prøv igjen.')
+      resetCopyWorkflow(t('message:error-aarlig-kontroll-sak-not-found'))
       return
     }
 
     const sed = currentSak.sedListe.find((candidate: Sed) => candidate.sedId === String(utkastF001.sedId))
     if (!sed) {
-      resetCopyWorkflow('Fant ikke den nye F001-en i den opprettede saken. Prøv igjen.')
+      resetCopyWorkflow(t('message:error-aarlig-kontroll-sed-not-found'))
       return
     }
 
@@ -166,16 +177,21 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                 onSearchPerformed={(fnr) => dispatch(searchPerson(fnr))}
               />
               {person && <PersonPanel person={person}/>}
-              {gettingFilteredF001Saks && <Loader title="Henter aktive F001-er" />}
+              {gettingFilteredF001Saks && <Loader title={t('message:loading-aarlig-kontroll-f001')} />}
               {filteredF001Saks === null && !gettingFilteredF001Saks && (
-                <Alert variant="error" size="small">Kunne ikke hente F001-er for personen. Prøv igjen.</Alert>
+                <Alert variant="error" size="small">{t('message:error-aarlig-kontroll-f001-list')}</Alert>
               )}
               {filteredF001Saks && !gettingFilteredF001Saks && sortedFilteredF001Saks.length === 0 && (
-                <Alert variant="info" size="small">Personen har ingen aktive F001-er.</Alert>
+                <Alert variant="info" size="small">{t('message:info-aarlig-kontroll-no-f001')}</Alert>
               )}
               {selectedF001Sak && (
                 <VStack gap="space-8">
-                  <Heading size="small">Valgt F001</Heading>
+                  <HStack gap="space-16" align="center">
+                    <Heading size="small">{t('label:aarlig-kontroll-valgt-f001')}</Heading>
+                    <Button variant="tertiary" size="small" onClick={() => setShowF001List(true)}>
+                      {t('el:button-aarlig-kontroll-velg-annen-f001')}
+                    </Button>
+                  </HStack>
                   <SEDPanel
                     f001Sak={selectedF001Sak}
                     mode="selected"
@@ -186,15 +202,6 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                     }}
                   />
                   {copyError && <Alert variant="error" size="small">{copyError}</Alert>}
-                  <Link
-                    href="#alle-f001"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      setShowF001List(true)
-                    }}
-                  >
-                    Velg en annen F001
-                  </Link>
                 </VStack>
               )}
               <Modal
@@ -202,7 +209,7 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                 width="900px"
                 onModalClose={() => setShowF001List(false)}
                 modal={{
-                  modalTitle: 'Velg F001',
+                  modalTitle: t('label:aarlig-kontroll-velg-f001'),
                   modalContent: (
                     <VStack gap="space-8">
                       {sortedFilteredF001Saks.map((filteredF001Sak) => (

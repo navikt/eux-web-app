@@ -8,7 +8,13 @@ import {FilteredF001Sak} from 'declarations/types'
 import {saveAs} from 'file-saver'
 import moment from 'moment'
 import React, {JSX, useEffect, useState} from 'react'
+import {useTranslation} from 'react-i18next'
 import {useAppDispatch, useAppSelector} from 'store'
+
+interface AarligKontrollSEDPanelSelector {
+  gettingPreviewFile: boolean
+  previewFile: Blob | null | undefined
+}
 
 interface AarligKontrollSEDPanelProps {
   copying?: boolean
@@ -19,6 +25,11 @@ interface AarligKontrollSEDPanelProps {
   selected?: boolean
 }
 
+const mapState = (state: State): AarligKontrollSEDPanelSelector => ({
+  gettingPreviewFile: state.loading.gettingPreviewFile,
+  previewFile: state.svarsed.previewFile
+})
+
 const AarligKontrollSEDPanel = ({
   copying = false,
   f001Sak,
@@ -28,10 +39,8 @@ const AarligKontrollSEDPanel = ({
   selected = false
 }: AarligKontrollSEDPanelProps): JSX.Element => {
   const dispatch = useAppDispatch()
-  const {gettingPreviewFile, previewFile} = useAppSelector((state: State) => ({
-    gettingPreviewFile: state.loading.gettingPreviewFile,
-    previewFile: state.svarsed.previewFile
-  }))
+  const { t } = useTranslation()
+  const {gettingPreviewFile, previewFile} = useAppSelector(mapState)
   const [downloading, setDownloading] = useState(false)
   const [downloadFailed, setDownloadFailed] = useState(false)
   const sed = f001Sak.sedListe[0]
@@ -66,32 +75,32 @@ const AarligKontrollSEDPanel = ({
           size="small"
           rinaSakId={f001Sak.sakId}
           sedId={sed.sedId}
-          disabled={!hasSedHandlinger}
+          disabled={!hasSedHandlinger || downloading}
         />
         <Button
           variant="tertiary"
           size="small"
-          disabled={!hasSedHandlinger || downloading}
+          disabled={!hasSedHandlinger || downloading || gettingPreviewFile}
           onClick={downloadPDF}
           icon={<DownloadIcon/>}
           loading={downloading}
-          title="Last ned PDF"
+          title={t('el:button-download-pdf')}
         />
       </HStack>
       {downloadFailed && (
-        <Alert variant="error" size="small">Kunne ikke laste ned PDF-en. Prøv igjen.</Alert>
+        <Alert variant="error" size="small">{t('message:error-aarlig-kontroll-pdf-download')}</Alert>
       )}
       {mode === 'selected' && (
         <HStack>
           <Button variant="primary" loading={copying} disabled={copying} onClick={onCopy}>
-            Kopier for årlig kontroll
+            {t('el:button-aarlig-kontroll-kopier')}
           </Button>
         </HStack>
       )}
       {mode === 'list' && (
         <HStack>
           <Button variant={selected ? 'secondary' : 'primary'} disabled={selected} onClick={onSelect}>
-            {selected ? 'Valgt' : 'Velg'}
+            {selected ? t('label:valgt') : t('label:velg')}
           </Button>
         </HStack>
       )}
