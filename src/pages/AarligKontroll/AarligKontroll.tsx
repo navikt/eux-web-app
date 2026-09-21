@@ -2,7 +2,7 @@ import {Alert, Heading, HStack, Link, Loader, Page, Spacer, VStack} from '@navik
 import {createUtkastF001, getFilteredF001Saks, resetFilteredF001Saks, resetUtkastF001} from 'actions/aarligKontroll'
 import {appReset} from 'actions/app'
 import {searchPerson} from 'actions/person'
-import {editSed, querySaks, setReplySed, updateSed} from 'actions/svarsed'
+import {cleanUpSvarSed, querySaks} from 'actions/svarsed'
 import * as types from 'constants/actionTypes'
 import TopContainer from 'components/TopContainer/TopContainer'
 import Modal from 'components/Modal/Modal'
@@ -11,8 +11,7 @@ import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import SEDPanel from 'applications/SvarSed/Sak/AarligKontrollSEDPanel'
 import {ModalContent} from 'declarations/components'
 import {State} from 'declarations/reducers'
-import {CreateSedResponse, FilteredF001Sak, PersonInfoPDL, Sak, Sed, UtkastF001} from 'declarations/types'
-import {ReplySed} from 'declarations/sed'
+import {FilteredF001Sak, PersonInfoPDL, Sak, Sed, UtkastF001} from 'declarations/types'
 import React, { JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -24,15 +23,11 @@ interface AarligKontrollSelector {
   filteredF001Saks: Array<FilteredF001Sak> | null | undefined
   utkastF001: UtkastF001 | null | undefined
   currentSak: Sak | undefined
-  replySed: ReplySed | null | undefined
-  sedCreatedResponse: CreateSedResponse | null | undefined
   person: PersonInfoPDL | null | undefined
   gettingFilteredF001Saks: boolean
   creatingUtkastF001: boolean
-  editingSvarSed: boolean
   queryingSaks: boolean
   searchingPerson: boolean
-  updatingSvarSed: boolean
 }
 
 const mapState = (state: State): AarligKontrollSelector => ({
@@ -41,14 +36,10 @@ const mapState = (state: State): AarligKontrollSelector => ({
   filteredF001Saks: state.aarligKontroll.filteredF001Saks,
   utkastF001: state.aarligKontroll.utkastF001,
   currentSak: state.svarsed.currentSak,
-  replySed: state.svarsed.replySed,
-  sedCreatedResponse: state.svarsed.sedCreatedResponse,
   person: state.person.person,
   gettingFilteredF001Saks: state.loading.gettingFilteredF001Saks,
   creatingUtkastF001: state.loading.creatingUtkastF001,
-  editingSvarSed: state.loading.editingSvarSed,
   queryingSaks: state.loading.queryingSaks,
-  updatingSvarSed: state.loading.updatingSvarSed,
   searchingPerson: state.loading.searchingPerson
 })
 
@@ -62,19 +53,15 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     filteredF001Saks,
     utkastF001,
     currentSak,
-    replySed,
-    sedCreatedResponse,
     person,
     gettingFilteredF001Saks,
     creatingUtkastF001,
-    editingSvarSed,
     queryingSaks,
-    updatingSvarSed,
     searchingPerson
   } = useAppSelector(mapState)
   const [selectedF001Sak, setSelectedF001Sak] = React.useState<FilteredF001Sak | undefined>(undefined)
   const [showF001List, setShowF001List] = React.useState(false)
-  const [copyStep, setCopyStep] = React.useState<'idle' | 'fetchingSak' | 'loadingSed' | 'savingSed'>('idle')
+  const [copyStep, setCopyStep] = React.useState<'idle' | 'fetchingSak'>('idle')
   const [copyError, setCopyError] = React.useState<string | undefined>(undefined)
   const copyingF001 = creatingUtkastF001 || copyStep !== 'idle'
   const resetCopyWorkflow = (errorMessage?: string) => {
@@ -113,43 +100,17 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     }
 
     const sed = currentSak.sedListe.find((candidate: Sed) => candidate.sedId === String(utkastF001.sedId))
-    if (sed) {
-      setCopyStep('loadingSed')
-      dispatch(editSed(sed, currentSak))
-    } else {
+    if (!sed) {
       resetCopyWorkflow('Fant ikke den nye F001-en i den opprettede saken. Prøv igjen.')
+      return
     }
+
+    dispatch(resetUtkastF001())
+    dispatch(cleanUpSvarSed())
+    navigate({
+      pathname: `/svarsed/edit/sak/${utkastF001.sakId}/sed/${utkastF001.sedId}`
+    })
   }, [copyStep, currentSak, queryingSaks, utkastF001])
-
-  React.useEffect(() => {
-    if (copyStep !== 'loadingSed' || !utkastF001 || editingSvarSed) {
-      return
-    }
-
-    if (!replySed || replySed.sed?.sedId !== String(utkastF001.sedId)) {
-      resetCopyWorkflow('Kunne ikke åpne den nye F001-en. Prøv igjen.')
-      return
-    }
-
-    const replySedWithStandardText: ReplySed = {
-      ...replySed,
-      ytterligereInfo: 'Dette er en F001 opprettet for årlig kontroll.'
-    }
-    setCopyStep('savingSed')
-    dispatch(setReplySed(replySedWithStandardText))
-    dispatch(updateSed(replySedWithStandardText))
-  }, [copyStep, editingSvarSed, replySed, utkastF001])
-
-  React.useEffect(() => {
-    if (copyStep === 'savingSed' && sedCreatedResponse && utkastF001) {
-      dispatch(resetUtkastF001())
-      navigate({
-        pathname: `/svarsed/edit/sak/${utkastF001.sakId}/sed/${utkastF001.sedId}`
-      })
-    } else if (copyStep === 'savingSed' && !updatingSvarSed && sedCreatedResponse === null) {
-      resetCopyWorkflow('Kunne ikke lagre den nye F001-en. Prøv igjen.')
-    }
-  }, [copyStep, sedCreatedResponse, updatingSvarSed, utkastF001])
 
   const gotoFrontpage = () => {
     dispatch(appReset())

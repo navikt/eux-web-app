@@ -13,7 +13,6 @@ export const initialLoadingState: LoadingState = {
   creatingSvarSed: false,
   creatingPdu1: false,
   deletingSak: false,
-  editingSvarSed: false,
   fetchingPdu1: false,
   gettingAdresser: false,
   gettingArbeidsperioder: false,
@@ -412,19 +411,6 @@ const loadingReducer = (
       return {
         ...state,
         deletingSak: false
-      }
-
-    case types.SVARSED_EDIT_REQUEST:
-      return {
-        ...state,
-        editingSvarSed: true
-      }
-
-    case types.SVARSED_EDIT_SUCCESS:
-    case types.SVARSED_EDIT_FAILURE:
-      return {
-        ...state,
-        editingSvarSed: false
       }
 
     case types.SVARSED_SAKS_REQUEST:
