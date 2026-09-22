@@ -31,24 +31,18 @@ export const resetUtkastF001 = () => ({
 })
 
 export const createUtkastF001 = (
-  f001Sak: FilteredF001Sak
-): ActionWithPayload<UtkastF001> => {
-  const sed = f001Sak.sedListe[0]
-  return call({
-    method: 'POST',
-    url: sprintf(urls.API_AARLIG_KONTROLL_UTKAST_F001_URL, {
-      rinaSakId: f001Sak.sakId,
-      sedType: sed.sedType.toLowerCase(),
-      sedId: sed.sedId
-    }),
-    expectedPayload: {
-      sakId: 10001,
-      sedId: 20001
-    },
-    type: {
-      request: types.AARLIG_KONTROLL_UTKAST_F001_REQUEST,
-      success: types.AARLIG_KONTROLL_UTKAST_F001_SUCCESS,
-      failure: types.AARLIG_KONTROLL_UTKAST_F001_FAILURE
-    }
-  })
-}
+  rinaSakId: string,
+  sedId: string
+): ActionWithPayload<UtkastF001> => call({
+  method: 'POST',
+  url: sprintf(urls.API_AARLIG_KONTROLL_UTKAST_F001_URL, { rinaSakId, sedId }),
+  expectedPayload: {
+    sakId: 10001,
+    sedId: 20001
+  },
+  type: {
+    request: types.AARLIG_KONTROLL_UTKAST_F001_REQUEST,
+    success: types.AARLIG_KONTROLL_UTKAST_F001_SUCCESS,
+    failure: types.AARLIG_KONTROLL_UTKAST_F001_FAILURE
+  }
+})

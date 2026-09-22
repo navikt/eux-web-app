@@ -207,6 +207,13 @@ export interface FilteredF001Sak {
   sedListe: Array<Sed>
 }
 
+/** a single F001 SED resolved from a FilteredF001Sak, so an empty sedListe is unrepresentable */
+export interface F001Kandidat {
+  sakId: string
+  fagsak: Fagsak
+  sed: Sed
+}
+
 export interface UtkastF001 {
   sakId: number
   sedId: number
