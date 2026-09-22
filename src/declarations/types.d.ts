@@ -141,6 +141,11 @@ export type Enheter = Array<Enhet>
 
 export type Bucer = Array<string>
 
+/** identifies which component instance started a person search, so only that instance applies the result */
+export interface PersonSearchContext {
+  searchId: string
+}
+
 export interface PersonInfoPDL {
   fnr?: string
   foedselsdato?: string
