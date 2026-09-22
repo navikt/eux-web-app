@@ -12,7 +12,7 @@ import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import SEDPanel from 'applications/SvarSed/Sak/AarligKontrollSEDPanel'
 import {ModalContent} from 'declarations/components'
 import {State} from 'declarations/reducers'
-import {FilteredF001Sak, PersonInfoPDL, Sak, Sed, UtkastF001} from 'declarations/types'
+import {F001Kandidat, FilteredF001Sak, PersonInfoPDL, Sak, Sed, UtkastF001} from 'declarations/types'
 import React, { JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -60,7 +60,7 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     queryingSaks,
     searchingPerson
   } = useAppSelector(mapState)
-  const [selectedF001Sak, setSelectedF001Sak] = React.useState<FilteredF001Sak | undefined>(undefined)
+  const [selectedF001, setSelectedF001] = React.useState<F001Kandidat | undefined>(undefined)
   const [showF001List, setShowF001List] = React.useState(false)
   const [copyStep, setCopyStep] = React.useState<'idle' | 'fetchingSak'>('idle')
   const [copyError, setCopyError] = React.useState<string | undefined>(undefined)
@@ -77,9 +77,13 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
   const person = resetDone ? storePerson : undefined
   const filteredF001Saks = resetDone ? storeFilteredF001Saks : undefined
 
-  const sortedFilteredF001Saks = (filteredF001Saks ?? [])
-    .filter((filteredF001Sak) => !!filteredF001Sak.sedListe?.length)
-    .sort((a, b) => new Date(b.sedListe[0].sistEndretDato).getTime() - new Date(a.sedListe[0].sistEndretDato).getTime())
+  const f001Kandidater: Array<F001Kandidat> = (filteredF001Saks ?? [])
+    .flatMap((filteredF001Sak) => (
+      filteredF001Sak.sedListe?.length
+        ? [{ sakId: filteredF001Sak.sakId, fagsak: filteredF001Sak.fagsak, sed: filteredF001Sak.sedListe[0] }]
+        : []
+    ))
+    .sort((a, b) => new Date(b.sed.sistEndretDato).getTime() - new Date(a.sed.sistEndretDato).getTime())
 
   React.useEffect(() => {
     dispatch(personReset())
@@ -90,7 +94,7 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
   }, [])
 
   React.useEffect(() => {
-    setSelectedF001Sak(sortedFilteredF001Saks[0])
+    setSelectedF001(f001Kandidater[0])
   }, [filteredF001Saks])
 
   React.useEffect(() => {
@@ -137,8 +141,8 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     })
   }
 
-  const selectF001Sak = (filteredF001Sak: FilteredF001Sak) => {
-    setSelectedF001Sak(filteredF001Sak)
+  const selectF001 = (f001Kandidat: F001Kandidat) => {
+    setSelectedF001(f001Kandidat)
     setCopyError(undefined)
     setShowF001List(false)
   }
@@ -165,7 +169,7 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                 person={person}
                 value=""
                 onFnrChange={() => {
-                  setSelectedF001Sak(undefined)
+                  setSelectedF001(undefined)
                   setCopyError(undefined)
                   dispatch(resetFilteredF001Saks())
                 }}
@@ -181,10 +185,10 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
               {filteredF001Saks === null && !gettingFilteredF001Saks && (
                 <Alert variant="error" size="small">{t('message:error-aarlig-kontroll-f001-list')}</Alert>
               )}
-              {filteredF001Saks && !gettingFilteredF001Saks && sortedFilteredF001Saks.length === 0 && (
+              {filteredF001Saks && !gettingFilteredF001Saks && f001Kandidater.length === 0 && (
                 <Alert variant="info" size="small">{t('message:info-aarlig-kontroll-no-f001')}</Alert>
               )}
-              {selectedF001Sak && (
+              {selectedF001 && (
                 <VStack gap="space-8">
                   <HStack gap="space-16" align="center">
                     <Heading size="small">{t('label:aarlig-kontroll-valgt-f001')}</Heading>
@@ -193,12 +197,14 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                     </Button>
                   </HStack>
                   <SEDPanel
-                    f001Sak={selectedF001Sak}
+                    sakId={selectedF001.sakId}
+                    fagsak={selectedF001.fagsak}
+                    sed={selectedF001.sed}
                     mode="selected"
                     copying={copyingF001}
                     onCopy={() => {
                       setCopyError(undefined)
-                      dispatch(createUtkastF001(selectedF001Sak))
+                      dispatch(createUtkastF001(selectedF001.sakId, selectedF001.sed.sedId))
                     }}
                   />
                   {copyError && <Alert variant="error" size="small">{copyError}</Alert>}
@@ -212,13 +218,15 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                   modalTitle: t('label:aarlig-kontroll-velg-f001'),
                   modalContent: (
                     <VStack gap="space-8">
-                      {sortedFilteredF001Saks.map((filteredF001Sak) => (
+                      {f001Kandidater.map((f001Kandidat) => (
                         <SEDPanel
-                          key={filteredF001Sak.sedListe[0].sedId}
-                          f001Sak={filteredF001Sak}
+                          key={f001Kandidat.sed.sedId}
+                          sakId={f001Kandidat.sakId}
+                          fagsak={f001Kandidat.fagsak}
+                          sed={f001Kandidat.sed}
                           mode="list"
-                          selected={selectedF001Sak?.sedListe[0].sedId === filteredF001Sak.sedListe[0].sedId}
-                          onSelect={() => selectF001Sak(filteredF001Sak)}
+                          selected={selectedF001?.sed.sedId === f001Kandidat.sed.sedId}
+                          onSelect={() => selectF001(f001Kandidat)}
                         />
                       ))}
                     </VStack>

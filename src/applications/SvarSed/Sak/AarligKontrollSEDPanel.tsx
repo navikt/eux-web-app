@@ -4,7 +4,7 @@ import {previewSed} from 'actions/svarsed'
 import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import SEDPanelBase from 'applications/SvarSed/Sak/SEDPanelBase'
 import {State} from 'declarations/reducers'
-import {FilteredF001Sak} from 'declarations/types'
+import {Fagsak, Sed} from 'declarations/types'
 import {saveAs} from 'file-saver'
 import moment from 'moment'
 import React, {JSX, useEffect, useState} from 'react'
@@ -18,10 +18,12 @@ interface AarligKontrollSEDPanelSelector {
 
 interface AarligKontrollSEDPanelProps {
   copying?: boolean
-  f001Sak: FilteredF001Sak
+  fagsak: Fagsak
   mode: 'selected' | 'list'
   onCopy?: () => void
   onSelect?: () => void
+  sakId: string
+  sed: Sed
   selected?: boolean
 }
 
@@ -32,10 +34,12 @@ const mapState = (state: State): AarligKontrollSEDPanelSelector => ({
 
 const AarligKontrollSEDPanel = ({
   copying = false,
-  f001Sak,
+  fagsak,
   mode,
   onCopy,
   onSelect,
+  sakId,
+  sed,
   selected = false
 }: AarligKontrollSEDPanelProps): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -43,7 +47,6 @@ const AarligKontrollSEDPanel = ({
   const {gettingPreviewFile, previewFile} = useAppSelector(mapState)
   const [downloading, setDownloading] = useState(false)
   const [downloadFailed, setDownloadFailed] = useState(false)
-  const sed = f001Sak.sedListe[0]
   const hasSedHandlinger = !!sed.sedHandlinger?.length
 
   useEffect(() => {
@@ -62,18 +65,18 @@ const AarligKontrollSEDPanel = ({
   const downloadPDF = () => {
     setDownloading(true)
     setDownloadFailed(false)
-    dispatch(previewSed(sed.sedId, f001Sak.sakId))
+    dispatch(previewSed(sed.sedId, sakId))
   }
 
   return (
-  <SEDPanelBase currentFagsak={f001Sak.fagsak} sed={sed} selected={selected}>
+  <SEDPanelBase currentFagsak={fagsak} sed={sed} selected={selected}>
     <VStack gap="space-8">
       <HStack align="center">
         <Heading size="small">{sed.sedType} - {sed.sedTittel}</Heading>
         <PreviewSED
           short
           size="small"
-          rinaSakId={f001Sak.sakId}
+          rinaSakId={sakId}
           sedId={sed.sedId}
           disabled={!hasSedHandlinger || downloading}
         />
