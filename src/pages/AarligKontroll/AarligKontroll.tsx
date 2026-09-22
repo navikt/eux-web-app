@@ -22,12 +22,8 @@ interface AarligKontrollSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   filteredF001Saks: Array<FilteredF001Sak> | null | undefined
-  utkastF001: UtkastF001 | null | undefined
-  currentSak: Sak | undefined
   person: PersonInfoPDL | null | undefined
   gettingFilteredF001Saks: boolean
-  creatingUtkastF001: boolean
-  queryingSaks: boolean
   searchingPerson: boolean
 }
 
@@ -35,12 +31,8 @@ const mapState = (state: State): AarligKontrollSelector => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   filteredF001Saks: state.aarligKontroll.filteredF001Saks,
-  utkastF001: state.aarligKontroll.utkastF001,
-  currentSak: state.svarsed.currentSak,
   person: state.person.person,
   gettingFilteredF001Saks: state.loading.gettingFilteredF001Saks,
-  creatingUtkastF001: state.loading.creatingUtkastF001,
-  queryingSaks: state.loading.queryingSaks,
   searchingPerson: state.loading.searchingPerson
 })
 
@@ -52,25 +44,15 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     alertMessage: storeAlertMessage,
     alertType,
     filteredF001Saks: storeFilteredF001Saks,
-    utkastF001,
-    currentSak,
     person: storePerson,
     gettingFilteredF001Saks,
-    creatingUtkastF001,
-    queryingSaks,
     searchingPerson
   } = useAppSelector(mapState)
-  const [selectedF001, setSelectedF001] = React.useState<F001Kandidat | undefined>(undefined)
+  const [selectedSedId, setSelectedSedId] = React.useState<string | undefined>(undefined)
   const [showF001List, setShowF001List] = React.useState(false)
-  const [copyStep, setCopyStep] = React.useState<'idle' | 'fetchingSak'>('idle')
+  const [copyingF001, setCopyingF001] = React.useState(false)
   const [copyError, setCopyError] = React.useState<string | undefined>(undefined)
   const [resetDone, setResetDone] = React.useState(false)
-  const copyingF001 = creatingUtkastF001 || copyStep !== 'idle'
-  const resetCopyWorkflow = (errorMessage?: string) => {
-    setCopyStep('idle')
-    setCopyError(errorMessage)
-    dispatch(resetUtkastF001())
-  }
 
   /** the store is reset on mount, so ignore leftovers from a previous visit until that has happened */
   const alertMessage = resetDone ? storeAlertMessage : undefined
@@ -85,6 +67,9 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     ))
     .sort((a, b) => new Date(b.sed.sistEndretDato).getTime() - new Date(a.sed.sistEndretDato).getTime())
 
+  /** derived, so the selection follows the list instead of having to be reset when the list changes */
+  const selectedF001 = f001Kandidater.find((kandidat) => kandidat.sed.sedId === selectedSedId) ?? f001Kandidater[0]
+
   React.useEffect(() => {
     dispatch(personReset())
     dispatch(alertReset())
@@ -93,46 +78,43 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     setResetDone(true)
   }, [])
 
-  React.useEffect(() => {
-    setSelectedF001(f001Kandidater[0])
-  }, [filteredF001Saks])
-
-  React.useEffect(() => {
-    if (!resetDone) {
-      return
-    }
-    if (utkastF001 === null) {
-      resetCopyWorkflow(t('message:error-aarlig-kontroll-utkast'))
-      return
-    }
-    if (utkastF001 && copyStep === 'idle') {
-      setCopyStep('fetchingSak')
-      dispatch(querySaks(String(utkastF001.sakId), 'refresh'))
-    }
-  }, [resetDone, utkastF001])
-
-  React.useEffect(() => {
-    if (copyStep !== 'fetchingSak' || !utkastF001 || queryingSaks) {
-      return
+  /** creates the utkast, verifies that the new sak and sed exist, and returns an error message if not */
+  const kopierF001 = async (sakId: string, sedId: string): Promise<string | undefined> => {
+    const utkast: UtkastF001 | undefined = (await dispatch(createUtkastF001(sakId, sedId)) as any)?.payload
+    if (!utkast) {
+      return t('message:error-aarlig-kontroll-utkast')
     }
 
-    if (currentSak?.sakId !== String(utkastF001.sakId)) {
-      resetCopyWorkflow(t('message:error-aarlig-kontroll-sak-not-found'))
-      return
+    const payload: any = (await dispatch(querySaks(String(utkast.sakId), 'refresh')) as any)?.payload
+    const sak: Sak | undefined = Array.isArray(payload) ? payload[0] : payload
+    if (sak?.sakId !== String(utkast.sakId)) {
+      return t('message:error-aarlig-kontroll-sak-not-found')
+    }
+    if (!sak.sedListe?.some((candidate: Sed) => candidate.sedId === String(utkast.sedId))) {
+      return t('message:error-aarlig-kontroll-sed-not-found')
     }
 
-    const sed = currentSak.sedListe.find((candidate: Sed) => candidate.sedId === String(utkastF001.sedId))
-    if (!sed) {
-      resetCopyWorkflow(t('message:error-aarlig-kontroll-sed-not-found'))
-      return
-    }
-
-    dispatch(resetUtkastF001())
     dispatch(cleanUpSvarSed())
     navigate({
-      pathname: `/svarsed/edit/sak/${utkastF001.sakId}/sed/${utkastF001.sedId}`
+      pathname: `/svarsed/edit/sak/${utkast.sakId}/sed/${utkast.sedId}`
     })
-  }, [copyStep, currentSak, queryingSaks, utkastF001])
+    return undefined
+  }
+
+  const onKopierClick = async () => {
+    if (!selectedF001) {
+      return
+    }
+    setCopyError(undefined)
+    setCopyingF001(true)
+    const feilmelding = await kopierF001(selectedF001.sakId, selectedF001.sed.sedId)
+    dispatch(resetUtkastF001())
+    /** on success we navigate away, so the button is left in its loading state until unmount */
+    if (feilmelding) {
+      setCopyingF001(false)
+      setCopyError(feilmelding)
+    }
+  }
 
   const gotoFrontpage = () => {
     dispatch(appReset())
@@ -142,7 +124,7 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
   }
 
   const selectF001 = (f001Kandidat: F001Kandidat) => {
-    setSelectedF001(f001Kandidat)
+    setSelectedSedId(f001Kandidat.sed.sedId)
     setCopyError(undefined)
     setShowF001List(false)
   }
@@ -169,7 +151,7 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                 person={person}
                 value=""
                 onFnrChange={() => {
-                  setSelectedF001(undefined)
+                  setSelectedSedId(undefined)
                   setCopyError(undefined)
                   dispatch(resetFilteredF001Saks())
                 }}
@@ -202,10 +184,7 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
                     sed={selectedF001.sed}
                     mode="selected"
                     copying={copyingF001}
-                    onCopy={() => {
-                      setCopyError(undefined)
-                      dispatch(createUtkastF001(selectedF001.sakId, selectedF001.sed.sedId))
-                    }}
+                    onCopy={onKopierClick}
                   />
                   {copyError && <Alert variant="error" size="small">{copyError}</Alert>}
                 </VStack>
