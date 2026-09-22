@@ -90,9 +90,6 @@ const AarligKontrollSEDPanel = ({
           title={t('el:button-download-pdf')}
         />
       </HStack>
-      {downloadFailed && (
-        <Alert variant="error" size="small">{t('message:error-aarlig-kontroll-pdf-download')}</Alert>
-      )}
       {mode === 'selected' && (
         <HStack>
           <Button variant="primary" loading={copying} disabled={copying} onClick={onCopy}>
@@ -106,6 +103,9 @@ const AarligKontrollSEDPanel = ({
             {selected ? t('label:valgt') : t('label:velg')}
           </Button>
         </HStack>
+      )}
+      {downloadFailed && (
+        <Alert variant="error" size="small">{t('message:error-aarlig-kontroll-pdf-download')}</Alert>
       )}
     </VStack>
   </SEDPanelBase>
