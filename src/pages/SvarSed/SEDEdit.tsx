@@ -1,5 +1,6 @@
 import {Alert, Box, Button, HGrid, HStack, Loader, Page, VStack} from '@navikt/ds-react'
 import { alertReset } from 'actions/alert'
+import { personReset } from 'actions/person'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
   cleanUpSvarSed,
@@ -278,6 +279,8 @@ const SEDEdit = (): JSX.Element => {
   }
 
   useEffect(() => {
+    /** never inherit a person search made on another page (Årlig kontroll, Opprett sak, ...) */
+    dispatch(personReset())
     dispatch(startPageStatistic('editor'))
     return () => {
       dispatch(finishPageStatistic('editor'))

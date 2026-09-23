@@ -76,6 +76,7 @@ export const App = () => {
             <Route path='/pdu1/search' element={<Pages.PDU1 type='search' />} />
             <Route path='/pdu1/edit/postId/:journalpostId/docId/:dokumentInfoId/fagsak/:fagsak' element={<Pages.PDU1 type='edit' />} />
             <Route path='/pdu1/create/fnr/:fnr/fagsak/:fagsak/saksreferanse/:saksreferanse' element={<Pages.PDU1 type='create' />} />
+            <Route path='/aarligkontroll' element={<Pages.AarligKontroll/>} />
             <Route path='/*' element={<Pages.Forside />} />
             <Route element={<Pages.UkjentSide />} />
         </Routes>

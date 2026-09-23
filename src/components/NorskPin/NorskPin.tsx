@@ -5,9 +5,10 @@ import ErrorLabel from 'components/Forms/ErrorLabel'
 import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
 import { Pin } from 'declarations/sed'
-import {PersonInfoPDL} from 'declarations/types'
+import {PersonInfoPDL, PersonSearchContext} from 'declarations/types'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { useEffect, useState, JSX } from 'react';
+import React, { useEffect, useId, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import * as types from "../../constants/actionTypes";
@@ -23,12 +24,14 @@ export interface NorskPinProps {
 interface NorskPinSelector {
   searchingPerson: boolean
   searchedPerson: PersonInfoPDL | null | undefined
+  personSearchContext: PersonSearchContext | undefined
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
 }
 
 const mapState = (state: State): NorskPinSelector => ({
   searchedPerson: state.person.person,
+  personSearchContext: state.person.personSearchContext,
   searchingPerson: state.loading.searchingPerson,
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type
@@ -42,21 +45,35 @@ const NorskPin: React.FC<NorskPinProps> = ({
   onFillOutPerson
 }: NorskPinProps) => {
   const dispatch = useAppDispatch()
-  const { searchedPerson, searchingPerson, alertMessage, alertType } = useAppSelector(mapState)
+  const { searchedPerson, personSearchContext, searchingPerson, alertMessage, alertType } = useAppSelector(mapState)
 
   const [_seeNorskPinForm, _setSeeNorskPinForm] = useState<boolean>(false)
   const [_tempNorwegianPin, _setTempNorwegianPin] = useState<string| undefined>(undefined)
   const [_searchFailure, _setSearchFailure] = useState(false)
+  const [_searchRequested, _setSearchRequested] = useState<boolean>(false)
 
+  /**
+   * state.person.person is a single slot shared with every other person search in the app, so a result
+   * may belong to another page or to another person's tab. Only apply results from this instance's own search.
+   */
+  const searchId = useId()
+  const ownsSearchResult = _searchRequested && personSearchContext?.searchId === searchId
 
   useEffect(() => {
-    if(alertMessage && alertType && [types.PERSON_SEARCH_FAILURE].indexOf(alertType) >= 0){
+    if(ownsSearchResult && alertMessage && alertType && [types.PERSON_SEARCH_FAILURE].indexOf(alertType) >= 0){
       _setSearchFailure(true)
       _setSeeNorskPinForm(true)
     } else {
       _setSearchFailure(false)
     }
-  }, [alertMessage])
+  }, [alertMessage, ownsSearchResult])
+
+  /** clean up after ourselves, so an unconsumed result is not left for the next component that mounts */
+  useUnmount(() => {
+    if (searchedPerson && ownsSearchResult) {
+      dispatch(resetPerson())
+    }
+  })
 
   const setNorwegianPin = (newPin: string) => {
     _setTempNorwegianPin(newPin.trim())
@@ -66,6 +83,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
     if (searchedPerson) {
       dispatch(resetPerson())
     }
+    _setSearchRequested(false)
     _setSearchFailure(false)
     _setSeeNorskPinForm(false)
   }
@@ -74,13 +92,15 @@ const NorskPin: React.FC<NorskPinProps> = ({
     if (_tempNorwegianPin !== undefined) {
       onNorwegianPinSave(_tempNorwegianPin)
     }
+    _setSearchRequested(false)
     _setSearchFailure(false)
     _setSeeNorskPinForm(false)
   }
 
   const fillOutPerson = () => {
-    if (searchedPerson) {
+    if (searchedPerson && ownsSearchResult) {
       onFillOutPerson(searchedPerson)
+      _setSearchRequested(false)
       dispatch(resetPerson())
       _setSeeNorskPinForm(false)
     }
@@ -88,13 +108,14 @@ const NorskPin: React.FC<NorskPinProps> = ({
 
   const searchUser = (e: any) => {
     if (_tempNorwegianPin) {
-      dispatch(searchPerson(_tempNorwegianPin))
+      _setSearchRequested(true)
+      dispatch(searchPerson(_tempNorwegianPin, { searchId }))
     }
   }
 
   useEffect(() => {
     fillOutPerson()
-  }, [searchedPerson])
+  }, [searchedPerson, ownsSearchResult])
 
   const { t } = useTranslation()
   return (
@@ -174,7 +195,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
       {_searchFailure &&
         <div className='nolabel'><Alert variant={"error"}>{alertMessage}</Alert></div>
       }
-      {searchedPerson
+      {searchedPerson && ownsSearchResult
         ? (
           <Box
             padding="space-16"

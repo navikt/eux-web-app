@@ -141,6 +141,12 @@ export type Enheter = Array<Enhet>
 
 export type Bucer = Array<string>
 
+/** identifies which component instance started a person search, so only that instance applies the result */
+export interface PersonSearchContext {
+  searchId: string
+}
+
+
 export interface PersonInfoPDL {
   fnr?: string
   foedselsdato?: string
@@ -199,6 +205,29 @@ export interface Fagsak {
   opprettetTidspunkt?: string | null | undefined
   _id?: string
   overstyrtEnhetsnummer?: string | null | undefined
+}
+
+export interface FilteredF001Sak {
+  sakId: string
+  fagsak: Fagsak
+  sedListe: Array<Sed>
+}
+
+/** context of the search that produced `filteredF001Saks`, so a late response for a previous fnr can be ignored */
+export interface F001SakSearchContext {
+  fnr: string
+}
+
+/** a single F001 SED resolved from a FilteredF001Sak, so an empty sedListe is unrepresentable */
+export interface F001Kandidat {
+  sakId: string
+  fagsak: Fagsak
+  sed: Sed
+}
+
+export interface UtkastF001 {
+  sakId: number
+  sedId: number
 }
 
 export interface NavRinasak {
