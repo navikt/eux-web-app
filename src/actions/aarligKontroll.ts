@@ -1,7 +1,7 @@
 import { ActionWithPayload, call } from '@navikt/fetch'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { FilteredF001Sak, UtkastF001 } from 'declarations/types'
+import { F001SakSearchContext, FilteredF001Sak, UtkastF001 } from 'declarations/types'
 import mockFilteredF001s from 'mocks/aarligKontroll/filteredF001s'
 // @ts-ignore
 import { sprintf } from 'sprintf-js'
@@ -15,6 +15,8 @@ export const getFilteredF001Saks = (fnr: string): ActionWithPayload<Array<Filter
     antallSeder: 1
   },
   expectedPayload: mockFilteredF001s(fnr),
+  cascadeFailureError: true,
+  context: { fnr } as F001SakSearchContext,
   type: {
     request: types.AARLIG_KONTROLL_FILTERED_F001_SAK_REQUEST,
     success: types.AARLIG_KONTROLL_FILTERED_F001_SAK_SUCCESS,
@@ -40,6 +42,7 @@ export const createUtkastF001 = (
     sakId: 10001,
     sedId: 20001
   },
+  cascadeFailureError: true,
   type: {
     request: types.AARLIG_KONTROLL_UTKAST_F001_REQUEST,
     success: types.AARLIG_KONTROLL_UTKAST_F001_SUCCESS,
