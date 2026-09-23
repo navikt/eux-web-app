@@ -146,6 +146,7 @@ export interface PersonSearchContext {
   searchId: string
 }
 
+
 export interface PersonInfoPDL {
   fnr?: string
   foedselsdato?: string
@@ -210,6 +211,11 @@ export interface FilteredF001Sak {
   sakId: string
   fagsak: Fagsak
   sedListe: Array<Sed>
+}
+
+/** context of the search that produced `filteredF001Saks`, so a late response for a previous fnr can be ignored */
+export interface F001SakSearchContext {
+  fnr: string
 }
 
 /** a single F001 SED resolved from a FilteredF001Sak, so an empty sedListe is unrepresentable */

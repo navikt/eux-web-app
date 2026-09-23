@@ -12,7 +12,7 @@ import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import SEDPanel from 'applications/SvarSed/Sak/AarligKontrollSEDPanel'
 import {ModalContent} from 'declarations/components'
 import {State} from 'declarations/reducers'
-import {F001Kandidat, FilteredF001Sak, PersonInfoPDL, Sak, Sed, UtkastF001} from 'declarations/types'
+import {F001Kandidat, F001SakSearchContext, FilteredF001Sak, PersonInfoPDL, Sak, Sed, UtkastF001} from 'declarations/types'
 import React, { JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -22,6 +22,7 @@ interface AarligKontrollSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   filteredF001Saks: Array<FilteredF001Sak> | null | undefined
+  filteredF001SaksContext: F001SakSearchContext | undefined
   person: PersonInfoPDL | null | undefined
   gettingFilteredF001Saks: boolean
   searchingPerson: boolean
@@ -31,6 +32,7 @@ const mapState = (state: State): AarligKontrollSelector => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   filteredF001Saks: state.aarligKontroll.filteredF001Saks,
+  filteredF001SaksContext: state.aarligKontroll.filteredF001SaksContext,
   person: state.person.person,
   gettingFilteredF001Saks: state.loading.gettingFilteredF001Saks,
   searchingPerson: state.loading.searchingPerson
@@ -44,6 +46,7 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
     alertMessage: storeAlertMessage,
     alertType,
     filteredF001Saks: storeFilteredF001Saks,
+    filteredF001SaksContext,
     person: storePerson,
     gettingFilteredF001Saks,
     searchingPerson
@@ -57,7 +60,13 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
   /** the store is reset on mount, so ignore leftovers from a previous visit until that has happened */
   const alertMessage = resetDone ? storeAlertMessage : undefined
   const person = resetDone ? storePerson : undefined
-  const filteredF001Saks = resetDone ? storeFilteredF001Saks : undefined
+
+  /**
+   * a search cannot be cancelled, so a response for an earlier fnr can land after the caseworker has moved on to
+   * another person. Only trust the list when it belongs to the fnr currently on screen.
+   */
+  const f001SaksBelongToPerson = !!person?.fnr && filteredF001SaksContext?.fnr === person.fnr
+  const filteredF001Saks = f001SaksBelongToPerson ? storeFilteredF001Saks : undefined
 
   const f001Kandidater: Array<F001Kandidat> = (filteredF001Saks ?? [])
     .flatMap((filteredF001Sak) => (
