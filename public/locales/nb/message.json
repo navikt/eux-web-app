@@ -1,4 +1,9 @@
 {
+  "error-aarlig-kontroll-f001-list": "Kunne ikke hente F001-er for personen. Prøv igjen.",
+  "error-aarlig-kontroll-pdf-download": "Kunne ikke laste ned PDF-en. Prøv igjen.",
+  "error-aarlig-kontroll-sak-not-found": "Fant ikke den nye saken som ble opprettet. Prøv igjen.",
+  "error-aarlig-kontroll-sed-not-found": "Fant ikke den nye F001-en i den opprettede saken. Prøv igjen.",
+  "error-aarlig-kontroll-utkast": "Kunne ikke opprette et utkast av den valgte F001-en. Prøv igjen.",
   "error-attachment-send-failed": "Lagring av vedlegg feilet. Obs: Dersom filnavnet til vedlegget inneholder spesialtegn (#,£ e.l.), så kan dette medføre at lagring av vedlegg feiler.",
   "error-abroadperson-exists": "Du kan ikke legge til samme person flere ganger",
   "error-fagsak-notFound": "Det finnes ikke sak på bruker med det valgte temaet.  Sak må opprettes manuelt i Gosys eller tema må endres. ",
@@ -38,6 +43,7 @@
   "help-send-sed": "Sender avgårde en Sed som allerede fins i Rina.",
   "help-restore-sed": "Nullstill SED",
   "help-international-id": "Internasjonal ID er et felles globalt saksnummer for alle deltakere i \nsaken, og kan brukes til å identifisere saken hos den/de andre \ninstitusjonen(e) i saken. \nLokal ID er et RINA-saksnummer som kun benyttes av egen \ninstitusjon, og som vi benytter til å søke etter saken i nEESSI.",
+  "loading-aarlig-kontroll-f001": "Henter aktive F001-er",
   "loading-checking-sed-status": "Kontrollerer SED status...",
   "loading-clarifying": "Klargjøring...",
   "loading-editing": "Rediger...",
@@ -110,6 +116,7 @@
   "warning-unknown-statsborgerskap": "Ukjent statsborgerskap",
   "warning-unknown-statsborgerskap-text1": "Personen har et eller flere ukjente statsborgerskap.",
   "warning-unknown-statsborgerskap-text2": "Disse må legges inn manuelt.",
+  "info-aarlig-kontroll-no-f001": "Personen har ingen aktive F001-er.",
   "info-trygdeperioder-maa-overfoeres-paa-nytt": "Trygdeperioder må overføres på nytt.",
   "info-trygdeperioder-maa-overfoeres-paa-nytt-ved-endring-av-perioder": "Trygdeperioder må overføres på nytt ved endring av perioder.",
   "warning-no-refusjoner": "Ingen refusjoner er lagt til"

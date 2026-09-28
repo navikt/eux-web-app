@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "14.11.0",
+  "version": "14.12.0-TEN-1813-AARLIG-KONTROLL",
   "private": true,
   "type": "module",
   "scripts": {
@@ -105,5 +105,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@14.11.0"
+  "_id": "neessi@14.12.0-TEN-1813-AARLIG-KONTROLL"
 }

@@ -25,7 +25,7 @@ export interface PreviewSedProps {
 export interface PreviewSedSelector {
   gettingPreviewFile: boolean
   gettingPreviewSed: boolean
-  previewFile: Blob | undefined
+  previewFile: Blob | null | undefined
 }
 
 const mapState = (state: State): any => ({
@@ -53,12 +53,21 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
   const [requestPreview, setRequestPreview] = useState<boolean>(false)
 
+  const previewInProgress = gettingPreviewFile || gettingPreviewSed
+
   useEffect(() => {
-    if (requestPreview && !previewModal && !_.isNil(previewFile)) {
-      setRequestPreview(false)
-      showPreviewModal(previewFile)
+    if (!requestPreview || previewInProgress) {
+      return
     }
-  }, [previewFile])
+    if (!_.isNil(previewFile)) {
+      if (!previewModal) {
+        setRequestPreview(false)
+        showPreviewModal(previewFile)
+      }
+    } else if (previewFile === null) {
+      setRequestPreview(false)
+    }
+  }, [requestPreview, previewInProgress, previewFile])
 
   const showPreviewModal = (previewFile: Blob) => {
     blobToBase64(previewFile).then((base64: any) => {
@@ -117,9 +126,9 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
       <Button
         variant='tertiary'
         size={size}
-        disabled={disabled}
+        disabled={disabled || previewInProgress}
         onClick={onPreviewSedClicked}
-        loading={requestPreview && (gettingPreviewFile || gettingPreviewSed)}
+        loading={requestPreview && previewInProgress}
         icon={<EyeWithPupilIcon />}
       >
         {!short && (

@@ -3,6 +3,7 @@ import * as urls from 'constants/urls'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockPersonInfo from 'mocks/personInfo'
 import mockPersonMedFamilie from 'mocks/personmedfamilie'
+import { PersonSearchContext } from 'declarations/types'
 import { Action, ActionCreator } from 'redux'
 // @ts-ignore
 import { sprintf } from 'sprintf-js'
@@ -16,12 +17,14 @@ export const resetPerson: ActionCreator<Action> = () => ({
 })
 
 export const searchPerson = (
-  fnr: string
+  fnr: string,
+  context?: PersonSearchContext
 ): ActionWithPayload => {
   return call({
     url: sprintf(urls.API_PDL_PERSON_URL, { fnr }),
     expectedPayload: mockPersonInfo,
     cascadeFailureError: true,
+    context,
     type: {
       request: types.PERSON_SEARCH_REQUEST,
       success: types.PERSON_SEARCH_SUCCESS,

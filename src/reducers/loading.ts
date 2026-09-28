@@ -40,6 +40,7 @@ export const initialLoadingState: LoadingState = {
   searchingPerson: false,
   searchingPersonRelatert: false,
   searchingJournalfoeringPerson: false,
+  gettingFilteredF001Saks: false,
   sendingVedlegg: false,
   sendingSak: false,
   sendingSed: false,
@@ -113,6 +114,20 @@ const loadingReducer = (
 
     case types.APP_RESET:
       return initialLoadingState
+
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_REQUEST:
+      return {
+        ...state,
+        gettingFilteredF001Saks: true
+      }
+
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_SUCCESS:
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_FAILURE:
+    case types.AARLIG_KONTROLL_FILTERED_F001_SAK_RESET:
+      return {
+        ...state,
+        gettingFilteredF001Saks: false
+      }
 
     case types.ATTACHMENT_LIST_REQUEST:
       return {
