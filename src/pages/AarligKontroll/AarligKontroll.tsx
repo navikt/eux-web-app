@@ -94,8 +94,8 @@ export const AarligKontrollPage: React.FC = (): JSX.Element => {
       return t('message:error-aarlig-kontroll-utkast')
     }
 
-    const payload: any = (await dispatch(querySaks(String(utkast.sakId), 'refresh')) as any)?.payload
-    const sak: Sak | undefined = Array.isArray(payload) ? payload[0] : payload
+    const saks: any = (await dispatch(querySaks(String(utkast.sakId), 'refresh')) as any)?.payload
+    const sak: Sak | undefined = Array.isArray(saks) ? saks[0] : saks
     if (sak?.sakId !== String(utkast.sakId)) {
       return t('message:error-aarlig-kontroll-sak-not-found')
     }
