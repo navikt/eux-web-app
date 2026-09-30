@@ -1,12 +1,16 @@
 import {Box, Heading, HStack, RadioGroup, VStack} from '@navikt/ds-react'
 import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
-import { validateEndredeForhold, ValidationEndredeForholdProps } from 'applications/SvarSed/EndredeForhold/validation'
+import {
+  validateYtterligereInfoH001,
+  ValidationYtterligereInfoH001Props
+} from 'applications/SvarSed/YtterligereInfoH001/validation'
+import { toYtterligereInfoType } from 'applications/SvarSed/YtterligereInfoH001/ytterligereInfoType'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
-import { H001Sed, YtterligereInfoType } from 'declarations/h001'
+import { H001Sed } from 'declarations/h001'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { JSX } from 'react';
@@ -17,7 +21,7 @@ const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const EndredeForhold: React.FC<MainFormProps> = ({
+const YtterligereInfoH001: React.FC<MainFormProps> = ({
   label,
   parentNamespace,
   personID,
@@ -28,12 +32,14 @@ const EndredeForhold: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-${personID}-endredeforhold`
+  const namespace = `${parentNamespace}-${personID}-ytterligereinfoh001`
+  const target = 'bruker'
+  const bruker = (replySed as H001Sed).bruker
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
-    performValidation<ValidationEndredeForholdProps>(
-      clonedValidation, namespace, validateEndredeForhold, {
+    performValidation<ValidationYtterligereInfoH001Props>(
+      clonedValidation, namespace, validateYtterligereInfoH001, {
         replySed: (replySed as ReplySed),
         personName
       }, true
@@ -41,17 +47,17 @@ const EndredeForhold: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedValidation))
   })
 
-  const setYtterligereInfoType = (newYtterligereInfoType: YtterligereInfoType) => {
-    dispatch(updateReplySed('ytterligereInfoType', newYtterligereInfoType.trim()))
+  const setYtterligereInfoType = (newYtterligereInfoType: string) => {
+    dispatch(updateReplySed(`${target}.ytterligereInfoType`, toYtterligereInfoType(newYtterligereInfoType.trim())))
     if (validation[namespace + '-ytterligereInfoType']) {
       dispatch(resetValidation(namespace + '-ytterligereInfoType'))
     }
   }
 
   const setYtterligereInfo = (newYtterligereInfo: string) => {
-    dispatch(updateReplySed('ytterligereInfo', newYtterligereInfo.trim()))
+    dispatch(updateReplySed(`${target}.ytterligereInfo`, newYtterligereInfo.trim()))
     if (validation[namespace + '-ytterligereInfo']) {
-      dispatch(resetValidation(namespace + '-ytterligereiInfo'))
+      dispatch(resetValidation(namespace + '-ytterligereInfo'))
     }
   }
 
@@ -66,14 +72,14 @@ const EndredeForhold: React.FC<MainFormProps> = ({
           data-testid={namespace + '-ytterligereInfoType'}
           id={namespace + '-ytterligereInfoType'}
           error={validation[namespace + '-ytterligereInfoType']?.feilmelding}
-          value={(replySed as H001Sed).ytterligereInfoType}
-          onChange={(e: string | number | boolean) => setYtterligereInfoType(e as YtterligereInfoType)}
+          value={toYtterligereInfoType(bruker?.ytterligereInfoType)}
+          onChange={(e: string | number | boolean) => setYtterligereInfoType(e as string)}
         >
           <HStack gap="space-16">
             <RadioPanel value='melding_om_mer_informasjon'>
               {t('el:option-ytterligere-1')}
             </RadioPanel>
-            <RadioPanel value='anmodning_om_mer_informasjon'>
+            <RadioPanel value='anmodning_om_tilleggsinformasjon'>
               {t('el:option-ytterligere-2')}
             </RadioPanel>
           </HStack>
@@ -84,11 +90,11 @@ const EndredeForhold: React.FC<MainFormProps> = ({
           id='ytterligereInfo'
           label={t('label:ytterligere-informasjon-til-sed')}
           onChanged={setYtterligereInfo}
-          value={(replySed as H001Sed).ytterligereInfo ?? ''}
+          value={bruker?.ytterligereInfo ?? ''}
         />
       </VStack>
     </Box>
   )
 }
 
-export default EndredeForhold
+export default YtterligereInfoH001

@@ -191,6 +191,20 @@ export interface Foedested {
   landkode?: string
 }
 
+export interface PinMangler {
+  etternavnVedFoedsel?: string
+  fornavnVedFoedsel?: string
+  foedested?: Foedested
+  far?: {
+    etternavnVedFoedsel?: string
+    fornavn?: string
+  }
+  mor?: {
+    etternavnVedFoedsel?: string
+    fornavn?: string
+  }
+}
+
 export interface PersonInfo {
   fornavn: string
   etternavn: string
@@ -200,19 +214,7 @@ export interface PersonInfo {
   adressebeskyttelse?: string
   adressebeskyttelsesgrad?: string
   pin?: Array<Pin>
-  pinMangler?: {
-    foedested: Foedested
-    far: {
-      fornavn: string
-      etternavnVedFoedsel: string
-    }
-    mor: {
-      fornavn: string
-      etternavnVedFoedsel: string
-    }
-    etternavnVedFoedsel: string
-    fornavnVedFoedsel: string
-  }
+  pinMangler?: PinMangler
 }
 
 export interface AktivitetStatus {

@@ -1,24 +1,47 @@
-import { AdresseType, BaseReplySed } from 'declarations/sed'
-import { PersonMedAdresser } from './h'
+import { BaseReplySed, PinMangler } from 'declarations/sed'
+import {
+  Dokumentasjon,
+  PersonMedAdresser,
+  PersonensStatus,
+  Vedlegg
+} from './h'
 
-export type YtterligereInfoType = 'melding_om_mer_informasjon' | 'admodning_om_mer_informasjon'
-
-export interface AdresseTyper {
-  adresseTyper?: Array<AdresseType>
-}
+export type YtterligereInfoType = 'melding_om_mer_informasjon' | 'anmodning_om_tilleggsinformasjon'
 
 export interface Anmodning {
-  dokumentasjon: {
-    informasjon: string
-    dokument: string
-    sed: string
+  adresseTyper?: Array<'bosted' | 'opphold' | 'kontakt'>
+  informasjonOmBruker?: Array<string>
+  pin?: {
+    sektor?: string
+    annenSektor?: string
   }
-  adresse: AdresseTyper
+  dokumentasjon?: Dokumentasjon
+}
+
+export interface EndredeForhold {
+  personInfo?: {
+    etternavn?: string
+    fornavn?: string
+    foedselsdato?: string
+    kjoenn?: 'M' | 'K' | 'U'
+    pinMangler?: PinMangler
+    tidligereEtternavn?: string
+    tidligereFornavn?: string
+    statsborgerskap?: string
+  }
+  annet?: string
+}
+
+export interface Bruker extends PersonMedAdresser {
+  aktivitetsstatus?: Array<PersonensStatus>
+  aktivitetsstatusAnnet?: string
+  anmodning?: Anmodning
+  endredeForhold?: EndredeForhold
+  ytterligereInfoType?: YtterligereInfoType
+  ytterligereInfo?: string
+  vedlegg?: Vedlegg
 }
 
 export interface H001Sed extends BaseReplySed {
-  bruker: PersonMedAdresser
-  ytterligereInfo?: string
-  anmodning?: Anmodning
-  ytterligereInfoType?: YtterligereInfoType
+  bruker: Bruker
 }

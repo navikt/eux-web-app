@@ -20,6 +20,11 @@ export interface ValidationAdresserProps {
   botidilandetsiden?: string
 }
 
+export interface ValidationAnmodningOmAdresseProps {
+  replySed: ReplySed
+  personName?: string
+}
+
 export const validateAdresse = (
   v: Validation,
   namespace: string,
@@ -135,7 +140,11 @@ export const validateAdresser = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateAnmodningOmAdresse = ({}: any): boolean => {
+export const validateAnmodningOmAdresse = (
+  _v: Validation,
+  _namespace: string,
+  _props: ValidationAnmodningOmAdresseProps
+): boolean => {
   const hasErrors: Array<boolean> = []
 
   return hasErrors.find(value => value) !== undefined
