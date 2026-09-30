@@ -40,7 +40,7 @@ export const initialJournalfoeringState: JournalfoeringState = {
   addedRelatertRinaSak: undefined
 }
 
-const createH001= <T>(sak: Sak, informasjonTekst: string, ytterligereInfo?: string): T => {
+const createH001 = (sak: Sak, informasjonTekst: string, ytterligereInfo?: string): H001Sed => {
   const personInfo = {
     fornavn: sak.fornavn ? sak.fornavn : "XX",
     etternavn: sak.etternavn ? sak.etternavn : "XX",
@@ -48,26 +48,21 @@ const createH001= <T>(sak: Sak, informasjonTekst: string, ytterligereInfo?: stri
     foedselsdato: sak.foedselsdato ? sak.foedselsdato : "1900-01-01",
   }
 
-  let h001Sed = {
+  return {
     sedType: "H001",
-    bruker: { personInfo },
-    anmodning: {
-      dokumentasjon: {
-        informasjon: informasjonTekst
-      }
+    bruker: {
+      personInfo,
+      anmodning: {
+        dokumentasjon: {
+          informasjon: informasjonTekst
+        }
+      },
+      ...(ytterligereInfo && {
+        ytterligereInfoType: "melding_om_mer_informasjon",
+        ytterligereInfo
+      })
     }
-  } as unknown as T
-
-  if(ytterligereInfo){
-    return {
-      ...h001Sed,
-      ytterligereInfoType: "melding_om_mer_informasjon",
-      ytterligereInfo: ytterligereInfo
-    }
-  } else {
-    return h001Sed
-  }
-
+  } as H001Sed
 }
 
 const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoeringState, action: AnyAction): JournalfoeringState => {
@@ -191,7 +186,7 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
       const sak = (action as ActionWithPayload).payload.sak
       const informasjonTekst = (action as ActionWithPayload).payload.informasjonTekst
       const ytterligereInfo = (action as ActionWithPayload).payload.ytterligereInfo
-      const H001Sed: H001Sed = createH001<H001Sed>(sak, informasjonTekst, ytterligereInfo)
+      const H001Sed: H001Sed = createH001(sak, informasjonTekst, ytterligereInfo)
       return {
         ...state,
         H001: H001Sed

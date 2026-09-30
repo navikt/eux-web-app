@@ -1,13 +1,32 @@
 import { ReplySed } from 'declarations/sed'
-import { H002Sed } from 'declarations/h002'
+import { H002Sed, NegativtSvar, PositivtSvar } from 'declarations/h002'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { checkLength } from 'utils/validation'
 import { PDU1 } from 'declarations/pd'
 
+export type SvarType = 'positivt' | 'negativt'
+
 export interface ValidationSvarPåForespørselProps {
   replySed: ReplySed | PDU1 | null | undefined
   personName?: string
+}
+
+export const getSvarType = (replySed: ReplySed | PDU1 | null | undefined): SvarType | undefined => {
+  const bruker = (replySed as H002Sed)?.bruker
+
+  const doWeHavePositive: boolean = !_.isEmpty(bruker?.positivtSvar?.informasjon) ||
+    !_.isEmpty(bruker?.positivtSvar?.dokument) ||
+    !_.isEmpty(bruker?.positivtSvar?.sed)
+
+  const doWeHaveNegative: boolean = !!bruker?.negativtSvar?.some((negativtSvar: NegativtSvar) =>
+    !_.isEmpty(negativtSvar?.informasjon) ||
+    !_.isEmpty(negativtSvar?.dokument) ||
+    !_.isEmpty(negativtSvar?.sed) ||
+    !_.isEmpty(negativtSvar?.grunn)
+  )
+
+  return doWeHavePositive ? 'positivt' : doWeHaveNegative ? 'negativt' : undefined
 }
 
 export const validateSvarPåForespørsel = (
@@ -19,21 +38,14 @@ export const validateSvarPåForespørsel = (
   }: ValidationSvarPåForespørselProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-
-  const doWeHavePositive: boolean = !_.isEmpty((replySed as H002Sed)?.positivtSvar?.informasjon) ||
-    !_.isEmpty((replySed as H002Sed)?.positivtSvar?.dokument) ||
-      !_.isEmpty((replySed as H002Sed)?.positivtSvar?.sed)
-
-  const doWeHaveNegative: boolean = !!((replySed as H002Sed)?.negativtSvar?.informasjon) ||
-    !_.isEmpty((replySed as H002Sed)?.negativtSvar?.dokument) ||
-      !_.isEmpty((replySed as H002Sed)?.negativtSvar?.sed) ||
-        !_.isEmpty((replySed as H002Sed)?.negativtSvar?.grunn)
-
-  const target: string | undefined = doWeHavePositive ? 'positivt' : doWeHaveNegative ? 'negativt' : undefined
+  const bruker = (replySed as H002Sed)?.bruker
+  const target: SvarType | undefined = getSvarType(replySed)
 
   if (target === 'positivt') {
+    const positivtSvar: PositivtSvar | undefined = bruker?.positivtSvar
+
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).positivtSvar?.informasjon,
+      needle: positivtSvar?.informasjon,
       max: 500,
       id: namespace + '-informasjon',
       message: 'validation:textOverX',
@@ -41,7 +53,7 @@ export const validateSvarPåForespørsel = (
     }))
 
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).positivtSvar?.dokument,
+      needle: positivtSvar?.dokument,
       max: 255,
       id: namespace + '-dokument',
       message: 'validation:textOverX',
@@ -49,7 +61,7 @@ export const validateSvarPåForespørsel = (
     }))
 
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).positivtSvar?.sed,
+      needle: positivtSvar?.sed,
       max: 65,
       id: namespace + '-sed',
       message: 'validation:textOverX',
@@ -58,8 +70,11 @@ export const validateSvarPåForespørsel = (
   }
 
   if (target === 'negativt') {
+    // the form only edits the first negative answer, so that is the one being validated
+    const negativtSvar: NegativtSvar | undefined = bruker?.negativtSvar?.[0]
+
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).negativtSvar?.dokument,
+      needle: negativtSvar?.dokument,
       max: 255,
       id: namespace + '-dokument',
       message: 'validation:textOverX',
@@ -67,16 +82,15 @@ export const validateSvarPåForespørsel = (
     }))
 
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).negativtSvar?.informasjon,
+      needle: negativtSvar?.informasjon,
       max: 500,
       id: namespace + '-informasjon',
       message: 'validation:textOverX',
       personName
     }))
 
-
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).negativtSvar?.sed,
+      needle: negativtSvar?.sed,
       max: 65,
       id: namespace + '-sed',
       message: 'validation:textOverX',
@@ -84,7 +98,7 @@ export const validateSvarPåForespørsel = (
     }))
 
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).negativtSvar?.grunn,
+      needle: negativtSvar?.grunn,
       max: 500,
       id: namespace + '-grunn',
       message: 'validation:textOverX',

@@ -19,7 +19,7 @@ export const validateAnmodning = (
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkLength(v, {
-    needle: (replySed as H001Sed).anmodning?.dokumentasjon?.informasjon,
+    needle: (replySed as H001Sed).bruker?.anmodning?.dokumentasjon?.informasjon,
     max: 255,
     id: namespace + '-informasjon',
     message: 'validation:textOverX',
@@ -27,7 +27,7 @@ export const validateAnmodning = (
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: (replySed as H001Sed).anmodning?.dokumentasjon?.dokument,
+    needle: (replySed as H001Sed).bruker?.anmodning?.dokumentasjon?.dokument,
     max: 255,
     id: namespace + '-dokument',
     message: 'validation:textOverX',
@@ -35,7 +35,7 @@ export const validateAnmodning = (
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: (replySed as H001Sed).anmodning?.dokumentasjon?.sed,
+    needle: (replySed as H001Sed).bruker?.anmodning?.dokumentasjon?.sed,
     max: 65,
     id: namespace + '-sed',
     message: 'validation:textOverX',

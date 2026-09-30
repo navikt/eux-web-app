@@ -25,7 +25,7 @@ import BekreftelseGjenaapning from 'applications/SvarSed/BekreftelseGjenaapning/
 import Videresend from 'applications/SvarSed/Videresend/Videresend'
 import LeggTilInstitusjon from 'applications/SvarSed/LeggTilInstitusjon/LeggTilInstitusjon'
 import FjernInstitusjon from 'applications/SvarSed/FjernInstitusjon/FjernInstitusjon'
-import EndredeForhold from 'applications/SvarSed/EndredeForhold/EndredeForhold'
+import YtterligereInfoH001 from 'applications/SvarSed/YtterligereInfoH001/YtterligereInfoH001'
 import Familierelasjon from 'applications/SvarSed/Familierelasjon/Familierelasjon'
 import Formål from 'applications/SvarSed/Formål/Formål'
 import Forsikring from 'applications/SvarSed/Forsikring/Forsikring'
@@ -271,8 +271,11 @@ const SEDEdit = (): JSX.Element => {
   }
 
 
+  // H002 keeps its additional comment on bruker; all other SEDs keep it at the root
+  const commentTarget: string = isH002Sed(replySed) ? 'bruker.ytterligereInfo' : 'ytterligereInfo'
+
   const setComment = (comment: string) => {
-    dispatch(updateReplySed('ytterligereInfo', comment))
+    dispatch(updateReplySed(commentTarget, comment))
     if (validation[namespace + '-ytterligereInfo']) {
       dispatch(resetValidation(namespace + '-ytterligereInfo'))
     }
@@ -488,7 +491,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
                   { label: t('el:option-mainform-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' },
                   { label: t('el:option-mainform-anmodning'), value: 'anmodning', component: Anmodning, type: 'H001' },
-                  { label: t('el:option-mainform-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' },
+                  { label: t('el:option-mainform-endredeforhold'), value: 'ytterligereinfoh001', component: YtterligereInfoH001, type: 'H001' },
                   { label: t('el:option-mainform-ytterligereinfoomkrav'), value: 'ytterligereinfoomkrav', component: YtterligereInfoOmKrav, type: 'H065' },
                   { label: t('el:option-mainform-grunnerforoverfoering'), value: 'grunnerforoverfoering', component: GrunnerForOverfoering, type: 'H065' },
                   { label: t('el:option-mainform-dokumentervedlagt'), value: 'dokumentervedlagt', component: DokumenterVedlagt, type: 'H065' },
@@ -748,7 +751,7 @@ const SEDEdit = (): JSX.Element => {
               id='ytterligereInfo'
               label={t('label:ytterligere-informasjon-til-sed')}
               onChanged={setComment}
-              value={(replySed as FSed).ytterligereInfo}
+              value={_.get(replySed, commentTarget)}
               maxLength={500}
             />
           )}

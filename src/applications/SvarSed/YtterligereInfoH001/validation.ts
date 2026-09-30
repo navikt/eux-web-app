@@ -4,26 +4,27 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { checkLength } from 'utils/validation'
 
-export interface ValidationEndredeForholdProps {
+export interface ValidationYtterligereInfoH001Props {
   replySed: ReplySed
   personName?: string
 }
 
-export const validateEndredeForhold = (
+export const validateYtterligereInfoH001 = (
   v: Validation,
   namespace: string,
   {
     replySed,
     personName
-  }: ValidationEndredeForholdProps
+  }: ValidationYtterligereInfoH001Props
 ): boolean => {
   const hasErrors: Array<boolean> = []
+  const ytterligereInfo = (replySed as H001Sed).bruker?.ytterligereInfo
 
-  if (!_.isEmpty((replySed as H001Sed).ytterligereInfo)) {
+  if (!_.isEmpty(ytterligereInfo)) {
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H001Sed).ytterligereInfo,
+      needle: ytterligereInfo,
       max: 500,
-      id: namespace + '-tekst',
+      id: namespace + '-ytterligereInfo',
       message: 'validation:textOverX',
       personName
     }))
