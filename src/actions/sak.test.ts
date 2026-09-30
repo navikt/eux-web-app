@@ -79,4 +79,20 @@ describe('actions/sak', () => {
       payload: { key, value }
     })
   })
+
+  it.each(['H001', 'H002'])('editSed() uses the typed endpoint for %s', (sedType: string) => {
+    sakActions.editSed({ sakId: '123', sedId: '456' } as any, { sed: { sedType } })
+    expect(call)
+      .toBeCalledWith(expect.objectContaining({
+        url: sprintf(urls.API_SED_EDIT_BY_TYPE_URL, { rinaSakId: '123', sedType: sedType.toLowerCase(), sedId: '456' })
+      }))
+  })
+
+  it('editSed() keeps the legacy endpoint for untyped SED types', () => {
+    sakActions.editSed({ sakId: '123', sedId: '456' } as any, { sed: { sedType: 'F002' } })
+    expect(call)
+      .toBeCalledWith(expect.objectContaining({
+        url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId: '123', sedId: '456' })
+      }))
+  })
 })
