@@ -46,7 +46,7 @@ export const validateSvarPåForespørsel = (
 
     hasErrors.push(checkLength(v, {
       needle: positivtSvar?.informasjon,
-      max: 500,
+      max: 255,
       id: namespace + '-informasjon',
       message: 'validation:textOverX',
       personName
@@ -83,7 +83,7 @@ export const validateSvarPåForespørsel = (
 
     hasErrors.push(checkLength(v, {
       needle: negativtSvar?.informasjon,
-      max: 500,
+      max: 255,
       id: namespace + '-informasjon',
       message: 'validation:textOverX',
       personName
@@ -99,7 +99,7 @@ export const validateSvarPåForespørsel = (
 
     hasErrors.push(checkLength(v, {
       needle: negativtSvar?.grunn,
-      max: 500,
+      max: 255,
       id: namespace + '-grunn',
       message: 'validation:textOverX',
       personName

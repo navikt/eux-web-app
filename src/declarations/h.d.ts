@@ -1,4 +1,4 @@
-import { Adresse, PersonInfo } from 'declarations/sed'
+import { Adresse, Kjoenn, PersonInfo, PinMangler } from 'declarations/sed'
 
 // ===== §1 Person =====
 
@@ -8,6 +8,17 @@ export interface Person {
 
 export interface PersonMedAdresser extends Person {
   adresser?: Array<Adresse>
+}
+
+// Person data where only changed/known values are sent, so all fields are optional
+export interface BasePersonInfo {
+  etternavn?: string
+  fornavn?: string
+  foedselsdato?: string
+  kjoenn?: Kjoenn
+  pinMangler?: PinMangler
+  tidligereEtternavn?: string
+  tidligereFornavn?: string
 }
 
 export interface Dokumentasjon {

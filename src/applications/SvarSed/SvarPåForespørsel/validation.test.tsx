@@ -55,7 +55,7 @@ describe('applications/SvarSed/SvarPåForespørsel/validation', () => {
     const validation: Validation = {}
     const hasErrors = validateSvarPåForespørsel(validation, 'test-mock', {
       replySed: getReplySed({
-        positivtSvar: { informasjon: 'a'.repeat(500), dokument: 'a'.repeat(255), sed: 'a'.repeat(65) }
+        positivtSvar: { informasjon: 'a'.repeat(255), dokument: 'a'.repeat(255), sed: 'a'.repeat(65) }
       })
     })
     expect(hasErrors).toBeFalsy()
@@ -65,7 +65,7 @@ describe('applications/SvarSed/SvarPåForespørsel/validation', () => {
     const validation: Validation = {}
     const hasErrors = validateSvarPåForespørsel(validation, 'test-mock', {
       replySed: getReplySed({
-        positivtSvar: { informasjon: 'a'.repeat(501), dokument: 'a'.repeat(256), sed: 'a'.repeat(66) }
+        positivtSvar: { informasjon: 'a'.repeat(256), dokument: 'a'.repeat(256), sed: 'a'.repeat(66) }
       })
     })
     expect(hasErrors).toBeTruthy()
@@ -79,7 +79,7 @@ describe('applications/SvarSed/SvarPåForespørsel/validation', () => {
     const validation: Validation = {}
     const hasErrors = validateSvarPåForespørsel(validation, 'test-mock', {
       replySed: getReplySed({
-        negativtSvar: [{ informasjon: 'a'.repeat(500), dokument: 'a'.repeat(255), sed: 'a'.repeat(65), grunn: 'a'.repeat(500) }]
+        negativtSvar: [{ informasjon: 'a'.repeat(255), dokument: 'a'.repeat(255), sed: 'a'.repeat(65), grunn: 'a'.repeat(255) }]
       })
     })
     expect(hasErrors).toBeFalsy()
@@ -89,7 +89,7 @@ describe('applications/SvarSed/SvarPåForespørsel/validation', () => {
     const validation: Validation = {}
     const hasErrors = validateSvarPåForespørsel(validation, 'test-mock', {
       replySed: getReplySed({
-        negativtSvar: [{ informasjon: 'a'.repeat(501), dokument: 'a'.repeat(256), sed: 'a'.repeat(66), grunn: 'a'.repeat(501) }]
+        negativtSvar: [{ informasjon: 'a'.repeat(256), dokument: 'a'.repeat(256), sed: 'a'.repeat(66), grunn: 'a'.repeat(256) }]
       })
     })
     expect(hasErrors).toBeTruthy()
@@ -103,7 +103,7 @@ describe('applications/SvarSed/SvarPåForespørsel/validation', () => {
     const validation: Validation = {}
     const hasErrors = validateSvarPåForespørsel(validation, 'test-mock', {
       replySed: getReplySed({
-        negativtSvar: [{ grunn: 'ok' }, { grunn: 'a'.repeat(501) }]
+        negativtSvar: [{ grunn: 'ok' }, { grunn: 'a'.repeat(256) }]
       })
     })
     expect(hasErrors).toBeFalsy()

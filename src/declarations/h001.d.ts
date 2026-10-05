@@ -1,6 +1,7 @@
-import { BaseReplySed, PinMangler } from 'declarations/sed'
+import { BaseReplySed, Statsborgerskap } from 'declarations/sed'
 import {
   Dokumentasjon,
+  BasePersonInfo,
   PersonMedAdresser,
   PersonensStatus,
   Vedlegg
@@ -18,23 +19,18 @@ export interface Anmodning {
   dokumentasjon?: Dokumentasjon
 }
 
+export interface EndringPersonInfo extends BasePersonInfo {
+  statsborgerskap?: Array<Statsborgerskap>
+}
+
 export interface EndredeForhold {
-  personInfo?: {
-    etternavn?: string
-    fornavn?: string
-    foedselsdato?: string
-    kjoenn?: 'M' | 'K' | 'U'
-    pinMangler?: PinMangler
-    tidligereEtternavn?: string
-    tidligereFornavn?: string
-    statsborgerskap?: string
-  }
+  personInfo?: EndringPersonInfo
   annet?: string
 }
 
 export interface Bruker extends PersonMedAdresser {
-  aktivitetsstatus?: Array<PersonensStatus>
-  aktivitetsstatusAnnet?: string
+  personensstatus?: Array<PersonensStatus>
+  personensstatusAnnet?: string
   anmodning?: Anmodning
   endredeForhold?: EndredeForhold
   ytterligereInfoType?: YtterligereInfoType

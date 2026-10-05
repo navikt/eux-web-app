@@ -1,5 +1,6 @@
-import { BaseReplySed, PinMangler } from 'declarations/sed'
+import { BaseReplySed } from 'declarations/sed'
 import {
+  BasePersonInfo,
   PersonMedAdresser,
   PersonensStatus,
   Vedlegg
@@ -18,35 +19,32 @@ export interface PositivtSvar {
   sed?: string
 }
 
+export interface SektorPin {
+  alle?: string
+  sykepengerKontant?: string
+  sykepengerGodtgjoerelse?: string
+  pensjon?: string
+  arbeidsledighet?: string
+  yrkessykdomKontant?: string
+  yrkessykdomGodtgjoerelse?: string
+  familieytelser?: string
+  tilbakebetaling?: string
+  annenSektorPin?: string
+  annenSektorBeskrivelse?: string
+}
+
+export interface IdentifiseringPersonInfo extends BasePersonInfo {
+  sektorPin?: SektorPin
+  nasjonaltSkatteNummer?: string
+}
+
 export interface Identifisering {
-  personInfo?: {
-    etternavn?: string
-    fornavn?: string
-    foedselsdato?: string
-    kjoenn?: 'M' | 'K' | 'U'
-    pinMangler?: PinMangler
-    tidligereEtternavn?: string
-    tidligereFornavn?: string
-    sektorPin?: {
-      alle?: string
-      sykepengerKontant?: string
-      sykepengerGodtgjoerelse?: string
-      pensjon?: string
-      arbeidsledighet?: string
-      yrkessykdomKontant?: string
-      yrkessykdomGodtgjoerelse?: string
-      familieytelser?: string
-      tilbakebetaling?: string
-      annenSektorPin?: string
-      annenSektorBeskrivelse?: string
-    }
-    nasjonaltSkatteNummer?: string
-  }
+  personInfo?: IdentifiseringPersonInfo
 }
 
 export interface Bruker extends PersonMedAdresser {
-  aktivitetsstatus?: Array<PersonensStatus>
-  aktivitetsstatusAnnet?: string
+  personensstatus?: Array<PersonensStatus>
+  personensstatusAnnet?: string
   identifisering?: Identifisering
   positivtSvar?: PositivtSvar
   negativtSvar?: Array<NegativtSvar>

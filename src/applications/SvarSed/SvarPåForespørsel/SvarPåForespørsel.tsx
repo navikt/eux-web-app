@@ -179,7 +179,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
               value={data?.dokument ?? ''}
             />
             <TextArea
-              maxLength={500}
+              maxLength={255}
               error={validation[namespace + '-informasjon']?.feilmelding}
               namespace={namespace}
               id='informasjon'
@@ -201,7 +201,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
 
         {_svar === 'negativt' && (
           <TextArea
-            maxLength={500}
+            maxLength={255}
             error={validation[namespace + '-grunn']?.feilmelding}
             namespace={namespace}
             id='grunn'
