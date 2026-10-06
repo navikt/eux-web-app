@@ -1,6 +1,8 @@
 {
   "aa-registeret": "AA-Registeret",
   "a-inntekt": "A-Inntekt",
+  "aarlig-kontroll-valgt-f001": "Valgt F001",
+  "aarlig-kontroll-velg-f001": "Velg F001",
   "add-deltakere-modal": "Endre deltakere",
   "add-deltaker-modal": "Endre deltaker",
   "adresse": "Adresse",
@@ -563,6 +565,7 @@
   "utkast": "Utkast",
   "utvid-alle": "Utvid alle",
   "utstedelsesdato": "Utstedelsesdato",
+  "valgt": "Valgt",
   "valgt-familie": "Valgte familierelasjoner",
   "valid-dnr": "Gyldig d.nr.",
   "valid-fnr": "Gyldig f.nr.",
