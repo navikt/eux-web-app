@@ -3,7 +3,7 @@ import dotenv from 'dotenv-save';
 import { readPackageSync } from 'read-pkg';
 // Read package.json into js map.
 const pkg = readPackageSync({cwd: '.'})
-import simpleGit from 'simple-git';
+import { simpleGit } from 'simple-git';
 
 moment.locale('nb');
 
