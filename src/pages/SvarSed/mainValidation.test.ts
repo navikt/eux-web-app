@@ -30,7 +30,7 @@ describe('pages/SvarSed/mainValidation - H001/H002', () => {
 
   it('H001: validates the additional information on bruker.ytterligereInfo', () => {
     const validation = validate(getReplySed('H001', { ytterligereInfo: tooLong }))
-    expect(validation['svarsed-bruker-ytterligereinfoh001-ytterligereInfo']?.feilmelding).toContain('validation:textOverX')
+    expect(validation['svarsed-bruker-ytterligereinfobruker-ytterligereInfo']?.feilmelding).toContain('validation:textOverX')
   })
 
   it('H001: validates anmodning dokumentasjon on bruker.anmodning', () => {
@@ -52,9 +52,10 @@ describe('pages/SvarSed/mainValidation - H001/H002', () => {
     expect(validation['editor-ytterligereInfo']).toBeUndefined()
   })
 
-  it('H002: validates the shared comment on bruker.ytterligereInfo', () => {
+  it('H002: validates the additional information on bruker.ytterligereInfo', () => {
     const validation = validate(getReplySed('H002', { ytterligereInfo: tooLong }))
-    expect(validation['editor-ytterligereInfo']?.feilmelding).toEqual('validation:textOverX')
+    expect(validation['svarsed-bruker-ytterligereinfobruker-ytterligereInfo']?.feilmelding).toContain('validation:textOverX')
+    expect(validation['editor-ytterligereInfo']).toBeUndefined()
   })
 
   it('H002: ignores a root level comment', () => {

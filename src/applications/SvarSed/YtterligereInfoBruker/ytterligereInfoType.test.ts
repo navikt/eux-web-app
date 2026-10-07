@@ -1,6 +1,6 @@
 import { toYtterligereInfoType } from './ytterligereInfoType'
 
-describe('applications/SvarSed/YtterligereInfoH001/ytterligereInfoType', () => {
+describe('applications/SvarSed/YtterligereInfoBruker/ytterligereInfoType', () => {
   it('maps the legacy radio value to the typed value', () => {
     expect(toYtterligereInfoType('anmodning_om_mer_informasjon')).toEqual('anmodning_om_tilleggsinformasjon')
   })

@@ -1,24 +1,25 @@
 import { ReplySed } from 'declarations/sed'
 import { H001Sed } from 'declarations/h001'
+import { H002Sed } from 'declarations/h002'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { checkLength } from 'utils/validation'
 
-export interface ValidationYtterligereInfoH001Props {
+export interface ValidationYtterligereInfoBrukerProps {
   replySed: ReplySed
   personName?: string
 }
 
-export const validateYtterligereInfoH001 = (
+export const validateYtterligereInfoBruker = (
   v: Validation,
   namespace: string,
   {
     replySed,
     personName
-  }: ValidationYtterligereInfoH001Props
+  }: ValidationYtterligereInfoBrukerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  const ytterligereInfo = (replySed as H001Sed).bruker?.ytterligereInfo
+  const ytterligereInfo = (replySed as H001Sed | H002Sed).bruker?.ytterligereInfo
 
   if (!_.isEmpty(ytterligereInfo)) {
     hasErrors.push(checkLength(v, {
