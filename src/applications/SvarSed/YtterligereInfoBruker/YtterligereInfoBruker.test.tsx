@@ -50,14 +50,6 @@ describe('applications/SvarSed/YtterligereInfoBruker/YtterligereInfoBruker', () 
     expect(screen.getByLabelText('el:option-ytterligere-2')).not.toBeChecked()
   })
 
-  it('Shows the anmodning choice for the legacy stored value', () => {
-    render(<YtterligereInfoBruker {...initialMockProps} replySed={{
-      ...mockReplySed,
-      bruker: { personInfo: {}, ytterligereInfoType: 'anmodning_om_mer_informasjon' }
-    } as unknown as ReplySed} />)
-    expect(screen.getByLabelText('el:option-ytterligere-2')).toBeChecked()
-  })
-
   it('Handling: choosing the anmodning option writes the typed value to bruker', () => {
     render(<YtterligereInfoBruker {...initialMockProps} />)
     fireEvent.click(screen.getByLabelText('el:option-ytterligere-2'))

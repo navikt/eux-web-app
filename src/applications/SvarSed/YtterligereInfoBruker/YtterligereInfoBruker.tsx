@@ -5,12 +5,11 @@ import {
   validateYtterligereInfoBruker,
   ValidationYtterligereInfoBrukerProps
 } from 'applications/SvarSed/YtterligereInfoBruker/validation'
-import { toYtterligereInfoType } from 'applications/SvarSed/YtterligereInfoBruker/ytterligereInfoType'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
-import { H001Sed } from 'declarations/h001'
+import { H001Sed, YtterligereInfoType } from 'declarations/h001'
 import { H002Sed } from 'declarations/h002'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -51,8 +50,8 @@ const YtterligereInfoBruker: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedValidation))
   })
 
-  const setYtterligereInfoType = (newYtterligereInfoType: string) => {
-    dispatch(updateReplySed(`${target}.ytterligereInfoType`, toYtterligereInfoType(newYtterligereInfoType.trim())))
+  const setYtterligereInfoType = (newYtterligereInfoType: YtterligereInfoType) => {
+    dispatch(updateReplySed(`${target}.ytterligereInfoType`, newYtterligereInfoType))
     if (validation[namespace + '-ytterligereInfoType']) {
       dispatch(resetValidation(namespace + '-ytterligereInfoType'))
     }
@@ -77,8 +76,8 @@ const YtterligereInfoBruker: React.FC<MainFormProps> = ({
             data-testid={namespace + '-ytterligereInfoType'}
             id={namespace + '-ytterligereInfoType'}
             error={validation[namespace + '-ytterligereInfoType']?.feilmelding}
-            value={toYtterligereInfoType((bruker as H001Sed['bruker'])?.ytterligereInfoType)}
-            onChange={(e: string | number | boolean) => setYtterligereInfoType(e as string)}
+            value={(bruker as H001Sed['bruker'])?.ytterligereInfoType}
+            onChange={(e: string | number | boolean) => setYtterligereInfoType(e as YtterligereInfoType)}
           >
             <HStack gap="space-16">
               <RadioPanel value='melding_om_mer_informasjon'>
