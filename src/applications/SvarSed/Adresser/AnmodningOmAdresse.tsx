@@ -1,15 +1,19 @@
-import React, { JSX } from "react";
-import {MainFormProps, MainFormSelector} from "../MainForm";
-import {useAppDispatch, useAppSelector} from "../../../store";
-import useUnmount from "../../../hooks/useUnmount";
-import _ from "lodash";
-import {setValidation} from "../../../actions/validation";
-import {Box, Checkbox, CheckboxGroup, Heading, HStack, VStack} from "@navikt/ds-react";
-import {State} from "../../../declarations/reducers";
-import {useTranslation} from "react-i18next";
-import {AdresseTyper} from "../../../declarations/h001";
-import performValidation from "../../../utils/performValidation";
-import {validateAnmodningOmAdresse} from "./validation";
+import { Box, Checkbox, CheckboxGroup, Heading, HStack, VStack } from '@navikt/ds-react'
+import { setValidation } from 'actions/validation'
+import {
+  validateAnmodningOmAdresse,
+  ValidationAnmodningOmAdresseProps
+} from 'applications/SvarSed/Adresser/validation'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import { Anmodning } from 'declarations/h001'
+import { State } from 'declarations/reducers'
+import { ReplySed } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
+import React, { JSX } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -18,6 +22,7 @@ const mapState = (state: State): MainFormSelector => ({
 const AnmodningOmAdresse: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
+  personName,
   replySed,
   updateReplySed,
 }: MainFormProps): JSX.Element => {
@@ -25,29 +30,22 @@ const AnmodningOmAdresse: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-adresseAnmodning`
-  const target = 'anmodning.adresse'
-
-  const getAdresseTyper = () => {
-    const adresseTyper: AdresseTyper | undefined = _.get(replySed, target)
-    if (!adresseTyper) {
-      const newAdresseTyper: AdresseTyper = {
-        adresseTyper: []
-      }
-      return newAdresseTyper
-    }
-    return adresseTyper
-  }
-
-  const adresseTyper: AdresseTyper | undefined = getAdresseTyper()
+  const target = 'bruker.anmodning.adresseTyper'
+  const adresseTyper: Anmodning['adresseTyper'] = _.get(replySed, target) ?? []
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
-    performValidation<any>(clonedValidation, namespace, validateAnmodningOmAdresse, {}, true)
+    performValidation<ValidationAnmodningOmAdresseProps>(
+      clonedValidation, namespace, validateAnmodningOmAdresse, {
+        replySed: (replySed as ReplySed),
+        personName
+      }, true
+    )
     dispatch(setValidation(clonedValidation))
   })
 
-  const onAdressetypeChange = (value: any[]) => {
-    dispatch(updateReplySed(`${target}.adresseTyper`, value))
+  const onAdressetypeChange = (value: Array<string>) => {
+    dispatch(updateReplySed(target, value))
   }
 
   return (
@@ -66,7 +64,7 @@ const AnmodningOmAdresse: React.FC<MainFormProps> = ({
                       error={validation[namespace + '-anmodning-type']?.feilmelding}
                       id={namespace + '-anmodning-type'}
                       name={namespace + '-anmodning-type'}
-                      value={adresseTyper?.adresseTyper}
+                      value={adresseTyper}
                       onChange={(value) => onAdressetypeChange(value)}
                     >
                       <HStack gap="space-16">

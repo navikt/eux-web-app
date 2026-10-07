@@ -29,8 +29,8 @@ const Anmodning: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-anmodning`
-  const target = 'anmodning'
-  const anmodning: AnmodningDto | undefined = (replySed as H001Sed).anmodning
+  const target = 'bruker.anmodning'
+  const anmodning: AnmodningDto | undefined = (replySed as H001Sed).bruker?.anmodning
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)

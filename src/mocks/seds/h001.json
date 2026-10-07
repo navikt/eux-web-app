@@ -51,16 +51,25 @@
         "bygning": "æøå",
         "region": "æøå"
       }
-    ]
-  },
-  "anmodning":{
-    "dokumentasjon": {
-      "informasjon": "æøå",
-      "dokument": "æøå",
-      "sed": "æøå"
+    ],
+    "anmodning": {
+      "dokumentasjon": {
+        "informasjon": "æøå",
+        "dokument": "æøå",
+        "sed": "æøå"
+      },
+      "adresseTyper": [
+        "bosted"
+      ]
     },
-    "adresse": ""
-  },
-  "ytterligereinfoType": "melding_om_mer_informasjon",
-  "ytterligereinfo": "æøå"
+    "endredeForhold": {
+      "personInfo": {
+        "etternavn": "æøå",
+        "fornavn": "æøå"
+      },
+      "annet": "æøå"
+    },
+    "ytterligereInfoType": "melding_om_mer_informasjon",
+    "ytterligereInfo": "æøå"
+  }
 }

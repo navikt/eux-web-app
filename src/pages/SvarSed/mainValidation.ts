@@ -1,4 +1,4 @@
-import {validateAdresse, validateAdresser, validateAnmodningOmAdresse, ValidationAdresseProps, ValidationAdresserProps} from 'applications/SvarSed/Adresser/validation'
+import {validateAdresse, validateAdresser, validateAnmodningOmAdresse, ValidationAdresseProps, ValidationAdresserProps, ValidationAnmodningOmAdresseProps} from 'applications/SvarSed/Adresser/validation'
 import { validateAnmodning, ValidationAnmodningProps } from 'applications/SvarSed/Anmodning/validation'
 import {
   validateAnmodningsPerioder, validateKrav,
@@ -15,7 +15,7 @@ import {
   validateBeløpNavnOgValutas,
   ValidationBeløpNavnOgValutasProps
 } from 'applications/SvarSed/BeløpNavnOgValuta/validation'
-import { validateEndredeForhold, ValidationEndredeForholdProps } from 'applications/SvarSed/EndredeForhold/validation'
+import { validateYtterligereInfoBruker, ValidationYtterligereInfoBrukerProps } from 'applications/SvarSed/YtterligereInfoBruker/validation'
 import { validateYtterligereInfoOmKrav, ValidationYtterligereInfoOmKravProps } from 'applications/SvarSed/YtterligereInfoOmKrav/validation'
 import { validateGrunnerForOverfoering, ValidationGrunnerForOverfoeringProps } from 'applications/SvarSed/GrunnerForOverfoering/validation'
 import { validateDokumenterVedlagt, ValidationDokumenterVedlagtProps } from 'applications/SvarSed/DokumenterVedlagt/validation'
@@ -124,7 +124,6 @@ import {
   X012Sed,
   Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse, VedtakF003, Vedtak
 } from 'declarations/sed'
-import { H001Sed } from 'declarations/h001'
 import { H120Sed } from 'declarations/h120'
 import { U013Sed } from 'declarations/u013'
 import { X002Sed } from 'declarations/x002'
@@ -494,7 +493,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (isH001Sed(replySed)) {
-      hasErrors.push(performValidation<ValidationAnmodningProps>(v, `svarsed-${personID}-anmodningOmAdresse`, validateAnmodningOmAdresse, {
+      hasErrors.push(performValidation<ValidationAnmodningOmAdresseProps>(v, `svarsed-${personID}-anmodningOmAdresse`, validateAnmodningOmAdresse, {
         replySed,
         personName: i18n.t('label:anmodning-om-adresse').toLowerCase()
       }, true))
@@ -502,9 +501,11 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         replySed,
         personName: i18n.t('label:anmodning-om-informasjon').toLowerCase()
       }, true))
-      hasErrors.push(performValidation<ValidationEndredeForholdProps>(v, `svarsed-${personID}-endredeforhold`, validateEndredeForhold, {
+    }
+    if (isH001Sed(replySed) || isH002Sed(replySed)) {
+      hasErrors.push(performValidation<ValidationYtterligereInfoBrukerProps>(v, `svarsed-${personID}-ytterligereinfobruker`, validateYtterligereInfoBruker, {
         replySed,
-        personName: i18n.t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
+        personName: i18n.t('label:ytterligere-informasjon').toLowerCase()
       }, true))
     }
     if (isH003Sed(replySed)) {
@@ -829,9 +830,10 @@ export const validateSEDEdit = (
   }
 
 
-  if (!isH001Sed(replySed)) {
+  // H001 and H002 keep their additional information on bruker, validated in validateMainForm
+  if (!isH001Sed(replySed) && !isH002Sed(replySed)) {
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H001Sed)?.ytterligereInfo,
+      needle: (replySed as FSed)?.ytterligereInfo,
       max: 500,
       id: 'editor-ytterligereInfo',
       message: 'validation:textOverX'
