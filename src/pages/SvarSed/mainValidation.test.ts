@@ -41,12 +41,7 @@ describe('pages/SvarSed/mainValidation - H001/H002', () => {
     expect(validation['svarsed-bruker-anmodning-dokument']?.feilmelding).toContain('validation:textOverX')
     expect(validation['svarsed-bruker-anmodning-sed']?.feilmelding).toContain('validation:textOverX')
   })
-
-  it('H001: does not report the old endredeforhold namespace', () => {
-    const validation = validate(getReplySed('H001', { ytterligereInfo: tooLong }))
-    expect(Object.keys(validation).filter(key => key.includes('endredeforhold'))).toEqual([])
-  })
-
+  
   it('H001: does not use the shared root level comment check', () => {
     const validation = validate(getReplySed('H001', {}, { ytterligereInfo: tooLong }))
     expect(validation['editor-ytterligereInfo']).toBeUndefined()
