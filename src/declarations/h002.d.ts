@@ -6,17 +6,16 @@ import {
   Vedlegg
 } from './h'
 
-export interface NegativtSvar {
-  informasjon?: string
-  dokument?: string
-  sed?: string
-  grunn?: string
-}
+export type SvarType = 'positivt' | 'negativt'
 
 export interface PositivtSvar {
   informasjon?: string
   dokument?: string
   sed?: string
+}
+
+export interface NegativtSvar extends PositivtSvar {
+  grunn?: string
 }
 
 export interface SektorPin {

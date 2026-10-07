@@ -1,16 +1,19 @@
-import React, { JSX } from "react";
-import {MainFormProps, MainFormSelector} from "../MainForm";
-import {useAppDispatch, useAppSelector} from "../../../store";
-import useUnmount from "../../../hooks/useUnmount";
-import _ from "lodash";
-import {setValidation} from "../../../actions/validation";
-import {Box, Checkbox, CheckboxGroup, Heading, HStack, VStack} from "@navikt/ds-react";
-import {State} from "../../../declarations/reducers";
-import {useTranslation} from "react-i18next";
-import {Anmodning} from "../../../declarations/h001";
-import {ReplySed} from "../../../declarations/sed";
-import performValidation from "../../../utils/performValidation";
-import {validateAnmodningOmAdresse, ValidationAnmodningOmAdresseProps} from "./validation";
+import { Box, Checkbox, CheckboxGroup, Heading, HStack, VStack } from '@navikt/ds-react'
+import { setValidation } from 'actions/validation'
+import {
+  validateAnmodningOmAdresse,
+  ValidationAnmodningOmAdresseProps
+} from 'applications/SvarSed/Adresser/validation'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import { Anmodning } from 'declarations/h001'
+import { State } from 'declarations/reducers'
+import { ReplySed } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
+import React, { JSX } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status

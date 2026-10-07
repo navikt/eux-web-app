@@ -1,11 +1,9 @@
 import { ReplySed } from 'declarations/sed'
-import { H002Sed, NegativtSvar, PositivtSvar } from 'declarations/h002'
+import { H002Sed, NegativtSvar, PositivtSvar, SvarType } from 'declarations/h002'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { checkLength } from 'utils/validation'
 import { PDU1 } from 'declarations/pd'
-
-export type SvarType = 'positivt' | 'negativt'
 
 export interface ValidationSvarPåForespørselProps {
   replySed: ReplySed | PDU1 | null | undefined

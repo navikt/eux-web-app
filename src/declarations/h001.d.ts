@@ -1,4 +1,4 @@
-import { BaseReplySed, Statsborgerskap } from 'declarations/sed'
+import { AdresseType, BaseReplySed, Statsborgerskap } from 'declarations/sed'
 import {
   Dokumentasjon,
   BasePersonInfo,
@@ -9,13 +9,15 @@ import {
 
 export type YtterligereInfoType = 'melding_om_mer_informasjon' | 'anmodning_om_tilleggsinformasjon'
 
+export interface AnmodningPin {
+  sektor?: string
+  annenSektor?: string
+}
+
 export interface Anmodning {
-  adresseTyper?: Array<'bosted' | 'opphold' | 'kontakt'>
+  adresseTyper?: Array<Exclude<AdresseType, 'annet'>>
   informasjonOmBruker?: Array<string>
-  pin?: {
-    sektor?: string
-    annenSektor?: string
-  }
+  pin?: AnmodningPin
   dokumentasjon?: Dokumentasjon
 }
 

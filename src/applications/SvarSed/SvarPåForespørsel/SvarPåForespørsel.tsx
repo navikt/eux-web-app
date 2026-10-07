@@ -4,13 +4,12 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import {
   getSvarType,
-  SvarType,
   validateSvarPåForespørsel,
   ValidationSvarPåForespørselProps
 } from 'applications/SvarSed/SvarPåForespørsel/validation'
 import TextArea from 'components/Forms/TextArea'
 import { State } from 'declarations/reducers'
-import { Bruker, H002Sed, NegativtSvar, PositivtSvar } from 'declarations/h002'
+import { Bruker, H002Sed, NegativtSvar, PositivtSvar, SvarType } from 'declarations/h002'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { useState, JSX } from 'react';
