@@ -49,36 +49,27 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
 
   const bruker: Bruker | undefined = (replySed as H002Sed)?.bruker
   const positivtSvar: PositivtSvar | undefined = bruker?.positivtSvar
-  const allNegativtSvar: Array<NegativtSvar> = bruker?.negativtSvar ?? []
-  // while answering negatively, this editor owns the first negative answer. All other entries are left as they are
-  const negativtSvar: NegativtSvar | undefined = _svar === 'negativt' ? allNegativtSvar[0] : undefined
+  // the API models negativtSvar as a list, but this form only supports a single negative answer (negativtSvar[0])
+  const firstNegativtSvar: NegativtSvar | undefined = bruker?.negativtSvar?.[0]
+  const negativtSvar: NegativtSvar | undefined = _svar === 'negativt' ? firstNegativtSvar : undefined
 
+  // the answer is either positive or negative: switching moves the shared fields over and removes the other answer
   const switchSvar = (newSvar: SvarType) => {
     const newBruker: Bruker = { ...(bruker as Bruker) }
     if (newSvar === 'positivt') {
       newBruker.positivtSvar = {
         ...positivtSvar,
-        informasjon: negativtSvar?.informasjon ?? '',
-        dokument: negativtSvar?.dokument ?? '',
-        sed: negativtSvar?.sed ?? ''
+        informasjon: firstNegativtSvar?.informasjon ?? '',
+        dokument: firstNegativtSvar?.dokument ?? '',
+        sed: firstNegativtSvar?.sed ?? ''
       }
-      // the edited negative answer is moved to the positive one, the other negative answers stay
-      const otherNegativtSvar = _svar === 'negativt' ? allNegativtSvar.slice(1) : allNegativtSvar
-      if (otherNegativtSvar.length > 0) {
-        newBruker.negativtSvar = otherNegativtSvar
-      } else {
-        delete newBruker.negativtSvar
-      }
+      delete newBruker.negativtSvar
     } else {
-      // the positive answer is moved to a new first negative answer, existing negative answers stay
-      newBruker.negativtSvar = [
-        {
-          informasjon: positivtSvar?.informasjon ?? '',
-          dokument: positivtSvar?.dokument ?? '',
-          sed: positivtSvar?.sed ?? ''
-        },
-        ...allNegativtSvar
-      ]
+      newBruker.negativtSvar = [{
+        informasjon: positivtSvar?.informasjon ?? '',
+        dokument: positivtSvar?.dokument ?? '',
+        sed: positivtSvar?.sed ?? ''
+      }]
       delete newBruker.positivtSvar
     }
     dispatch(setReplySed!({

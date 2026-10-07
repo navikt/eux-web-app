@@ -118,7 +118,7 @@ describe('applications/SvarSed/SvarPåForespørsel/SvarPåForespørsel', () => {
     expect(setReplySed).not.toHaveBeenCalled()
   })
 
-  it('Handling: from positive to negative moves the answer to a new first negative entry and keeps existing ones', () => {
+  it('Handling: from positive to negative replaces all negative entries with the converted answer', () => {
     const replySed = getReplySed({
       positivtSvar: { informasjon: 'pos info', dokument: 'pos doc', sed: 'pos sed' },
       negativtSvar: otherNegativtSvar,
@@ -131,14 +131,11 @@ describe('applications/SvarSed/SvarPåForespørsel/SvarPåForespørsel', () => {
 
     expect(setReplySed).toHaveBeenCalledTimes(1)
     const newReplySed = setReplySed.mock.calls[0][0]
-    expect(newReplySed.bruker.positivtSvar).toBeUndefined()
+    expect('positivtSvar' in newReplySed.bruker).toBe(false)
     expect(newReplySed.bruker.negativtSvar).toEqual([
-      { informasjon: 'pos info', dokument: 'pos doc', sed: 'pos sed' },
-      ...otherNegativtSvar
+      { informasjon: 'pos info', dokument: 'pos doc', sed: 'pos sed' }
     ])
     // untouched nested data is carried over as is
-    expect(newReplySed.bruker.negativtSvar[1]).toBe(otherNegativtSvar[0])
-    expect(newReplySed.bruker.negativtSvar[2]).toBe(otherNegativtSvar[1])
     expect(newReplySed.bruker.vedlegg).toBe((replySed as H002Sed).bruker.vedlegg)
     expect(newReplySed.bruker.identifisering).toBe((replySed as H002Sed).bruker.identifisering)
     expect(newReplySed.bruker.ytterligereInfo).toEqual('bruker comment')
@@ -149,17 +146,7 @@ describe('applications/SvarSed/SvarPåForespørsel/SvarPåForespørsel', () => {
     expect((replySed as H002Sed).bruker.negativtSvar).toHaveLength(2)
   })
 
-  it('Handling: from positive to negative without existing negative entries', () => {
-    render(<SvarPåForespørsel {...getProps(getReplySed({
-      positivtSvar: { informasjon: 'pos info' }
-    }))} />)
-    fireEvent.click(screen.getByLabelText('el:option-svar-2'))
-    const newReplySed = setReplySed.mock.calls[0][0]
-    expect(newReplySed.bruker.negativtSvar).toEqual([{ informasjon: 'pos info', dokument: '', sed: '' }])
-    expect(newReplySed.bruker.positivtSvar).toBeUndefined()
-  })
-
-  it('Handling: from negative to positive moves the first entry and keeps the other negative entries', () => {
+  it('Handling: from negative to positive moves the first entry and removes all negative entries', () => {
     const replySed = getReplySed({
       negativtSvar: [
         { informasjon: 'neg info', dokument: 'neg doc', sed: 'neg sed', grunn: 'neg grunn' },
@@ -171,28 +158,34 @@ describe('applications/SvarSed/SvarPåForespørsel/SvarPåForespørsel', () => {
 
     const newReplySed = setReplySed.mock.calls[0][0]
     expect(newReplySed.bruker.positivtSvar).toEqual({ informasjon: 'neg info', dokument: 'neg doc', sed: 'neg sed' })
-    expect(newReplySed.bruker.negativtSvar).toHaveLength(2)
-    expect(newReplySed.bruker.negativtSvar[0]).toBe(otherNegativtSvar[0])
-    expect(newReplySed.bruker.negativtSvar[1]).toBe(otherNegativtSvar[1])
+    expect('negativtSvar' in newReplySed.bruker).toBe(false)
     expect((replySed as H002Sed).bruker.negativtSvar).toHaveLength(3)
   })
 
-  it('Handling: from negative to positive removes the negative list when it only had the edited entry', () => {
-    render(<SvarPåForespørsel {...getProps(getReplySed({
-      negativtSvar: [{ informasjon: 'neg info', grunn: 'neg grunn' }]
+  it('Handling: switching back and forth does not accumulate negative entries', () => {
+    const { rerender } = render(<SvarPåForespørsel {...getProps(getReplySed({
+      positivtSvar: { informasjon: 'pos info' }
     }))} />)
+    fireEvent.click(screen.getByLabelText('el:option-svar-2'))
+    const afterNegative = setReplySed.mock.calls[0][0]
+    expect(afterNegative.bruker.negativtSvar).toEqual([{ informasjon: 'pos info', dokument: '', sed: '' }])
+
+    rerender(<SvarPåForespørsel {...getProps(afterNegative)} />)
     fireEvent.click(screen.getByLabelText('el:option-svar-1'))
-    const newReplySed = setReplySed.mock.calls[0][0]
-    expect(newReplySed.bruker.positivtSvar).toEqual({ informasjon: 'neg info', dokument: '', sed: '' })
-    expect('negativtSvar' in newReplySed.bruker).toBe(false)
+    const afterPositive = setReplySed.mock.calls[1][0]
+    expect(afterPositive.bruker.positivtSvar).toEqual({ informasjon: 'pos info', dokument: '', sed: '' })
+    expect('negativtSvar' in afterPositive.bruker).toBe(false)
+
+    rerender(<SvarPåForespørsel {...getProps(afterPositive)} />)
+    fireEvent.click(screen.getByLabelText('el:option-svar-2'))
+    expect(setReplySed.mock.calls[2][0].bruker.negativtSvar).toHaveLength(1)
   })
 
-  it('Handling: choosing an answer without any existing answer keeps existing empty negative entries', () => {
-    const emptyEntries = [{ grunn: '' }]
-    render(<SvarPåForespørsel {...getProps(getReplySed({ negativtSvar: emptyEntries }))} />)
+  it('Handling: choosing positive without any existing answer removes empty negative entries', () => {
+    render(<SvarPåForespørsel {...getProps(getReplySed({ negativtSvar: [{ grunn: '' }] }))} />)
     fireEvent.click(screen.getByLabelText('el:option-svar-1'))
     const newReplySed = setReplySed.mock.calls[0][0]
     expect(newReplySed.bruker.positivtSvar).toEqual({ informasjon: '', dokument: '', sed: '' })
-    expect(newReplySed.bruker.negativtSvar).toEqual(emptyEntries)
+    expect('negativtSvar' in newReplySed.bruker).toBe(false)
   })
 })
