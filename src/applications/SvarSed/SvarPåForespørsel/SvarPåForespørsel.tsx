@@ -3,12 +3,13 @@ import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import {
+  getSvarType,
   validateSvarPåForespørsel,
   ValidationSvarPåForespørselProps
 } from 'applications/SvarSed/SvarPåForespørsel/validation'
 import TextArea from 'components/Forms/TextArea'
 import { State } from 'declarations/reducers'
-import { H002Sed, HSvarType, Svar } from 'declarations/h002'
+import { Bruker, H002Sed, NegativtSvar, PositivtSvar, SvarType } from 'declarations/h002'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { useState, JSX } from 'react';
@@ -26,7 +27,8 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
   personID,
   personName,
   replySed,
-  setReplySed
+  setReplySed,
+  updateReplySed
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
@@ -43,69 +45,49 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedValidation))
   })
 
-  const doWeHavePositive: boolean = !_.isEmpty((replySed as H002Sed)?.positivtSvar?.informasjon) ||
-    !_.isEmpty((replySed as H002Sed)?.positivtSvar?.dokument) ||
-    !_.isEmpty((replySed as H002Sed)?.positivtSvar?.sed)
+  const [_svar, _setSvar] = useState<SvarType | undefined>(() => getSvarType(replySed))
 
-  const doWeHaveNegative: boolean = !_.isEmpty((replySed as H002Sed)?.negativtSvar?.informasjon) ||
-    !_.isEmpty((replySed as H002Sed)?.negativtSvar?.dokument) ||
-    !_.isEmpty((replySed as H002Sed)?.negativtSvar?.sed) ||
-    !_.isEmpty((replySed as H002Sed)?.negativtSvar?.grunn)
+  const bruker: Bruker | undefined = (replySed as H002Sed)?.bruker
+  const positivtSvar: PositivtSvar | undefined = bruker?.positivtSvar
+  // the API models negativtSvar as a list, but this form only supports a single negative answer (negativtSvar[0])
+  const firstNegativtSvar: NegativtSvar | undefined = bruker?.negativtSvar?.[0]
+  const negativtSvar: NegativtSvar | undefined = _svar === 'negativt' ? firstNegativtSvar : undefined
 
-  const [_svar, _setSvar] = useState<HSvarType | undefined>(() =>
-    doWeHavePositive
-      ? 'positivt'
-      : doWeHaveNegative
-        ? 'negativt'
-        : undefined
-  )
-
-  const syncWithReplySed = (needle: string, value: any) => {
-    const svarChanged: boolean = needle === 'svar'
-    const thisSvar = svarChanged ? value : _svar
-    if (thisSvar === 'positivt') {
-      const newPositivtSvar: Svar = {
-        informasjon: (svarChanged ? (replySed as H002Sed)?.negativtSvar?.informasjon : (replySed as H002Sed)?.positivtSvar?.informasjon) ?? '',
-        dokument: (svarChanged ? (replySed as H002Sed)?.negativtSvar?.dokument : (replySed as H002Sed)?.positivtSvar?.dokument) ?? '',
-        sed: (svarChanged ? (replySed as H002Sed)?.negativtSvar?.sed : (replySed as H002Sed)?.positivtSvar?.sed) ?? ''
+  // the answer is either positive or negative: switching moves the shared fields over and removes the other answer
+  const switchSvar = (newSvar: SvarType) => {
+    const newBruker: Bruker = { ...(bruker as Bruker) }
+    if (newSvar === 'positivt') {
+      newBruker.positivtSvar = {
+        ...positivtSvar,
+        informasjon: firstNegativtSvar?.informasjon ?? '',
+        dokument: firstNegativtSvar?.dokument ?? '',
+        sed: firstNegativtSvar?.sed ?? ''
       }
-      if (!svarChanged) {
-        // @ts-ignore
-        newPositivtSvar[needle] = value
-      }
-
-      const newReplySed: H002Sed = {
-        ...(replySed as H002Sed),
-        positivtSvar: newPositivtSvar
-      }
-
-      delete (newReplySed as H002Sed).negativtSvar
-      dispatch(setReplySed!(newReplySed))
+      delete newBruker.negativtSvar
     } else {
-      const newNegativtSvar = {
-        informasjon: svarChanged ? (replySed as H002Sed)?.positivtSvar?.informasjon ?? '' : (replySed as H002Sed)?.negativtSvar?.informasjon ?? '',
-        dokument: svarChanged ? (replySed as H002Sed)?.positivtSvar?.dokument ?? '' : (replySed as H002Sed)?.negativtSvar?.dokument ?? '',
-        sed: svarChanged ? (replySed as H002Sed)?.positivtSvar?.sed ?? '' : (replySed as H002Sed)?.negativtSvar?.sed ?? ''
-      }
-      if (!svarChanged) {
-        // @ts-ignore
-        newNegativtSvar[needle] = value
-      }
-
-      const newReplySed: H002Sed = {
-        ...(replySed as H002Sed),
-        negativtSvar: newNegativtSvar
-      }
-      delete (newReplySed as H002Sed).positivtSvar
-      dispatch(setReplySed!(newReplySed))
+      newBruker.negativtSvar = [{
+        informasjon: positivtSvar?.informasjon ?? '',
+        dokument: positivtSvar?.dokument ?? '',
+        sed: positivtSvar?.sed ?? ''
+      }]
+      delete newBruker.positivtSvar
     }
+    dispatch(setReplySed!({
+      ...(replySed as H002Sed),
+      bruker: newBruker
+    }))
+  }
+
+  const syncWithReplySed = (needle: 'informasjon' | 'dokument' | 'sed' | 'grunn', value: string) => {
+    const target = _svar === 'positivt' ? 'bruker.positivtSvar' : 'bruker.negativtSvar[0]'
+    dispatch(updateReplySed(`${target}.${needle}`, value))
   }
 
   const namespace = `${parentNamespace}-${personID}-svarpåforespørsel`
 
-  const setSvar = (newSvar: HSvarType) => {
+  const setSvar = (newSvar: SvarType) => {
     _setSvar(newSvar)
-    syncWithReplySed('svar', newSvar)
+    switchSvar(newSvar)
     if (validation[namespace + '-svar']) {
       dispatch(resetValidation(namespace + '-svar'))
     }
@@ -139,7 +121,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
     }
   }
 
-  const data = _svar === 'positivt' ? (replySed as H002Sed)?.positivtSvar : (replySed as H002Sed)?.negativtSvar
+  const data: PositivtSvar | NegativtSvar | undefined = _svar === 'positivt' ? positivtSvar : negativtSvar
 
   return (
     <Box padding="space-16">
@@ -160,7 +142,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
             hideLegend
             onChange={(e: string) => {
               if (e !== _svar) {
-                setSvar(e as HSvarType)
+                setSvar(e as SvarType)
               }
             }}
           >
@@ -187,7 +169,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
               value={data?.dokument ?? ''}
             />
             <TextArea
-              maxLength={500}
+              maxLength={255}
               error={validation[namespace + '-informasjon']?.feilmelding}
               namespace={namespace}
               id='informasjon'
@@ -209,13 +191,13 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
 
         {_svar === 'negativt' && (
           <TextArea
-            maxLength={500}
+            maxLength={255}
             error={validation[namespace + '-grunn']?.feilmelding}
             namespace={namespace}
             id='grunn'
             label={t('label:grunn')}
             onChanged={setGrunn}
-            value={data?.grunn ?? ''}
+            value={negativtSvar?.grunn ?? ''}
           />
         )}
       </VStack>

@@ -1,22 +1,56 @@
 import { BaseReplySed } from 'declarations/sed'
-import { PersonMedAdresser } from './h'
+import {
+  BasePersonInfo,
+  PersonMedAdresser,
+  PersonensStatus,
+  Vedlegg
+} from './h'
 
-export type HSvarType = 'positivt' | 'negativt'
+export type SvarType = 'positivt' | 'negativt'
 
-export interface Svar {
-  informasjon: string
-  dokument: string
-  sed: string
+export interface PositivtSvar {
+  informasjon?: string
+  dokument?: string
+  sed?: string
+}
+
+export interface NegativtSvar extends PositivtSvar {
   grunn?: string
 }
 
-export interface H002Sed extends BaseReplySed {
-  bruker: PersonMedAdresser
+export interface SektorPin {
+  alle?: string
+  sykepengerKontant?: string
+  sykepengerGodtgjoerelse?: string
+  pensjon?: string
+  arbeidsledighet?: string
+  yrkessykdomKontant?: string
+  yrkessykdomGodtgjoerelse?: string
+  familieytelser?: string
+  tilbakebetaling?: string
+  annenSektorPin?: string
+  annenSektorBeskrivelse?: string
+}
+
+export interface IdentifiseringPersonInfo extends BasePersonInfo {
+  sektorPin?: SektorPin
+  nasjonaltSkatteNummer?: string
+}
+
+export interface Identifisering {
+  personInfo?: IdentifiseringPersonInfo
+}
+
+export interface Bruker extends PersonMedAdresser {
+  personensstatus?: Array<PersonensStatus>
+  personensstatusAnnet?: string
+  identifisering?: Identifisering
+  positivtSvar?: PositivtSvar
+  negativtSvar?: Array<NegativtSvar>
   ytterligereInfo?: string
-  vedlagteDokumenttyper: {
-    dokumenttyper: Array<string>
-    andreDokumenttyper: Array<string>
-  }
-  positivtSvar?: Svar
-  negativtSvar?: Svar
+  vedlegg?: Vedlegg
+}
+
+export interface H002Sed extends BaseReplySed {
+  bruker: Bruker
 }

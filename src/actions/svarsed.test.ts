@@ -218,4 +218,103 @@ describe('actions/svarsed', () => {
       payload: { needle, value }
     })
   })
+
+  describe.each(['H001', 'H002'])('typed API for %s', (sedType: string) => {
+    const typed = sedType.toLowerCase()
+    const sak = { sakId: '456', sakUrl: 'mockSakurl' } as Sak
+    const bruker = {
+      personInfo: { fornavn: 'Ola' },
+      anmodning: { adresseTyper: ['bosted'], dokumentasjon: { dokument: 'doc' } },
+      negativtSvar: [{ grunn: 'first' }, { grunn: 'second' }],
+      vedlegg: { type: ['søknad'], andreDokumenter: ['other'] }
+    }
+    const replySed = {
+      sedType,
+      sedVersjon: '4.4',
+      sak: { sakId: '123', sakUrl: 'url' },
+      sed: { sedId: '789' },
+      attachments: [],
+      bruker
+    } as unknown as ReplySed
+
+    it('createSed() posts the nested body to the typed endpoint', () => {
+      svarsedActions.createSed(replySed)
+      expect(call).toBeCalledWith(expect.objectContaining({
+        method: 'POST',
+        url: sprintf(urls.API_SED_CREATE_BY_TYPE_URL, { rinaSakId: '123', sedType: typed }),
+        body: { sedType, sedVersjon: '4.4', bruker }
+      }))
+      expect(sprintf(urls.API_SED_CREATE_BY_TYPE_URL, { rinaSakId: '123', sedType: typed })).toMatch(new RegExp(`/v1/rinasaker/123/${typed}$`))
+    })
+
+    it('updateSed() puts the nested body to the typed endpoint', () => {
+      svarsedActions.updateSed(replySed)
+      expect(call).toBeCalledWith(expect.objectContaining({
+        method: 'PUT',
+        url: sprintf(urls.API_SED_UPDATE_BY_TYPE_URL, { rinaSakId: '123', sedType: typed, sedId: '789' }),
+        body: { sedType, sedVersjon: '4.4', bruker }
+      }))
+    })
+
+    it('getPreviewFile() uses the typed pdf endpoint', () => {
+      svarsedActions.getPreviewFile('123', replySed)
+      expect(call).toBeCalledWith(expect.objectContaining({
+        method: 'POST',
+        url: sprintf(urls.API_SED_PREVIEW_BY_TYPE_URL, { rinaSakId: '123', sedType: typed }),
+        responseType: 'pdf'
+      }))
+    })
+
+    it('editSed() uses the typed endpoint', () => {
+      svarsedActions.editSed({ sedId: '789', sedType } as Sed, sak)
+      expect(call).toBeCalledWith(expect.objectContaining({
+        url: sprintf(urls.API_SED_EDIT_BY_TYPE_URL, { rinaSakId: '456', sedType: typed, sedId: '789' })
+      }))
+    })
+
+    it('deleteSed() uses the typed endpoint', () => {
+      svarsedActions.deleteSed('456', '789', sedType)
+      expect(call).toBeCalledWith(expect.objectContaining({
+        method: 'DELETE',
+        url: sprintf(urls.API_SED_DELETE_BY_TYPE_URL, { rinaSakId: '456', sedType: typed, sedId: '789' })
+      }))
+    })
+  })
+
+  it('replyToSed() for H002 gets the typed draft (H001 parent) before it is saved as typed H002', () => {
+    const sak = { sakId: '456', sakUrl: 'mockSakurl' } as Sak
+    svarsedActions.replyToSed({ sedId: '789', sedType: 'H001', svarsedType: 'H002' } as Sed, sak)
+    expect(call).toBeCalledWith(expect.objectContaining({
+      url: sprintf(urls.API_SED_DRAFT_BY_TYPE_URL, {
+        rinaSakId: '456',
+        sedType: 'h002',
+        parentSedId: '789',
+        parentSedType: 'h001'
+      })
+    }))
+    expect(call.mock.calls[0][0]).not.toHaveProperty('method')
+    expect(sprintf(urls.API_SED_DRAFT_BY_TYPE_URL, {
+      rinaSakId: '456', sedType: 'h002', parentSedId: '789', parentSedType: 'h001'
+    })).toMatch(/\/v1\/rinasaker\/456\/h002\/utkast\/789\?parentSedType=h001$/)
+  })
+
+  it('other SED types keep using the legacy endpoints', () => {
+    const replySed = { sedType: 'F002', sak: { sakId: '123' }, sed: { sedId: '789' } } as unknown as ReplySed
+    svarsedActions.createSed(replySed)
+    expect(call).toHaveBeenLastCalledWith(expect.objectContaining({
+      url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: '123' })
+    }))
+    svarsedActions.updateSed(replySed)
+    expect(call).toHaveBeenLastCalledWith(expect.objectContaining({
+      url: sprintf(urls.API_SED_UPDATE_URL, { rinaSakId: '123', sedId: '789' })
+    }))
+    svarsedActions.getPreviewFile('123', replySed)
+    expect(call).toHaveBeenLastCalledWith(expect.objectContaining({
+      url: sprintf(urls.API_PREVIEW_URL, { rinaSakId: '123' })
+    }))
+    svarsedActions.replyToSed({ sedId: '789', sedType: 'F001', svarsedType: 'F002' } as Sed, { sakId: '456' } as Sak)
+    expect(call).toHaveBeenLastCalledWith(expect.objectContaining({
+      url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, { rinaSakId: '456', sedId: '789', sedType: 'F002' })
+    }))
+  })
 })

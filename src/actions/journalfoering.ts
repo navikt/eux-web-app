@@ -140,7 +140,7 @@ export const createH001 = (sak: Sak, informasjonTekst: string, ytterligereInfo?:
 export const createH001SedInRina = (sakId: string, H001: H001Sed | undefined | null): ActionWithPayload => {
   return call({
     method: 'POST',
-    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: sakId }),
+    url: sprintf(urls.API_SED_CREATE_BY_TYPE_URL, { rinaSakId: sakId, sedType: 'h001' }),
     cascadeFailureError: true,
     expectedPayload: {
       sedId: '123'
@@ -157,7 +157,7 @@ export const createH001SedInRina = (sakId: string, H001: H001Sed | undefined | n
 export const updateH001SedInRina = (sakId: string, sedId: string, H001: H001Sed | undefined | null): ActionWithPayload => {
   return call({
     method: 'PUT',
-    url: sprintf(urls.API_SED_UPDATE_URL, { rinaSakId: sakId, sedId: sedId }),
+    url: sprintf(urls.API_SED_UPDATE_BY_TYPE_URL, { rinaSakId: sakId, sedType: 'h001', sedId: sedId }),
     cascadeFailureError: true,
     expectedPayload: {
       sedId: '123'
