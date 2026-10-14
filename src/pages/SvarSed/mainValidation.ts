@@ -125,6 +125,7 @@ import {
   Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse, VedtakF003, Vedtak
 } from 'declarations/sed'
 import { H120Sed } from 'declarations/h120'
+import { U010Sed } from 'declarations/u010'
 import { U013Sed } from 'declarations/u013'
 import { X002Sed } from 'declarations/x002'
 import { X003Sed } from 'declarations/x003'
@@ -199,6 +200,14 @@ import {
   validateRegistrertPerson,
   ValidationRegistrertPersonProps
 } from 'applications/SvarSed/RegistrertPerson/validation'
+import {
+  validateOmstendigheter,
+  ValidationOmstendigheterProps
+} from 'applications/SvarSed/Omstendigheter/validation'
+import {
+  validateForespoerselOmOppfoelging,
+  ValidationForespoerselOmOppfoelgingProps
+} from 'applications/SvarSed/ForespoerselOmOppfoelging/validation'
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -403,19 +412,29 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     hasErrors.push(performValidation<ValidationPersonopplysningerProps>(v, `svarsed-${personID}-personopplysninger`, validatePersonopplysninger, {
       personInfo, personName
     }, true))
-    if (replySed.sedType !== 'U013') {
+    if (replySed.sedType !== 'U010' && replySed.sedType !== 'U013') {
       hasErrors.push(performValidation<ValidationReferanseperiodeProps>(v, `svarsed-${personID}-referanseperiode`, validateReferanseperiode, {
         anmodningsperiode: (replySed as USed)?.anmodningsperiode, personName
       }, true))
     }
-    if (replySed.sedType === 'U013') {
+    if (replySed.sedType === 'U010' || replySed.sedType === 'U013') {
       hasErrors.push(performValidation<ValidationLokaleSaksnumreProps>(v, `svarsed-${personID}-lokalesaksnumre`, validateLokaleSaksnumre, {
-        lokaleSaksnumre: (replySed as U013Sed).lokaleSaksnumre
+        lokaleSaksnumre: (replySed as U010Sed | U013Sed).lokaleSaksnumre
       }, true))
       const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
       hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
         statsborgerskaper, personName
       }, true))
+    }
+    if (replySed.sedType === 'U010') {
+      hasErrors.push(performValidation<ValidationOmstendigheterProps>(v, `svarsed-${personID}-omstendigheter`, validateOmstendigheter, {
+        replySed: replySed as U010Sed
+      }, true))
+      hasErrors.push(performValidation<ValidationForespoerselOmOppfoelgingProps>(v, `svarsed-${personID}-foresporselomoppfoelging`, validateForespoerselOmOppfoelging, {
+        replySed: replySed as U010Sed
+      }, true))
+    }
+    if (replySed.sedType === 'U013') {
       hasErrors.push(performValidation<ValidationRegistrertPersonProps>(v, `svarsed-${personID}-registrertperson`, validateRegistrertPerson, {
         replySed: replySed as U013Sed
       }, true))

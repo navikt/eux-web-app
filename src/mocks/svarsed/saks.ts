@@ -514,6 +514,61 @@ export default (saksnummer: string, type: string) => {
       ]
     },
     {
+      cdmVersjon: '4.4',
+      fornavn: 'Ola',
+      etternavn: 'Nordmenn',
+      kjoenn: 'M',
+      foedselsdato: '1970-01-01',
+      fnr: '12345678901',
+      sakTittel: 'Eksport av dagpenger',
+      sakType: 'U_BUC_02',
+      sakId: '1166594',
+      sakUrl: 'http://foo.com',
+      sistEndretDato: '2020-01-01',
+      startDato: '2020-01-01',
+      erSakseier: true,
+      sensitiv: false,
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLandkode: "ROM"
+        }
+      ],
+      sakshandlinger: [
+        'U010', 'U013', 'X005', 'X007', 'X009', 'Close_Case'
+      ],
+      fagsak: {
+        "tema": "DAG",
+        "type": "FAGSAK",
+        "nr": "0331D17",
+        "fnr": "28506726605",
+        "system": "IT01"
+      },
+      sedListe: [
+        {
+          sedTittel: 'Omstendigheter som sannsynligvis påvirker rettighet - Eksport',
+          status: 'new',
+          sedType: 'U010',
+          sedId: 'u010_mock_id',
+          sistEndretDato: '2020-01-04',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+        }, {
+          sedTittel: 'Månedlig oppfølging - Eksport',
+          status: 'new',
+          sedType: 'U013',
+          sedId: 'u013_mock_id',
+          sistEndretDato: '2020-01-04',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+        }
+      ]
+    },
+    {
       cdmVersjon: '4.2',
       fornavn: 'Ola',
       etternavn: 'Nordmenn',
