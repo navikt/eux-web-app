@@ -190,7 +190,7 @@ const SEDNew = (): JSX.Element => {
     valgtSedType,
     valgtSektor,
     valgtTema,
-    valgtUnit,
+    valgtUnit: selectedEnhet,
     saks,
     currentSak,
     validation,
@@ -199,6 +199,7 @@ const SEDNew = (): JSX.Element => {
     cdmVersjonApp,
     countryCodes
   }: SEDNewSelector = useAppSelector(mapState)
+  const valgtUnit = selectedEnhet?.oppgavebehandler ? selectedEnhet : undefined
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const namespace = 'opprettsak'
@@ -604,7 +605,7 @@ const SEDNew = (): JSX.Element => {
                       {t('label:velg')}
                     </option>
                     {sektor &&
-                      _.orderBy(enheter, 'navn').map((e: Enhet) => (
+                      _.orderBy(enheter?.filter((e: Enhet) => e.oppgavebehandler), 'navn').map((e: Enhet) => (
                         <option value={e.enhetNr} key={e.enhetNr}>
                           {e.navn}
                         </option>

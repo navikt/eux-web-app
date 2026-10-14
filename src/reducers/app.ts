@@ -164,6 +164,7 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
           ...state.selectedEnhet,
           enhetNr: state.selectedEnhet!.enhetNr,
           navn: state.selectedEnhet!.navn,
+          oppgavebehandler: state.selectedEnhet!.oppgavebehandler,
           erFavoritt: !!action.context.enhet
         }
       }
