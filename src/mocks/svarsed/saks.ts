@@ -1177,6 +1177,54 @@ export default (saksnummer: string, type: string) => {
           sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }
       ]
+    },
+    {
+      cdmVersjon: '4.4',
+      fornavn: 'Ola',
+      etternavn: 'Nordmenn',
+      kjoenn: 'M',
+      foedselsdato: '1970-01-01',
+      fnr: '12345678901',
+      sakTittel: 'Eksport av dagpenger',
+      sakType: 'U_BUC_02',
+      sakId: '1166596',
+      sakUrl: 'http://foo.com',
+      sistEndretDato: '2020-01-01',
+      startDato: '2020-01-01',
+      erSakseier: true,
+      sensitiv: false,
+      navinstitusjon: {
+        id: 'NO:NAVAT07',
+        navn: 'NAV ACC 07'
+      },
+      motparter: [
+        {
+          formatertNavn: 'ACC_County Agency For Employment Bihor (Romania)',
+          motpartId: 'RO:70005',
+          motpartNavn: 'ACC_County Agency For Employment Bihor',
+          motpartLandkode: 'ROM'
+        }
+      ],
+      sakshandlinger: [
+        'U009', 'U013', 'X005', 'X007', 'X009', 'Close_Case'
+      ],
+      fagsak: {
+        tema: 'DAG',
+        type: 'FAGSAK',
+        nr: '0331D17',
+        fnr: '12345678901',
+        system: 'IT01'
+      },
+      sedListe: [
+        {
+          sedTittel: 'Registrering av melding - eksport',
+          status: 'new',
+          sedType: 'U009',
+          sedId: 'u009_mock_id',
+          sistEndretDato: '2020-01-04',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+        }
+      ]
     }
   ]
 
