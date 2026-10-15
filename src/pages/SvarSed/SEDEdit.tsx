@@ -66,6 +66,7 @@ import VedlagtDokumentasjon from 'applications/SvarSed/VedlagtDokumentasjon/Vedl
 import InformasjonDetAnmodesOm from 'applications/SvarSed/InformasjonDetAnmodesOm/InformasjonDetAnmodesOm'
 import LokaleSaksnumre from 'applications/SvarSed/LokaleSaksnumre/LokaleSaksnumre'
 import RegistrertPerson from 'applications/SvarSed/RegistrertPerson/RegistrertPerson'
+import Registrering from 'applications/SvarSed/Registrering/Registrering'
 import Omstendigheter from 'applications/SvarSed/Omstendigheter/Omstendigheter'
 import ForespoerselOmOppfoelging from 'applications/SvarSed/ForespoerselOmOppfoelging/ForespoerselOmOppfoelging'
 import FastslaaBosted from 'applications/SvarSed/FastslaaBosted/FastslaaBosted'
@@ -108,6 +109,7 @@ import {
   isH065Sed,
   isH070Sed,
   isH120Sed,
+  isU009Sed,
   isU010Sed,
   isU013Sed,
   isPreviewableSed,
@@ -466,10 +468,10 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
                   { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H', 'S'], adult: true, barn: true, condition: () => !isH021Sed(replySed) },
                   { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true, condition: () => !isH120Sed(replySed) && !isH021Sed(replySed) && !isH070Sed(replySed) && !isH005Sed(replySed) && !isH006Sed(replySed) },
-                  { label: t('el:option-mainform-adresse'), value: 'adresseH120', component: Adresse, type: ['H120'], adult: true },
+                  { label: t('el:option-mainform-adresse'), value: 'adresseH120', component: Adresse, type: ['H120', 'U009'], adult: true },
                   { label: t('el:option-mainform-adresse'), value: 'adresse', component: Adresser, type: ['S'], options: {singleAdress: true}},
                   { label: t('el:option-mainform-adresseH001'), value: 'adresseAnmodning', component: AnmodningOmAdresse, type: ['H001'], adult: true, barn: true, condition: () => CDM_VERSJON >= 4.4 },
-                  { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: ['F', 'H120'], adult: true },
+                  { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: ['F', 'H120', 'U009'], adult: true },
                   { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
                   { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F026', 'F027'], adult: true },
                   { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetogtrygdeperioder', component: AktivitetOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => CDM_VERSJON <= 4.3 },
@@ -482,7 +484,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: ['F001', 'F002'], adult: true, barn: true },
                   { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 },
                   { label: t('el:option-mainform-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, family: true },
-                  { label: t('el:option-mainform-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U', condition: () => !isU010Sed(replySed) && !isU013Sed(replySed) },
+                  { label: t('el:option-mainform-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U', condition: () => !isU009Sed(replySed) && !isU010Sed(replySed) && !isU013Sed(replySed) },
                   { label: t('el:option-mainform-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
                   { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
                   { label: t('el:option-mainform-arbeidsperioder'), value: 'arbeidsperioder', component: ArbeidsperioderOversikt, type: ['U002', 'U017'] },
@@ -503,7 +505,8 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-fastslaabosted'), value: 'fastslaabosted', component: FastslaaBosted, type: 'H005' },
                   { label: t('el:option-mainform-positivtsvar'), value: 'positivtsvar', component: PositivtSvar, type: 'H006' },
                   { label: t('el:option-mainform-negativtsvar'), value: 'negativtsvar', component: NegativtSvar, type: 'H006' },
-                  { label: t('el:option-mainform-lokalesaksnumre'), value: 'lokalesaksnumre', component: LokaleSaksnumre, type: ['U010', 'U013'] },
+                  { label: t('el:option-mainform-lokalesaksnumre'), value: 'lokalesaksnumre', component: LokaleSaksnumre, type: ['U009', 'U010', 'U013'] },
+                  { label: t('el:option-mainform-registrering'), value: 'registrering', component: Registrering, type: 'U009' },
                   { label: t('el:option-mainform-omstendigheter'), value: 'omstendigheter', component: Omstendigheter, type: 'U010' },
                   { label: t('el:option-mainform-foresporselomoppfoelging'), value: 'foresporselomoppfoelging', component: ForespoerselOmOppfoelging, type: 'U010' },
                   { label: t('el:option-mainform-registrertperson'), value: 'registrertperson', component: RegistrertPerson, type: 'U013' },
