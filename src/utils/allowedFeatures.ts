@@ -3,8 +3,8 @@ export const HIDDEN_SAKSHANDLINGER = ["multipleParticipants", "singleParticipant
 type Allowed = {[key: string]: string[]}
 
 const allowed:Allowed = {
-  ADMIN_ALLOWED_TO_FILL_OUT: ["H001", "H003", "H005", "H006", "H065", "H070", "H120", "F001", "F003", "S040", "S046"],
-  ALLOWED_TO_FILL_OUT: ["H001", "H003", "H005", "H006", "H065", "H070", "H120", "F001", "F003", "S040", "S046"],
+  ADMIN_ALLOWED_TO_FILL_OUT: ["H001", "H003", "H005", "H006", "H065", "H070", "H120", "F001", "F003", "S040", "S046", "U009"],
+  ALLOWED_TO_FILL_OUT: ["H001", "H003", "H005", "H006", "H065", "H070", "H120", "F001", "F003", "S040", "S046", "U009"],
   ADMIN_ALLOWED_SAKSHANDLINGER: ["H001", "H003", "H005", "H006", "H065", "H070", "H120", "F002", "F026", "F027", "U009", "U013", "X001", "X005", "X006", "X007", "X009", "Delete_Case"],
   ALLOWED_SAKSHANDLINGER: ["H001", "H003", "H005", "H006", "H065", "H070", "H120", "F002", "F026", "F027", "U009", "U013", "X001", "X005", "X006", "X007", "X009", "Delete_Case"],
   ADMIN_ALLOWED_SED_HANDLINGER: ["H002", "H003", "H005", "H006", "H021", "H065", "H070", "H120", "F002", "U002", "U004", "U017", "X002", "X003", "X004", "X008", "X010", "X011", "X012", "X013", "Delete", "Update", "Read", "Send", "Participants_Send"],
