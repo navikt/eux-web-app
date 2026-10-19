@@ -6,7 +6,7 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import TextArea from 'components/Forms/TextArea'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
-import { U010OmstendighetType, U010Sed } from 'declarations/u010'
+import { OmstendighetType, U010Sed } from 'declarations/u010'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { JSX } from 'react'
@@ -20,7 +20,7 @@ import {
   ValidationOmstendigheterProps
 } from './validation'
 
-const OMSTENDIGHET_TYPER: Array<U010OmstendighetType> = [
+const OMSTENDIGHET_TYPER: Array<OmstendighetType> = [
   'den_arbeidsledige_får_jobb_eller_blir_selvstendig_næringsdrivende',
   'den_arbeidsledige_får_inntekt_fra_en_annen_yrkesaktivitet_enn_de_ovennevnte',
   'den_arbeidsledige_avslår_et_jobbtilbud',
@@ -66,7 +66,7 @@ const Omstendigheter: React.FC<MainFormProps> = ({
     }
   }
 
-  const setTyper = (typer: Array<U010OmstendighetType>) => {
+  const setTyper = (typer: Array<OmstendighetType>) => {
     dispatch(updateReplySed('omstendigheter.typer', typer.length > 0 ? typer : undefined))
     if (!typer.includes(ANDRE_OMSTENDIGHETER)) {
       dispatch(updateReplySed('omstendigheter.andreOmstendigheter', undefined))

@@ -2,7 +2,7 @@ import { Person } from 'declarations/h'
 import { BaseReplySed, JaNei, Periode } from 'declarations/sed'
 import { LokaltSaksnummer } from 'declarations/u013'
 
-export type U010OmstendighetType =
+export type OmstendighetType =
   'den_arbeidsledige_får_jobb_eller_blir_selvstendig_næringsdrivende' |
   'den_arbeidsledige_får_inntekt_fra_en_annen_yrkesaktivitet_enn_de_ovennevnte' |
   'den_arbeidsledige_avslår_et_jobbtilbud' |
@@ -15,7 +15,7 @@ export type U010OmstendighetType =
 
 export interface Omstendigheter {
   periode?: Periode
-  typer?: Array<U010OmstendighetType>
+  typer?: Array<OmstendighetType>
   andreOmstendigheter?: Array<string>
 }
 
