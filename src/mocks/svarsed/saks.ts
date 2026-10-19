@@ -521,7 +521,7 @@ export default (saksnummer: string, type: string) => {
       foedselsdato: '1970-01-01',
       fnr: '12345678901',
       sakTittel: 'Eksport av dagpenger',
-      sakType: 'U_BUC_02',
+      sakType: 'UB_BUC_02',
       sakId: '1166594',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
@@ -552,6 +552,13 @@ export default (saksnummer: string, type: string) => {
       },
       sedListe: [
         {
+          sedTittel: 'Melding om registrering - eksport',
+          status: 'sent',
+          sedType: 'U009',
+          sedId: 'u009_mock_id',
+          sistEndretDato: '2020-01-02',
+          sedHandlinger: ['Read']
+        }, {
           sedTittel: 'Omstendigheter som sannsynligvis påvirker rettighet - Eksport',
           status: 'new',
           sedType: 'U010',
