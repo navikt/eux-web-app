@@ -1,6 +1,5 @@
-import { Person } from 'declarations/h'
 import { BaseReplySed, JaNei } from 'declarations/sed'
-import { LokaltSaksnummer } from 'declarations/u'
+import { LokaltSaksnummer, Person } from 'declarations/u'
 
 export interface RegistrertPerson {
   overholdtProsedyrer?: JaNei
