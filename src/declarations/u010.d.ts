@@ -1,6 +1,6 @@
 import { Person } from 'declarations/h'
 import { BaseReplySed, JaNei, Periode } from 'declarations/sed'
-import { LokaltSaksnummer } from 'declarations/u013'
+import { LokaltSaksnummer } from 'declarations/u'
 
 export type OmstendighetType =
   'den_arbeidsledige_får_jobb_eller_blir_selvstendig_næringsdrivende' |

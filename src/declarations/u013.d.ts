@@ -1,17 +1,11 @@
 import { Person } from 'declarations/h'
 import { BaseReplySed, JaNei } from 'declarations/sed'
+import { LokaltSaksnummer } from 'declarations/u'
 
 export interface RegistrertPerson {
   overholdtProsedyrer?: JaNei
   rapportertIU010?: JaNei
   ytterligereInfo?: string
-}
-
-export interface LokaltSaksnummer {
-  landkode?: string
-  saksnummer?: string
-  institusjonsid?: string
-  institusjonsnavn?: string
 }
 
 export interface U013Sed extends BaseReplySed {
