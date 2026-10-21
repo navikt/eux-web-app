@@ -187,7 +187,7 @@ const svarsedReducer = (
       let lokaleSakIder;
       let lokaleSaksnumre;
 
-      if (payload.sedType === 'U009' || payload.sedType === 'U013') {
+      if (payload.sedType === 'U009' || payload.sedType === 'U010' || payload.sedType === 'U013') {
         lokaleSaksnumre = payload.lokaleSaksnumre ? payload.lokaleSaksnumre : []
         const idParts = state.currentSak?.navinstitusjon.id.split(":")
         lokaleSaksnumre.push({

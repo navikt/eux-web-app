@@ -1,0 +1,45 @@
+{
+  "sedType": "U010",
+  "sedVersjon": "4.4",
+  "lokaleSaksnumre": [
+    {
+      "landkode": "NOR",
+      "saksnummer": "12345",
+      "institusjonsid": "NO:1234",
+      "institusjonsnavn": "NAV"
+    }
+  ],
+  "bruker": {
+    "personInfo": {
+      "fornavn": "Kari",
+      "etternavn": "Nordmann",
+      "kjoenn": "K",
+      "foedselsdato": "1990-01-15",
+      "statsborgerskap": [
+        {
+          "landkode": "NOR"
+        }
+      ],
+      "pin": [
+        {
+          "landkode": "NOR",
+          "identifikator": "12345678901"
+        }
+      ]
+    }
+  },
+  "omstendigheter": {
+    "periode": {
+      "startdato": "2024-01-01",
+      "aapenPeriodeType": "åpen_sluttdato"
+    },
+    "typer": [
+      "den_arbeidsledige_får_jobb_eller_blir_selvstendig_næringsdrivende",
+      "andre_omstendigheter"
+    ],
+    "andreOmstendigheter": [
+      "Andre omstendigheter"
+    ]
+  },
+  "oenskerOppfoelging": "ja"
+}

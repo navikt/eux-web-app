@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "14.14.0",
+  "version": "14.15.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -25,9 +25,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "8.18.0",
-    "@navikt/ds-css": "8.18.0",
-    "@navikt/ds-react": "8.18.0",
+    "@navikt/aksel-icons": "8.19.1",
+    "@navikt/ds-css": "8.19.1",
+    "@navikt/ds-react": "8.19.1",
     "@navikt/eessi-kodeverk": "2.4.3",
     "@navikt/fetch": "7.2.17",
     "@navikt/flagg-ikoner": "13.2.4",
@@ -44,7 +44,7 @@
     "cross-fetch": "3.2.0",
     "dayjs": "1.11.23",
     "eux-schema": "0.4.0",
-    "express": "5.2.1",
+    "express": "5.3.0",
     "file-saver": "2.0.5",
     "http-proxy-middleware": "3.0.7",
     "i18next": "25.10.10",
@@ -76,9 +76,9 @@
     "@types/bytes": "3.1.6",
     "@types/file-saver": "2.0.7",
     "@types/jest": "28.1.8",
-    "@types/lodash": "4.17.25",
+    "@types/lodash": "4.17.26",
     "@types/md5": "2.3.6",
-    "@types/node": "24.19.1",
+    "@types/node": "24.19.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.2.5",
     "@vitejs/plugin-react": "5.2.0",
@@ -94,7 +94,7 @@
     "simple-git": "4.0.2",
     "ts-jest": "29.4.14",
     "typescript": "5.9.3",
-    "vite": "8.3.2",
+    "vite": "8.3.4",
     "vite-plugin-svgr": "4.5.0",
     "vite-tsconfig-paths": "5.1.4",
     "write-pkg": "5.1.0"
@@ -105,5 +105,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@14.14.0"
+  "_id": "neessi@14.15.0"
 }
