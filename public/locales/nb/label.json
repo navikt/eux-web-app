@@ -272,6 +272,8 @@
   "international-id": "International ID",
   "invalidate-sed": "Ugyldiggjør SED",
   "ja": "Ja",
+  "u009-registreringsdato": "Registreringsdato i landet der personen søker arbeid",
+  "u009-registreringsdato-field": "registreringsdato",
   "u013-overholdt-prosedyrer": "Registrerte personen seg og overholdt kontrollprosedyrene i den siste oppfølgingsperioden? *",
   "u013-overholdt-prosedyrer-field": "registrering og kontrollprosedyrer",
   "u013-som-rapportert-i-u010": "Som rapportert i U010? *",
