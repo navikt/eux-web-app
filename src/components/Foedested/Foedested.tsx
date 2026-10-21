@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, HStack, Label, Spacer} from '@navikt/ds-react'
+import {BodyLong, Box, Button, HGrid, HStack, Label, Spacer} from '@navikt/ds-react'
 import {Country} from 'components/land-verktoy'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -158,7 +158,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
         marginBlock="space-0 space-16"
         width="100%"
       >
-        <HStack gap="space-32" align="start" justify={inEditMode ? "start" : "space-between"}>
+        <HGrid columns={inEditMode ? { xs: 1, md: 3 } : { xs: 1, md: '1fr 1fr 1fr auto' }} gap="space-32" align="start">
           <>
             {inEditMode
               ? (
@@ -237,7 +237,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
               onCancelEdit={onCloseEdit}
             />
           }
-        </HStack>
+        </HGrid>
         {inEditMode &&
           <Box padding="space-16">
             <HStack>
