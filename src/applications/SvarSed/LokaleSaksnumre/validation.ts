@@ -1,5 +1,5 @@
 import { Validation } from 'declarations/types'
-import { LokaltSaksnummer } from 'declarations/u013'
+import { LokaltSaksnummer } from 'declarations/u'
 import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationLokaleSaksnumreProps {
