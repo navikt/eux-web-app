@@ -135,6 +135,7 @@ export interface Enhet {
   navn: string
   erFavoritt: boolean
   fagomrader?: Array<string>
+  oppgavebehandler: boolean
 }
 
 export type Enheter = Array<Enhet>

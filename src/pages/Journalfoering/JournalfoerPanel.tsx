@@ -81,7 +81,8 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const currentYear = new Date().getFullYear()
-  const { person, searchingJournalfoeringPerson, gettingFagsaker, creatingFagsak, isJournalfoering, kodemaps, tema, fagsaker, fagsak, enheter, enhet, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
+  const { person, searchingJournalfoeringPerson, gettingFagsaker, creatingFagsak, isJournalfoering, kodemaps, tema, fagsaker, fagsak, enheter, enhet: selectedEnhet, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
+  const enhet = selectedEnhet?.oppgavebehandler ? selectedEnhet : undefined
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const [_fnr, setfnr] = useState<string | undefined>(sak.fagsak && sak.fagsak.fnr ? sak.fagsak.fnr : undefined)
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
@@ -348,7 +349,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 <ActionMenu.Content>
                   <Detail>{enhet ? "Enhet: " + enhet.enhetNr + ' - ' + enhet.navn : ""}</Detail>
                   <ActionMenu.Divider/>
-                  {enheter?.map((e) => {
+                  {enheter?.filter((e) => e.oppgavebehandler).map((e) => {
                     return (
                       <ActionMenu.Item
                         onSelect={() => setSelected(e)}
