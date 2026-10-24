@@ -432,7 +432,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (replySed.sedType === 'U009') {
-      hasErrors.push(performValidation<ValidationAdresseProps>(v, `svarsed-${personID}-adresseH120`, validateAdresse, {
+      hasErrors.push(performValidation<ValidationAdresseProps>(v, `svarsed-${personID}-adresseEnkel`, validateAdresse, {
         adresse: _.get(replySed, `${personID}.adresse`), checkAdresseType: false, optional: true, personName
       }, true))
       hasErrors.push(performValidation<ValidateTelefonerProps>(v, `svarsed-${personID}-kontaktinformasjon-telefon`, validateKontaktsinformasjonTelefoner, {
@@ -520,7 +520,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
     }
     if (isH120Sed(replySed)) {
-      hasErrors.push(performValidation<ValidationAdresseProps>(v, `svarsed-${personID}-adresseH120`, validateAdresse, {
+      hasErrors.push(performValidation<ValidationAdresseProps>(v, `svarsed-${personID}-adresseEnkel`, validateAdresse, {
         adresse: _.get(replySed, `${personID}.adresse`), checkAdresseType: false, optional: true, personName
       }, true))
     }
