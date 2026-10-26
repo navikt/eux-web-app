@@ -1,0 +1,61 @@
+{
+  "sedType": "U007",
+  "sedVersjon": "4.4",
+  "lokaleSaksnumre": [
+    {
+      "landkode": "NOR",
+      "saksnummer": "12345",
+      "institusjonsid": "NO:1234",
+      "institusjonsnavn": "NAV"
+    }
+  ],
+  "bruker": {
+    "personInfo": {
+      "fornavn": "Kari",
+      "etternavn": "Nordmann",
+      "kjoenn": "K",
+      "foedselsdato": "1990-01-15",
+      "statsborgerskap": [
+        {
+          "landkode": "NOR"
+        }
+      ],
+      "pin": [
+        {
+          "landkode": "NOR",
+          "identifikator": "12345678901"
+        }
+      ]
+    },
+    "adresse": {
+      "gate": "Storgata 1",
+      "postnummer": "0155",
+      "by": "Oslo",
+      "landkode": "NOR"
+    },
+    "telefon": [
+      {
+        "type": "mobil",
+        "nummer": "+4712345678"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "kari.nordmann@example.com"
+      }
+    ]
+  },
+  "registreringsdato": "2024-01-10",
+  "sisteAdresseIKompetentLand": {
+    "gate": "Drottninggatan 1",
+    "postnummer": "11151",
+    "by": "Stockholm",
+    "landkode": "SWE"
+  },
+  "institusjonDagpenger": {
+    "institusjon": {
+      "id": "SE:1234",
+      "navn": "Arbetsförmedlingen"
+    }
+  }
+}

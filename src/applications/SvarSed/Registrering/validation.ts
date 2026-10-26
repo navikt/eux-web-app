@@ -1,5 +1,6 @@
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import { U007Sed } from 'declarations/u007'
 import { U009Sed } from 'declarations/u009'
 import i18n from 'i18n'
 import { checkIfNotEmpty, checkValidDateFormat } from 'utils/validation'
@@ -13,7 +14,7 @@ export const validateRegistrering = (
   namespace: string,
   { replySed }: ValidationRegistreringProps
 ): boolean => {
-  const registreringsdato = (replySed as U009Sed).registreringsdato
+  const registreringsdato = (replySed as U007Sed | U009Sed).registreringsdato
   const hasErrors: Array<boolean> = [
     checkIfNotEmpty(v, {
       needle: registreringsdato,

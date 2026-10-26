@@ -125,6 +125,7 @@ import {
   Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse, VedtakF003, Vedtak
 } from 'declarations/sed'
 import { H120Sed } from 'declarations/h120'
+import { U007Sed } from 'declarations/u007'
 import { U009Sed } from 'declarations/u009'
 import { U010Sed } from 'declarations/u010'
 import { U013Sed } from 'declarations/u013'
@@ -213,6 +214,10 @@ import {
   validateForespoerselOmOppfoelging,
   ValidationForespoerselOmOppfoelgingProps
 } from 'applications/SvarSed/ForespoerselOmOppfoelging/validation'
+import {
+  validateInstitusjonDagpenger,
+  ValidationInstitusjonDagpengerProps
+} from 'applications/SvarSed/InstitusjonDagpenger/validation'
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -417,23 +422,23 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     hasErrors.push(performValidation<ValidationPersonopplysningerProps>(v, `svarsed-${personID}-personopplysninger`, validatePersonopplysninger, {
       personInfo, personName
     }, true))
-    if (replySed.sedType !== 'U009' && replySed.sedType !== 'U010' && replySed.sedType !== 'U013') {
+    if (replySed.sedType !== 'U007' && replySed.sedType !== 'U009' && replySed.sedType !== 'U010' && replySed.sedType !== 'U013') {
       hasErrors.push(performValidation<ValidationReferanseperiodeProps>(v, `svarsed-${personID}-referanseperiode`, validateReferanseperiode, {
         anmodningsperiode: (replySed as USed)?.anmodningsperiode, personName
       }, true))
     }
-    if (replySed.sedType === 'U009' || replySed.sedType === 'U010' || replySed.sedType === 'U013') {
+    if (replySed.sedType === 'U007' || replySed.sedType === 'U009' || replySed.sedType === 'U010' || replySed.sedType === 'U013') {
       hasErrors.push(performValidation<ValidationLokaleSaksnumreProps>(v, `svarsed-${personID}-lokalesaksnumre`, validateLokaleSaksnumre, {
-        lokaleSaksnumre: (replySed as U009Sed | U010Sed | U013Sed).lokaleSaksnumre
+        lokaleSaksnumre: (replySed as U007Sed | U009Sed | U010Sed | U013Sed).lokaleSaksnumre
       }, true))
       const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
       hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
         statsborgerskaper, personName
       }, true))
     }
-    if (replySed.sedType === 'U009') {
+    if (replySed.sedType === 'U007' || replySed.sedType === 'U009') {
       hasErrors.push(performValidation<ValidationAdresseProps>(v, `svarsed-${personID}-adresseEnkel`, validateAdresse, {
-        adresse: _.get(replySed, `${personID}.adresse`), checkAdresseType: false, optional: true, personName
+        adresse: _.get(replySed, `${personID}.adresse`), checkAdresseType: false, optional: replySed.sedType === 'U009', personName
       }, true))
       hasErrors.push(performValidation<ValidateTelefonerProps>(v, `svarsed-${personID}-kontaktinformasjon-telefon`, validateKontaktsinformasjonTelefoner, {
         telefoner: _.get(replySed, `${personID}.telefon`), personName
@@ -442,7 +447,15 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         eposter: _.get(replySed, `${personID}.epost`), personName
       }, true))
       hasErrors.push(performValidation<ValidationRegistreringProps>(v, `svarsed-${personID}-registrering`, validateRegistrering, {
-        replySed: replySed as U009Sed
+        replySed
+      }, true))
+    }
+    if (replySed.sedType === 'U007') {
+      hasErrors.push(performValidation<ValidationAdresseProps>(v, `svarsed-${personID}-sisteadresseikompetentland`, validateAdresse, {
+        adresse: (replySed as U007Sed).sisteAdresseIKompetentLand, checkAdresseType: false, personName
+      }, true))
+      hasErrors.push(performValidation<ValidationInstitusjonDagpengerProps>(v, `svarsed-${personID}-institusjondagpenger`, validateInstitusjonDagpenger, {
+        replySed
       }, true))
     }
     if (replySed.sedType === 'U010') {

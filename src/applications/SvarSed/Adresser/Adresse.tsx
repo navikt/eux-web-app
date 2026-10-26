@@ -26,7 +26,8 @@ const Adresse: React.FC<MainFormProps> = ({
   personName,
   replySed,
   updateReplySed,
-  formValue
+  formValue,
+  options
 }: MainFormProps): JSX.Element => {
   const { validation }: MainFormSelector = useAppSelector(mapState)
   const { t } = useTranslation()
@@ -42,7 +43,7 @@ const Adresse: React.FC<MainFormProps> = ({
       clonedvalidation, namespace, validateAdresse, {
         adresse,
         checkAdresseType: false,
-        optional: true,
+        optional: !options?.required,
         personName
       }, true
     )
