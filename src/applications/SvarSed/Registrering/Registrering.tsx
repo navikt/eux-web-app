@@ -3,6 +3,7 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import DateField from 'components/DateField/DateField'
 import { State } from 'declarations/reducers'
+import { U007Sed } from 'declarations/u007'
 import { U009Sed } from 'declarations/u009'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -26,7 +27,7 @@ const Registrering: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-bruker-registrering`
-  const sed = replySed as U009Sed
+  const sed = replySed as U007Sed | U009Sed
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
