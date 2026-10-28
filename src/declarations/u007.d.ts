@@ -6,20 +6,24 @@ export interface Institusjon {
   navn?: string
 }
 
-export interface UkjentInstitusjon {
+export interface UregistrertInstitusjon {
   navn?: string
   adresse?: Adresse
 }
 
-export interface InstitusjonDagpenger {
+export interface KompetentLandBruker {
+  adresse?: Adresse
+}
+
+export interface KompetentLand {
+  bruker?: KompetentLandBruker
   institusjon?: Institusjon
-  ukjentInstitusjon?: UkjentInstitusjon
+  uregistrertInstitusjon?: UregistrertInstitusjon
 }
 
 export interface U007Sed extends BaseReplySed {
   bruker: Bruker
   lokaleSaksnumre?: Array<LokaltSaksnummer>
   registreringsdato?: string
-  sisteAdresseIKompetentLand?: Adresse
-  institusjonDagpenger?: InstitusjonDagpenger
+  kompetentLand?: KompetentLand
 }

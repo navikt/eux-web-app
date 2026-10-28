@@ -46,13 +46,15 @@
     ]
   },
   "registreringsdato": "2024-01-10",
-  "sisteAdresseIKompetentLand": {
-    "gate": "Drottninggatan 1",
-    "postnummer": "11151",
-    "by": "Stockholm",
-    "landkode": "SWE"
-  },
-  "institusjonDagpenger": {
+  "kompetentLand": {
+    "bruker": {
+      "adresse": {
+        "gate": "Drottninggatan 1",
+        "postnummer": "11151",
+        "by": "Stockholm",
+        "landkode": "SWE"
+      }
+    },
     "institusjon": {
       "id": "SE:1234",
       "navn": "Arbetsförmedlingen"

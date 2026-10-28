@@ -5,7 +5,7 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
-import { InstitusjonDagpenger as IInstitusjonDagpenger, U007Sed } from 'declarations/u007'
+import { KompetentLand, U007Sed } from 'declarations/u007'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { JSX } from 'react'
@@ -31,10 +31,10 @@ const InstitusjonDagpenger: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-bruker-institusjondagpenger`
   const sed = replySed as U007Sed
-  const institusjonDagpenger: IInstitusjonDagpenger | undefined = sed.institusjonDagpenger
-  const finnesIIR: FinnesIIR | undefined = institusjonDagpenger?.institusjon
+  const kompetentLand: KompetentLand | undefined = sed.kompetentLand
+  const finnesIIR: FinnesIIR | undefined = kompetentLand?.institusjon
     ? 'ja'
-    : institusjonDagpenger?.ukjentInstitusjon
+    : kompetentLand?.uregistrertInstitusjon
       ? 'nei'
       : undefined
 
@@ -54,22 +54,24 @@ const InstitusjonDagpenger: React.FC<MainFormProps> = ({
 
   const setFinnesIIR = (value: FinnesIIR) => {
     if (value === 'ja') {
-      dispatch(updateReplySed('institusjonDagpenger', { institusjon: institusjonDagpenger?.institusjon ?? {} }))
+      dispatch(updateReplySed('kompetentLand.institusjon', kompetentLand?.institusjon ?? {}))
+      dispatch(updateReplySed('kompetentLand.uregistrertInstitusjon', undefined))
     } else {
-      dispatch(updateReplySed('institusjonDagpenger', { ukjentInstitusjon: institusjonDagpenger?.ukjentInstitusjon ?? {} }))
+      dispatch(updateReplySed('kompetentLand.uregistrertInstitusjon', kompetentLand?.uregistrertInstitusjon ?? {}))
+      dispatch(updateReplySed('kompetentLand.institusjon', undefined))
     }
     dispatch(resetValidation(namespace))
   }
 
   const setFelt = (path: string, value: string) => {
-    dispatch(updateReplySed(`institusjonDagpenger.${path}`, value.trim() || undefined))
+    dispatch(updateReplySed(`kompetentLand.${path}`, value.trim() || undefined))
     resetFeil(path.replace('.', '-'))
   }
 
-  const setUkjentInstitusjonAdresse = (adresse: Adresse, whatChanged: string | undefined) => {
-    dispatch(updateReplySed('institusjonDagpenger.ukjentInstitusjon.adresse', adresse))
+  const setUregistrertInstitusjonAdresse = (adresse: Adresse, whatChanged: string | undefined) => {
+    dispatch(updateReplySed('kompetentLand.uregistrertInstitusjon.adresse', adresse))
     if (whatChanged) {
-      resetFeil(`ukjentInstitusjon-adresse-${whatChanged}`)
+      resetFeil(`uregistrertInstitusjon-adresse-${whatChanged}`)
     }
   }
 
@@ -96,7 +98,7 @@ const InstitusjonDagpenger: React.FC<MainFormProps> = ({
               label={t('label:institusjonens-id')}
               required
               onChanged={(value: string) => setFelt('institusjon.id', value)}
-              value={institusjonDagpenger?.institusjon?.id}
+              value={kompetentLand?.institusjon?.id}
             />
             <Input
               error={validation[`${namespace}-institusjon-navn`]?.feilmelding}
@@ -105,29 +107,29 @@ const InstitusjonDagpenger: React.FC<MainFormProps> = ({
               label={t('label:institusjonens-navn')}
               required
               onChanged={(value: string) => setFelt('institusjon.navn', value)}
-              value={institusjonDagpenger?.institusjon?.navn}
+              value={kompetentLand?.institusjon?.navn}
             />
           </HGrid>
         )}
         {finnesIIR === 'nei' && (
           <VStack gap="space-16">
             <Input
-              error={validation[`${namespace}-ukjentInstitusjon-navn`]?.feilmelding}
+              error={validation[`${namespace}-uregistrertInstitusjon-navn`]?.feilmelding}
               namespace={namespace}
-              id="ukjentInstitusjon-navn"
+              id="uregistrertInstitusjon-navn"
               label={t('label:institusjonens-navn')}
               required
-              onChanged={(value: string) => setFelt('ukjentInstitusjon.navn', value)}
-              value={institusjonDagpenger?.ukjentInstitusjon?.navn}
+              onChanged={(value: string) => setFelt('uregistrertInstitusjon.navn', value)}
+              value={kompetentLand?.uregistrertInstitusjon?.navn}
             />
             <Heading size="xsmall">{t('label:institusjonens-adresse')}</Heading>
             <AdresseForm
               type={false}
               options={{ bygning: true, region: true }}
               required={['by', 'land']}
-              namespace={`${namespace}-ukjentInstitusjon-adresse`}
-              adresse={institusjonDagpenger?.ukjentInstitusjon?.adresse}
-              onAdressChanged={setUkjentInstitusjonAdresse}
+              namespace={`${namespace}-uregistrertInstitusjon-adresse`}
+              adresse={kompetentLand?.uregistrertInstitusjon?.adresse}
+              onAdressChanged={setUregistrertInstitusjonAdresse}
               validation={validation}
             />
           </VStack>

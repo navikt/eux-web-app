@@ -452,7 +452,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     }
     if (replySed.sedType === 'U007') {
       hasErrors.push(performValidation<ValidationAdresseProps>(v, `svarsed-${personID}-sisteadresseikompetentland`, validateAdresse, {
-        adresse: (replySed as U007Sed).sisteAdresseIKompetentLand, checkAdresseType: false, personName
+        adresse: (replySed as U007Sed).kompetentLand?.bruker?.adresse, checkAdresseType: false, personName
       }, true))
       hasErrors.push(performValidation<ValidationInstitusjonDagpengerProps>(v, `svarsed-${personID}-institusjondagpenger`, validateInstitusjonDagpenger, {
         replySed
