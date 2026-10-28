@@ -26,12 +26,13 @@ const Adresse: React.FC<MainFormProps> = ({
   personName,
   replySed,
   updateReplySed,
-  formValue
+  formValue,
+  options
 }: MainFormProps): JSX.Element => {
   const { validation }: MainFormSelector = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const target = `${personID}.adresse`
+  const target: string = options?.target ?? `${personID}.adresse`
   const adresse: IAdresse | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-${formValue ?? 'adresse'}`
   const fnr = getFnr(replySed, personID)
@@ -42,7 +43,7 @@ const Adresse: React.FC<MainFormProps> = ({
       clonedvalidation, namespace, validateAdresse, {
         adresse,
         checkAdresseType: false,
-        optional: true,
+        optional: !options?.required,
         personName
       }, true
     )
@@ -80,6 +81,7 @@ const Adresse: React.FC<MainFormProps> = ({
           type={false}
           options={{ bygning: true, region: true }}
           required={['by', 'land']}
+          countryCodeListName={options?.countryCodeListName}
           namespace={namespace}
           adresse={adresse}
           onAdressChanged={setAdresse}
