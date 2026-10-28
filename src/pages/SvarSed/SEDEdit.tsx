@@ -69,7 +69,6 @@ import RegistrertPerson from 'applications/SvarSed/RegistrertPerson/RegistrertPe
 import Registrering from 'applications/SvarSed/Registrering/Registrering'
 import Omstendigheter from 'applications/SvarSed/Omstendigheter/Omstendigheter'
 import ForespoerselOmOppfoelging from 'applications/SvarSed/ForespoerselOmOppfoelging/ForespoerselOmOppfoelging'
-import SisteAdresseIKompetentLand from 'applications/SvarSed/SisteAdresseIKompetentLand/SisteAdresseIKompetentLand'
 import InstitusjonDagpenger from 'applications/SvarSed/InstitusjonDagpenger/InstitusjonDagpenger'
 import FastslaaBosted from 'applications/SvarSed/FastslaaBosted/FastslaaBosted'
 import PositivtSvar from 'applications/SvarSed/PositivtSvar/PositivtSvar'
@@ -510,7 +509,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-negativtsvar'), value: 'negativtsvar', component: NegativtSvar, type: 'H006' },
                   { label: t('el:option-mainform-lokalesaksnumre'), value: 'lokalesaksnumre', component: LokaleSaksnumre, type: ['U007', 'U009', 'U010', 'U013'] },
                   { label: t('el:option-mainform-registrering'), value: 'registrering', component: Registrering, type: ['U007', 'U009'] },
-                  { label: t('el:option-mainform-sisteadresseikompetentland'), value: 'sisteadresseikompetentland', component: SisteAdresseIKompetentLand, type: 'U007' },
+                  { label: t('el:option-mainform-sisteadresseikompetentland'), value: 'sisteadresseikompetentland', component: Adresse, type: 'U007', options: { target: 'kompetentLand.bruker.adresse', countryCodeListName: 'euEftaLand', required: true } },
                   { label: t('el:option-mainform-institusjondagpenger'), value: 'institusjondagpenger', component: InstitusjonDagpenger, type: 'U007' },
                   { label: t('el:option-mainform-omstendigheter'), value: 'omstendigheter', component: Omstendigheter, type: 'U010' },
                   { label: t('el:option-mainform-foresporselomoppfoelging'), value: 'foresporselomoppfoelging', component: ForespoerselOmOppfoelging, type: 'U010' },

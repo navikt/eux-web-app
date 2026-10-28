@@ -1,6 +1,6 @@
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { InstitusjonDagpenger, U007Sed } from 'declarations/u007'
+import { KompetentLand, U007Sed } from 'declarations/u007'
 import { validateAdresse } from 'applications/SvarSed/Adresser/validation'
 import i18n from 'i18n'
 import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
@@ -14,11 +14,11 @@ export const validateInstitusjonDagpenger = (
   namespace: string,
   { replySed }: ValidationInstitusjonDagpengerProps
 ): boolean => {
-  const institusjonDagpenger: InstitusjonDagpenger | undefined = (replySed as U007Sed).institusjonDagpenger
+  const kompetentLand: KompetentLand | undefined = (replySed as U007Sed).kompetentLand
   const hasErrors: Array<boolean> = []
 
-  if (institusjonDagpenger?.institusjon) {
-    const { id, navn } = institusjonDagpenger.institusjon
+  if (kompetentLand?.institusjon) {
+    const { id, navn } = kompetentLand.institusjon
     hasErrors.push(checkIfNotEmpty(v, {
       needle: id,
       id: `${namespace}-institusjon-id`,
@@ -37,21 +37,21 @@ export const validateInstitusjonDagpenger = (
       max: 155,
       message: 'validation:textOverX'
     }))
-  } else if (institusjonDagpenger?.ukjentInstitusjon) {
-    const { navn, adresse } = institusjonDagpenger.ukjentInstitusjon
+  } else if (kompetentLand?.uregistrertInstitusjon) {
+    const { navn, adresse } = kompetentLand.uregistrertInstitusjon
     hasErrors.push(checkIfNotEmpty(v, {
       needle: navn,
-      id: `${namespace}-ukjentInstitusjon-navn`,
+      id: `${namespace}-uregistrertInstitusjon-navn`,
       message: 'validation:du-maa-fylle-ut',
       extra: { type: i18n.t('label:institusjonens-navn').toLowerCase() }
     }))
     hasErrors.push(checkLength(v, {
       needle: navn,
-      id: `${namespace}-ukjentInstitusjon-navn`,
+      id: `${namespace}-uregistrertInstitusjon-navn`,
       max: 155,
       message: 'validation:textOverX'
     }))
-    hasErrors.push(validateAdresse(v, `${namespace}-ukjentInstitusjon-adresse`, {
+    hasErrors.push(validateAdresse(v, `${namespace}-uregistrertInstitusjon-adresse`, {
       adresse,
       checkAdresseType: false
     }))
