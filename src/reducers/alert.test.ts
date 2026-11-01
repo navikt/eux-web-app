@@ -68,4 +68,42 @@ describe('reducers/alert', () => {
       ...initialAlertState
     })
   })
+
+  it('PERSON_SEARCH_SUCCESS with 206 shows Warning header as warning banner', () => {
+    expect(
+      alertReducer(initialAlertState, {
+        type: types.PERSON_SEARCH_SUCCESS,
+        status: 206,
+        headers: { warning: '199 - "Mangler behandlingsnummer"' },
+        payload: {}
+      } as any)
+    ).toEqual({
+      ...initialAlertState,
+      type: types.PERSON_SEARCH_SUCCESS,
+      bannerStatus: 'warning',
+      bannerMessage: 'Mangler behandlingsnummer'
+    })
+  })
+
+  it('JOURNALFOERING_PERSON_SEARCH_SUCCESS with 206 and plain Warning header', () => {
+    expect(
+      alertReducer(initialAlertState, {
+        type: types.JOURNALFOERING_PERSON_SEARCH_SUCCESS,
+        status: 206,
+        headers: { warning: 'Mangler behandlingsnummer' },
+        payload: {}
+      } as any).bannerMessage
+    ).toEqual('Mangler behandlingsnummer')
+  })
+
+  it('PERSON_SEARCH_SUCCESS with 200 leaves state unchanged', () => {
+    expect(
+      alertReducer(initialAlertState, {
+        type: types.PERSON_SEARCH_SUCCESS,
+        status: 200,
+        headers: { warning: 'ignored' },
+        payload: {}
+      } as any)
+    ).toEqual(initialAlertState)
+  })
 })

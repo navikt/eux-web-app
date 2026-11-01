@@ -41,6 +41,17 @@ function getErrorMessage(payload: any): string | undefined {
   return undefined
 }
 
+function getWarningHeader(headers: Headers | Record<string, string> | undefined): string | undefined {
+  // @navikt/fetch types headers as Headers, but call() actually dispatches a plain object
+  const value = headers instanceof Headers
+    ? headers.get('warning')
+    : headers?.warning ?? headers?.Warning
+  if (!value) return undefined
+  // Unwrap RFC 7234 format: 199 <agent> "<text>"
+  const match = value.match(/^\d{3}\s+\S+\s+"(.*)"/)
+  return match ? match[1] : value
+}
+
 const alertReducer = (state: AlertState = initialAlertState, action: Action | ActionWithPayload = { type: '' }): AlertState => {
   let stripeMessage: JSX.Element | string | undefined
   let bannerMessage: string | undefined
@@ -195,6 +206,30 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
       stripeMessage,
       error: getErrorMessage((action as ActionWithPayload).payload),
       uuid: (action as ActionWithPayload).payload ? (action as ActionWithPayload).payload.uuid : undefined
+    }
+  }
+
+  /**
+   * PDL returns 206 with a Warning header when behandlingsnummer is missing in behandlingskatalogen.
+   * The person data is still valid, so this is only shown as a non-blocking warning.
+   */
+  if (
+    (action.type === types.PERSON_SEARCH_SUCCESS ||
+      action.type === types.PERSON_MED_FAMILIE_SEARCH_SUCCESS ||
+      action.type === types.PERSON_RELATERT_SEARCH_SUCCESS ||
+      action.type === types.JOURNALFOERING_PERSON_SEARCH_SUCCESS) &&
+    (action as ActionWithPayload).status === 206
+  ) {
+    const warning = getWarningHeader((action as ActionWithPayload).headers)
+    if (warning) {
+      return {
+        ...state,
+        type: action.type,
+        bannerStatus: 'warning',
+        bannerMessage: warning,
+        uuid: undefined,
+        error: undefined
+      }
     }
   }
 
