@@ -4,6 +4,7 @@ import { Bruker, LokaltSaksnummer } from 'declarations/u'
 export interface Institusjon {
   id?: string
   navn?: string
+  __landkode?: string
 }
 
 export interface UregistrertInstitusjon {

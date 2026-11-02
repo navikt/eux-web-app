@@ -47,6 +47,8 @@ export type CountryCodeLists = {
 export type SimpleCountry = {
   landkode: string
   landnavn: string
+  // Two-letter country code used by RINA (e.g. "EL" for Greece, "UK" for the United Kingdom)
+  euLandkode?: string
 }
 
 export type CurrencyCodes = {

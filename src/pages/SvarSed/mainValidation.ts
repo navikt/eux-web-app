@@ -136,7 +136,7 @@ import { X007Sed } from 'declarations/x007'
 import { X005Sed } from 'declarations/x005'
 import { X006Sed } from 'declarations/x006'
 import { X013Sed } from 'declarations/x013'
-import { Validation } from 'declarations/types.d'
+import { CountryCodes, Validation } from 'declarations/types.d'
 import { BostedOpplysninger } from '../../declarations/h'
 import i18n from 'i18n'
 import _ from 'lodash'
@@ -221,6 +221,8 @@ import {
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
+  countryCodes?: CountryCodes | null
+  cdmVersjon?: string
 }
 
 export const validateVedtakForF003 = (v: Validation, replySed: ReplySed): boolean => {
@@ -285,7 +287,7 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: string): boolean => {
+export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: string, countryCodes?: CountryCodes | null, cdmVersjon?: string): boolean => {
   const hasErrors: Array<boolean> = []
   const replySed = _.cloneDeep(_replySed)
   const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : 4.4
@@ -455,7 +457,9 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         adresse: (replySed as U007Sed).kompetentLand?.bruker?.adresse, checkAdresseType: false, personName
       }, true))
       hasErrors.push(performValidation<ValidationInstitusjonDagpengerProps>(v, `svarsed-${personID}-institusjondagpenger`, validateInstitusjonDagpenger, {
-        replySed
+        replySed,
+        countryCodes,
+        cdmVersjon
       }, true))
     }
     if (replySed.sedType === 'U010') {
@@ -745,13 +749,15 @@ export const validateSEDEdit = (
   v: Validation,
   namespace: string,
   {
-    replySed
+    replySed,
+    countryCodes,
+    cdmVersjon
   }: ValidationSEDEditProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
   // this is common to all seds
-  hasErrors.push(validateMainForm(v, replySed, 'bruker'))
+  hasErrors.push(validateMainForm(v, replySed, 'bruker', countryCodes, cdmVersjon))
 
   if (isF001Sed(replySed) || isF002Sed(replySed)) {
     hasErrors.push(performValidation<ValidationFormålProps>(v, 'formål1-formål', validateFormål, {

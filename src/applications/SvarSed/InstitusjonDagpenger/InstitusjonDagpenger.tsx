@@ -1,21 +1,30 @@
-import { Box, Heading, HGrid, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import { Box, Heading, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
+import InstitutionSelector from 'components/InstitutionSelector/InstitutionSelector'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
+import { CountryCodes, Institusjon as IRInstitusjon } from 'declarations/types'
 import { KompetentLand, U007Sed } from 'declarations/u007'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { JSX } from 'react'
+import React, { JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import { validateInstitusjonDagpenger, ValidationInstitusjonDagpengerProps } from './validation'
+import { getInstitusjonLandkode, validateInstitusjonDagpenger, ValidationInstitusjonDagpengerProps } from './validation'
 
-const mapState = (state: State): MainFormSelector => ({
-  validation: state.validation.status
+interface InstitusjonDagpengerSelector extends MainFormSelector {
+  countryCodes: CountryCodes | null | undefined
+  cdmVersjonApp: string | undefined
+}
+
+const mapState = (state: State): InstitusjonDagpengerSelector => ({
+  validation: state.validation.status,
+  countryCodes: state.app.countryCodes,
+  cdmVersjonApp: state.app.cdmVersjon
 })
 
 type FinnesIIR = 'ja' | 'nei'
@@ -26,12 +35,18 @@ const InstitusjonDagpenger: React.FC<MainFormProps> = ({
   replySed,
   updateReplySed
 }: MainFormProps): JSX.Element => {
-  const { validation } = useAppSelector(mapState)
+  const { validation, countryCodes, cdmVersjonApp } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-bruker-institusjondagpenger`
   const sed = replySed as U007Sed
+  const cdmVersjon: string | undefined = sed.sak?.cdmVersjon ?? cdmVersjonApp
   const kompetentLand: KompetentLand | undefined = sed.kompetentLand
+  // Country picked here before an institution is chosen; kept locally so the address country applies again next time
+  const [_valgtLandkode, _setValgtLandkode] = useState<string | undefined>(undefined)
+  const institusjonLandkode: string | undefined = kompetentLand?.institusjon?.id
+    ? getInstitusjonLandkode(kompetentLand, countryCodes, cdmVersjon)
+    : _valgtLandkode ?? getInstitusjonLandkode(kompetentLand, countryCodes, cdmVersjon)
   const finnesIIR: FinnesIIR | undefined = kompetentLand?.institusjon
     ? 'ja'
     : kompetentLand?.uregistrertInstitusjon
@@ -41,7 +56,7 @@ const InstitusjonDagpenger: React.FC<MainFormProps> = ({
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
     performValidation<ValidationInstitusjonDagpengerProps>(
-      clonedValidation, namespace, validateInstitusjonDagpenger, { replySed: sed }, true
+      clonedValidation, namespace, validateInstitusjonDagpenger, { replySed: sed, countryCodes, cdmVersjon }, true
     )
     dispatch(setValidation(clonedValidation))
   })
@@ -68,6 +83,27 @@ const InstitusjonDagpenger: React.FC<MainFormProps> = ({
     resetFeil(path.replace('.', '-'))
   }
 
+  const setInstitusjonLandkode = (landkode: string) => {
+    _setValgtLandkode(landkode)
+    dispatch(updateReplySed('kompetentLand.institusjon', {}))
+    resetFeil('institusjon-landkode')
+    resetFeil('institusjon-id')
+  }
+
+  const setInstitusjon = (institusjon: IRInstitusjon | undefined) => {
+    if (institusjon) {
+      dispatch(updateReplySed('kompetentLand.institusjon', {
+        __landkode: institusjonLandkode,
+        id: institusjon.institusjonsID,
+        navn: institusjon.navn
+      }))
+    } else {
+      _setValgtLandkode(institusjonLandkode)
+      dispatch(updateReplySed('kompetentLand.institusjon', {}))
+    }
+    resetFeil('institusjon-id')
+  }
+
   const setUregistrertInstitusjonAdresse = (adresse: Adresse, whatChanged: string | undefined) => {
     dispatch(updateReplySed('kompetentLand.uregistrertInstitusjon.adresse', adresse))
     if (whatChanged) {
@@ -90,26 +126,19 @@ const InstitusjonDagpenger: React.FC<MainFormProps> = ({
           <Radio value="nei">{t('label:u007-institusjon-finnes-i-ir-nei')}</Radio>
         </RadioGroup>
         {finnesIIR === 'ja' && (
-          <HGrid columns={2} gap="space-16" align="start">
-            <Input
-              error={validation[`${namespace}-institusjon-id`]?.feilmelding}
-              namespace={namespace}
-              id="institusjon-id"
-              label={t('label:institusjonens-id')}
-              required
-              onChanged={(value: string) => setFelt('institusjon.id', value)}
-              value={kompetentLand?.institusjon?.id}
-            />
-            <Input
-              error={validation[`${namespace}-institusjon-navn`]?.feilmelding}
-              namespace={namespace}
-              id="institusjon-navn"
-              label={t('label:institusjonens-navn')}
-              required
-              onChanged={(value: string) => setFelt('institusjon.navn', value)}
-              value={kompetentLand?.institusjon?.navn}
-            />
-          </HGrid>
+          <InstitutionSelector
+            namespace={namespace}
+            id="institusjon"
+            bucType={sed.sak?.sakType}
+            landkode={institusjonLandkode}
+            value={kompetentLand?.institusjon?.id}
+            valueNavn={kompetentLand?.institusjon?.navn}
+            landkodeError={validation[`${namespace}-institusjon-landkode`]?.feilmelding}
+            error={validation[`${namespace}-institusjon-id`]?.feilmelding}
+            required
+            onLandkodeChanged={setInstitusjonLandkode}
+            onInstitutionSelected={setInstitusjon}
+          />
         )}
         {finnesIIR === 'nei' && (
           <VStack gap="space-16">
