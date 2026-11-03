@@ -8,6 +8,7 @@ import {
   PersonInfoPDL
 } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
+import { nanoid } from '@reduxjs/toolkit'
 import mockSendSak from 'mocks/sak/sendSak'
 import mockFagsakerList from 'mocks/fagsakerList'
 import { mockInstitusjon } from 'mocks/institutionList'
@@ -107,6 +108,7 @@ export const getInstitusjoner = (
 ): ActionWithPayload<Institusjoner> => {
   return call({
     url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
+    context: { buctype, landkode, requestId: nanoid() },
     expectedPayload: mockInstitusjon(),
     type: {
       request: types.SAK_INSTITUSJONER_REQUEST,
@@ -176,4 +178,3 @@ export const updateFagsakTema: ActionCreator<ActionWithPayload<NavRinasak>> = (
   type: types.SAK_FAGSAKTEMA_UPDATE,
   payload
 })
-

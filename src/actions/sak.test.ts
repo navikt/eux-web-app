@@ -52,6 +52,7 @@ describe('actions/sak', () => {
           success: types.SAK_INSTITUSJONER_SUCCESS,
           failure: types.SAK_INSTITUSJONER_FAILURE
         },
+        context: { buctype, landkode, requestId: expect.any(String) },
         url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode })
       }))
   })

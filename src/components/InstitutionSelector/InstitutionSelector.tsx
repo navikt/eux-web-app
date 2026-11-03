@@ -10,13 +10,11 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
 interface InstitutionSelectorSelector {
-  institusjonList: State['sak']['institusjonList']
-  gettingInstitusjoner: State['loading']['gettingInstitusjoner']
+  institusjonRequests: State['sak']['institusjonRequests']
 }
 
 const mapState = (state: State): InstitutionSelectorSelector => ({
-  institusjonList: state.sak.institusjonList,
-  gettingInstitusjoner: state.loading.gettingInstitusjoner
+  institusjonRequests: state.sak.institusjonRequests
 })
 
 export interface InstitutionSelectorProps {
@@ -54,7 +52,7 @@ const InstitutionSelector: React.FC<InstitutionSelectorProps> = ({
   onLandkodeChanged,
   onInstitutionSelected
 }: InstitutionSelectorProps): JSX.Element => {
-  const { institusjonList, gettingInstitusjoner } = useAppSelector(mapState)
+  const { institusjonRequests } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const landkodeId = `${namespace}-${id}-landkode`
@@ -64,15 +62,23 @@ const InstitutionSelector: React.FC<InstitutionSelectorProps> = ({
     if (bucType && landkode) {
       dispatch(getInstitusjoner(bucType, landkode))
     }
-  }, [bucType, landkode])
+  }, [bucType, landkode, dispatch])
 
-  const institusjoner: Array<Institusjon> = landkode ? _.orderBy(institusjonList ?? [], 'navn') : []
+  const request = bucType && landkode ? institusjonRequests[`${bucType}:${landkode}`] : undefined
+  const gettingInstitusjoner = !!request?.loading
+  const institusjoner: Array<Institusjon> = _.orderBy(request?.institusjoner ?? [], 'navn')
   const valueMissingFromList: boolean = !!value && !gettingInstitusjoner &&
     !institusjoner.some((i: Institusjon) => i.institusjonsID === value)
 
   const onChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    if (!request?.institusjoner || gettingInstitusjoner) {
+      return
+    }
     const selectedId = event.target.value
-    onInstitutionSelected(institusjoner.find((i: Institusjon) => i.institusjonsID === selectedId))
+    const institusjon = institusjoner.find((i: Institusjon) => i.institusjonsID === selectedId)
+    if (!selectedId || institusjon) {
+      onInstitutionSelected(institusjon)
+    }
   }
 
   return (
@@ -93,7 +99,7 @@ const InstitutionSelector: React.FC<InstitutionSelectorProps> = ({
         <Select
           data-testid={institusjonId}
           id={institusjonId}
-          disabled={!bucType || !landkode || gettingInstitusjoner}
+          disabled={!bucType || !landkode || !request?.institusjoner || gettingInstitusjoner}
           error={error}
           label={(label ?? t('label:institusjon')) + (required ? ' *' : '')}
           onChange={onChange}
@@ -101,7 +107,7 @@ const InstitutionSelector: React.FC<InstitutionSelectorProps> = ({
         >
           <option value=''>{t('label:velg')}</option>
           {valueMissingFromList && (
-            <option value={value}>{valueNavn ?? value}</option>
+            <option value={value} disabled>{valueNavn ?? value}</option>
           )}
           {institusjoner.map((i: Institusjon) => (
             <option value={i.institusjonsID} key={i.institusjonsID}>
