@@ -75,6 +75,7 @@ const Adresse: React.FC<MainFormProps> = ({
           allowReSearch
           selectedAdresser={adresse ? [adresse] : []}
           personName={personName}
+          countryCodeListName={options?.countryCodeListName}
           onAdresserChanged={setPDLAdresse}
         />
         <AdresseForm

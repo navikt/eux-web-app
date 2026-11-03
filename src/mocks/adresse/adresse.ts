@@ -38,4 +38,12 @@ export default [{
   region: 'region',
   land: 'NO',
   landkode: 'NOR'
+}, {
+  type: 'opphold',
+  gate: 'Broadway 1',
+  postnummer: '10001',
+  by: 'New York',
+  region: 'NY',
+  land: 'US',
+  landkode: 'USA'
 }]

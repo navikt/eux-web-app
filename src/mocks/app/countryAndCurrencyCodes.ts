@@ -16,7 +16,8 @@ const mockCountryAndCurrencyCodes: LandOgValutakoder = {
       {landkode: "DNK", landnavn: "Danmark", euLandkode: "DK"},
       {landkode: "FIN", landnavn: "Finland", euLandkode: "FI"},
       {landkode: "GRC", landnavn: "Hellas", euLandkode: "EL"},
-      {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"}
+      {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"},
+      {landkode: "USA", landnavn: "USA", euLandkode: "US"}
     ],
     "verdensLandHistorisk": [
       {landkode: "NOR", landnavn: "Norge", euLandkode: "NO"},
@@ -25,6 +26,7 @@ const mockCountryAndCurrencyCodes: LandOgValutakoder = {
       {landkode: "FIN", landnavn: "Finland", euLandkode: "FI"},
       {landkode: "GRC", landnavn: "Hellas", euLandkode: "EL"},
       {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"},
+      {landkode: "USA", landnavn: "USA", euLandkode: "US"},
       {landkode: "YUCS", landnavn: "Jugoslavia", euLandkode: "YU"}
     ],
     "statsborgerskap": [
@@ -34,6 +36,7 @@ const mockCountryAndCurrencyCodes: LandOgValutakoder = {
       {landkode: "FIN", landnavn: "Finland", euLandkode: "FI"},
       {landkode: "GRC", landnavn: "Hellas", euLandkode: "EL"},
       {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"},
+      {landkode: "USA", landnavn: "USA", euLandkode: "US"},
       {landkode: "IND", landnavn: "India", euLandkode: "IN"}
     ],
     "euEftaValuta": [
@@ -62,7 +65,8 @@ const mockCountryAndCurrencyCodes: LandOgValutakoder = {
       {landkode: "DNK", landnavn: "Danmark", euLandkode: "DK"},
       {landkode: "FIN", landnavn: "Finland", euLandkode: "FI"},
       {landkode: "GRC", landnavn: "Hellas", euLandkode: "EL"},
-      {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"}
+      {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"},
+      {landkode: "USA", landnavn: "USA", euLandkode: "US"}
     ],
     "verdensLandHistorisk": [
       {landkode: "NOR", landnavn: "Norge", euLandkode: "NO"},
@@ -71,6 +75,7 @@ const mockCountryAndCurrencyCodes: LandOgValutakoder = {
       {landkode: "FIN", landnavn: "Finland", euLandkode: "FI"},
       {landkode: "GRC", landnavn: "Hellas", euLandkode: "EL"},
       {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"},
+      {landkode: "USA", landnavn: "USA", euLandkode: "US"},
       {landkode: "YUCS", landnavn: "Jugoslavia", euLandkode: "YU"}
     ],
     "statsborgerskap": [
@@ -80,6 +85,7 @@ const mockCountryAndCurrencyCodes: LandOgValutakoder = {
       {landkode: "FIN", landnavn: "Finland", euLandkode: "FI"},
       {landkode: "GRC", landnavn: "Hellas", euLandkode: "EL"},
       {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"},
+      {landkode: "USA", landnavn: "USA", euLandkode: "US"},
       {landkode: "YUCS", landnavn: "Jugoslavia", euLandkode: "YU"},
       {landkode: "XKX", landnavn: "Kosovo", euLandkode: "XK"}
     ],
@@ -109,7 +115,8 @@ const mockCountryAndCurrencyCodes: LandOgValutakoder = {
       {landkode: "DNK", landnavn: "Danmark", euLandkode: "DK"},
       {landkode: "FIN", landnavn: "Finland", euLandkode: "FI"},
       {landkode: "GRC", landnavn: "Hellas", euLandkode: "EL"},
-      {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"}
+      {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"},
+      {landkode: "USA", landnavn: "USA", euLandkode: "US"}
     ],
     "verdensLandHistorisk": [
       {landkode: "NOR", landnavn: "Norge", euLandkode: "NO"},
@@ -118,6 +125,7 @@ const mockCountryAndCurrencyCodes: LandOgValutakoder = {
       {landkode: "FIN", landnavn: "Finland", euLandkode: "FI"},
       {landkode: "GRC", landnavn: "Hellas", euLandkode: "EL"},
       {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"},
+      {landkode: "USA", landnavn: "USA", euLandkode: "US"},
       {landkode: "YUCS", landnavn: "Jugoslavia", euLandkode: "YU"}
     ],
     "statsborgerskap": [
@@ -127,6 +135,7 @@ const mockCountryAndCurrencyCodes: LandOgValutakoder = {
       {landkode: "FIN", landnavn: "Finland", euLandkode: "FI"},
       {landkode: "GRC", landnavn: "Hellas", euLandkode: "EL"},
       {landkode: "GBR", landnavn: "Storbritannia", euLandkode: "UK"},
+      {landkode: "USA", landnavn: "USA", euLandkode: "US"},
       {landkode: "YUCS", landnavn: "Jugoslavia", euLandkode: "YU"},
       {landkode: "XKX", landnavn: "Kosovo", euLandkode: "XK"}
     ],
