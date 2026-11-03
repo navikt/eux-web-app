@@ -6,6 +6,7 @@ import CountryDropdown from 'components/CountryDropdown/CountryDropdown'
 import Input from 'components/Forms/Input'
 import { Country } from 'components/land-verktoy'
 import { State } from 'declarations/reducers'
+import { U007Sed } from 'declarations/u007'
 import { U009Sed } from 'declarations/u009'
 import { U010Sed } from 'declarations/u010'
 import { LokaltSaksnummer } from 'declarations/u'
@@ -32,7 +33,7 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const { validation } = useAppSelector(mapState)
   const namespace = `${parentNamespace}-bruker-lokalesaksnumre`
-  const lokaleSaksnumre = (replySed as U009Sed | U010Sed | U013Sed).lokaleSaksnumre ?? []
+  const lokaleSaksnumre = (replySed as U007Sed | U009Sed | U010Sed | U013Sed).lokaleSaksnumre ?? []
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)

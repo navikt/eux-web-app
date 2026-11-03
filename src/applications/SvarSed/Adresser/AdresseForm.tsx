@@ -21,6 +21,7 @@ export interface AdresseFormProps {
   keyForCity ?: string
   keyforZipCode ?: string
   labelforZipCode ?: string
+  countryCodeListName?: string
 }
 
 const AdresseForm: React.FC<AdresseFormProps> = ({
@@ -36,6 +37,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   keyForCity = 'by',
   keyforZipCode = 'postnummer',
   labelforZipCode = 'postnr',
+  countryCodeListName = 'verdensLand',
 }: AdresseFormProps) => {
   const { t } = useTranslation()
 
@@ -182,7 +184,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             closeMenuOnSelect
             data-testid={namespace + '-land'}
             error={validation[namespace + '-land']?.feilmelding}
-            countryCodeListName="verdensLand"
+            countryCodeListName={countryCodeListName}
             flagWave
             id={namespace + '-land'}
             label={t('label:land')}

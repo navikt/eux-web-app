@@ -5,6 +5,13 @@ import {ArbeidsperiodeFraAA, Fagsak, Fagsaker, Institusjon, NavRinasak, Opprette
 import _ from 'lodash'
 import { AnyAction } from 'redux'
 
+interface InstitusjonRequest {
+  requestId: string
+  consumerIds: Array<string>
+  loading: boolean
+  institusjoner: Array<Institusjon> | undefined
+}
+
 export interface SakState {
   arbeidsperioder: Array<ArbeidsperiodeFraAA>
   buctype: any
@@ -14,6 +21,7 @@ export interface SakState {
   fnr: string | undefined
   institusjon: string | undefined
   institusjonList: Array<Institusjon> | undefined
+  institusjonRequests: Record<string, InstitusjonRequest | undefined>
   landkoder: Array<string> | undefined
   landkode: string | undefined
   opprettetSak: OpprettetSak | undefined
@@ -34,6 +42,7 @@ export const initialSakState: SakState = {
   familierelasjonerUtland: [],
   fnr: undefined,
   institusjonList: undefined,
+  institusjonRequests: {},
   institusjon: undefined,
   landkoder: undefined,
   landkode: undefined,
@@ -139,12 +148,65 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
     }
 
 
-    case types.SAK_INSTITUSJONER_SUCCESS:
+    case types.SAK_INSTITUSJONER_REQUEST: {
+      const { buctype, landkode, requestId, consumerId } = action.context
+      if (!consumerId) {
+        return state
+      }
+      const key = `${buctype}:${landkode}`
+      const consumerIds = state.institusjonRequests[key]?.consumerIds ?? []
       return {
         ...state,
-        institusjonList: (action as ActionWithPayload).payload,
+        institusjonRequests: {
+          ...state.institusjonRequests,
+          [key]: {
+            requestId,
+            consumerIds: consumerIds.includes(consumerId) ? consumerIds : [...consumerIds, consumerId],
+            loading: true,
+            institusjoner: undefined
+          }
+        }
       }
+    }
 
+    case types.SAK_INSTITUSJONER_SUCCESS:
+    case types.SAK_INSTITUSJONER_FAILURE: {
+      const { buctype, landkode, requestId, consumerId } = action.context
+      const institusjoner = action.type === types.SAK_INSTITUSJONER_SUCCESS ? action.payload : undefined
+      // Legacy callers without a consumer use the shared institusjonList; a failure leaves it unchanged
+      if (!consumerId) {
+        return action.type === types.SAK_INSTITUSJONER_SUCCESS ? { ...state, institusjonList: institusjoner } : state
+      }
+      const key = `${buctype}:${landkode}`
+      const request = state.institusjonRequests[key]
+      if (!request || request.requestId !== requestId) {
+        return state
+      }
+      return {
+        ...state,
+        institusjonRequests: {
+          ...state.institusjonRequests,
+          [key]: { ...request, loading: false, institusjoner }
+        }
+      }
+    }
+
+    case types.SAK_INSTITUSJONER_RELEASE: {
+      const { buctype, landkode, consumerId } = action.context
+      const key = `${buctype}:${landkode}`
+      const request = state.institusjonRequests[key]
+      if (!request?.consumerIds.includes(consumerId)) {
+        return state
+      }
+      const consumerIds = request.consumerIds.filter(id => id !== consumerId)
+      const institusjonRequests = { ...state.institusjonRequests }
+      if (consumerIds.length) {
+        institusjonRequests[key] = { ...request, consumerIds }
+      } else {
+        delete institusjonRequests[key]
+      }
+      return { ...state, institusjonRequests }
+    }
 
     case types.SAK_FILLOUTINFO_RESET:
     case types.SAK_FILLOUTINFO_REQUEST:

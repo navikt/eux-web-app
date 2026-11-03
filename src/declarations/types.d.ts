@@ -5,7 +5,7 @@ import {JaNei, ReplySed, Statsborgerskap} from 'declarations/sed'
 import {Context, Item} from "@navikt/tabell";
 
 export type StorageTypes = PDU1 | ReplySed
-export type SedAction = 'X002' | 'X003' | 'X004' | 'X008' | 'X010' | 'X011' | 'X012' | 'X013' | 'U002' | 'U004' | 'U009' | 'U010' | 'U013' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants' | 'Participants_Send'
+export type SedAction = 'X002' | 'X003' | 'X004' | 'X008' | 'X010' | 'X011' | 'X012' | 'X013' | 'U002' | 'U004' | 'U007' | 'U009' | 'U010' | 'U013' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants' | 'Participants_Send'
 
 export interface ArbeidsperiodeFraAA {
   fraDato?: string
@@ -47,6 +47,8 @@ export type CountryCodeLists = {
 export type SimpleCountry = {
   landkode: string
   landnavn: string
+  // Two-letter country code used by RINA (e.g. "EL" for Greece, "UK" for the United Kingdom)
+  euLandkode?: string
 }
 
 export type CurrencyCodes = {

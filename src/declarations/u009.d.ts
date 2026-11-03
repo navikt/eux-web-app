@@ -1,11 +1,5 @@
-import { Adresse, BaseReplySed, Epost, Telefon } from 'declarations/sed'
-import { LokaltSaksnummer, Person } from 'declarations/u'
-
-export interface Bruker extends Person {
-  adresse?: Adresse
-  telefon?: Array<Telefon>
-  epost?: Array<Epost>
-}
+import { BaseReplySed } from 'declarations/sed'
+import { Bruker, LokaltSaksnummer } from 'declarations/u'
 
 export interface U009Sed extends BaseReplySed {
   bruker: Bruker

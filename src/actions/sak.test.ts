@@ -52,8 +52,16 @@ describe('actions/sak', () => {
           success: types.SAK_INSTITUSJONER_SUCCESS,
           failure: types.SAK_INSTITUSJONER_FAILURE
         },
+        context: { buctype, landkode, requestId: expect.any(String), consumerId: undefined },
         url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode })
       }))
+  })
+
+  it('getInstitusjoner() associates the request with its selector', () => {
+    sakActions.getInstitusjoner('UB_BUC_02', 'SWE', 'selector-1')
+    expect(call).toHaveBeenCalledWith(expect.objectContaining({
+      context: { buctype: 'UB_BUC_02', landkode: 'SWE', requestId: expect.any(String), consumerId: 'selector-1' }
+    }))
   })
 
 
