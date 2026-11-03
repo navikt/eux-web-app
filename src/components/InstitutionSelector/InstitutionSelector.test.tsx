@@ -1,9 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { getInstitusjoner, releaseInstitusjoner } from 'actions/sak'
 import InstitutionSelector, { InstitutionSelectorProps } from './InstitutionSelector'
 import { stageSelector } from 'setupTests'
 
 jest.mock('actions/sak', () => ({
-  getInstitusjoner: jest.fn(() => ({ type: 'SAK/INSTITUSJONER/REQUEST' }))
+  getInstitusjoner: jest.fn(() => ({ type: 'SAK/INSTITUSJONER/REQUEST' })),
+  releaseInstitusjoner: jest.fn(() => ({ type: 'SAK/INSTITUSJONER/RELEASE' }))
 }))
 jest.mock('components/CountryDropdown/CountryDropdown', () => () => null)
 
@@ -22,6 +24,36 @@ const props: InstitutionSelectorProps = {
 describe('components/InstitutionSelector', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+  })
+
+  it('releases the previous country on change and the current country on unmount', () => {
+    stageSelector({}, { institusjonRequests: {} })
+    const wrapper = render(<InstitutionSelector {...props} />)
+    const consumerId = (getInstitusjoner as jest.Mock).mock.calls[0][2]
+    expect(getInstitusjoner).toHaveBeenCalledWith('UB_BUC_02', 'SWE', consumerId)
+    expect(releaseInstitusjoner).not.toHaveBeenCalled()
+
+    wrapper.rerender(<InstitutionSelector {...props} landkode="DNK" />)
+    expect(releaseInstitusjoner).toHaveBeenCalledTimes(1)
+    expect(releaseInstitusjoner).toHaveBeenLastCalledWith('UB_BUC_02', 'SWE', consumerId)
+    expect(getInstitusjoner).toHaveBeenLastCalledWith('UB_BUC_02', 'DNK', consumerId)
+
+    wrapper.unmount()
+    expect(releaseInstitusjoner).toHaveBeenCalledTimes(2)
+    expect(releaseInstitusjoner).toHaveBeenLastCalledWith('UB_BUC_02', 'DNK', consumerId)
+  })
+
+  it('releases the previous BUC and clears the request when the country is removed', () => {
+    stageSelector({}, { institusjonRequests: {} })
+    const wrapper = render(<InstitutionSelector {...props} />)
+    const consumerId = (getInstitusjoner as jest.Mock).mock.calls[0][2]
+    wrapper.rerender(<InstitutionSelector {...props} bucType="UB_BUC_01" />)
+    expect(releaseInstitusjoner).toHaveBeenLastCalledWith('UB_BUC_02', 'SWE', consumerId)
+    expect(getInstitusjoner).toHaveBeenLastCalledWith('UB_BUC_01', 'SWE', consumerId)
+
+    wrapper.rerender(<InstitutionSelector {...props} bucType="UB_BUC_01" landkode={undefined} />)
+    expect(releaseInstitusjoner).toHaveBeenLastCalledWith('UB_BUC_01', 'SWE', consumerId)
+    expect(getInstitusjoner).toHaveBeenCalledTimes(2)
   })
 
   it('never offers another country or BUC result, even if it arrived last', () => {

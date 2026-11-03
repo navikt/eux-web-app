@@ -1,11 +1,11 @@
 import { HGrid, Loader, Select, VStack } from '@navikt/ds-react'
 import { Country } from '@navikt/land-verktoy'
-import { getInstitusjoner } from 'actions/sak'
+import { getInstitusjoner, releaseInstitusjoner } from 'actions/sak'
 import CountryDropdown from 'components/CountryDropdown/CountryDropdown'
 import { State } from 'declarations/reducers'
 import { Institusjon } from 'declarations/types'
 import _ from 'lodash'
-import React, { JSX, useEffect } from 'react'
+import React, { JSX, useEffect, useId } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
@@ -55,14 +55,18 @@ const InstitutionSelector: React.FC<InstitutionSelectorProps> = ({
   const { institusjonRequests } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const consumerId = useId()
   const landkodeId = `${namespace}-${id}-landkode`
   const institusjonId = `${namespace}-${id}-id`
 
   useEffect(() => {
     if (bucType && landkode) {
-      dispatch(getInstitusjoner(bucType, landkode))
+      dispatch(getInstitusjoner(bucType, landkode, consumerId))
+      return () => {
+        dispatch(releaseInstitusjoner(bucType, landkode, consumerId))
+      }
     }
-  }, [bucType, landkode, dispatch])
+  }, [bucType, landkode, consumerId, dispatch])
 
   const request = bucType && landkode ? institusjonRequests[`${bucType}:${landkode}`] : undefined
   const gettingInstitusjoner = !!request?.loading

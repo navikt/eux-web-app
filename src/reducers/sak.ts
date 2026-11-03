@@ -7,6 +7,7 @@ import { AnyAction } from 'redux'
 
 interface InstitusjonRequest {
   requestId: string
+  consumerIds: Array<string>
   loading: boolean
   institusjoner: Array<Institusjon> | undefined
 }
@@ -148,32 +149,63 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
 
 
     case types.SAK_INSTITUSJONER_REQUEST: {
-      const { buctype, landkode, requestId } = action.context
+      const { buctype, landkode, requestId, consumerId } = action.context
+      if (!consumerId) {
+        return state
+      }
+      const key = `${buctype}:${landkode}`
+      const consumerIds = state.institusjonRequests[key]?.consumerIds ?? []
       return {
         ...state,
         institusjonRequests: {
           ...state.institusjonRequests,
-          [`${buctype}:${landkode}`]: { requestId, loading: true, institusjoner: undefined }
+          [key]: {
+            requestId,
+            consumerIds: consumerIds.includes(consumerId) ? consumerIds : [...consumerIds, consumerId],
+            loading: true,
+            institusjoner: undefined
+          }
         }
       }
     }
 
     case types.SAK_INSTITUSJONER_SUCCESS:
     case types.SAK_INSTITUSJONER_FAILURE: {
-      const { buctype, landkode, requestId } = action.context
+      const { buctype, landkode, requestId, consumerId } = action.context
+      const institusjoner = action.type === types.SAK_INSTITUSJONER_SUCCESS ? action.payload : undefined
+      if (!consumerId) {
+        return { ...state, institusjonList: institusjoner }
+      }
       const key = `${buctype}:${landkode}`
-      if (state.institusjonRequests[key]?.requestId !== requestId) {
+      const request = state.institusjonRequests[key]
+      if (!request || request.requestId !== requestId) {
         return state
       }
-      const institusjoner = action.type === types.SAK_INSTITUSJONER_SUCCESS ? action.payload : undefined
       return {
         ...state,
         institusjonList: institusjoner,
         institusjonRequests: {
           ...state.institusjonRequests,
-          [key]: { requestId, loading: false, institusjoner }
+          [key]: { ...request, loading: false, institusjoner }
         }
       }
+    }
+
+    case types.SAK_INSTITUSJONER_RELEASE: {
+      const { buctype, landkode, consumerId } = action.context
+      const key = `${buctype}:${landkode}`
+      const request = state.institusjonRequests[key]
+      if (!request?.consumerIds.includes(consumerId)) {
+        return state
+      }
+      const consumerIds = request.consumerIds.filter(id => id !== consumerId)
+      const institusjonRequests = { ...state.institusjonRequests }
+      if (consumerIds.length) {
+        institusjonRequests[key] = { ...request, consumerIds }
+      } else {
+        delete institusjonRequests[key]
+      }
+      return { ...state, institusjonRequests }
     }
 
     case types.SAK_FILLOUTINFO_RESET:
