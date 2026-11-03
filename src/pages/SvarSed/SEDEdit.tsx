@@ -86,7 +86,7 @@ import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import {F027Sed, FSed, ReplySed} from 'declarations/sed'
 import { H120Sed } from 'declarations/h120'
-import { CountryCodes, CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
+import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
@@ -185,7 +185,6 @@ export interface SEDEditSelector {
   textFieldDirty: boolean
   deselectedMenu: string | undefined
   cdmVersjon: string | undefined
-  countryCodes: CountryCodes | null | undefined
 }
 
 const mapState = (state: State): SEDEditSelector => ({
@@ -206,8 +205,7 @@ const mapState = (state: State): SEDEditSelector => ({
   textAreaDirty: state.ui.textAreaDirty,
   textFieldDirty: state.ui.textFieldDirty,
   deselectedMenu: state.svarsed.deselectedMenu,
-  cdmVersjon: state.app.cdmVersjon,
-  countryCodes: state.app.countryCodes
+  cdmVersjon: state.app.cdmVersjon
 })
 
 const SEDEdit = (): JSX.Element => {
@@ -233,8 +231,7 @@ const SEDEdit = (): JSX.Element => {
     textAreaDirty,
     textFieldDirty,
     deselectedMenu,
-    cdmVersjon,
-    countryCodes
+    cdmVersjon
   } = useAppSelector(mapState)
   const namespace = 'editor'
 
@@ -251,9 +248,7 @@ const SEDEdit = (): JSX.Element => {
       const newReplySed: ReplySed = cleanReplySed(replySed)
       const clonedValidation = _.cloneDeep(validation)
       const hasErrors = performValidation<ValidationSEDEditProps>(clonedValidation, '', validateSEDEdit, {
-        replySed: newReplySed,
-        countryCodes,
-        cdmVersjon: replySed?.sak?.cdmVersjon ?? cdmVersjon
+        replySed: newReplySed
       })
       dispatch(setValidation(clonedValidation))
       if (!hasErrors) {
@@ -272,9 +267,7 @@ const SEDEdit = (): JSX.Element => {
       const newReplySed: ReplySed = cleanReplySed(replySed)
       const clonedValidation = _.cloneDeep(validation)
       const hasErrors = performValidation<ValidationSEDEditProps>(clonedValidation, '', validateSEDEdit, {
-        replySed: newReplySed,
-        countryCodes,
-        cdmVersjon: replySed?.sak?.cdmVersjon ?? cdmVersjon
+        replySed: newReplySed
       })
       dispatch(setValidation(clonedValidation))
 
