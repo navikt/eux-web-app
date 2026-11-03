@@ -173,8 +173,9 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
     case types.SAK_INSTITUSJONER_FAILURE: {
       const { buctype, landkode, requestId, consumerId } = action.context
       const institusjoner = action.type === types.SAK_INSTITUSJONER_SUCCESS ? action.payload : undefined
+      // Legacy callers without a consumer use the shared institusjonList; a failure leaves it unchanged
       if (!consumerId) {
-        return { ...state, institusjonList: institusjoner }
+        return action.type === types.SAK_INSTITUSJONER_SUCCESS ? { ...state, institusjonList: institusjoner } : state
       }
       const key = `${buctype}:${landkode}`
       const request = state.institusjonRequests[key]
@@ -183,7 +184,6 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
       }
       return {
         ...state,
-        institusjonList: institusjoner,
         institusjonRequests: {
           ...state.institusjonRequests,
           [key]: { ...request, loading: false, institusjoner }

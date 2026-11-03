@@ -64,7 +64,6 @@ describe('reducers/sak', () => {
       })
     ).toEqual({
       ...initialSakState,
-      institusjonList: payload,
       institusjonRequests: {
         'UB_BUC_02:SWE': {
           requestId: 'request-1', consumerIds: ['selector-1'], loading: false, institusjoner: payload
@@ -170,6 +169,18 @@ describe('reducers/sak', () => {
     state = sakReducer(state, { type: types.SAK_INSTITUSJONER_SUCCESS, context: legacy, payload })
     expect(state.institusjonList).toEqual(payload)
     expect(state.institusjonRequests).toEqual({})
+  })
+
+  it('does not let selector requests overwrite the legacy institusjonList', () => {
+    const legacyList = [{ institusjonsID: 'DK:1' }]
+    const selector = { buctype: 'UB_BUC_02', landkode: 'SWE', requestId: 'selector', consumerId: 'selector-1' }
+    let state = sakReducer({ ...initialSakState, institusjonList: legacyList } as any, { type: types.SAK_INSTITUSJONER_REQUEST, context: selector })
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_SUCCESS, context: selector, payload: [{ institusjonsID: 'SE:1' }] })
+    expect(state.institusjonList).toBe(legacyList)
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_REQUEST, context: { ...selector, requestId: 'retry' } })
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_FAILURE, context: { ...selector, requestId: 'retry' } })
+    expect(state.institusjonList).toBe(legacyList)
+    expect(sakReducer(state, { type: types.SAK_INSTITUSJONER_FAILURE, context: { buctype: 'UB_BUC_02', landkode: 'DNK' } }).institusjonList).toBe(legacyList)
   })
 
   it('SAK_SEND_SUCCESS', () => {
