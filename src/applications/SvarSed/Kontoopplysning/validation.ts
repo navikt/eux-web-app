@@ -38,7 +38,7 @@ export const validateKontoopplysning = (
   if (!_.isEmpty(uti?.id?.trim())) {
     if (!uti?.id?.trim().match(/^(AT|BE|BG|HR|CY|CZ|DK|EE|FI|FR|DE|EL|HU|IS|IE|IT|LV|LI|LT|LU|MT|NL|NO|PL|PT|RO|SK|SI|ES|SE|CH|UK|EU):[a-zA-Z0-9]{4,10}?$/)) {
       hasErrors.push(addError(v, {
-        id: namespace + '-id',
+        id: namespace + '-institusjon-id',
         message: 'validation:invalidInstitusjonsID',
         personName: formalName
       }))

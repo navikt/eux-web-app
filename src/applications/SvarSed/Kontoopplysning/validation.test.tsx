@@ -14,7 +14,7 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
     })
     expect(hasErrors).toBeTruthy()
     expect(validation['test-mock-begrunnelse']?.feilmelding).toEqual('validation:noBegrunnelseTil')
-    expect(validation['test-mock-id']?.feilmelding).toEqual('validation:noInstitusjonensIdTil')
+    expect(validation['test-mock-institusjon-id']?.feilmelding).toEqual('validation:noInstitusjonensIdTil')
     expect(validation['test-mock-navn']?.feilmelding).toEqual('validation:noInstitusjonensNavnTil')
     expect(validation['test-mock-kontotype']?.feilmelding).toEqual('validation:noKontotypeTil')
     expect(validation.test?.feilmelding).toEqual('error')

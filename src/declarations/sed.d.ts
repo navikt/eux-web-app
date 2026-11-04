@@ -532,6 +532,8 @@ export interface Barn {
 export interface Institusjon {
   id: string
   navn: string
+  // extra: aux param to remember the selected country (alpha-3); stripped before sending to the API
+  __landkode?: string
 }
 
 export interface PeriodeDagpenger extends PeriodePeriode {

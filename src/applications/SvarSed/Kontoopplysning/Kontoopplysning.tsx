@@ -5,16 +5,31 @@ import {
   validateKontoopplysning,
   ValidationKontoopplysningProps
 } from 'applications/SvarSed/Kontoopplysning/validation'
-import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
+import InstitutionSelector from 'components/InstitutionSelector/InstitutionSelector'
+import { State } from 'declarations/reducers'
 import { Adresse as IAdresse, F002Sed, KontoType, UtbetalingTilInstitusjon } from 'declarations/sed'
+import { CountryCodes, Institusjon as IRInstitusjon } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import { getLandkodeFromInstitusjonsId } from 'utils/institusjon'
 import performValidation from 'utils/performValidation'
+
+interface KontoopplysningSelector extends MainFormSelector {
+  countryCodes: CountryCodes | null | undefined
+  cdmVersjonApp: string | undefined
+}
+
+const mapState = (state: State): KontoopplysningSelector => ({
+  validation: state.validation.status,
+  countryCodes: state.app.countryCodes,
+  cdmVersjonApp: state.app.cdmVersjon
+})
 
 const Kontoopplysning: React.FC<MainFormProps> = ({
   label,
@@ -24,11 +39,17 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
   personName
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: MainFormSelector = useAppSelector(mapState)
+  const { validation, countryCodes, cdmVersjonApp }: KontoopplysningSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target: string = 'utbetalingTilInstitusjon'
   const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = _.get((replySed as F002Sed), target)
   const namespace: string = `${parentNamespace}-kontoopplysninger`
+  const cdmVersjon: string | undefined = (replySed as F002Sed).sak?.cdmVersjon ?? cdmVersjonApp
+  // Country picked before an institution is chosen
+  const [_valgtLandkode, _setValgtLandkode] = useState<string | undefined>(undefined)
+  const institusjonLandkode: string | undefined = utbetalingTilInstitusjon?.id
+    ? utbetalingTilInstitusjon.__landkode ?? getLandkodeFromInstitusjonsId(utbetalingTilInstitusjon.id, countryCodes, cdmVersjon)
+    : _valgtLandkode
 
   const [_kontoType, _setKontoType] = useState<KontoType | undefined>(() => {
     if (_.isNil(utbetalingTilInstitusjon)) {
@@ -93,18 +114,36 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
     }
   }
 
-  const setId = (newId: string) => {
-    dispatch(updateReplySed(`${target}.id`, newId.trim()))
-    if (validation[namespace + '-id']) {
-      dispatch(resetValidation(namespace + '-id'))
+  const resetInstitusjonValidation = () => {
+    if (validation[namespace + '-institusjon-id']) {
+      dispatch(resetValidation(namespace + '-institusjon-id'))
     }
   }
 
-  const setNavn = (newNavn: string) => {
-    dispatch(updateReplySed(`${target}.navn`, newNavn.trim()))
-    if (validation[namespace + '-navn']) {
-      dispatch(resetValidation(namespace + '-navn'))
+  // Only id, navn and __landkode change; begrunnelse and account details are kept
+  const updateInstitusjon = (institusjon: IRInstitusjon | undefined, landkode: string | undefined) => {
+    const newUti: UtbetalingTilInstitusjon = {
+      ...(_.omit(utbetalingTilInstitusjon, '__landkode') as UtbetalingTilInstitusjon),
+      id: institusjon?.institusjonsID ?? '',
+      navn: institusjon?.navn ?? ''
     }
+    if (institusjon) {
+      newUti.__landkode = landkode
+    }
+    dispatch(updateReplySed(target, newUti))
+    resetInstitusjonValidation()
+  }
+
+  const setInstitusjonLandkode = (landkode: string) => {
+    _setValgtLandkode(landkode)
+    updateInstitusjon(undefined, undefined)
+  }
+
+  const setInstitusjon = (institusjon: IRInstitusjon | undefined) => {
+    if (!institusjon) {
+      _setValgtLandkode(institusjonLandkode)
+    }
+    updateInstitusjon(institusjon, institusjonLandkode)
   }
 
   const setOrdinaerAdresse = (newAdresse: IAdresse, type: string | undefined) => {
@@ -199,26 +238,17 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
           value={utbetalingTilInstitusjon?.begrunnelse ?? ''}
           maxLength={255}
         />
-        <HGrid columns={2} gap="space-16" align="start">
-          <Input
-            error={validation[namespace + '-id']?.feilmelding}
-            id='id'
-            label={t('label:institusjonens-id')}
-            namespace={namespace}
-            onChanged={setId}
-            required
-            value={utbetalingTilInstitusjon?.id ?? ''}
-          />
-          <Input
-            error={validation[namespace + '-navn']?.feilmelding}
-            id='navn'
-            label={t('label:institusjonens-navn')}
-            namespace={namespace}
-            onChanged={setNavn}
-            required
-            value={utbetalingTilInstitusjon?.navn ?? ''}
-          />
-        </HGrid>
+        <InstitutionSelector
+          namespace={namespace}
+          id='institusjon'
+          bucType={(replySed as F002Sed).sak?.sakType}
+          landkode={institusjonLandkode}
+          value={utbetalingTilInstitusjon?.id || undefined}
+          valueNavn={utbetalingTilInstitusjon?.navn}
+          error={validation[namespace + '-institusjon-id']?.feilmelding}
+          onLandkodeChanged={setInstitusjonLandkode}
+          onInstitutionSelected={setInstitusjon}
+        />
         <RadioGroup
           value={_kontoType ?? ""}
           data-testid={namespace + '-kontotype'}
