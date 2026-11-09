@@ -1,6 +1,6 @@
 import { PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons'
 import { resetValidation, setValidation } from 'actions/validation'
-import { Box, Button, Heading, HGrid, HStack, VStack } from '@navikt/ds-react'
+import { BodyLong, Box, Button, Heading, HGrid, HStack, VStack } from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import InstitutionSelector from 'components/InstitutionSelector/InstitutionSelector'
@@ -88,6 +88,13 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
     <Box padding="space-16">
       <VStack gap="space-16">
         <Heading size="small">{label}</Heading>
+        {_.isEmpty(lokaleSaksnumre) && (
+          <Box borderWidth="1 0" paddingBlock="space-8">
+            <BodyLong>
+              {t('message:warning-no-lokale-saksnumre')}
+            </BodyLong>
+          </Box>
+        )}
         {lokaleSaksnumre.map((lokaltSaksnummer, index) => (
           <Box key={index} borderWidth="1" padding="space-16">
             <VStack gap="space-16">
