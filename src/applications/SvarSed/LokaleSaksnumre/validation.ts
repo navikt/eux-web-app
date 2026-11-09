@@ -17,7 +17,7 @@ export const validateLokaleSaksnumre = (
     const fieldNamespace = `${namespace}-${index}`
     hasErrors.push(checkIfNotEmpty(v, {
       needle: lokaltSaksnummer.landkode,
-      id: `${fieldNamespace}-landkode`,
+      id: `${fieldNamespace}-institusjon-landkode`,
       message: 'validation:noU013LokaltSaksnummerLand'
     }))
     hasErrors.push(checkIfNotEmpty(v, {
@@ -27,7 +27,7 @@ export const validateLokaleSaksnumre = (
     }))
     hasErrors.push(checkIfNotEmpty(v, {
       needle: lokaltSaksnummer.institusjonsid,
-      id: `${fieldNamespace}-institusjonsid`,
+      id: `${fieldNamespace}-institusjon-id`,
       message: 'validation:noU013LokaltSaksnummerInstitusjonsid'
     }))
     hasErrors.push(checkIfNotEmpty(v, {
