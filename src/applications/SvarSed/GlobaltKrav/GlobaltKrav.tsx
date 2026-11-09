@@ -3,20 +3,30 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { validateGlobaltKrav, ValidationGlobaltKravProps } from 'applications/SvarSed/GlobaltKrav/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
+import InstitutionSelector from 'components/InstitutionSelector/InstitutionSelector'
 import { State } from 'declarations/reducers'
-import { H021Sed } from 'declarations/h021'
+import { H021Sed, KreditorInstitusjon } from 'declarations/h021'
+import { CountryCodes, Institusjon as IRInstitusjon } from 'declarations/types'
 import CurrencyDropdown from 'components/CurrencyDropdown/CurrencyDropdown'
 import { Currency } from 'components/land-verktoy'
 import { sanitizeAmount } from 'utils/amount'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { JSX } from 'react';
+import React, { JSX, useState } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import { getLandkodeFromInstitusjonsId } from 'utils/institusjon'
 import performValidation from 'utils/performValidation'
 
-const mapState = (state: State): MainFormSelector => ({
-  validation: state.validation.status
+interface GlobaltKravSelector extends MainFormSelector {
+  countryCodes: CountryCodes | null | undefined
+  cdmVersjonApp: string | undefined
+}
+
+const mapState = (state: State): GlobaltKravSelector => ({
+  validation: state.validation.status,
+  countryCodes: state.app.countryCodes,
+  cdmVersjonApp: state.app.cdmVersjon
 })
 
 const GlobaltKrav: React.FC<MainFormProps> = ({
@@ -27,11 +37,18 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
   replySed,
   updateReplySed
 }: MainFormProps): JSX.Element => {
-  const { validation } = useAppSelector(mapState)
+  const { validation, countryCodes, cdmVersjonApp } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-globaltkrav`
   const sed = replySed as H021Sed
+  const kreditorinstitusjon: KreditorInstitusjon | undefined = sed.refusjonskrav?.kreditorinstitusjon
+  const cdmVersjon: string | undefined = sed.sak?.cdmVersjon ?? cdmVersjonApp
+  // Country picked before an institution is chosen
+  const [_valgtLandkode, _setValgtLandkode] = useState<string | undefined>(undefined)
+  const kreditorLandkode: string | undefined = kreditorinstitusjon?.id
+    ? kreditorinstitusjon.__landkode ?? getLandkodeFromInstitusjonsId(kreditorinstitusjon.id, countryCodes, cdmVersjon)
+    : _valgtLandkode
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
@@ -49,6 +66,33 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
     if (validation[namespace + '-kreditorinstitusjon-' + prop]) {
       dispatch(resetValidation(namespace + '-kreditorinstitusjon-' + prop))
     }
+  }
+
+  // Only id, navn and __landkode change; references and amounts are kept
+  const updateKreditorInstitusjon = (institusjon: IRInstitusjon | undefined, landkode: string | undefined) => {
+    const newKreditor: KreditorInstitusjon = {
+      ..._.omit(kreditorinstitusjon, '__landkode'),
+      id: institusjon?.institusjonsID,
+      navn: institusjon?.navn
+    }
+    if (institusjon) {
+      newKreditor.__landkode = landkode
+    }
+    dispatch(updateReplySed('refusjonskrav.kreditorinstitusjon', newKreditor))
+    dispatch(resetValidation(namespace + '-kreditorinstitusjon-id'))
+    dispatch(resetValidation(namespace + '-kreditorinstitusjon-navn'))
+  }
+
+  const setKreditorLandkode = (landkode: string) => {
+    _setValgtLandkode(landkode)
+    updateKreditorInstitusjon(undefined, undefined)
+  }
+
+  const setKreditorInstitusjon = (institusjon: IRInstitusjon | undefined) => {
+    if (!institusjon) {
+      _setValgtLandkode(kreditorLandkode)
+    }
+    updateKreditorInstitusjon(institusjon, kreditorLandkode)
   }
 
   const setDebitorProp = (prop: string, value: string | undefined) => {
@@ -90,26 +134,21 @@ const GlobaltKrav: React.FC<MainFormProps> = ({
           {t('label:kreditorinstitusjon')}
         </Heading>
 
-        <HGrid columns={2} gap="space-16" align="start">
-          <Input
-            error={validation[namespace + '-kreditorinstitusjon-id']?.feilmelding}
-            id='kreditorinstitusjon-id'
-            label={t('label:institusjonens-id')}
-            namespace={namespace}
-            onChanged={(value: string) => setKreditorProp('id', value.trim())}
-            required
-            value={sed.refusjonskrav?.kreditorinstitusjon?.id || ''}
-          />
-          <Input
-            error={validation[namespace + '-kreditorinstitusjon-navn']?.feilmelding}
-            id='kreditorinstitusjon-navn'
-            label={t('label:institusjonens-navn')}
-            namespace={namespace}
-            onChanged={(value: string) => setKreditorProp('navn', value.trim())}
-            required
-            value={sed.refusjonskrav?.kreditorinstitusjon?.navn || ''}
-          />
-        </HGrid>
+        <InstitutionSelector
+          namespace={namespace}
+          id='kreditorinstitusjon'
+          bucType={sed.sak?.sakType}
+          landkode={kreditorLandkode}
+          value={kreditorinstitusjon?.id || undefined}
+          valueNavn={kreditorinstitusjon?.navn}
+          error={
+            validation[namespace + '-kreditorinstitusjon-id']?.feilmelding ??
+            validation[namespace + '-kreditorinstitusjon-navn']?.feilmelding
+          }
+          required
+          onLandkodeChanged={setKreditorLandkode}
+          onInstitutionSelected={setKreditorInstitusjon}
+        />
 
         <HGrid columns={2} gap="space-16" align="start">
           <Input
