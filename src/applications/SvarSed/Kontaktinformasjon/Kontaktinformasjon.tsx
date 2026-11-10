@@ -367,31 +367,32 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
         paddingBlock="space-8"
         paddingInline="space-16"
       >
-        <HStack gap="space-16" align="start">
-          {inEditMode
-            ? (
-              <Input
-                label={t('label:epost')}
-                ariaLabel={t('label:epost')}
-                error={_v[_namespace + '-adresse']?.feilmelding}
-                namespace={_namespace}
-                id='adresse'
-                hideLabel={index >= 0}
-                onChanged={(value: string) => setEpostAdresse(value, index)}
-                required
-                value={_epost?.adresse}
-              />
+        <HStack gap="space-16" align="start" wrap={false}>
+          <Box style={{ flex: 1 }}>
+            {inEditMode
+              ? (
+                <Input
+                  label={t('label:epost')}
+                  ariaLabel={t('label:epost')}
+                  error={_v[_namespace + '-adresse']?.feilmelding}
+                  namespace={_namespace}
+                  id='adresse'
+                  hideLabel={index >= 0}
+                  onChanged={(value: string) => setEpostAdresse(value, index)}
+                  required
+                  value={_epost?.adresse}
+                />
+                )
+              : (
+                <FormText
+                  error={_v[_namespace + '-adresse']?.feilmelding}
+                  id={_namespace + '-adresse'}
+                >
+                  <BodyLong>{_epost?.adresse}</BodyLong>
+                </FormText>
               )
-            : (
-              <FormText
-                error={_v[_namespace + '-adresse']?.feilmelding}
-                id={_namespace + '-adresse'}
-              >
-                <BodyLong>{_epost?.adresse}</BodyLong>
-              </FormText>
-            )
-          }
-          <Spacer/>
+            }
+          </Box>
           <AddRemovePanel<Epost>
             item={epost}
             marginTop={index < 0}

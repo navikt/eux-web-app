@@ -3,15 +3,19 @@ import {Alert, BodyLong, Box, Button, Checkbox, HStack, Label, Loader, Radio, Ra
 import { searchAdresse } from 'actions/adresse'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
 import { State } from 'declarations/reducers'
-import { Adresse, AdresseType } from 'declarations/sed'
+import { Adresse, AdresseType, ReplySed } from 'declarations/sed'
+import { CountryCodeLists, CountryCodes, SimpleCountry } from 'declarations/types'
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
 export interface AdresseFromPDLSelector {
   adresser: Array<Adresse> | null | undefined
   gettingAdresser: boolean
+  replySed: ReplySed | null | undefined
+  countryCodes: CountryCodes | null | undefined
+  cdmVersjonApp: string | undefined
 }
 
 export interface AdresseFromPDLProps {
@@ -21,20 +25,36 @@ export interface AdresseFromPDLProps {
   onAdresserChanged: (selectedAdresser: Array<Adresse>) => void
   singleAdress?: boolean
   allowReSearch?: boolean
+  // Only addresses with a country in this list (for the SED's CDM version) are shown, e.g. 'euEftaLand'
+  countryCodeListName?: string
 }
 
 const mapState = (state: State): AdresseFromPDLSelector => ({
   adresser: state.adresse.adresser,
-  gettingAdresser: state.loading.gettingAdresser
+  gettingAdresser: state.loading.gettingAdresser,
+  replySed: state.svarsed.replySed,
+  countryCodes: state.app.countryCodes,
+  cdmVersjonApp: state.app.cdmVersjon
 })
 
 export type AdresseMap = {[k in AdresseType]?: Array<Adresse>}
 
 const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
-  personName, fnr, selectedAdresser, onAdresserChanged, singleAdress, allowReSearch
+  personName, fnr, selectedAdresser, onAdresserChanged, singleAdress, allowReSearch, countryCodeListName
 }: AdresseFromPDLProps) => {
   const { t } = useTranslation()
-  const { adresser, gettingAdresser } = useAppSelector(mapState)
+  const { adresser: pdlAdresser, gettingAdresser, replySed, countryCodes, cdmVersjonApp } = useAppSelector(mapState)
+  const cdmVersjon: string | undefined = replySed?.sak?.cdmVersjon ?? cdmVersjonApp
+
+  const adresser: Array<Adresse> | null | undefined = useMemo(() => {
+    if (!countryCodeListName || !pdlAdresser) {
+      return pdlAdresser
+    }
+    const allowedCountries: Array<SimpleCountry> | undefined = cdmVersjon
+      ? countryCodes?.[`v${cdmVersjon}` as keyof CountryCodes]?.[countryCodeListName as keyof CountryCodeLists]
+      : undefined
+    return pdlAdresser.filter((a: Adresse) => !!allowedCountries?.some((c: SimpleCountry) => c.landkode === a.landkode))
+  }, [pdlAdresser, countryCodeListName, countryCodes, cdmVersjon])
   const dispatch = useAppDispatch()
 
   const [_open, _setOpen] = useState<boolean>(false)

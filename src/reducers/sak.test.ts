@@ -51,17 +51,136 @@ describe('reducers/sak', () => {
 
   it('SAK_INSTITUSJONER_SUCCESS', () => {
     const payload = 'mockPayload'
+    const context = { buctype: 'UB_BUC_02', landkode: 'SWE', requestId: 'request-1', consumerId: 'selector-1' }
+    const state = sakReducer(initialSakState, {
+      type: types.SAK_INSTITUSJONER_REQUEST,
+      context
+    })
     expect(
-      sakReducer({
-        ...initialSakState
-      }, {
+      sakReducer(state, {
         type: types.SAK_INSTITUSJONER_SUCCESS,
-        payload
+        payload,
+        context
       })
     ).toEqual({
       ...initialSakState,
-      institusjoner: payload
+      institusjonRequests: {
+        'UB_BUC_02:SWE': {
+          requestId: 'request-1', consumerIds: ['selector-1'], loading: false, institusjoner: payload
+        }
+      }
     })
+  })
+
+  it('keeps institution results and loading separate for each country and BUC', () => {
+    const sweden = { buctype: 'UB_BUC_02', landkode: 'SWE', requestId: 'sweden', consumerId: 'selector-1' }
+    const denmark = { buctype: 'UB_BUC_02', landkode: 'DNK', requestId: 'denmark', consumerId: 'selector-2' }
+    const otherBuc = { buctype: 'UB_BUC_01', landkode: 'DNK', requestId: 'other-buc', consumerId: 'selector-3' }
+    let state = initialSakState
+    for (const context of [sweden, denmark, otherBuc]) {
+      state = sakReducer(state, { type: types.SAK_INSTITUSJONER_REQUEST, context })
+    }
+    state = sakReducer(state, {
+      type: types.SAK_INSTITUSJONER_SUCCESS, context: denmark, payload: [{ institusjonsID: 'DK:1' }]
+    })
+    expect(state.institusjonRequests['UB_BUC_02:SWE']?.loading).toBe(true)
+    expect(state.institusjonRequests['UB_BUC_01:DNK']?.loading).toBe(true)
+    state = sakReducer(state, {
+      type: types.SAK_INSTITUSJONER_SUCCESS, context: sweden, payload: [{ institusjonsID: 'SE:1' }]
+    })
+    expect(state.institusjonRequests['UB_BUC_02:DNK']?.institusjoner).toEqual([{ institusjonsID: 'DK:1' }])
+    expect(state.institusjonRequests['UB_BUC_02:SWE']?.institusjoner).toEqual([{ institusjonsID: 'SE:1' }])
+  })
+
+  it('ignores superseded institution responses when returning to the same country', () => {
+    const first = { buctype: 'UB_BUC_02', landkode: 'SWE', requestId: 'first', consumerId: 'selector-1' }
+    const latest = { ...first, requestId: 'latest' }
+    let state = sakReducer(initialSakState, { type: types.SAK_INSTITUSJONER_REQUEST, context: first })
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_REQUEST, context: latest })
+    expect(sakReducer(state, {
+      type: types.SAK_INSTITUSJONER_SUCCESS, context: first, payload: [{ institusjonsID: 'SE:old' }]
+    })).toBe(state)
+    state = sakReducer(state, {
+      type: types.SAK_INSTITUSJONER_SUCCESS, context: latest, payload: [{ institusjonsID: 'SE:new' }]
+    })
+    expect(sakReducer(state, { type: types.SAK_INSTITUSJONER_FAILURE, context: first })).toBe(state)
+    expect(state.institusjonRequests['UB_BUC_02:SWE']?.institusjoner).toEqual([{ institusjonsID: 'SE:new' }])
+  })
+
+  it('clears institution options when reloading and after failure', () => {
+    const context = { buctype: 'UB_BUC_02', landkode: 'SWE', requestId: 'first', consumerId: 'selector-1' }
+    let state = sakReducer(initialSakState, { type: types.SAK_INSTITUSJONER_REQUEST, context })
+    state = sakReducer(state, {
+      type: types.SAK_INSTITUSJONER_SUCCESS, context, payload: [{ institusjonsID: 'SE:1' }]
+    })
+    const retry = { ...context, requestId: 'retry' }
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_REQUEST, context: retry })
+    expect(state.institusjonRequests['UB_BUC_02:SWE']).toEqual({
+      requestId: 'retry', consumerIds: ['selector-1'], loading: true, institusjoner: undefined
+    })
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_FAILURE, context: retry })
+    expect(state.institusjonRequests['UB_BUC_02:SWE']).toEqual({
+      requestId: 'retry', consumerIds: ['selector-1'], loading: false, institusjoner: undefined
+    })
+  })
+
+  it('releases the previous institution country without disturbing the current country', () => {
+    const sweden = { buctype: 'UB_BUC_02', landkode: 'SWE', requestId: 'sweden', consumerId: 'selector-1' }
+    const denmark = { ...sweden, landkode: 'DNK', requestId: 'denmark' }
+    let state = sakReducer(initialSakState, { type: types.SAK_INSTITUSJONER_REQUEST, context: sweden })
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_RELEASE, context: sweden })
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_REQUEST, context: denmark })
+    expect(state.institusjonRequests['UB_BUC_02:SWE']).toBeUndefined()
+    expect(state.institusjonRequests['UB_BUC_02:DNK']?.loading).toBe(true)
+    for (const type of [types.SAK_INSTITUSJONER_SUCCESS, types.SAK_INSTITUSJONER_FAILURE]) {
+      expect(sakReducer(state, { type, context: sweden, payload: [] })).toBe(state)
+    }
+
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_RELEASE, context: denmark })
+    expect(state.institusjonRequests).toEqual({})
+  })
+
+  it('retains shared institution requests until the last selector leaves', () => {
+    const first = { buctype: 'UB_BUC_02', landkode: 'SWE', requestId: 'first', consumerId: 'selector-1' }
+    const second = { ...first, requestId: 'second', consumerId: 'selector-2' }
+    let state = sakReducer(initialSakState, { type: types.SAK_INSTITUSJONER_REQUEST, context: first })
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_REQUEST, context: second })
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_RELEASE, context: second })
+    expect(state.institusjonRequests['UB_BUC_02:SWE']?.consumerIds).toEqual(['selector-1'])
+    const payload = [{ institusjonsID: 'SE:1' }]
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_SUCCESS, context: second, payload })
+    expect(state.institusjonRequests['UB_BUC_02:SWE']?.institusjoner).toEqual(payload)
+    expect(sakReducer(state, { type: types.SAK_INSTITUSJONER_RELEASE, context: second })).toBe(state)
+
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_RELEASE, context: first })
+    expect(state.institusjonRequests).toEqual({})
+    expect(sakReducer(state, {
+      type: types.SAK_INSTITUSJONER_SUCCESS, context: second, payload
+    })).toBe(state)
+  })
+
+  it('keeps legacy institution requests independent of selector cleanup', () => {
+    const selector = { buctype: 'UB_BUC_02', landkode: 'SWE', requestId: 'selector', consumerId: 'selector-1' }
+    const legacy = { buctype: 'UB_BUC_02', landkode: 'SWE', requestId: 'legacy' }
+    let state = sakReducer(initialSakState, { type: types.SAK_INSTITUSJONER_REQUEST, context: selector })
+    expect(sakReducer(state, { type: types.SAK_INSTITUSJONER_REQUEST, context: legacy })).toBe(state)
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_RELEASE, context: selector })
+    const payload = [{ institusjonsID: 'SE:1' }]
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_SUCCESS, context: legacy, payload })
+    expect(state.institusjonList).toEqual(payload)
+    expect(state.institusjonRequests).toEqual({})
+  })
+
+  it('does not let selector requests overwrite the legacy institusjonList', () => {
+    const legacyList = [{ institusjonsID: 'DK:1' }]
+    const selector = { buctype: 'UB_BUC_02', landkode: 'SWE', requestId: 'selector', consumerId: 'selector-1' }
+    let state = sakReducer({ ...initialSakState, institusjonList: legacyList } as any, { type: types.SAK_INSTITUSJONER_REQUEST, context: selector })
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_SUCCESS, context: selector, payload: [{ institusjonsID: 'SE:1' }] })
+    expect(state.institusjonList).toBe(legacyList)
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_REQUEST, context: { ...selector, requestId: 'retry' } })
+    state = sakReducer(state, { type: types.SAK_INSTITUSJONER_FAILURE, context: { ...selector, requestId: 'retry' } })
+    expect(state.institusjonList).toBe(legacyList)
+    expect(sakReducer(state, { type: types.SAK_INSTITUSJONER_FAILURE, context: { buctype: 'UB_BUC_02', landkode: 'DNK' } }).institusjonList).toBe(legacyList)
   })
 
   it('SAK_SEND_SUCCESS', () => {

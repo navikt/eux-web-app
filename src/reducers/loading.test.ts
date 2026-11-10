@@ -84,6 +84,18 @@ describe('reducers/loading', () => {
     simulateFailure(types.SAK_INSTITUSJONER_FAILURE, 'gettingInstitusjoner')
   })
 
+  it('ignores SAK_INSTITUSJONER actions from InstitutionSelector', () => {
+    const context = { consumerId: 'selector-1' }
+    for (const [type, gettingInstitusjoner] of [
+      [types.SAK_INSTITUSJONER_REQUEST, false],
+      [types.SAK_INSTITUSJONER_SUCCESS, true],
+      [types.SAK_INSTITUSJONER_FAILURE, true]
+    ] as Array<[string, boolean]>) {
+      const state = { ...initialLoadingState, gettingInstitusjoner }
+      expect(loadingReducer(state, { type, context })).toBe(state)
+    }
+  })
+
   it('PERSON_SEARCH_REQUEST', () => {
     simulateRequest(types.PERSON_SEARCH_REQUEST, 'searchingPerson')
   })

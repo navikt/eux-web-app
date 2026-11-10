@@ -230,7 +230,11 @@ const loadingReducer = (
         gettingFagsaker: false
       }
 
+    // Requests from InstitutionSelector (with consumerId) track their own loading in state.sak.institusjonRequests
     case types.SAK_INSTITUSJONER_REQUEST:
+      if (action.context?.consumerId) {
+        return state
+      }
       return {
         ...state,
         gettingInstitusjoner: true
@@ -238,6 +242,9 @@ const loadingReducer = (
 
     case types.SAK_INSTITUSJONER_SUCCESS:
     case types.SAK_INSTITUSJONER_FAILURE:
+      if (action.context?.consumerId) {
+        return state
+      }
       return {
         ...state,
         gettingInstitusjoner: false

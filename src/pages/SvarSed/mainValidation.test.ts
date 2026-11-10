@@ -1,6 +1,12 @@
 import { ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { CountryCodes, Validation } from 'declarations/types'
 import { validateSEDEdit } from 'pages/SvarSed/mainValidation'
+import store from 'store'
+
+jest.mock('store', () => ({
+  __esModule: true,
+  default: { getState: jest.fn() }
+}))
 
 jest.mock('i18n', () => ({
   __esModule: true,
@@ -22,6 +28,33 @@ const validate = (replySed: ReplySed): Validation => {
 }
 
 const tooLong = 'a'.repeat(501)
+
+describe('pages/SvarSed/mainValidation - U007', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
+  it.each<[string, boolean]>([
+    ['4.3', false],
+    ['4.4', true]
+  ])('uses app country codes to resolve institution country for CDM %s', (cdmVersjon, hasCountryError) => {
+    const replySed = getReplySed('U007', {}, {
+      sak: { cdmVersjon },
+      kompetentLand: { institusjon: { id: 'SE:1234', navn: 'Svensk institusjon' } }
+    })
+    const countryCodes = {
+      'v4.3': { euEftaLand: [{ landkode: 'SWE', landnavn: 'Sverige', euLandkode: 'SE' }] },
+      'v4.4': { euEftaLand: [] }
+    } as unknown as CountryCodes
+    ;(store.getState as jest.Mock).mockReturnValue({ app: { countryCodes, cdmVersjon: '4.4' } })
+    const validation: Validation = {}
+    jest.spyOn(console, 'log').mockImplementation(() => undefined)
+
+    validateSEDEdit(validation, '', { replySed })
+
+    expect(!!validation['svarsed-bruker-institusjondagpenger-institusjon-landkode']).toBe(hasCountryError)
+  })
+})
 
 describe('pages/SvarSed/mainValidation - H001/H002', () => {
   afterEach(() => {
