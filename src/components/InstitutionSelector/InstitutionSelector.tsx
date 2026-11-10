@@ -120,6 +120,9 @@ const InstitutionSelector: React.FC<InstitutionSelectorProps> = ({
   return (
     <HGrid columns={2} gap="space-16" align="start">
       <CountryDropdown
+        // CountrySelect passes `undefined` to react-select when empty, which keeps the previous
+        // selection; remount when the country is cleared so the dropdown is actually reset
+        key={landkode ? 'landkode-selected' : 'landkode-empty'}
         closeMenuOnSelect
         data-testid={landkodeId}
         id={landkodeId}
