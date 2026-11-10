@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "14.16.0-TEN-1794-U007",
+  "version": "14.16.1-TEN-1887-INSTITUTION-SELECTOR",
   "private": true,
   "type": "module",
   "scripts": {
@@ -105,5 +105,5 @@
   ],
   "readme": "ERROR: No README data found!",
   "disabled-homepage": "http://eesi2.no/melosys",
-  "_id": "neessi@14.16.0-TEN-1794-U007"
+  "_id": "neessi@14.16.1-TEN-1887-INSTITUTION-SELECTOR"
 }
