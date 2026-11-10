@@ -32,6 +32,8 @@ export interface InstitutionSelectorProps {
   landkodeError?: string
   error?: string
   required?: boolean
+  // Fixed-country mode: only the institution select is rendered, `landkode` is used as given
+  hideCountrySelector?: boolean
   onLandkodeChanged: (landkode: string) => void
   onInstitutionSelected: (institusjon: Institusjon | undefined) => void
 }
@@ -49,6 +51,7 @@ const InstitutionSelector: React.FC<InstitutionSelectorProps> = ({
   landkodeError,
   error,
   required,
+  hideCountrySelector = false,
   onLandkodeChanged,
   onInstitutionSelected
 }: InstitutionSelectorProps): JSX.Element => {
@@ -85,6 +88,35 @@ const InstitutionSelector: React.FC<InstitutionSelectorProps> = ({
     }
   }
 
+  const institusjonSelect = (
+    <VStack gap="space-8">
+      <Select
+        data-testid={institusjonId}
+        id={institusjonId}
+        disabled={!bucType || !landkode || !request?.institusjoner || gettingInstitusjoner}
+        error={error}
+        label={(label ?? t('label:institusjon')) + (required ? ' *' : '')}
+        onChange={onChange}
+        value={value ?? ''}
+      >
+        <option value=''>{t('label:velg')}</option>
+        {valueMissingFromList && (
+          <option value={value} disabled>{valueNavn ?? value}</option>
+        )}
+        {institusjoner.map((i: Institusjon) => (
+          <option value={i.institusjonsID} key={i.institusjonsID}>
+            {i.navn}
+          </option>
+        ))}
+      </Select>
+      {gettingInstitusjoner && <Loader size="small" />}
+    </VStack>
+  )
+
+  if (hideCountrySelector) {
+    return institusjonSelect
+  }
+
   return (
     <HGrid columns={2} gap="space-16" align="start">
       <CountryDropdown
@@ -99,28 +131,7 @@ const InstitutionSelector: React.FC<InstitutionSelectorProps> = ({
         flagWave
         values={landkode ?? null}
       />
-      <VStack gap="space-8">
-        <Select
-          data-testid={institusjonId}
-          id={institusjonId}
-          disabled={!bucType || !landkode || !request?.institusjoner || gettingInstitusjoner}
-          error={error}
-          label={(label ?? t('label:institusjon')) + (required ? ' *' : '')}
-          onChange={onChange}
-          value={value ?? ''}
-        >
-          <option value=''>{t('label:velg')}</option>
-          {valueMissingFromList && (
-            <option value={value} disabled>{valueNavn ?? value}</option>
-          )}
-          {institusjoner.map((i: Institusjon) => (
-            <option value={i.institusjonsID} key={i.institusjonsID}>
-              {i.navn}
-            </option>
-          ))}
-        </Select>
-        {gettingInstitusjoner && <Loader size="small" />}
-      </VStack>
+      {institusjonSelect}
     </HGrid>
   )
 }

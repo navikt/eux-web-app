@@ -19,7 +19,7 @@ export const validateVideresend = (
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: replySed.videresend?.leggTilInstitusjonId,
-    id: namespace + '-leggTilInstitusjon',
+    id: namespace + '-leggTilInstitusjon-id',
     message: 'validation:noInstitusjon',
     personName
   }))
