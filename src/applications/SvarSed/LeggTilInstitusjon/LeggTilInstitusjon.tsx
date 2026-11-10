@@ -1,31 +1,30 @@
-import { Box, Heading, Loader, RadioGroup, Select, Textarea, VStack } from '@navikt/ds-react'
-import { Country } from '@navikt/land-verktoy'
-import { getInstitusjoner } from 'actions/sak'
+import { Box, Heading, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps } from 'applications/SvarSed/MainForm'
-import CountryDropdown from 'components/CountryDropdown/CountryDropdown'
+import InstitutionSelector from 'components/InstitutionSelector/InstitutionSelector'
 import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { State } from 'declarations/reducers'
-import { Institusjon } from 'declarations/types'
-import { X005Sed } from 'declarations/x005'
+import { CountryCodes, Institusjon as IRInstitusjon } from 'declarations/types'
+import { LeggTilInstitusjon as LeggTilInstitusjonType, X005Sed } from 'declarations/x005'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { useEffect, useState, JSX } from 'react'
+import React, { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import { getLandkodeFromInstitusjonsId } from 'utils/institusjon'
 import performValidation from 'utils/performValidation'
 import { validateLeggTilInstitusjon, ValidationLeggTilInstitusjonProps } from './validation'
 
 interface LeggTilInstitusjonSelector {
   validation: State['validation']['status']
-  institusjonList: State['sak']['institusjonList']
-  gettingInstitusjoner: State['loading']['gettingInstitusjoner']
+  countryCodes: CountryCodes | null | undefined
+  cdmVersjonApp: string | undefined
 }
 
 const mapState = (state: State): LeggTilInstitusjonSelector => ({
   validation: state.validation.status,
-  institusjonList: state.sak.institusjonList,
-  gettingInstitusjoner: state.loading.gettingInstitusjoner
+  countryCodes: state.app.countryCodes,
+  cdmVersjonApp: state.app.cdmVersjon
 })
 
 const LeggTilInstitusjon: React.FC<MainFormProps> = ({
@@ -36,19 +35,16 @@ const LeggTilInstitusjon: React.FC<MainFormProps> = ({
   replySed,
   updateReplySed
 }: MainFormProps): JSX.Element => {
-  const { validation, institusjonList, gettingInstitusjoner } = useAppSelector(mapState)
+  const { validation, countryCodes, cdmVersjonApp } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-leggtilinstitusjon`
   const sed = replySed as X005Sed
   const bucType = sed.sak?.sakType
-  const [landkode, setLandkode] = useState<string | undefined>(sed.leggTilInstitusjon?.__landkode)
-
-  useEffect(() => {
-    if (bucType && landkode && _.isEmpty(institusjonList)) {
-      dispatch(getInstitusjoner(bucType, landkode))
-    }
-  }, [])
+  const leggTilInstitusjon: LeggTilInstitusjonType | undefined = sed.leggTilInstitusjon
+  const cdmVersjon: string | undefined = sed.sak?.cdmVersjon ?? cdmVersjonApp
+  const landkode: string | undefined = leggTilInstitusjon?.__landkode ??
+    getLandkodeFromInstitusjonsId(leggTilInstitusjon?.institusjonId, countryCodes, cdmVersjon)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -61,25 +57,15 @@ const LeggTilInstitusjon: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedValidation))
   })
 
-  const onLandkodeChange = (country: Country): void => {
-    setLandkode(country.value)
-    dispatch(updateReplySed('leggTilInstitusjon.__landkode', country.value))
-    if (bucType && country.value) {
-      dispatch(getInstitusjoner(bucType, country.value))
-    }
-    dispatch(updateReplySed('leggTilInstitusjon.institusjonId', ''))
-    dispatch(updateReplySed('leggTilInstitusjon.institusjonNavn', ''))
-  }
-
-  const onInstitusjonChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    const selectedIndex = event.target.selectedIndex
-    const navn = event.target.options[selectedIndex].text
-    const id = event.target.value
-    dispatch(updateReplySed('leggTilInstitusjon.institusjonId', id))
-    dispatch(updateReplySed('leggTilInstitusjon.institusjonNavn', id ? navn : ''))
-    if (validation[namespace + '-institusjon']) {
-      dispatch(resetValidation(namespace + '-institusjon'))
-    }
+  // Only institusjonId, institusjonNavn and __landkode change; grunnType/grunnAnnet are kept
+  const updateInstitusjon = (institusjon: IRInstitusjon | undefined, newLandkode: string | undefined) => {
+    dispatch(updateReplySed('leggTilInstitusjon', {
+      ...leggTilInstitusjon,
+      institusjonId: institusjon?.institusjonsID ?? '',
+      institusjonNavn: institusjon?.navn ?? '',
+      __landkode: newLandkode
+    }))
+    dispatch(resetValidation(namespace + '-institusjon'))
   }
 
   const setGrunnType = (grunnType: string) => {
@@ -106,35 +92,18 @@ const LeggTilInstitusjon: React.FC<MainFormProps> = ({
           {label}
         </Heading>
 
-        <CountryDropdown
-          closeMenuOnSelect
-          data-testid={namespace + '-landkode'}
-          id={namespace + '-landkode'}
-          countryCodeListName="euEftaLand"
-          label={t('label:land')}
-          onOptionSelected={onLandkodeChange}
-          flagWave
-          values={landkode ?? null}
-          menuPortalTarget={null}
+        <InstitutionSelector
+          namespace={namespace}
+          id='institusjon'
+          bucType={bucType}
+          landkode={landkode}
+          value={leggTilInstitusjon?.institusjonId || undefined}
+          valueNavn={leggTilInstitusjon?.institusjonNavn}
+          error={validation[namespace + '-institusjon-id']?.feilmelding}
+          required
+          onLandkodeChanged={(newLandkode: string) => updateInstitusjon(undefined, newLandkode)}
+          onInstitutionSelected={(institusjon: IRInstitusjon | undefined) => updateInstitusjon(institusjon, landkode)}
         />
-
-        <Select
-          data-testid={namespace + '-institusjon'}
-          disabled={!!_.isEmpty(landkode) || gettingInstitusjoner}
-          error={validation[namespace + '-institusjon']?.feilmelding}
-          id={namespace + '-institusjon'}
-          label={t('label:institusjon')}
-          onChange={onInstitusjonChange}
-          value={sed.leggTilInstitusjon?.institusjonId ?? ''}
-        >
-          <option value=''>{t('label:velg')}</option>
-          {institusjonList && _.orderBy(institusjonList, 'navn').map((i: Institusjon) => (
-            <option value={i.institusjonsID} key={i.institusjonsID}>
-              {i.navn}
-            </option>
-          ))}
-        </Select>
-        {gettingInstitusjoner && <Loader />}
 
         <RadioGroup
           value={sed.leggTilInstitusjon?.grunnType ?? ''}

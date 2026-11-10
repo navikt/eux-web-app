@@ -19,7 +19,7 @@ export const validateLeggTilInstitusjon = (
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: replySed.leggTilInstitusjon?.institusjonId,
-    id: namespace + '-institusjon',
+    id: namespace + '-institusjon-id',
     message: 'validation:noInstitusjon',
     personName
   }))
