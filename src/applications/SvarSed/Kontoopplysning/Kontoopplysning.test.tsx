@@ -81,4 +81,13 @@ describe('applications/SvarSed/Kontoopplysning/Kontoopplysning', () => {
     fireEvent.click(screen.getByTestId(`${namespace}-institusjon-landkode`))
     expect(updateReplySed).toHaveBeenLastCalledWith('utbetalingTilInstitusjon', { ...uti, id: '', navn: '' })
   })
+
+  it('emptying kontoopplysninger also resets the selected country', () => {
+    render(<Kontoopplysning {...makeProps(uti)} />)
+    fireEvent.click(screen.getByTestId(`${namespace}-institusjon-landkode`))
+    expect(screen.getByTestId(`${namespace}-institusjon-landkode`)).toHaveTextContent('DNK')
+
+    fireEvent.click(screen.getByText('el:button-remove-account-info'))
+    expect(screen.getByTestId(`${namespace}-institusjon-landkode`)).toHaveTextContent('no-country')
+  })
 })

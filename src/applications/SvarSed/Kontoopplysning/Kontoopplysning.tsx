@@ -218,6 +218,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
       kontoOrdinaer: undefined
     }
     setKontoType(undefined)
+    _setValgtLandkode(undefined)
     dispatch(updateReplySed('utbetalingTilInstitusjon', uti));
   }
 
