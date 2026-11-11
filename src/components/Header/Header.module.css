@@ -21,6 +21,10 @@
 }
 
 .internalHeader{
+  /* lets seasonal header decorations sit behind the header content */
+  position: relative;
+  isolation: isolate;
+
   > button > div {
     width: max-content;
   }

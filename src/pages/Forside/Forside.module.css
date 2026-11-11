@@ -1,18 +1,79 @@
+/*
+ * Seasonal themes (components/SeasonalTheme) style the frontpage through the --seasonal-* variables below.
+ * The fallbacks are the normal look, so without an active theme nothing changes.
+ */
+
+.hero {
+  position: relative;
+  background: var(--seasonal-hero-background, transparent);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+}
+
+.seasonalThemeToggle {
+  position: absolute;
+  top: 3.25rem;
+  right: 1rem;
+  z-index: 2;
+}
+
+.logoWrapper {
+  position: relative;
+  display: flex;
+  isolation: isolate;
+}
+
 .whiteContainer {
   background-color: var(--ax-bg-default);
 }
 
 .square {
+  position: relative;
   width: 150px;
   height: 150px;
   margin: 0 1rem;
-  background: var(--ax-bg-default);
+  background: var(--seasonal-tile-background, var(--ax-bg-default));
   border-radius: 5px;
-  border: 2px solid var(--ax-border-accent);
+  border: 2px solid var(--seasonal-tile-border-color, var(--ax-border-accent));
+  box-shadow: var(--seasonal-tile-shadow, none);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+}
+
+.square::after {
+  content: var(--seasonal-tile-ornament, none);
+  position: absolute;
+  top: var(--seasonal-tile-ornament-top, -13px);
+  left: 50%;
+  line-height: 0;
+  transform: translateX(-50%);
+  transform-origin: 50% 50%;
+  transition: transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+  pointer-events: none;
+}
+
+.styledLink:hover .square,
+.styledLink:focus-visible .square {
+  transform: translateY(var(--seasonal-tile-hover-lift, 0));
+  box-shadow: var(--seasonal-tile-hover-shadow, var(--seasonal-tile-shadow, none));
+}
+
+.styledLink:hover .square::after,
+.styledLink:focus-visible .square::after {
+  transform: translateX(-50%) var(--seasonal-tile-ornament-hover-transform, );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .square,
+  .square::after {
+    transition: none;
+  }
 }
 
 .bindersIcon {
@@ -49,8 +110,15 @@
 
 .logoDiv {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 3rem;
   margin-bottom: -3rem;
   justify-content: center;
+}
+
+/* tuck the greeting into the empty space at the bottom of the logo */
+.greeting {
+  margin-top: -1.5rem;
 }
 

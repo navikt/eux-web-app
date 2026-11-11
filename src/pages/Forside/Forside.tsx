@@ -19,6 +19,8 @@ import {Sak, Saks, Saksbehandler} from "../../declarations/types";
 import NEESSILogo from 'assets/logos/nEESSI';
 import BrannLogo from "assets/logos/brann.png"
 import styles from './Forside.module.css'
+import { useSeasonalTheme } from 'components/SeasonalTheme/useSeasonalTheme'
+import SeasonalThemeToggle from 'components/SeasonalTheme/SeasonalThemeToggle'
 
 interface ForsideSelector {
   featureToggles: FeatureToggles | null | undefined
@@ -50,6 +52,10 @@ const Forside: React.FC = (): JSX.Element => {
   const [_query, _setQuery] = useState<string | null>(params.get('q'))
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
   const currentSak: Sak | undefined = useAppSelector(state => state.svarsed.currentSak)
+  const { theme: seasonalTheme, activeTheme, enabled: seasonalThemeEnabled, setEnabled: setSeasonalThemeEnabled } = useSeasonalTheme()
+  const HeroDecorations = activeTheme?.HeroDecorations
+  const LogoDecoration = activeTheme?.LogoDecoration
+  const Greeting = activeTheme?.Greeting
 
   const getLogo = (saksbehandler: Saksbehandler | undefined) => {
     if (saksbehandler && saksbehandler.brukernavn && (saksbehandler.brukernavn === "Z992666" || saksbehandler.brukernavn === "A142467")) {
@@ -97,35 +103,50 @@ const Forside: React.FC = (): JSX.Element => {
   }, [saks])
 
   return (
-    <TopContainer title={t('app:page-title-forside')}>
-      <VStack gap="space-80" paddingBlock={"space-0 space-48"}>
-        <div className={styles.logoDiv}>
-          {getLogo(saksbehandler)}
-        </div>
-        <HStack justify="center">
-          <Box minWidth="800px">
-            <VStack gap="space-0">
-              <Heading size='medium'>
-                {t('app:page-title-svarsed-search')}
-              </Heading>
-              <SEDQuery
-                frontpage={true}
-                parentNamespace="sedsearch"
-                initialQuery=""
-                onQueryChanged={(queryType: string) => {
-                  dispatch(appReset())
-                  _setQueryType(queryType)
-                }}
-                onQuerySubmit={(q: string) => {
-                  _setQuery(q)
-                }}
-                querying={queryingSaks}
-                error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
-              />
-            </VStack>
-          </Box>
-        </HStack>
-      </VStack>
+    <TopContainer title={t('app:page-title-forside')} className={activeTheme?.className}>
+      <div className={styles.hero}>
+        {HeroDecorations && <HeroDecorations/>}
+        {seasonalTheme && (
+          <SeasonalThemeToggle
+            className={styles.seasonalThemeToggle}
+            theme={seasonalTheme}
+            enabled={seasonalThemeEnabled}
+            setEnabled={setSeasonalThemeEnabled}
+          />
+        )}
+        <VStack gap="space-80" paddingBlock={"space-0 space-48"} className={styles.heroContent}>
+          <div className={styles.logoDiv}>
+            <div className={styles.logoWrapper}>
+              {LogoDecoration && <LogoDecoration/>}
+              {getLogo(saksbehandler)}
+            </div>
+            {Greeting && <div className={styles.greeting}><Greeting/></div>}
+          </div>
+          <HStack justify="center">
+            <Box minWidth="800px">
+              <VStack gap="space-0">
+                <Heading size='medium'>
+                  {t('app:page-title-svarsed-search')}
+                </Heading>
+                <SEDQuery
+                  frontpage={true}
+                  parentNamespace="sedsearch"
+                  initialQuery=""
+                  onQueryChanged={(queryType: string) => {
+                    dispatch(appReset())
+                    _setQueryType(queryType)
+                  }}
+                  onQuerySubmit={(q: string) => {
+                    _setQuery(q)
+                  }}
+                  querying={queryingSaks}
+                  error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
+                />
+              </VStack>
+            </Box>
+          </HStack>
+        </VStack>
+      </div>
       <Box className={styles.whiteContainer} padding="space-48">
         <HStack justify="center">
           <Box className={styles.content}>

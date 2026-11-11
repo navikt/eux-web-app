@@ -10,6 +10,7 @@ import {NavLink} from "react-router-dom";
 import {FeatureToggles} from "../../declarations/app";
 import styles from './Header.module.css';
 import {IS_PRODUCTION} from "../../constants/environment";
+import { useSeasonalTheme } from 'components/SeasonalTheme/useSeasonalTheme'
 
 export interface HeaderSelector {
   saksbehandler: Saksbehandler | undefined
@@ -40,6 +41,9 @@ const Header: React.FC<HeaderProps> = ({
   const { saksbehandler, enheter, selectedEnhet, featureToggles }: HeaderSelector = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const { activeTheme } = useSeasonalTheme()
+  const SeasonalHeaderDecorations = activeTheme?.HeaderDecorations
+  const SeasonalTitleDecoration = activeTheme?.HeaderTitleDecoration
 
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode')
@@ -68,8 +72,10 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <>
       <InternalHeader className={styles.internalHeader}>
+        {SeasonalHeaderDecorations && <SeasonalHeaderDecorations/>}
         <InternalHeader.Title as={NavLink} to="/" onClick={resetApp}>
           nEESSI
+          {SeasonalTitleDecoration && <SeasonalTitleDecoration/>}
         </InternalHeader.Title>
         <HStack align="center" paddingInline="space-16 space-0" width="100%">
           <Heading size='small'>

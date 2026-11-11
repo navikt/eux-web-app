@@ -1,0 +1,442 @@
+/*
+ * Christmas theme. `.theme` only sets the --seasonal-* variables consumed by the frontpage
+ * (see Forside.module.css); everything else styles the theme's own decoration components.
+ */
+
+.theme {
+  --xmas-red: #c62832;
+  --xmas-red-dark: #9e1c25;
+  --xmas-gold: #e2a521;
+  --xmas-green: #1f6b45;
+
+  /* light mode: warm linen and candlelight – works with the red/gold/green and keeps text contrast */
+  --seasonal-hero-background: linear-gradient(180deg, #f7efe2 0%, #faf5ec 55%, #fdfaf5 100%);
+  --seasonal-tile-border-color: rgba(198, 40, 50, 0.75);
+  --seasonal-tile-shadow: 0 1px 3px rgba(60, 20, 20, 0.08);
+  --seasonal-tile-hover-lift: -4px;
+  --seasonal-tile-hover-shadow: 0 12px 24px -10px rgba(158, 28, 37, 0.45);
+  /* satin bow: shaded loops with inner folds and a sheen, notched tails and a glossy knot */
+  --seasonal-tile-ornament: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='32' viewBox='0 0 48 32'%3E%3Cdefs%3E%3ClinearGradient id='l' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23e2505b'/%3E%3Cstop offset='.55' stop-color='%23c22636'/%3E%3Cstop offset='1' stop-color='%23951a26'/%3E%3C/linearGradient%3E%3ClinearGradient id='t' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%239c1a27'/%3E%3Cstop offset='.4' stop-color='%23c62a39'/%3E%3Cstop offset='1' stop-color='%23a51f2c'/%3E%3C/linearGradient%3E%3ClinearGradient id='k' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23e65a64'/%3E%3Cstop offset='1' stop-color='%23a41e2b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M22.5 15.5 C20.5 19.5 17 24 13.5 29 L17 28 L19 31 C21 26 23 21 24.5 16.5 Z' fill='url(%23t)'/%3E%3Cpath d='M25.5 15.5 C27.5 19.5 31 24 34.5 29 L31 28 L29 31 C27 26 25 21 23.5 16.5 Z' fill='url(%23t)'/%3E%3Cpath d='M24 14 C20 6 12 1.5 6.5 3.5 C2 5.2 2.5 11.5 7 14 C11.5 16.5 18.5 16 24 14 Z' fill='url(%23l)'/%3E%3Cpath d='M24 14 C28 6 36 1.5 41.5 3.5 C46 5.2 45.5 11.5 41 14 C36.5 16.5 29.5 16 24 14 Z' fill='url(%23l)'/%3E%3Cpath d='M24 14 C19.5 9.5 13 6.5 9 7.5 C11 11 17 13.5 24 14 Z' fill='%235e0c15' opacity='.3'/%3E%3Cpath d='M24 14 C28.5 9.5 35 6.5 39 7.5 C37 11 31 13.5 24 14 Z' fill='%235e0c15' opacity='.3'/%3E%3Cpath d='M8.5 5 C12.5 4 17 6.5 20.5 10' stroke='%23fff' stroke-opacity='.45' stroke-width='1.1' fill='none' stroke-linecap='round'/%3E%3Cpath d='M39.5 5 C35.5 4 31 6.5 27.5 10' stroke='%23fff' stroke-opacity='.45' stroke-width='1.1' fill='none' stroke-linecap='round'/%3E%3Crect x='20.5' y='10.5' width='7' height='7' rx='2.6' fill='url(%23k)'/%3E%3Cpath d='M22.3 12.4 C23.4 11.7 24.8 11.7 25.8 12.3' stroke='%23fff' stroke-opacity='.5' stroke-width='.9' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  --seasonal-tile-ornament-top: -14px;
+  --seasonal-tile-ornament-hover-transform: rotate(-6deg) scale(1.08);
+
+  --xmas-flake: #a9bdd4;
+  --xmas-flake-shadow: rgba(60, 90, 130, 0.25);
+  --xmas-wire: #3d5a46;
+  --xmas-bulb: #ffd98a;
+  --xmas-bulb-edge: #e3a33a;
+  --xmas-bulb-glow: #ffa726;
+  --xmas-drift-edge: rgba(176, 150, 112, 0.35);
+  --xmas-greeting: var(--xmas-red-dark);
+}
+
+:global(.dark) .theme {
+  --seasonal-hero-background: linear-gradient(180deg, #071326 0%, #0d2140 55%, #132c4f 100%);
+  --seasonal-tile-border-color: rgba(236, 104, 112, 0.8);
+  --seasonal-tile-hover-shadow: 0 12px 28px -10px rgba(236, 104, 112, 0.4);
+  --xmas-gold: #ffd36b;
+  --xmas-flake: #ffffff;
+  --xmas-flake-shadow: rgba(190, 220, 255, 0.6);
+  --xmas-wire: #5f7d68;
+  --xmas-bulb: #ffe7b0;
+  --xmas-bulb-edge: #f5c46a;
+  --xmas-bulb-glow: #ffb347;
+  --xmas-drift-edge: rgba(220, 235, 255, 0.35);
+  --xmas-greeting: #ff9ea4;
+}
+
+.hero {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ---------- Snow ---------- */
+
+.snow {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+}
+
+.flake {
+  position: absolute;
+  top: -10px;
+  left: var(--x);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--xmas-flake) 0%, var(--xmas-flake) 45%, transparent 72%);
+  filter: drop-shadow(0 0 1.5px var(--xmas-flake-shadow));
+  opacity: var(--opacity);
+  will-change: translate, transform;
+  animation:
+    snowfall var(--fall-duration) linear var(--delay) infinite,
+    sway var(--sway-duration) ease-in-out var(--delay) infinite alternate;
+}
+
+@keyframes snowfall {
+  from { translate: 0 0; }
+  to { translate: 0 calc(100cqh + 20px); }
+}
+
+@keyframes sway {
+  from { transform: translateX(calc(var(--drift) * -1)); }
+  to { transform: translateX(var(--drift)); }
+}
+
+/* ---------- Garland of lights ---------- */
+
+.garland {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+}
+
+.wire {
+  position: absolute;
+  inset: 0 0 auto 0;
+  width: 100%;
+  height: 40px;
+  overflow: visible;
+}
+
+.wire path {
+  fill: none;
+  stroke: var(--xmas-wire);
+  stroke-width: 1.5;
+}
+
+.bulb {
+  position: absolute;
+  width: 9px;
+  height: 14px;
+  margin-left: -4.5px;
+  margin-top: 3px;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  background: radial-gradient(circle at 40% 35%, #fffaf0 0%, var(--xmas-bulb) 45%, var(--xmas-bulb-edge) 100%);
+  animation: twinkle var(--twinkle-duration) ease-in-out var(--delay) infinite;
+}
+
+/* socket */
+.bulb::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 1px;
+  background: var(--xmas-wire);
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 2px 12px 3px color-mix(in srgb, var(--xmas-bulb-glow) 55%, transparent);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 1px 6px 1px color-mix(in srgb, var(--xmas-bulb-glow) 30%, transparent);
+  }
+}
+
+/* ---------- Snowdrift at the bottom of the hero ---------- */
+
+.drift {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 40px;
+}
+
+.driftBack {
+  fill: var(--ax-bg-default);
+  opacity: 0.55;
+}
+
+.driftFront {
+  fill: var(--ax-bg-default);
+}
+
+.driftEdge {
+  fill: none;
+  stroke: var(--xmas-drift-edge);
+  stroke-width: 1.5;
+}
+
+/* ---------- Logo ---------- */
+
+.logoDecoration {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.glow {
+  position: absolute;
+  inset: 0 -30%;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--xmas-gold) 32%, transparent) 0%, transparent 62%);
+  animation: breathe 6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.65; transform: scale(0.96); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+.sparkle {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  translate: -50% -50%;
+  fill: var(--xmas-gold);
+  animation: sparkle 4.5s ease-in-out var(--delay) infinite;
+}
+
+@keyframes sparkle {
+  0%, 60%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+  75% { transform: scale(1) rotate(45deg); opacity: 1; }
+  90% { transform: scale(0.4) rotate(90deg); opacity: 0.5; }
+}
+
+/* ---------- Greeting ---------- */
+
+.greeting {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin: 0;
+  color: var(--xmas-greeting);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  /* compensate for the trailing letter-spacing so the text is optically centered */
+  padding-left: 0.32em;
+  animation: fadeUp 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s both;
+}
+
+.greeting::before,
+.greeting::after {
+  content: '';
+  width: 2.5rem;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--xmas-gold));
+}
+
+.greeting::after {
+  background: linear-gradient(to left, transparent, var(--xmas-gold));
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Page header (all pages) ---------- */
+
+.header,
+.titleStar {
+  --xmas-gold: #d4961a;
+  --xmas-flake: #a9bdd4;
+  --xmas-flake-shadow: rgba(60, 90, 130, 0.25);
+  --xmas-sleigh: rgba(43, 58, 85, 0.6);
+  --xmas-santa-red: #c62832;
+}
+
+:global(.dark) .header,
+:global(.dark) .titleStar {
+  --xmas-gold: #ffd36b;
+  --xmas-flake: #ffffff;
+  --xmas-flake-shadow: rgba(190, 220, 255, 0.5);
+  --xmas-sleigh: rgba(233, 214, 160, 0.75);
+  --xmas-santa-red: #e0444e;
+}
+
+.header {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Santa's sleigh glides across the header now and then, trailing a little stardust */
+.sleighTrack {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+}
+
+.sleigh {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 104px;
+  height: 28px;
+  animation: sleighFlight 64s cubic-bezier(0.45, 0.05, 0.55, 0.95) 4s infinite both;
+}
+
+.sleighSvg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  fill: var(--xmas-sleigh);
+  overflow: visible;
+  animation: sleighBob 1.8s ease-in-out infinite alternate;
+}
+
+.sleighLine,
+.sleighHarness {
+  fill: none;
+  stroke: var(--xmas-sleigh);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sleighHarness {
+  stroke-width: 0.7;
+  opacity: 0.7;
+}
+
+.santaWhite {
+  fill: #ffffff;
+  stroke: var(--xmas-sleigh);
+  stroke-width: 0.4;
+}
+
+.santaHat {
+  fill: var(--xmas-santa-red);
+}
+
+.santaBrim {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.reindeerFarLegs,
+.reindeerAntlers {
+  fill: none;
+  stroke: var(--xmas-sleigh);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+
+.reindeerFarLegs {
+  opacity: 0.6;
+}
+
+.reindeerAntlers {
+  stroke-width: 0.9;
+}
+
+.reindeerCollar {
+  fill: none;
+  stroke: var(--xmas-gold);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+}
+
+.reindeerBell {
+  fill: var(--xmas-gold);
+}
+
+.reindeerNose {
+  fill: #e0303c;
+  animation: noseGlow 1.6s ease-in-out infinite alternate;
+}
+
+/* trail of gold dust fading out behind the sleigh */
+.stardust {
+  position: absolute;
+  top: 55%;
+  left: 92%;
+  width: 90px;
+  height: 6px;
+  background: radial-gradient(circle, var(--xmas-gold) 0 0.8px, transparent 1.3px) 0 0 / 7px 6px;
+  -webkit-mask-image: linear-gradient(to left, transparent, #000);
+  mask-image: linear-gradient(to left, transparent, #000);
+  opacity: 0.8;
+  animation: stardustShimmer 0.8s linear infinite;
+}
+
+@keyframes sleighFlight {
+  0% { transform: translate(100cqw, 8px); }
+  55% { transform: translate(-220px, -4px); }
+  100% { transform: translate(-220px, -4px); }
+}
+
+@keyframes sleighBob {
+  from { transform: translateY(-4px) rotate(-3deg); }
+  to { transform: translateY(4px) rotate(2deg); }
+}
+
+@keyframes noseGlow {
+  from { filter: drop-shadow(0 0 0 transparent); }
+  to { filter: drop-shadow(0 0 2px #ff5a5f); }
+}
+
+@keyframes stardustShimmer {
+  from { background-position: 0 0; }
+  to { background-position: 7px 0; }
+}
+
+
+/* zero-size anchor, so the star never affects the layout of the title */
+.titleStarAnchor {
+  position: relative;
+  width: 0;
+  height: 0;
+  align-self: center;
+}
+
+.titleStar {
+  position: absolute;
+  left: 0.2em;
+  bottom: 0.15em;
+  width: 0.65em;
+  height: 0.65em;
+  fill: var(--xmas-gold);
+  pointer-events: none;
+  animation: starGlow 5s ease-in-out infinite;
+}
+
+@keyframes starGlow {
+  0%, 100% {
+    transform: scale(0.85) rotate(0deg);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  50% {
+    transform: scale(1.05) rotate(45deg);
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--xmas-gold) 70%, transparent));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snow,
+  .sleighTrack {
+    display: none;
+  }
+
+  .bulb,
+  .glow,
+  .greeting,
+  .titleStar {
+    animation: none;
+  }
+
+  .sparkle {
+    animation: none;
+    opacity: 0.8;
+  }
+}
