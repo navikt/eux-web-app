@@ -12,7 +12,7 @@ import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
-import _ from 'lodash'
+import _, {isEmpty} from 'lodash'
 import React, { useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -47,6 +47,7 @@ const Adresser: React.FC<MainFormProps> = ({
   const adresser: Array<Adresse> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-${formValue ?? 'adresser'}`
   const singleAdress = options && options.singleAdress ? options.singleAdress : false
+  const allowReSearch = options && options.allowReSearch ? options.allowReSearch : false
   const defaultType = options?.defaultType
   const botidilandetsiden: string | undefined = _.get(replySed, `${personID}.botidilandetsiden`)
 
@@ -239,6 +240,7 @@ const Adresser: React.FC<MainFormProps> = ({
           personName={personName}
           onAdresserChanged={singleAdress ? setPDLSingleAddress : setPDLAdresser}
           singleAdress={singleAdress}
+          allowReSearch={allowReSearch}
         />
         {_.isEmpty(adresser)
           ? (
@@ -251,13 +253,12 @@ const Adresser: React.FC<MainFormProps> = ({
           : adresser?.map(renderRow)}
         {_seeNewForm
           ? renderRow(null, -1)
-          : (
+          : (!singleAdress || _.isEmpty(adresser)) && (
             <Box>
               <Button
                 variant='tertiary'
                 onClick={() => _setNewForm(true)}
                 icon={<PlusCircleIcon/>}
-                disabled={singleAdress && adresser ? adresser?.length > 0 : false}
               >
                 {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
               </Button>

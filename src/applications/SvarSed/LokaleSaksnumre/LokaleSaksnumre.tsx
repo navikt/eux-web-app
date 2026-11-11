@@ -1,11 +1,11 @@
 import { PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons'
 import { resetValidation, setValidation } from 'actions/validation'
-import { Box, Button, Heading, HGrid, HStack, VStack } from '@navikt/ds-react'
+import { BodyLong, Box, Button, Heading, HGrid, HStack, VStack } from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import CountryDropdown from 'components/CountryDropdown/CountryDropdown'
 import Input from 'components/Forms/Input'
-import { Country } from 'components/land-verktoy'
+import InstitutionSelector from 'components/InstitutionSelector/InstitutionSelector'
 import { State } from 'declarations/reducers'
+import { CountryCodes, Institusjon } from 'declarations/types'
 import { U007Sed } from 'declarations/u007'
 import { U009Sed } from 'declarations/u009'
 import { U010Sed } from 'declarations/u010'
@@ -16,11 +16,19 @@ import _ from 'lodash'
 import React, { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import { getLandkodeFromInstitusjonsId } from 'utils/institusjon'
 import performValidation from 'utils/performValidation'
 import { validateLokaleSaksnumre, ValidationLokaleSaksnumreProps } from './validation'
 
-const mapState = (state: State): MainFormSelector => ({
-  validation: state.validation.status
+interface LokaleSaksnumreSelector extends MainFormSelector {
+  countryCodes: CountryCodes | null | undefined
+  cdmVersjonApp: string | undefined
+}
+
+const mapState = (state: State): LokaleSaksnumreSelector => ({
+  validation: state.validation.status,
+  countryCodes: state.app.countryCodes,
+  cdmVersjonApp: state.app.cdmVersjon
 })
 
 const LokaleSaksnumre: React.FC<MainFormProps> = ({
@@ -31,9 +39,14 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { validation } = useAppSelector(mapState)
+  const { validation, countryCodes, cdmVersjonApp } = useAppSelector(mapState)
   const namespace = `${parentNamespace}-bruker-lokalesaksnumre`
-  const lokaleSaksnumre = (replySed as U007Sed | U009Sed | U010Sed | U013Sed).lokaleSaksnumre ?? []
+  const sed = replySed as U007Sed | U009Sed | U010Sed | U013Sed
+  const lokaleSaksnumre = sed.lokaleSaksnumre ?? []
+  const cdmVersjon: string | undefined = sed.sak?.cdmVersjon ?? cdmVersjonApp
+
+  const getLandkode = (lokaltSaksnummer: LokaltSaksnummer): string | undefined =>
+    lokaltSaksnummer.landkode ?? getLandkodeFromInstitusjonsId(lokaltSaksnummer.institusjonsid, countryCodes, cdmVersjon)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -52,6 +65,17 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
     dispatch(resetValidation(`${namespace}-${index}-${field}`))
   }
 
+  const updateInstitusjon = (index: number, landkode: string | undefined, institusjon: Institusjon | undefined) => {
+    dispatch(updateReplySed(`lokaleSaksnumre[${index}]`, {
+      ...lokaleSaksnumre[index],
+      landkode,
+      institusjonsid: institusjon?.institusjonsID,
+      institusjonsnavn: institusjon?.navn
+    }))
+    dispatch(resetValidation(`${namespace}-${index}-institusjon`))
+    dispatch(resetValidation(`${namespace}-${index}-institusjonsnavn`))
+  }
+
   const leggTilSaksnummer = () => {
     dispatch(updateReplySed('lokaleSaksnumre', [...lokaleSaksnumre, {}]))
   }
@@ -64,20 +88,34 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
     <Box padding="space-16">
       <VStack gap="space-16">
         <Heading size="small">{label}</Heading>
+        {_.isEmpty(lokaleSaksnumre) && (
+          <Box borderWidth="1 0" paddingBlock="space-8">
+            <BodyLong>
+              {t('message:warning-no-lokale-saksnumre')}
+            </BodyLong>
+          </Box>
+        )}
         {lokaleSaksnumre.map((lokaltSaksnummer, index) => (
           <Box key={index} borderWidth="1" padding="space-16">
             <VStack gap="space-16">
+              <InstitutionSelector
+                namespace={`${namespace}-${index}`}
+                id="institusjon"
+                bucType={sed.sak?.sakType}
+                landkode={getLandkode(lokaltSaksnummer)}
+                value={lokaltSaksnummer.institusjonsid}
+                valueNavn={lokaltSaksnummer.institusjonsnavn}
+                landkodeError={validation[`${namespace}-${index}-institusjon-landkode`]?.feilmelding}
+                error={
+                  validation[`${namespace}-${index}-institusjon-id`]?.feilmelding ??
+                  validation[`${namespace}-${index}-institusjonsnavn`]?.feilmelding
+                }
+                required
+                onLandkodeChanged={(landkode: string) => updateInstitusjon(index, landkode, undefined)}
+                onInstitutionSelected={(institusjon: Institusjon | undefined) =>
+                  updateInstitusjon(index, getLandkode(lokaltSaksnummer), institusjon)}
+              />
               <HGrid columns={{ xs: 1, md: 2 }} gap="space-16">
-                <CountryDropdown
-                  closeMenuOnSelect
-                  countryCodeListName="euEftaLand"
-                  error={validation[`${namespace}-${index}-landkode`]?.feilmelding}
-                  id={`${namespace}-${index}-landkode`}
-                  label={t('label:land')}
-                  menuPortalTarget={document.body}
-                  onOptionSelected={(country: Country) => updateSaksnummer(index, 'landkode', country.value3)}
-                  values={lokaltSaksnummer.landkode}
-                />
                 <Input
                   namespace={`${namespace}-${index}`}
                   id="saksnummer"
@@ -86,24 +124,6 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
                   required
                   onChanged={(value: string) => updateSaksnummer(index, 'saksnummer', value.trim() || undefined)}
                   value={lokaltSaksnummer.saksnummer}
-                />
-                <Input
-                  namespace={`${namespace}-${index}`}
-                  id="institusjonsid"
-                  label={t('label:institusjonens-id')}
-                  error={validation[`${namespace}-${index}-institusjonsid`]?.feilmelding}
-                  required
-                  onChanged={(value: string) => updateSaksnummer(index, 'institusjonsid', value.trim() || undefined)}
-                  value={lokaltSaksnummer.institusjonsid}
-                />
-                <Input
-                  namespace={`${namespace}-${index}`}
-                  id="institusjonsnavn"
-                  label={t('label:institusjonens-navn')}
-                  error={validation[`${namespace}-${index}-institusjonsnavn`]?.feilmelding}
-                  required
-                  onChanged={(value: string) => updateSaksnummer(index, 'institusjonsnavn', value.trim() || undefined)}
-                  value={lokaltSaksnummer.institusjonsnavn}
                 />
               </HGrid>
               <HStack justify="end">
