@@ -23,6 +23,8 @@ export interface BeloepValuta {
 export interface KreditorInstitusjon {
   id?: string
   navn?: string
+  // extra: aux param to remember the selected country (alpha-3); stripped before sending to the API
+  __landkode?: string
   globalReferanse?: string
   betalingsreferanse?: string
   kravTotalbeloep?: BeloepValuta

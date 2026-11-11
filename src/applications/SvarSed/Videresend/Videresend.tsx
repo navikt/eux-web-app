@@ -1,7 +1,7 @@
-import { Box, Heading, Loader, RadioGroup, Select, Textarea, TextField, VStack } from '@navikt/ds-react'
-import { getInstitusjoner } from 'actions/sak'
+import { Box, Heading, RadioGroup, Textarea, TextField, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import InstitutionSelector from 'components/InstitutionSelector/InstitutionSelector'
 import RadioPanel from 'components/RadioPanel/RadioPanel'
 import { State } from 'declarations/reducers'
 import { Institusjon, NavInstitusjon } from 'declarations/types'
@@ -16,14 +16,7 @@ import { validateVideresend, ValidationVideresendProps } from './validation'
 
 const MOTTAKER_LANDKODE = 'NOR'
 
-interface VideresendSelector extends MainFormSelector {
-  institusjonList: Array<Institusjon> | undefined
-  gettingInstitusjoner: boolean
-}
-
-const mapState = (state: State): VideresendSelector => ({
-  institusjonList: state.sak.institusjonList,
-  gettingInstitusjoner: state.loading.gettingInstitusjoner,
+const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
@@ -35,7 +28,7 @@ const Videresend: React.FC<MainFormProps> = ({
   replySed,
   updateReplySed
 }: MainFormProps): JSX.Element => {
-  const { validation, institusjonList, gettingInstitusjoner } = useAppSelector(mapState)
+  const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-videresend`
@@ -50,9 +43,6 @@ const Videresend: React.FC<MainFormProps> = ({
       dispatch(updateReplySed('videresend.fjernInstitusjonId', navinstitusjon.id))
       dispatch(updateReplySed('videresend.fjernInstitusjonNavn', `${navinstitusjon.id} - ${navinstitusjon.navn}`))
     }
-    if (bucType) {
-      dispatch(getInstitusjoner(bucType, MOTTAKER_LANDKODE))
-    }
   }, [])
 
   useUnmount(() => {
@@ -66,13 +56,10 @@ const Videresend: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedValidation))
   })
 
-  const onLeggTilInstitusjonChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    const selectedIndex = event.target.selectedIndex
-    const navn = event.target.options[selectedIndex].text
-    const id = event.target.value
-    dispatch(updateReplySed('videresend.leggTilInstitusjonId', id))
-    dispatch(updateReplySed('videresend.leggTilInstitusjonNavn', id ? navn : ''))
-    if (validation[namespace + '-leggTilInstitusjon']) {
+  const onLeggTilInstitusjonChange = (institusjon: Institusjon | undefined): void => {
+    dispatch(updateReplySed('videresend.leggTilInstitusjonId', institusjon?.institusjonsID ?? ''))
+    dispatch(updateReplySed('videresend.leggTilInstitusjonNavn', institusjon?.navn ?? ''))
+    if (validation[namespace + '-leggTilInstitusjon-id']) {
       dispatch(resetValidation(namespace + '-leggTilInstitusjon'))
     }
   }
@@ -105,29 +92,19 @@ const Videresend: React.FC<MainFormProps> = ({
           {t('label:videresend-leggtilinstitusjon')}
         </Heading>
 
-        <Select
-          data-testid={namespace + '-leggTilInstitusjon'}
-          disabled={gettingInstitusjoner}
-          error={validation[namespace + '-leggTilInstitusjon']?.feilmelding}
-          id={namespace + '-leggTilInstitusjon'}
-          label={t('label:institusjon')}
-          onChange={onLeggTilInstitusjonChange}
-          value={sed.videresend?.leggTilInstitusjonId ?? ''}
-        >
-          <option value=''>{t('label:velg')}</option>
-          {sed.videresend?.leggTilInstitusjonId &&
-            !_.find(institusjonList, (i: Institusjon) => i.institusjonsID === sed.videresend?.leggTilInstitusjonId) && (
-              <option value={sed.videresend.leggTilInstitusjonId}>
-                {sed.videresend.leggTilInstitusjonNavn ?? sed.videresend.leggTilInstitusjonId}
-              </option>
-          )}
-          {institusjonList && _.orderBy(institusjonList, 'navn').map((i: Institusjon) => (
-            <option value={i.institusjonsID} key={i.institusjonsID}>
-              {i.navn}
-            </option>
-          ))}
-        </Select>
-        {gettingInstitusjoner && <Loader />}
+        {/* Recipient is restricted to Norwegian institutions */}
+        <InstitutionSelector
+          namespace={namespace}
+          id='leggTilInstitusjon'
+          bucType={bucType}
+          landkode={MOTTAKER_LANDKODE}
+          hideCountrySelector
+          value={sed.videresend?.leggTilInstitusjonId || undefined}
+          valueNavn={sed.videresend?.leggTilInstitusjonNavn}
+          error={validation[namespace + '-leggTilInstitusjon-id']?.feilmelding}
+          onLandkodeChanged={() => {}}
+          onInstitutionSelected={onLeggTilInstitusjonChange}
+        />
 
         <Heading size='xsmall'>
           {t('label:videresend-fjerninstitusjon')}

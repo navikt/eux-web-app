@@ -4,18 +4,19 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import Input from 'components/Forms/Input'
+import InstitutionSelector from 'components/InstitutionSelector/InstitutionSelector'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeDagpenger } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { Institusjon, Periode, PeriodeDagpenger, ReplySed } from 'declarations/sed'
+import { CountryCodes, Institusjon as IRInstitusjon, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import { getLandkodeFromInstitusjonsId } from 'utils/institusjon'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
@@ -27,8 +28,15 @@ import {
 } from './validation'
 import commonStyles from 'assets/css/common.module.css'
 
-const mapState = (state: State): MainFormSelector => ({
-  validation: state.validation.status
+interface PeriodeForDagpengerSelector extends MainFormSelector {
+  countryCodes: CountryCodes | null | undefined
+  cdmVersjonApp: string | undefined
+}
+
+const mapState = (state: State): PeriodeForDagpengerSelector => ({
+  validation: state.validation.status,
+  countryCodes: state.app.countryCodes,
+  cdmVersjonApp: state.app.cdmVersjon
 })
 
 const PeriodeForDagpenger: React.FC<MainFormProps> = ({
@@ -40,8 +48,10 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
   updateReplySed
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation } = useAppSelector(mapState)
+  const { validation, countryCodes, cdmVersjonApp } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
+  const sak = (replySed as ReplySed | undefined)?.sak
+  const cdmVersjon: string | undefined = sak?.cdmVersjon ?? cdmVersjonApp
 
   const namespace = `${parentNamespace}-${personID}-periodefordagpenger`
   const target = 'dagpengeperioder'
@@ -82,48 +92,42 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace + getIdx(index) + '-periode'))
   }
 
-  const setInstitutionId = (id: string, index: number) => {
+  // NAV is an editable default, set once when a new/edit row is opened
+  const getDefaultInstitusjon = (): Institusjon | undefined =>
+    sak?.navinstitusjon?.id
+      ? { id: sak.navinstitusjon.id, navn: sak.navinstitusjon.navn }
+      : undefined
+
+  const getInstitusjonLandkode = (institusjon: Institusjon | undefined): string | undefined =>
+    institusjon?.__landkode ?? getLandkodeFromInstitusjonsId(institusjon?.id, countryCodes, cdmVersjon)
+
+  // Selector changes only update the local draft; Add/Confirm commits it
+  const setDraftInstitusjon = (institusjon: Institusjon, index: number) => {
     if (index < 0) {
       _setNewPeriodeDagpenger({
         ..._newPeriodeDagpenger,
-        institusjon: {
-          ..._newPeriodeDagpenger?.institusjon,
-          id: id.trim()
-        }
+        institusjon
       } as PeriodeDagpenger)
-      _resetValidation(namespace + '-institusjon-id')
+      _resetValidation(namespace + '-institusjon')
       return
     }
     _setEditPeriodeDagpenger({
       ..._editPeriodeDagpenger,
-      institusjon: {
-        ..._editPeriodeDagpenger?.institusjon,
-        id: id.trim()
-      }
+      institusjon
     } as PeriodeDagpenger)
-    dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-id'))
+    dispatch(resetValidation(namespace + getIdx(index) + '-institusjon'))
   }
 
-  const setInstitutionNavn = (navn: string, index: number) => {
-    if (index < 0) {
-      _setNewPeriodeDagpenger({
-        ..._newPeriodeDagpenger,
-        institusjon: {
-          ..._newPeriodeDagpenger?.institusjon,
-          navn: navn.trim()
-        }
-      } as PeriodeDagpenger)
-      _resetValidation(namespace + '-institusjon-navn')
-      return
-    }
-    _setEditPeriodeDagpenger({
-      ..._editPeriodeDagpenger,
-      institusjon: {
-        ..._editPeriodeDagpenger?.institusjon,
-        navn: navn.trim()
-      }
-    } as PeriodeDagpenger)
-    dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-navn'))
+  const setInstitusjonLandkode = (landkode: string, index: number) => {
+    setDraftInstitusjon({ id: '', navn: '', __landkode: landkode }, index)
+  }
+
+  const setInstitusjon = (institusjon: IRInstitusjon | undefined, landkode: string | undefined, index: number) => {
+    setDraftInstitusjon({
+      id: institusjon?.institusjonsID ?? '',
+      navn: institusjon?.navn ?? '',
+      __landkode: landkode
+    }, index)
   }
 
   const onCloseEdit = (namespace: string) => {
@@ -143,7 +147,9 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     if (_editIndex !== undefined) {
       dispatch(resetValidation(namespace + getIdx(_editIndex)))
     }
-    _setEditPeriodeDagpenger(p)
+    _setEditPeriodeDagpenger(p.institusjon?.id
+      ? p
+      : { ...p, institusjon: getDefaultInstitusjon() ?? p.institusjon })
     _setEditIndex(index)
   }
 
@@ -193,16 +199,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _periodeDagpenger = index < 0 ? _newPeriodeDagpenger : (inEditMode ? _editPeriodeDagpenger : periodeDagpenger)
 
-    let defaultInstitusjonNavn: string | undefined = ""
-    let defaultInstitusjonId: string | undefined = ""
-
-    if(replySed && ("sak" in replySed)) {
-      defaultInstitusjonNavn = replySed?.sak?.navinstitusjon.navn
-      defaultInstitusjonId = replySed?.sak?.navinstitusjon.id
-
-      if(!_periodeDagpenger?.institusjon?.navn  && defaultInstitusjonNavn) setInstitutionNavn(defaultInstitusjonNavn, index)
-      if(!_periodeDagpenger?.institusjon?.id && defaultInstitusjonId) setInstitutionId(defaultInstitusjonId, index)
-    }
+    const _institusjonLandkode = getInstitusjonLandkode(_periodeDagpenger?.institusjon)
 
     return (
       <Box
@@ -257,24 +254,22 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
             </HStack>
           </HGrid>
           {inEditMode && (
-            <HGrid columns={2} gap="space-16">
-              <Input
-                error={_v[_namespace + '-institusjon-id']?.feilmelding}
-                namespace={_namespace}
-                id='institusjon-id'
-                label={t('label:institusjonens-id')}
-                onChanged={(institusjonsid: string) => setInstitutionId(institusjonsid, index)}
-                value={_periodeDagpenger?.institusjon?.id ? _periodeDagpenger?.institusjon?.id : defaultInstitusjonId}
-              />
-              <Input
-                error={_v[_namespace + '-institusjon-navn']?.feilmelding}
-                namespace={_namespace}
-                id='institusjon-navn'
-                label={t('label:institusjonens-navn')}
-                onChanged={(institusjonsnavn: string) => setInstitutionNavn(institusjonsnavn, index)}
-                value={_periodeDagpenger?.institusjon?.navn ? _periodeDagpenger?.institusjon?.navn : defaultInstitusjonNavn}
-              />
-            </HGrid>
+            <InstitutionSelector
+              namespace={_namespace}
+              id='institusjon'
+              bucType={sak?.sakType}
+              landkode={_institusjonLandkode}
+              value={_periodeDagpenger?.institusjon?.id || undefined}
+              valueNavn={_periodeDagpenger?.institusjon?.navn}
+              error={
+                _v[_namespace + '-institusjon-id']?.feilmelding ??
+                _v[_namespace + '-institusjon-navn']?.feilmelding
+              }
+              required
+              onLandkodeChanged={(landkode: string) => setInstitusjonLandkode(landkode, index)}
+              onInstitutionSelected={(institusjon: IRInstitusjon | undefined) =>
+                setInstitusjon(institusjon, _institusjonLandkode, index)}
+            />
           )}
         </VStack>
       </Box>
@@ -302,7 +297,10 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
             <Box>
               <Button
                 variant='tertiary'
-                onClick={() => _setNewForm(true)}
+                onClick={() => {
+                  _setNewPeriodeDagpenger({ institusjon: getDefaultInstitusjon() } as PeriodeDagpenger)
+                  _setNewForm(true)
+                }}
                 icon={<PlusCircleIcon/>}
               >
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}

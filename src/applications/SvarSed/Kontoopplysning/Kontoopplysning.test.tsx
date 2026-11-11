@@ -1,228 +1,93 @@
-import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { updateReplySed } from 'actions/svarsed'
 import Kontoopplysning from 'applications/SvarSed/Kontoopplysning/Kontoopplysning'
-import { KontoOrdinaer, KontoSepa } from 'declarations/sed'
-import { render } from '@testing-library/react'
-import getReplySed from 'mocks/svarsed/replySed'
+import { MainFormProps } from 'applications/SvarSed/MainForm'
+import { F002Sed, UtbetalingTilInstitusjon } from 'declarations/sed'
 import { stageSelector } from 'setupTests'
 
 jest.mock('actions/svarsed', () => ({
-  updateReplySed: jest.fn()
+  updateReplySed: jest.fn((needle: string, value: any) => ({ type: 'UPDATE', payload: { needle, value } }))
 }))
-
 jest.mock('actions/validation', () => ({
-  resetValidation: jest.fn()
+  resetValidation: jest.fn(),
+  setValidation: jest.fn()
 }))
+jest.mock('actions/sak', () => ({
+  getInstitusjoner: jest.fn(() => ({ type: 'SAK/INSTITUSJONER/REQUEST' })),
+  releaseInstitusjoner: jest.fn(() => ({ type: 'SAK/INSTITUSJONER/RELEASE' }))
+}))
+jest.mock('hooks/useUnmount', () => jest.fn())
+jest.mock('components/CountryDropdown/CountryDropdown', () => (props: any) => (
+  <button data-testid={props.id} onClick={() => props.onOptionSelected({ value3: 'DNK' })}>
+    {props.values ?? 'no-country'}
+  </button>
+))
 
-const mockReplySed = getReplySed('F002')
+const namespace = 'test-kontoopplysninger'
+const swedishInstitution = { institusjonsID: 'SE:1234', navn: 'Swedish institution', landkode: 'SWE', buctype: 'FB_BUC_01' }
 
-const defaultSelector: MainFormSelector = {
-  validation: {}
+const uti: UtbetalingTilInstitusjon = {
+  begrunnelse: 'begrunnelse',
+  id: '',
+  navn: '',
+  kontoSepa: { iban: 'SE4550000000058398257466', swift: 'ESSESESS' }
+}
+
+const makeProps = (utbetalingTilInstitusjon: UtbetalingTilInstitusjon): MainFormProps => ({
+  parentNamespace: 'test',
+  replySed: { sedType: 'F002', sak: { sakType: 'FB_BUC_01', cdmVersjon: '4.3' }, utbetalingTilInstitusjon } as unknown as F002Sed,
+  updateReplySed,
+  setReplySed: jest.fn()
+} as MainFormProps)
+
+const countryCodes = {
+  'v4.3': { euEftaLand: [{ landkode: 'SWE', euLandkode: 'SE' }] }
 }
 
 describe('applications/SvarSed/Kontoopplysning/Kontoopplysning', () => {
-  let wrapper: any
-
-  const initialMockProps: MainFormProps = {
-    parentNamespace: 'test',
-    replySed: mockReplySed,
-    updateReplySed: jest.fn(),
-    setReplySed: jest.fn()
-  }
-
   beforeEach(() => {
-    stageSelector(defaultSelector, {})
-    wrapper = render(<Kontoopplysning {...initialMockProps} />)
-  })
-
-  afterEach(() => {
-    wrapper.unmount()
-  })
-
-  const mockKontoOrdinaer: KontoOrdinaer = {
-    bankensNavn: 'abc',
-    kontonummer: '123',
-    adresse: undefined,
-    swift: '456'
-  }
-
-  const mockKontoSepa: KontoSepa = {
-    swift: '123',
-    iban: '123'
-  }
-
-  it('Handling: update kontotype', () => {
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    stageSelector(defaultSelector, {
-      replySed: {
-        ...mockReplySed,
-        utbetalingTilInstitusjon: {
-          begrunnelse: 'begrunnelse',
-          id: 'id',
-          navn: 'navn',
-          kontoOrdinaer: mockKontoOrdinaer,
-          kontoSepa: mockKontoSepa
-        }
+    jest.clearAllMocks()
+    stageSelector({}, {
+      validation: {},
+      countryCodes,
+      institusjonRequests: {
+        'FB_BUC_01:SWE': { requestId: 'sweden', loading: false, institusjoner: [swedishInstitution] }
       }
     })
-    wrapper = render(<Kontoopplysning {...initialMockProps} />)
-    const formField = wrapper.find('[data-testid=\'test-kontoopplysninger-kontotype\'] input[type="radio"]').hostNodes()
-    formField.first().simulate('change', { target: { value: 'ordinaer' } })
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon', {
-      begrunnelse: 'begrunnelse',
-      id: 'id',
-      navn: 'navn',
-      kontoOrdinaer: mockKontoOrdinaer
-    });
+  })
 
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    formField.last().simulate('change', { target: { value: 'sepa' } })
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon', {
-      begrunnelse: 'begrunnelse',
-      id: 'id',
-      navn: 'navn',
-      kontoSepa: mockKontoSepa
-    });
+  it('infers the country from a saved institution id', () => {
+    render(<Kontoopplysning {...makeProps({ ...uti, id: 'SE:1234', navn: 'Swedish institution' })} />)
+    expect(screen.getByTestId(`${namespace}-institusjon-landkode`)).toHaveTextContent('SWE')
+    expect(screen.getByTestId(`${namespace}-institusjon-id`)).toHaveValue('SE:1234')
+  })
 
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    formField.first().simulate('change', { target: { value: 'ordinaer' } })
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon', {
-      begrunnelse: 'begrunnelse',
-      id: 'id',
-      navn: 'navn',
-      kontoOrdinaer: mockKontoOrdinaer
+  it('selecting an institution sets id, navn and country but keeps begrunnelse and account details', () => {
+    render(<Kontoopplysning {...makeProps({ ...uti, __landkode: 'SWE', id: 'SE:1234', navn: 'Swedish institution' })} />)
+    fireEvent.change(screen.getByTestId(`${namespace}-institusjon-id`), { target: { value: '' } })
+    expect(updateReplySed).toHaveBeenLastCalledWith('utbetalingTilInstitusjon', { ...uti, id: '', navn: '' })
+
+    fireEvent.change(screen.getByTestId(`${namespace}-institusjon-id`), { target: { value: 'SE:1234' } })
+    expect(updateReplySed).toHaveBeenLastCalledWith('utbetalingTilInstitusjon', {
+      ...uti,
+      __landkode: 'SWE',
+      id: 'SE:1234',
+      navn: 'Swedish institution'
     })
   })
 
-  it('Handling: update begrunnelse', () => {
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    const mockText = 'mockText'
-    const formField = wrapper.find('[data-testid=\'test-kontoopplysninger-begrunnelse\']').hostNodes()
-    formField.simulate('change', { target: { value: mockText } })
-    formField.simulate('blur')
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.begrunnelse', mockText)
+  it('changing country clears the institution but keeps the other fields', () => {
+    render(<Kontoopplysning {...makeProps({ ...uti, __landkode: 'SWE', id: 'SE:1234', navn: 'Swedish institution' })} />)
+    fireEvent.click(screen.getByTestId(`${namespace}-institusjon-landkode`))
+    expect(updateReplySed).toHaveBeenLastCalledWith('utbetalingTilInstitusjon', { ...uti, id: '', navn: '' })
   })
 
-  it('Handling: update id', () => {
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    const mockId = 'mockId'
-    const formField = wrapper.find('[data-testid=\'test-kontoopplysninger-id\']').hostNodes()
-    formField.simulate('change', { target: { value: mockId } })
-    formField.simulate('blur')
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.id', mockId)
-  })
+  it('emptying kontoopplysninger also resets the selected country', () => {
+    render(<Kontoopplysning {...makeProps(uti)} />)
+    fireEvent.click(screen.getByTestId(`${namespace}-institusjon-landkode`))
+    expect(screen.getByTestId(`${namespace}-institusjon-landkode`)).toHaveTextContent('DNK')
 
-  it('Handling: update navn', () => {
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    const mockNavn = 'mockNavn'
-    const formField = wrapper.find('[data-testid=\'test-kontoopplysninger-navn\']').hostNodes()
-    formField.simulate('change', { target: { value: mockNavn } })
-    formField.simulate('blur')
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.navn', mockNavn)
-  })
-
-  it('Handling: update kontoOrdinaer adresse', () => {
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    stageSelector(defaultSelector, {
-      replySed: {
-        ...mockReplySed,
-        utbetalingTilInstitusjon: {
-          kontoOrdinaer: {}
-        }
-      }
-    })
-    wrapper = render(<Kontoopplysning {...initialMockProps} />)
-    const formField = wrapper.find('[data-testid=\'test-kontoopplysninger-kontoOrdinaer-gate\']').hostNodes()
-    formField.simulate('change', { target: { value: '123' } })
-    formField.simulate('blur')
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.adresse', { gate: '123' })
-  })
-
-  it('Handling: update kontoOrdinaer bankens navn', () => {
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    stageSelector(defaultSelector, {
-      replySed: {
-        ...mockReplySed,
-        utbetalingTilInstitusjon: {
-          kontoOrdinaer: {}
-        }
-      }
-    })
-    wrapper = render(<Kontoopplysning {...initialMockProps} />)
-    const formField = wrapper.find('[data-testid=\'test-kontoopplysninger-kontoOrdinaer-bankensNavn\']').hostNodes()
-    formField.simulate('change', { target: { value: 'bankensNavn' } })
-    formField.simulate('blur')
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.bankensNavn', 'bankensNavn')
-  })
-
-  it('Handling: update kontoOrdinaer bankens kontonummer', () => {
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    stageSelector(defaultSelector, {
-      replySed: {
-        ...mockReplySed,
-        utbetalingTilInstitusjon: {
-          kontoOrdinaer: {}
-        }
-      }
-    })
-    wrapper = render(<Kontoopplysning {...initialMockProps} />)
-    const mockKontonummer = 'mockKontonummer'
-    const formField = wrapper.find('[data-testid=\'test-kontoopplysninger-kontoOrdinaer-kontonummer\']').hostNodes()
-    formField.simulate('change', { target: { value: mockKontonummer } })
-    formField.simulate('blur')
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.kontonummer', mockKontonummer)
-  })
-
-  it('Handling: update kontoOrdinaer swift', () => {
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    stageSelector(defaultSelector, {
-      replySed: {
-        ...mockReplySed,
-        utbetalingTilInstitusjon: {
-          kontoOrdinaer: {}
-        }
-      }
-    })
-    wrapper = render(<Kontoopplysning {...initialMockProps} />)
-    const mockSwift = 'mockSwift'
-    const formField = wrapper.find('[data-testid=\'test-kontoopplysninger-kontoOrdinaer-swift\']').hostNodes()
-    formField.simulate('change', { target: { value: mockSwift } })
-    formField.simulate('blur')
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.swift', mockSwift)
-  })
-
-  it('Handling: update kontoSepa iban', () => {
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    stageSelector(defaultSelector, {
-      replySed: {
-        ...mockReplySed,
-        utbetalingTilInstitusjon: {
-          kontoSepa: {}
-        }
-      }
-    })
-    wrapper = render(<Kontoopplysning {...initialMockProps} />)
-    const mockIban = 'mockIban'
-    const formField = wrapper.find('[data-testid=\'test-kontoopplysninger-kontoSepa-iban\']').hostNodes()
-    formField.simulate('change', { target: { value: mockIban } })
-    formField.simulate('blur')
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoSepa.iban', mockIban)
-  })
-
-  it('Handling: update kontoSepa swift', () => {
-    (initialMockProps.updateReplySed as jest.Mock).mockReset()
-    stageSelector(defaultSelector, {
-      replySed: {
-        ...mockReplySed,
-        utbetalingTilInstitusjon: {
-          kontoSepa: {}
-        }
-      }
-    })
-    wrapper = render(<Kontoopplysning {...initialMockProps} />)
-    const mockSwift = 'mockSwift'
-    const formField = wrapper.find('[data-testid=\'test-kontoopplysninger-kontoSepa-swift\']').hostNodes()
-    formField.simulate('change', { target: { value: mockSwift } })
-    formField.simulate('blur')
-    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoSepa.swift', mockSwift)
+    fireEvent.click(screen.getByText('el:button-remove-account-info'))
+    expect(screen.getByTestId(`${namespace}-institusjon-landkode`)).toHaveTextContent('no-country')
   })
 })

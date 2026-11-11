@@ -7,7 +7,18 @@ jest.mock('actions/sak', () => ({
   getInstitusjoner: jest.fn(() => ({ type: 'SAK/INSTITUSJONER/REQUEST' })),
   releaseInstitusjoner: jest.fn(() => ({ type: 'SAK/INSTITUSJONER/RELEASE' }))
 }))
-jest.mock('components/CountryDropdown/CountryDropdown', () => () => null)
+// Mimics react-select: an empty `values` keeps the internally selected country
+jest.mock('components/CountryDropdown/CountryDropdown', () => {
+  const { useState } = jest.requireActual('react')
+  return (props: any) => {
+    const [internal, setInternal] = useState(undefined)
+    return (
+      <button data-testid={props.id} onClick={() => { setInternal('DNK'); props.onOptionSelected({ value3: 'DNK' }) }}>
+        {props.values ?? internal ?? 'no-country'}
+      </button>
+    )
+  }
+})
 
 const swedishInstitution = { institusjonsID: 'SE:1', navn: 'Swedish institution', landkode: 'SWE', buctype: 'UB_BUC_02' }
 const danishInstitution = { institusjonsID: 'DK:1', navn: 'Danish institution', landkode: 'DNK', buctype: 'UB_BUC_02' }
@@ -88,6 +99,17 @@ describe('components/InstitutionSelector', () => {
     expect(screen.queryByRole('option', { name: swedishInstitution.navn })).not.toBeInTheDocument()
     fireEvent.change(screen.getByRole('combobox'), { target: { value: '' } })
     expect(props.onInstitutionSelected).not.toHaveBeenCalled()
+  })
+
+  it('resets the country dropdown when the country is cleared', () => {
+    stageSelector({}, { institusjonRequests: {} })
+    const wrapper = render(<InstitutionSelector {...props} landkode={undefined} />)
+    fireEvent.click(screen.getByTestId('test-institusjon-landkode'))
+    wrapper.rerender(<InstitutionSelector {...props} landkode="DNK" />)
+    expect(screen.getByTestId('test-institusjon-landkode')).toHaveTextContent('DNK')
+
+    wrapper.rerender(<InstitutionSelector {...props} landkode={undefined} />)
+    expect(screen.getByTestId('test-institusjon-landkode')).toHaveTextContent('no-country')
   })
 
   it('displays a saved institution missing from the result without making it selectable', () => {
