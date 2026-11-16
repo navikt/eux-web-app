@@ -1,5 +1,6 @@
 import { PDU1 } from 'declarations/pd'
 import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
+import { U010Sed } from 'declarations/u010'
 import _ from 'lodash'
 
 export const isSed = (replySed: ReplySed | PDU1 | null | undefined): boolean => !!(replySed as ReplySed)?.sedType
@@ -104,6 +105,13 @@ export const cleanReplySed = (replySed: ReplySed): ReplySed => {
         delete (newReplySed as F002Sed).barn?.[i].ytelser
       }
     })
+  }
+
+  // U010: do not send empty "andre omstendigheter" text areas
+  const omstendigheter = (newReplySed as U010Sed).omstendigheter
+  if (isU010Sed(newReplySed) && omstendigheter?.andreOmstendigheter &&
+    !omstendigheter.andreOmstendigheter.some(annenOmstendighet => !!annenOmstendighet?.trim())) {
+    delete omstendigheter.andreOmstendigheter
   }
   return newReplySed
 }

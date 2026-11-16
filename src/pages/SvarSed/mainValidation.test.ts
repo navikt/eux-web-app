@@ -104,3 +104,35 @@ describe('pages/SvarSed/mainValidation - H001/H002', () => {
     expect(validation['editor-ytterligereInfo']?.feilmelding).toEqual('validation:textOverX')
   })
 })
+
+describe('pages/SvarSed/mainValidation - U010 andre omstendigheter', () => {
+  beforeEach(() => {
+    (store.getState as jest.Mock).mockReturnValue({ app: { countryCodes: {}, cdmVersjon: '4.4' } })
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
+  it('does not validate the text areas when none contain text', () => {
+    const validation = validate(getReplySed('U010', {}, { omstendigheter: { andreOmstendigheter: ['', ''] } }))
+    expect(validation['editor-andreOmstendigheter-0']).toBeUndefined()
+    expect(validation['editor-andreOmstendigheter-1']).toBeUndefined()
+  })
+
+  it('requires every text area to be filled out when one contains text', () => {
+    const validation = validate(getReplySed('U010', {}, {
+      omstendigheter: { typer: ['andre_omstendigheter'], andreOmstendigheter: ['tekst', ''] }
+    }))
+    expect(validation['editor-andreOmstendigheter-0']).toBeUndefined()
+    expect(validation['editor-andreOmstendigheter-1']?.feilmelding).toEqual('validation:du-maa-fylle-ut')
+    expect(validation['svarsed-bruker-omstendigheter-typer']).toBeUndefined()
+  })
+
+  it('validates max length', () => {
+    const validation = validate(getReplySed('U010', {}, {
+      omstendigheter: { typer: ['andre_omstendigheter'], andreOmstendigheter: ['a'.repeat(256)] }
+    }))
+    expect(validation['editor-andreOmstendigheter-0']?.feilmelding).toEqual('validation:textOverX')
+  })
+})
