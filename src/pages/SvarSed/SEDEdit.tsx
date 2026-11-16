@@ -68,6 +68,7 @@ import LokaleSaksnumre from 'applications/SvarSed/LokaleSaksnumre/LokaleSaksnumr
 import RegistrertPerson from 'applications/SvarSed/RegistrertPerson/RegistrertPerson'
 import Registrering from 'applications/SvarSed/Registrering/Registrering'
 import Omstendigheter from 'applications/SvarSed/Omstendigheter/Omstendigheter'
+import AndreOmstendigheter from 'applications/SvarSed/Omstendigheter/AndreOmstendigheter'
 import ForespoerselOmOppfoelging from 'applications/SvarSed/ForespoerselOmOppfoelging/ForespoerselOmOppfoelging'
 import InstitusjonDagpenger from 'applications/SvarSed/InstitusjonDagpenger/InstitusjonDagpenger'
 import FastslaaBosted from 'applications/SvarSed/FastslaaBosted/FastslaaBosted'
@@ -763,6 +764,12 @@ const SEDEdit = (): JSX.Element => {
               onChanged={setComment}
               value={(replySed as FSed).ytterligereInfo}
               maxLength={500}
+            />
+          )}
+          {isU010Sed(replySed) && (
+            <AndreOmstendigheter
+              namespace={namespace + '-andreOmstendigheter'}
+              replySed={replySed!}
             />
           )}
           {showAttachments && (

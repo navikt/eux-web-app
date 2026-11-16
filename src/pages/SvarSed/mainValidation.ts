@@ -157,6 +157,7 @@ import {
   isHSed,
   isS040Sed,
   isS046Sed,
+  isU010Sed,
   isUSed,
   isX001Sed,
   isX002Sed,
@@ -208,6 +209,7 @@ import {
   ValidationRegistreringProps
 } from 'applications/SvarSed/Registrering/validation'
 import {
+  validateAndreOmstendigheter,
   validateOmstendigheter,
   ValidationOmstendigheterProps
 } from 'applications/SvarSed/Omstendigheter/validation'
@@ -881,6 +883,12 @@ export const validateSEDEdit = (
   if(isS046Sed(replySed)){
     hasErrors.push(performValidation<ValidationInformasjonOmUtbetalingProps>(v, 'informasjonOmUtbetaling-sykdom', validateInformasjonOmUtbetaling, {
       informasjonOmUtbetaling: (replySed as S046Sed).sykdom?.informasjonOmUtbetaling
+    }, true))
+  }
+
+  if (isU010Sed(replySed)) {
+    hasErrors.push(performValidation<ValidationOmstendigheterProps>(v, 'editor-andreOmstendigheter', validateAndreOmstendigheter, {
+      replySed
     }, true))
   }
 
