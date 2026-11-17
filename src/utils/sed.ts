@@ -1,5 +1,6 @@
 import { PDU1 } from 'declarations/pd'
 import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
+import { U008Sed } from 'declarations/u008'
 import { U010Sed } from 'declarations/u010'
 import _ from 'lodash'
 
@@ -30,6 +31,8 @@ export const isU002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean
 export const isU004Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U004'
 
 export const isU007Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U007'
+
+export const isU008Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U008'
 
 export const isU009Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U009'
 
@@ -90,10 +93,10 @@ export const isX013Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean
 export const getSedCategory = (replySed: ReplySed | PDU1 | null | undefined): string => (replySed as ReplySed)?.sedType?.substring(0, 1) ?? ''
 
 export const isPreviewableSed = (sedType: string): boolean =>
-  ['F001', 'F002', 'F003', 'F026', 'F027', 'H001', 'H002', 'H003', 'H005', 'H006', 'H021', 'H065', 'H070', 'H120', 'S040', 'S046', 'U002', 'U004', 'U007', 'U009', 'U010', 'U013', 'U017', 'X001', 'X002', 'X003', 'X004', 'X005', 'X006', 'X007', 'X008', 'X009', 'X010', 'X011', 'X012', 'X013'].indexOf(sedType) >= 0
+  ['F001', 'F002', 'F003', 'F026', 'F027', 'H001', 'H002', 'H003', 'H005', 'H006', 'H021', 'H065', 'H070', 'H120', 'S040', 'S046', 'U002', 'U004', 'U007', 'U008', 'U009', 'U010', 'U013', 'U017', 'X001', 'X002', 'X003', 'X004', 'X005', 'X006', 'X007', 'X008', 'X009', 'X010', 'X011', 'X012', 'X013'].indexOf(sedType) >= 0
 
 export const usesTypedSedApi = (sedType: string | null | undefined): boolean =>
-  ['H001', 'H002', 'H003', 'H005', 'H006', 'H021', 'H120', 'H065', 'H070', 'U007', 'U009', 'U010', 'U013', 'X002', 'X003', 'X004', 'X005', 'X006', 'X007', 'X013'].indexOf(sedType ?? '') >= 0
+  ['H001', 'H002', 'H003', 'H005', 'H006', 'H021', 'H120', 'H065', 'H070', 'U007', 'U008', 'U009', 'U010', 'U013', 'X002', 'X003', 'X004', 'X005', 'X006', 'X007', 'X013'].indexOf(sedType ?? '') >= 0
 
 export const cleanReplySed = (replySed: ReplySed): ReplySed => {
   const newReplySed = _.cloneDeep(replySed)
@@ -107,9 +110,9 @@ export const cleanReplySed = (replySed: ReplySed): ReplySed => {
     })
   }
 
-  // U010: do not send empty "andre omstendigheter" text areas
-  const omstendigheter = (newReplySed as U010Sed).omstendigheter
-  if (isU010Sed(newReplySed) && omstendigheter?.andreOmstendigheter &&
+  // U008/U010: do not send empty "andre omstendigheter" text areas
+  const omstendigheter = (newReplySed as U010Sed | U008Sed).omstendigheter
+  if ((isU010Sed(newReplySed) || isU008Sed(newReplySed)) && omstendigheter?.andreOmstendigheter &&
     !omstendigheter.andreOmstendigheter.some(annenOmstendighet => !!annenOmstendighet?.trim())) {
     delete omstendigheter.andreOmstendigheter
   }

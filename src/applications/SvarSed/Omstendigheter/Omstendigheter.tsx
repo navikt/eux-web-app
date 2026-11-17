@@ -4,15 +4,19 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
-import { OmstendighetType, U010Sed } from 'declarations/u010'
+import { OmstendighetType } from 'declarations/u'
+import { U008Sed } from 'declarations/u008'
+import { U010Sed } from 'declarations/u010'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
+import { isU008Sed } from 'utils/sed'
 import {
   ANDRE_OMSTENDIGHETER,
+  INGEN_OMSTENDIGHETER,
   validateOmstendigheter,
   ValidationOmstendigheterProps
 } from './validation'
@@ -42,8 +46,11 @@ const Omstendigheter: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-bruker-omstendigheter`
-  const sed = replySed as U010Sed
+  const sed = replySed as U010Sed | U008Sed
   const omstendigheter = sed.omstendigheter
+  // U008 (3.2.2) has no periode, but an extra "ingen" option
+  const erU008 = isU008Sed(sed)
+  const omstendighetTyper: Array<OmstendighetType> = erU008 ? [...OMSTENDIGHET_TYPER, INGEN_OMSTENDIGHETER] : OMSTENDIGHET_TYPER
   const harAndreOmstendigheter = omstendigheter?.typer?.includes(ANDRE_OMSTENDIGHETER) ?? false
 
   useUnmount(() => {
@@ -61,7 +68,19 @@ const Omstendigheter: React.FC<MainFormProps> = ({
     }
   }
 
-  const setTyper = (valgteTyper: Array<OmstendighetType>) => {
+  const setTyper = (nyeTyper: Array<OmstendighetType>) => {
+    const forrigeTyper: Array<OmstendighetType> = omstendigheter?.typer ?? []
+    const ingenValgtNaa = nyeTyper.includes(INGEN_OMSTENDIGHETER) && !forrigeTyper.includes(INGEN_OMSTENDIGHETER)
+    // "ingen" excludes all other omstendigheter
+    if (ingenValgtNaa) {
+      dispatch(updateReplySed('omstendigheter.typer', [INGEN_OMSTENDIGHETER]))
+      dispatch(updateReplySed('omstendigheter.andreOmstendigheter', undefined))
+      if (validation[`${namespace}-typer`]) {
+        dispatch(resetValidation(`${namespace}-typer`))
+      }
+      return
+    }
+    const valgteTyper = nyeTyper.filter(type => type !== INGEN_OMSTENDIGHETER)
     // andre_omstendigheter is controlled by the separate AndreOmstendigheter component
     const typer: Array<OmstendighetType> = harAndreOmstendigheter ? [...valgteTyper, ANDRE_OMSTENDIGHETER] : valgteTyper
     dispatch(updateReplySed('omstendigheter.typer', typer.length > 0 ? typer : undefined))
@@ -74,18 +93,22 @@ const Omstendigheter: React.FC<MainFormProps> = ({
     <Box padding="space-16">
       <VStack gap="space-16">
         <Heading size="small">{label}</Heading>
-        <Heading size="xsmall" level="3">{t('label:periode')}</Heading>
-        <PeriodeInput
-          namespace={`${namespace}-periode`}
-          error={{
-            startdato: validation[`${namespace}-periode-startdato`]?.feilmelding,
-            sluttdato: validation[`${namespace}-periode-sluttdato`]?.feilmelding,
-            aapenPeriodeType: validation[`${namespace}-periode-aapenPeriodeType`]?.feilmelding
-          }}
-          hideLabel={false}
-          setPeriode={setPeriode}
-          value={omstendigheter?.periode}
-        />
+        {!erU008 && (
+          <>
+            <Heading size="xsmall" level="3">{t('label:periode')}</Heading>
+            <PeriodeInput
+              namespace={`${namespace}-periode`}
+              error={{
+                startdato: validation[`${namespace}-periode-startdato`]?.feilmelding,
+                sluttdato: validation[`${namespace}-periode-sluttdato`]?.feilmelding,
+                aapenPeriodeType: validation[`${namespace}-periode-aapenPeriodeType`]?.feilmelding
+              }}
+              hideLabel={false}
+              setPeriode={setPeriode}
+              value={(omstendigheter as U010Sed['omstendigheter'])?.periode}
+            />
+          </>
+        )}
         <CheckboxGroup
           id={`${namespace}-typer`}
           legend={t('label:u010-omstendigheter')}
@@ -93,7 +116,7 @@ const Omstendigheter: React.FC<MainFormProps> = ({
           value={(omstendigheter?.typer ?? []).filter(type => type !== ANDRE_OMSTENDIGHETER)}
           onChange={setTyper}
         >
-          {OMSTENDIGHET_TYPER.map((type) => (
+          {omstendighetTyper.map((type) => (
             <Checkbox key={type} value={type}>
               {t(`el:option-u010-omstendighet-${type}`)}
             </Checkbox>

@@ -5,11 +5,13 @@ import { resetValidation } from 'actions/validation'
 import TextArea from 'components/Forms/TextArea'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
-import { OmstendighetType, U010Sed } from 'declarations/u010'
+import { OmstendighetType } from 'declarations/u'
+import { U008Sed } from 'declarations/u008'
+import { U010Sed } from 'declarations/u010'
 import React, { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import { ANDRE_OMSTENDIGHETER, ANDRE_OMSTENDIGHETER_MAX_LENGTH, harAndreOmstendigheterTekst } from './validation'
+import { ANDRE_OMSTENDIGHETER, ANDRE_OMSTENDIGHETER_MAX_LENGTH, harAndreOmstendigheterTekst, INGEN_OMSTENDIGHETER } from './validation'
 
 export interface AndreOmstendigheterProps {
   namespace: string
@@ -23,14 +25,16 @@ const AndreOmstendigheter: React.FC<AndreOmstendigheterProps> = ({
   const validation = useAppSelector((state: State) => state.validation.status)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const omstendigheter = (replySed as U010Sed).omstendigheter
+  const omstendigheter = (replySed as U010Sed | U008Sed).omstendigheter
   const andreOmstendigheter = omstendigheter?.andreOmstendigheter?.length ? omstendigheter.andreOmstendigheter : ['']
 
   const setAndreOmstendigheter = (nyeAndreOmstendigheter: Array<string>) => {
     dispatch(updateReplySed('omstendigheter.andreOmstendigheter', nyeAndreOmstendigheter.length > 0 ? nyeAndreOmstendigheter : undefined))
 
-    const typer: Array<OmstendighetType> = (omstendigheter?.typer ?? []).filter(type => type !== ANDRE_OMSTENDIGHETER)
+    let typer: Array<OmstendighetType> = (omstendigheter?.typer ?? []).filter(type => type !== ANDRE_OMSTENDIGHETER)
     if (harAndreOmstendigheterTekst(nyeAndreOmstendigheter)) {
+      // U008: "ingen" cannot be combined with other omstendigheter
+      typer = typer.filter(type => type !== INGEN_OMSTENDIGHETER)
       typer.push(ANDRE_OMSTENDIGHETER)
     } else {
       dispatch(resetValidation(namespace))

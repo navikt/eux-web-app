@@ -136,3 +136,46 @@ describe('pages/SvarSed/mainValidation - U010 andre omstendigheter', () => {
     expect(validation['editor-andreOmstendigheter-0']?.feilmelding).toEqual('validation:textOverX')
   })
 })
+
+describe('pages/SvarSed/mainValidation - U008', () => {
+  beforeEach(() => {
+    (store.getState as jest.Mock).mockReturnValue({ app: { countryCodes: {}, cdmVersjon: '4.4' } })
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
+  it('requires vedtak om eksport', () => {
+    const validation = validate(getReplySed('U008', {}))
+    expect(validation['svarsed-bruker-eksport-vedtakOmEksport']?.feilmelding).toEqual('validation:du-maa-fylle-ut')
+    expect(validation['svarsed-bruker-omstendigheter-typer']).toBeUndefined()
+  })
+
+  it('requires maks sluttdato and omstendigheter, but not periode, when vedtak is ja', () => {
+    const validation = validate(getReplySed('U008', {}, { vedtakOmEksport: 'ja' }))
+    expect(validation['svarsed-bruker-eksport-maksSluttdato']?.feilmelding).toEqual('validation:du-maa-fylle-ut')
+    expect(validation['svarsed-bruker-eksport-estimertSluttdato']).toBeUndefined()
+    expect(validation['svarsed-bruker-omstendigheter-typer']).toBeDefined()
+    expect(validation['svarsed-bruker-omstendigheter-periode-startdato']).toBeUndefined()
+  })
+
+  it('does not allow ingen combined with other omstendigheter', () => {
+    const validation = validate(getReplySed('U008', {}, {
+      vedtakOmEksport: 'ja',
+      eksportperiode: { maksSluttdato: '2024-06-30' },
+      omstendigheter: { typer: ['ingen', 'andre_omstendigheter'] }
+    }))
+    expect(validation['svarsed-bruker-omstendigheter-typer']?.feilmelding).toEqual('validation:u008-ingen-omstendigheter-kombinert')
+  })
+
+  it('accepts ingen alone', () => {
+    const validation = validate(getReplySed('U008', {}, {
+      vedtakOmEksport: 'ja',
+      eksportperiode: { maksSluttdato: '2024-06-30' },
+      omstendigheter: { typer: ['ingen'] }
+    }))
+    expect(validation['svarsed-bruker-eksport-maksSluttdato']).toBeUndefined()
+    expect(validation['svarsed-bruker-omstendigheter-typer']).toBeUndefined()
+  })
+})

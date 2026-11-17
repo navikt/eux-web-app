@@ -620,6 +620,15 @@ export default (saksnummer: string, type: string) => {
           sedId: 'u007_mock_id',
           sistEndretDato: '2020-01-02',
           sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+        }, {
+          sedTittel: 'Forespørsel om eksportdokument',
+          status: 'received',
+          sedType: 'U007',
+          sedId: 'u007_received_mock_id',
+          sistEndretDato: '2020-01-03',
+          svarsedType: 'U008',
+          svarsedDisplay: 'Eksportdokument',
+          sedHandlinger: ['U008', 'Read']
         }
       ]
     },

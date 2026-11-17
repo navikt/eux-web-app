@@ -8,6 +8,7 @@ import { State } from 'declarations/reducers'
 import { CountryCodes, Institusjon } from 'declarations/types'
 import { U007Sed } from 'declarations/u007'
 import { U009Sed } from 'declarations/u009'
+import { U008Sed } from 'declarations/u008'
 import { U010Sed } from 'declarations/u010'
 import { LokaltSaksnummer } from 'declarations/u'
 import { U013Sed } from 'declarations/u013'
@@ -41,7 +42,7 @@ const LokaleSaksnumre: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const { validation, countryCodes, cdmVersjonApp } = useAppSelector(mapState)
   const namespace = `${parentNamespace}-bruker-lokalesaksnumre`
-  const sed = replySed as U007Sed | U009Sed | U010Sed | U013Sed
+  const sed = replySed as U007Sed | U008Sed | U009Sed | U010Sed | U013Sed
   const lokaleSaksnumre = sed.lokaleSaksnumre ?? []
   const cdmVersjon: string | undefined = sed.sak?.cdmVersjon ?? cdmVersjonApp
 
