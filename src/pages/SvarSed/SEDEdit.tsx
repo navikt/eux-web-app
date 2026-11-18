@@ -67,9 +67,10 @@ import InformasjonDetAnmodesOm from 'applications/SvarSed/InformasjonDetAnmodesO
 import LokaleSaksnumre from 'applications/SvarSed/LokaleSaksnumre/LokaleSaksnumre'
 import RegistrertPerson from 'applications/SvarSed/RegistrertPerson/RegistrertPerson'
 import Registrering from 'applications/SvarSed/Registrering/Registrering'
-import Omstendigheter from 'applications/SvarSed/Omstendigheter/Omstendigheter'
-import AndreOmstendigheter from 'applications/SvarSed/Omstendigheter/AndreOmstendigheter'
+import Hendelser from 'applications/SvarSed/Hendelser/Hendelser'
+import AndreHendelser from 'applications/SvarSed/Hendelser/AndreHendelser'
 import ForespoerselOmOppfoelging from 'applications/SvarSed/ForespoerselOmOppfoelging/ForespoerselOmOppfoelging'
+import Eksport from 'applications/SvarSed/Eksport/Eksport'
 import InstitusjonDagpenger from 'applications/SvarSed/InstitusjonDagpenger/InstitusjonDagpenger'
 import FastslaaBosted from 'applications/SvarSed/FastslaaBosted/FastslaaBosted'
 import PositivtSvar from 'applications/SvarSed/PositivtSvar/PositivtSvar'
@@ -87,6 +88,7 @@ import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import {F027Sed, FSed, ReplySed} from 'declarations/sed'
 import { H120Sed } from 'declarations/h120'
+import { U008Sed } from 'declarations/u008'
 import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState, JSX } from 'react';
@@ -112,6 +114,7 @@ import {
   isH070Sed,
   isH120Sed,
   isU007Sed,
+  isU008Sed,
   isU009Sed,
   isU010Sed,
   isU013Sed,
@@ -487,7 +490,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: ['F001', 'F002'], adult: true, barn: true },
                   { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 },
                   { label: t('el:option-mainform-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, family: true },
-                  { label: t('el:option-mainform-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U', condition: () => !isU007Sed(replySed) && !isU009Sed(replySed) && !isU010Sed(replySed) && !isU013Sed(replySed) },
+                  { label: t('el:option-mainform-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U', condition: () => !isU007Sed(replySed) && !isU008Sed(replySed) && !isU009Sed(replySed) && !isU010Sed(replySed) && !isU013Sed(replySed) },
                   { label: t('el:option-mainform-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
                   { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
                   { label: t('el:option-mainform-arbeidsperioder'), value: 'arbeidsperioder', component: ArbeidsperioderOversikt, type: ['U002', 'U017'] },
@@ -508,11 +511,12 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-fastslaabosted'), value: 'fastslaabosted', component: FastslaaBosted, type: 'H005' },
                   { label: t('el:option-mainform-positivtsvar'), value: 'positivtsvar', component: PositivtSvar, type: 'H006' },
                   { label: t('el:option-mainform-negativtsvar'), value: 'negativtsvar', component: NegativtSvar, type: 'H006' },
-                  { label: t('el:option-mainform-lokalesaksnumre'), value: 'lokalesaksnumre', component: LokaleSaksnumre, type: ['U007', 'U009', 'U010', 'U013'] },
+                  { label: t('el:option-mainform-lokalesaksnumre'), value: 'lokalesaksnumre', component: LokaleSaksnumre, type: ['U007', 'U008', 'U009', 'U010', 'U013'] },
                   { label: t('el:option-mainform-registrering'), value: 'registrering', component: Registrering, type: ['U007', 'U009'] },
                   { label: t('el:option-mainform-sisteadresseikompetentland'), value: 'sisteadresseikompetentland', component: Adresse, type: 'U007', options: { target: 'kompetentLand.bruker.adresse', countryCodeListName: 'euEftaLand', required: true } },
                   { label: t('el:option-mainform-institusjondagpenger'), value: 'institusjondagpenger', component: InstitusjonDagpenger, type: 'U007' },
-                  { label: t('el:option-mainform-omstendigheter'), value: 'omstendigheter', component: Omstendigheter, type: 'U010' },
+                  { label: t('el:option-mainform-eksport'), value: 'eksport', component: Eksport, type: 'U008' },
+                  { label: t('el:option-mainform-hendelser'), value: 'hendelser', component: Hendelser, type: ['U008', 'U010'], condition: () => !isU008Sed(replySed) || (replySed as U008Sed)?.erInnvilgetEksport === 'ja' },
                   { label: t('el:option-mainform-foresporselomoppfoelging'), value: 'foresporselomoppfoelging', component: ForespoerselOmOppfoelging, type: 'U010' },
                   { label: t('el:option-mainform-registrertperson'), value: 'registrertperson', component: RegistrertPerson, type: 'U013' },
                   { label: t('el:option-mainform-beroertytelse'), value: 'beroertytelse', component: BeroertYtelse, type: 'H120' },
@@ -766,9 +770,9 @@ const SEDEdit = (): JSX.Element => {
               maxLength={500}
             />
           )}
-          {isU010Sed(replySed) && (
-            <AndreOmstendigheter
-              namespace={namespace + '-andreOmstendigheter'}
+          {(isU010Sed(replySed) || (isU008Sed(replySed) && (replySed as U008Sed)?.erInnvilgetEksport === 'ja')) && (
+            <AndreHendelser
+              namespace={namespace + '-andreHendelser'}
               replySed={replySed!}
             />
           )}

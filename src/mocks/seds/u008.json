@@ -1,0 +1,46 @@
+{
+  "sedType": "U008",
+  "sedVersjon": "4.4",
+  "svarPaaSedId": "u007_received_mock_id",
+  "lokaleSaksnumre": [
+    {
+      "landkode": "NOR",
+      "saksnummer": "12345",
+      "institusjonsid": "NO:1234",
+      "institusjonsnavn": "NAV"
+    }
+  ],
+  "bruker": {
+    "personInfo": {
+      "fornavn": "Kari",
+      "etternavn": "Nordmann",
+      "kjoenn": "K",
+      "foedselsdato": "1990-01-15",
+      "statsborgerskap": [
+        {
+          "landkode": "NOR"
+        }
+      ],
+      "pin": [
+        {
+          "landkode": "NOR",
+          "identifikator": "12345678901"
+        }
+      ]
+    }
+  },
+  "erInnvilgetEksport": "ja",
+  "eksportperiode": {
+    "sisteMuligeSluttdato": "2024-06-30",
+    "estimertSluttdato": "2024-05-31"
+  },
+  "hendelser": {
+    "typer": [
+      "den_arbeidsledige_får_jobb_eller_blir_selvstendig_næringsdrivende",
+      "andre_omstendigheter"
+    ],
+    "andreHendelser": [
+      "Andre hendelser"
+    ]
+  }
+}

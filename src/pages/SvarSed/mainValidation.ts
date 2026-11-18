@@ -127,6 +127,7 @@ import {
 import { H120Sed } from 'declarations/h120'
 import { U007Sed } from 'declarations/u007'
 import { U009Sed } from 'declarations/u009'
+import { U008Sed } from 'declarations/u008'
 import { U010Sed } from 'declarations/u010'
 import { U013Sed } from 'declarations/u013'
 import { X002Sed } from 'declarations/x002'
@@ -157,6 +158,7 @@ import {
   isHSed,
   isS040Sed,
   isS046Sed,
+  isU008Sed,
   isU010Sed,
   isUSed,
   isX001Sed,
@@ -209,14 +211,15 @@ import {
   ValidationRegistreringProps
 } from 'applications/SvarSed/Registrering/validation'
 import {
-  validateAndreOmstendigheter,
-  validateOmstendigheter,
-  ValidationOmstendigheterProps
-} from 'applications/SvarSed/Omstendigheter/validation'
+  validateAndreHendelser,
+  validateHendelser,
+  ValidationHendelserProps
+} from 'applications/SvarSed/Hendelser/validation'
 import {
   validateForespoerselOmOppfoelging,
   ValidationForespoerselOmOppfoelgingProps
 } from 'applications/SvarSed/ForespoerselOmOppfoelging/validation'
+import { validateEksport, ValidationEksportProps } from 'applications/SvarSed/Eksport/validation'
 import {
   validateInstitusjonDagpenger,
   ValidationInstitusjonDagpengerProps
@@ -425,14 +428,14 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     hasErrors.push(performValidation<ValidationPersonopplysningerProps>(v, `svarsed-${personID}-personopplysninger`, validatePersonopplysninger, {
       personInfo, personName
     }, true))
-    if (replySed.sedType !== 'U007' && replySed.sedType !== 'U009' && replySed.sedType !== 'U010' && replySed.sedType !== 'U013') {
+    if (replySed.sedType !== 'U007' && replySed.sedType !== 'U008' && replySed.sedType !== 'U009' && replySed.sedType !== 'U010' && replySed.sedType !== 'U013') {
       hasErrors.push(performValidation<ValidationReferanseperiodeProps>(v, `svarsed-${personID}-referanseperiode`, validateReferanseperiode, {
         anmodningsperiode: (replySed as USed)?.anmodningsperiode, personName
       }, true))
     }
-    if (replySed.sedType === 'U007' || replySed.sedType === 'U009' || replySed.sedType === 'U010' || replySed.sedType === 'U013') {
+    if (replySed.sedType === 'U007' || replySed.sedType === 'U008' || replySed.sedType === 'U009' || replySed.sedType === 'U010' || replySed.sedType === 'U013') {
       hasErrors.push(performValidation<ValidationLokaleSaksnumreProps>(v, `svarsed-${personID}-lokalesaksnumre`, validateLokaleSaksnumre, {
-        lokaleSaksnumre: (replySed as U007Sed | U009Sed | U010Sed | U013Sed).lokaleSaksnumre
+        lokaleSaksnumre: (replySed as U007Sed | U008Sed | U009Sed | U010Sed | U013Sed).lokaleSaksnumre
       }, true))
       const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
       hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
@@ -464,8 +467,18 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         cdmVersjon: replySed.sak?.cdmVersjon ?? cdmVersjon
       }, true))
     }
+    if (replySed.sedType === 'U008') {
+      hasErrors.push(performValidation<ValidationEksportProps>(v, `svarsed-${personID}-eksport`, validateEksport, {
+        replySed: replySed as U008Sed
+      }, true))
+      if ((replySed as U008Sed).erInnvilgetEksport === 'ja') {
+        hasErrors.push(performValidation<ValidationHendelserProps>(v, `svarsed-${personID}-hendelser`, validateHendelser, {
+          replySed: replySed as U008Sed
+        }, true))
+      }
+    }
     if (replySed.sedType === 'U010') {
-      hasErrors.push(performValidation<ValidationOmstendigheterProps>(v, `svarsed-${personID}-omstendigheter`, validateOmstendigheter, {
+      hasErrors.push(performValidation<ValidationHendelserProps>(v, `svarsed-${personID}-hendelser`, validateHendelser, {
         replySed: replySed as U010Sed
       }, true))
       hasErrors.push(performValidation<ValidationForespoerselOmOppfoelgingProps>(v, `svarsed-${personID}-foresporselomoppfoelging`, validateForespoerselOmOppfoelging, {
@@ -886,8 +899,8 @@ export const validateSEDEdit = (
     }, true))
   }
 
-  if (isU010Sed(replySed)) {
-    hasErrors.push(performValidation<ValidationOmstendigheterProps>(v, 'editor-andreOmstendigheter', validateAndreOmstendigheter, {
+  if (isU010Sed(replySed) || (isU008Sed(replySed) && (replySed as U008Sed).erInnvilgetEksport === 'ja')) {
+    hasErrors.push(performValidation<ValidationHendelserProps>(v, 'editor-andreHendelser', validateAndreHendelser, {
       replySed
     }, true))
   }

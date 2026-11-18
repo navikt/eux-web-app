@@ -105,7 +105,7 @@ describe('pages/SvarSed/mainValidation - H001/H002', () => {
   })
 })
 
-describe('pages/SvarSed/mainValidation - U010 andre omstendigheter', () => {
+describe('pages/SvarSed/mainValidation - U010 andre hendelser', () => {
   beforeEach(() => {
     (store.getState as jest.Mock).mockReturnValue({ app: { countryCodes: {}, cdmVersjon: '4.4' } })
   })
@@ -115,24 +115,67 @@ describe('pages/SvarSed/mainValidation - U010 andre omstendigheter', () => {
   })
 
   it('does not validate the text areas when none contain text', () => {
-    const validation = validate(getReplySed('U010', {}, { omstendigheter: { andreOmstendigheter: ['', ''] } }))
-    expect(validation['editor-andreOmstendigheter-0']).toBeUndefined()
-    expect(validation['editor-andreOmstendigheter-1']).toBeUndefined()
+    const validation = validate(getReplySed('U010', {}, { hendelser: { andreHendelser: ['', ''] } }))
+    expect(validation['editor-andreHendelser-0']).toBeUndefined()
+    expect(validation['editor-andreHendelser-1']).toBeUndefined()
   })
 
   it('requires every text area to be filled out when one contains text', () => {
     const validation = validate(getReplySed('U010', {}, {
-      omstendigheter: { typer: ['andre_omstendigheter'], andreOmstendigheter: ['tekst', ''] }
+      hendelser: { typer: ['andre_omstendigheter'], andreHendelser: ['tekst', ''] }
     }))
-    expect(validation['editor-andreOmstendigheter-0']).toBeUndefined()
-    expect(validation['editor-andreOmstendigheter-1']?.feilmelding).toEqual('validation:du-maa-fylle-ut')
-    expect(validation['svarsed-bruker-omstendigheter-typer']).toBeUndefined()
+    expect(validation['editor-andreHendelser-0']).toBeUndefined()
+    expect(validation['editor-andreHendelser-1']?.feilmelding).toEqual('validation:du-maa-fylle-ut')
+    expect(validation['svarsed-bruker-hendelser-typer']).toBeUndefined()
   })
 
   it('validates max length', () => {
     const validation = validate(getReplySed('U010', {}, {
-      omstendigheter: { typer: ['andre_omstendigheter'], andreOmstendigheter: ['a'.repeat(256)] }
+      hendelser: { typer: ['andre_omstendigheter'], andreHendelser: ['a'.repeat(256)] }
     }))
-    expect(validation['editor-andreOmstendigheter-0']?.feilmelding).toEqual('validation:textOverX')
+    expect(validation['editor-andreHendelser-0']?.feilmelding).toEqual('validation:textOverX')
+  })
+})
+
+describe('pages/SvarSed/mainValidation - U008', () => {
+  beforeEach(() => {
+    (store.getState as jest.Mock).mockReturnValue({ app: { countryCodes: {}, cdmVersjon: '4.4' } })
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
+  it('requires er innvilget eksport', () => {
+    const validation = validate(getReplySed('U008', {}))
+    expect(validation['svarsed-bruker-eksport-erInnvilgetEksport']?.feilmelding).toEqual('validation:du-maa-fylle-ut')
+    expect(validation['svarsed-bruker-hendelser-typer']).toBeUndefined()
+  })
+
+  it('requires maks sluttdato and hendelser, but not periode, when vedtak is ja', () => {
+    const validation = validate(getReplySed('U008', {}, { erInnvilgetEksport: 'ja' }))
+    expect(validation['svarsed-bruker-eksport-sisteMuligeSluttdato']?.feilmelding).toEqual('validation:du-maa-fylle-ut')
+    expect(validation['svarsed-bruker-eksport-estimertSluttdato']).toBeUndefined()
+    expect(validation['svarsed-bruker-hendelser-typer']).toBeDefined()
+    expect(validation['svarsed-bruker-hendelser-periode-startdato']).toBeUndefined()
+  })
+
+  it('does not allow ingen combined with other hendelser', () => {
+    const validation = validate(getReplySed('U008', {}, {
+      erInnvilgetEksport: 'ja',
+      eksportperiode: { sisteMuligeSluttdato: '2024-06-30' },
+      hendelser: { typer: ['ingen', 'andre_omstendigheter'] }
+    }))
+    expect(validation['svarsed-bruker-hendelser-typer']?.feilmelding).toEqual('validation:u008-ingen-hendelser-kombinert')
+  })
+
+  it('accepts ingen alone', () => {
+    const validation = validate(getReplySed('U008', {}, {
+      erInnvilgetEksport: 'ja',
+      eksportperiode: { sisteMuligeSluttdato: '2024-06-30' },
+      hendelser: { typer: ['ingen'] }
+    }))
+    expect(validation['svarsed-bruker-eksport-sisteMuligeSluttdato']).toBeUndefined()
+    expect(validation['svarsed-bruker-hendelser-typer']).toBeUndefined()
   })
 })
