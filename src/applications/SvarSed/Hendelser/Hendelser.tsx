@@ -75,9 +75,7 @@ const Hendelser: React.FC<MainFormProps> = ({
     if (ingenValgtNaa) {
       dispatch(updateReplySed('hendelser.typer', [INGEN_HENDELSER]))
       dispatch(updateReplySed('hendelser.andreHendelser', undefined))
-      if (validation[`${namespace}-typer`]) {
-        dispatch(resetValidation(`${namespace}-typer`))
-      }
+      dispatch(resetValidation([`${namespace}-typer`, 'editor-andreHendelser']))
       return
     }
     const valgteTyper = nyeTyper.filter(type => type !== INGEN_HENDELSER)
