@@ -67,8 +67,8 @@ import InformasjonDetAnmodesOm from 'applications/SvarSed/InformasjonDetAnmodesO
 import LokaleSaksnumre from 'applications/SvarSed/LokaleSaksnumre/LokaleSaksnumre'
 import RegistrertPerson from 'applications/SvarSed/RegistrertPerson/RegistrertPerson'
 import Registrering from 'applications/SvarSed/Registrering/Registrering'
-import Omstendigheter from 'applications/SvarSed/Omstendigheter/Omstendigheter'
-import AndreOmstendigheter from 'applications/SvarSed/Omstendigheter/AndreOmstendigheter'
+import Hendelser from 'applications/SvarSed/Hendelser/Hendelser'
+import AndreHendelser from 'applications/SvarSed/Hendelser/AndreHendelser'
 import ForespoerselOmOppfoelging from 'applications/SvarSed/ForespoerselOmOppfoelging/ForespoerselOmOppfoelging'
 import Eksport from 'applications/SvarSed/Eksport/Eksport'
 import InstitusjonDagpenger from 'applications/SvarSed/InstitusjonDagpenger/InstitusjonDagpenger'
@@ -516,7 +516,7 @@ const SEDEdit = (): JSX.Element => {
                   { label: t('el:option-mainform-sisteadresseikompetentland'), value: 'sisteadresseikompetentland', component: Adresse, type: 'U007', options: { target: 'kompetentLand.bruker.adresse', countryCodeListName: 'euEftaLand', required: true } },
                   { label: t('el:option-mainform-institusjondagpenger'), value: 'institusjondagpenger', component: InstitusjonDagpenger, type: 'U007' },
                   { label: t('el:option-mainform-eksport'), value: 'eksport', component: Eksport, type: 'U008' },
-                  { label: t('el:option-mainform-omstendigheter'), value: 'omstendigheter', component: Omstendigheter, type: ['U008', 'U010'], condition: () => !isU008Sed(replySed) || (replySed as U008Sed)?.vedtakOmEksport === 'ja' },
+                  { label: t('el:option-mainform-hendelser'), value: 'hendelser', component: Hendelser, type: ['U008', 'U010'], condition: () => !isU008Sed(replySed) || (replySed as U008Sed)?.erInnvilgetEksport === 'ja' },
                   { label: t('el:option-mainform-foresporselomoppfoelging'), value: 'foresporselomoppfoelging', component: ForespoerselOmOppfoelging, type: 'U010' },
                   { label: t('el:option-mainform-registrertperson'), value: 'registrertperson', component: RegistrertPerson, type: 'U013' },
                   { label: t('el:option-mainform-beroertytelse'), value: 'beroertytelse', component: BeroertYtelse, type: 'H120' },
@@ -770,9 +770,9 @@ const SEDEdit = (): JSX.Element => {
               maxLength={500}
             />
           )}
-          {(isU010Sed(replySed) || (isU008Sed(replySed) && (replySed as U008Sed)?.vedtakOmEksport === 'ja')) && (
-            <AndreOmstendigheter
-              namespace={namespace + '-andreOmstendigheter'}
+          {(isU010Sed(replySed) || (isU008Sed(replySed) && (replySed as U008Sed)?.erInnvilgetEksport === 'ja')) && (
+            <AndreHendelser
+              namespace={namespace + '-andreHendelser'}
               replySed={replySed!}
             />
           )}

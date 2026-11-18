@@ -110,11 +110,11 @@ export const cleanReplySed = (replySed: ReplySed): ReplySed => {
     })
   }
 
-  // U008/U010: do not send empty "andre omstendigheter" text areas
-  const omstendigheter = (newReplySed as U010Sed | U008Sed).omstendigheter
-  if ((isU010Sed(newReplySed) || isU008Sed(newReplySed)) && omstendigheter?.andreOmstendigheter &&
-    !omstendigheter.andreOmstendigheter.some(annenOmstendighet => !!annenOmstendighet?.trim())) {
-    delete omstendigheter.andreOmstendigheter
+  // U008/U010: do not send empty "andre hendelser" text areas
+  const hendelser = (newReplySed as U010Sed | U008Sed).hendelser
+  if ((isU010Sed(newReplySed) || isU008Sed(newReplySed)) && hendelser?.andreHendelser &&
+    !hendelser.andreHendelser.some(annenHendelse => !!annenHendelse?.trim())) {
+    delete hendelser.andreHendelser
   }
   return newReplySed
 }

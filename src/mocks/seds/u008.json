@@ -29,18 +29,18 @@
       ]
     }
   },
-  "vedtakOmEksport": "ja",
+  "erInnvilgetEksport": "ja",
   "eksportperiode": {
-    "maksSluttdato": "2024-06-30",
+    "sisteMuligeSluttdato": "2024-06-30",
     "estimertSluttdato": "2024-05-31"
   },
-  "omstendigheter": {
+  "hendelser": {
     "typer": [
       "den_arbeidsledige_får_jobb_eller_blir_selvstendig_næringsdrivende",
       "andre_omstendigheter"
     ],
-    "andreOmstendigheter": [
-      "Andre omstendigheter"
+    "andreHendelser": [
+      "Andre hendelser"
     ]
   }
 }

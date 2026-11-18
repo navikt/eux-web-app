@@ -17,7 +17,7 @@ export interface LokaltSaksnummer {
   institusjonsnavn?: string
 }
 
-export type OmstendighetType =
+export type HendelseType =
   'den_arbeidsledige_får_jobb_eller_blir_selvstendig_næringsdrivende' |
   'den_arbeidsledige_får_inntekt_fra_en_annen_yrkesaktivitet_enn_de_ovennevnte' |
   'den_arbeidsledige_avslår_et_jobbtilbud' |

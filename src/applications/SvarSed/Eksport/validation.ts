@@ -16,23 +16,23 @@ export const validateEksport = (
   const sed = replySed as U008Sed
   const hasErrors: Array<boolean> = [
     checkIfNotEmpty(v, {
-      needle: sed.vedtakOmEksport,
-      id: `${namespace}-vedtakOmEksport`,
+      needle: sed.erInnvilgetEksport,
+      id: `${namespace}-erInnvilgetEksport`,
       message: 'validation:du-maa-fylle-ut',
-      extra: { type: i18n.t('label:u008-vedtak-om-eksport-field') }
+      extra: { type: i18n.t('label:u008-er-innvilget-eksport-field') }
     })
   ]
 
-  if (sed.vedtakOmEksport === 'ja') {
+  if (sed.erInnvilgetEksport === 'ja') {
     hasErrors.push(checkIfNotEmpty(v, {
-      needle: sed.eksportperiode?.maksSluttdato,
-      id: `${namespace}-maksSluttdato`,
+      needle: sed.eksportperiode?.sisteMuligeSluttdato,
+      id: `${namespace}-sisteMuligeSluttdato`,
       message: 'validation:du-maa-fylle-ut',
-      extra: { type: i18n.t('label:u008-maks-sluttdato-field') }
+      extra: { type: i18n.t('label:u008-siste-mulige-sluttdato-field') }
     }))
     hasErrors.push(checkValidDateFormat(v, {
-      needle: sed.eksportperiode?.maksSluttdato,
-      id: `${namespace}-maksSluttdato`,
+      needle: sed.eksportperiode?.sisteMuligeSluttdato,
+      id: `${namespace}-sisteMuligeSluttdato`,
       message: 'validation:invalidDateFormat'
     }))
     hasErrors.push(checkValidDateFormat(v, {

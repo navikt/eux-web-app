@@ -1,15 +1,15 @@
 import { BaseReplySed, JaNei, Periode } from 'declarations/sed'
-import { LokaltSaksnummer, OmstendighetType, Person } from 'declarations/u'
+import { LokaltSaksnummer, HendelseType, Person } from 'declarations/u'
 
-export interface Omstendigheter {
+export interface Hendelser {
   periode?: Periode
-  typer?: Array<OmstendighetType>
-  andreOmstendigheter?: Array<string>
+  typer?: Array<HendelseType>
+  andreHendelser?: Array<string>
 }
 
 export interface U010Sed extends BaseReplySed {
   bruker: Person
   lokaleSaksnumre?: Array<LokaltSaksnummer>
-  omstendigheter?: Omstendigheter
+  hendelser?: Hendelser
   oenskerOppfoelging?: JaNei
 }

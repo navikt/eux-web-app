@@ -211,10 +211,10 @@ import {
   ValidationRegistreringProps
 } from 'applications/SvarSed/Registrering/validation'
 import {
-  validateAndreOmstendigheter,
-  validateOmstendigheter,
-  ValidationOmstendigheterProps
-} from 'applications/SvarSed/Omstendigheter/validation'
+  validateAndreHendelser,
+  validateHendelser,
+  ValidationHendelserProps
+} from 'applications/SvarSed/Hendelser/validation'
 import {
   validateForespoerselOmOppfoelging,
   ValidationForespoerselOmOppfoelgingProps
@@ -471,14 +471,14 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       hasErrors.push(performValidation<ValidationEksportProps>(v, `svarsed-${personID}-eksport`, validateEksport, {
         replySed: replySed as U008Sed
       }, true))
-      if ((replySed as U008Sed).vedtakOmEksport === 'ja') {
-        hasErrors.push(performValidation<ValidationOmstendigheterProps>(v, `svarsed-${personID}-omstendigheter`, validateOmstendigheter, {
+      if ((replySed as U008Sed).erInnvilgetEksport === 'ja') {
+        hasErrors.push(performValidation<ValidationHendelserProps>(v, `svarsed-${personID}-hendelser`, validateHendelser, {
           replySed: replySed as U008Sed
         }, true))
       }
     }
     if (replySed.sedType === 'U010') {
-      hasErrors.push(performValidation<ValidationOmstendigheterProps>(v, `svarsed-${personID}-omstendigheter`, validateOmstendigheter, {
+      hasErrors.push(performValidation<ValidationHendelserProps>(v, `svarsed-${personID}-hendelser`, validateHendelser, {
         replySed: replySed as U010Sed
       }, true))
       hasErrors.push(performValidation<ValidationForespoerselOmOppfoelgingProps>(v, `svarsed-${personID}-foresporselomoppfoelging`, validateForespoerselOmOppfoelging, {
@@ -899,8 +899,8 @@ export const validateSEDEdit = (
     }, true))
   }
 
-  if (isU010Sed(replySed) || (isU008Sed(replySed) && (replySed as U008Sed).vedtakOmEksport === 'ja')) {
-    hasErrors.push(performValidation<ValidationOmstendigheterProps>(v, 'editor-andreOmstendigheter', validateAndreOmstendigheter, {
+  if (isU010Sed(replySed) || (isU008Sed(replySed) && (replySed as U008Sed).erInnvilgetEksport === 'ja')) {
+    hasErrors.push(performValidation<ValidationHendelserProps>(v, 'editor-andreHendelser', validateAndreHendelser, {
       replySed
     }, true))
   }

@@ -208,5 +208,5 @@
   "noAarsakAnnet": "Annen grunn er påkrevd",
   "noSkalGjenaapnes": "Du må angi om saken skal gjenåpnes",
   "noGrunnType": "Du må velge en grunn",
-  "u008-ingen-omstendigheter-kombinert": "«Ingen» kan ikke kombineres med andre omstendigheter"
+  "u008-ingen-hendelser-kombinert": "«Ingen» kan ikke kombineres med andre hendelser"
 }

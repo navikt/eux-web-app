@@ -4,7 +4,7 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
-import { OmstendighetType } from 'declarations/u'
+import { HendelseType } from 'declarations/u'
 import { U008Sed } from 'declarations/u008'
 import { U010Sed } from 'declarations/u010'
 import useUnmount from 'hooks/useUnmount'
@@ -15,13 +15,13 @@ import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { isU008Sed } from 'utils/sed'
 import {
-  ANDRE_OMSTENDIGHETER,
-  INGEN_OMSTENDIGHETER,
-  validateOmstendigheter,
-  ValidationOmstendigheterProps
+  ANDRE_HENDELSER,
+  INGEN_HENDELSER,
+  validateHendelser,
+  ValidationHendelserProps
 } from './validation'
 
-const OMSTENDIGHET_TYPER: Array<OmstendighetType> = [
+const HENDELSE_TYPER: Array<HendelseType> = [
   'den_arbeidsledige_får_jobb_eller_blir_selvstendig_næringsdrivende',
   'den_arbeidsledige_får_inntekt_fra_en_annen_yrkesaktivitet_enn_de_ovennevnte',
   'den_arbeidsledige_avslår_et_jobbtilbud',
@@ -36,7 +36,7 @@ const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const Omstendigheter: React.FC<MainFormProps> = ({
+const Hendelser: React.FC<MainFormProps> = ({
   label,
   parentNamespace,
   replySed,
@@ -45,45 +45,45 @@ const Omstendigheter: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-bruker-omstendigheter`
+  const namespace = `${parentNamespace}-bruker-hendelser`
   const sed = replySed as U010Sed | U008Sed
-  const omstendigheter = sed.omstendigheter
+  const hendelser = sed.hendelser
   // U008 (3.2.2) has no periode, but an extra "ingen" option
   const erU008 = isU008Sed(sed)
-  const omstendighetTyper: Array<OmstendighetType> = erU008 ? [...OMSTENDIGHET_TYPER, INGEN_OMSTENDIGHETER] : OMSTENDIGHET_TYPER
-  const harAndreOmstendigheter = omstendigheter?.typer?.includes(ANDRE_OMSTENDIGHETER) ?? false
+  const hendelseTyper: Array<HendelseType> = erU008 ? [...HENDELSE_TYPER, INGEN_HENDELSER] : HENDELSE_TYPER
+  const harAndreHendelser = hendelser?.typer?.includes(ANDRE_HENDELSER) ?? false
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
-    performValidation<ValidationOmstendigheterProps>(
-      clonedValidation, namespace, validateOmstendigheter, { replySed: sed }, true
+    performValidation<ValidationHendelserProps>(
+      clonedValidation, namespace, validateHendelser, { replySed: sed }, true
     )
     dispatch(setValidation(clonedValidation))
   })
 
   const setPeriode = (periode: Periode, id: string) => {
-    dispatch(updateReplySed('omstendigheter.periode', periode))
+    dispatch(updateReplySed('hendelser.periode', periode))
     if (validation[`${namespace}-periode-${id}`]) {
       dispatch(resetValidation(`${namespace}-periode-${id}`))
     }
   }
 
-  const setTyper = (nyeTyper: Array<OmstendighetType>) => {
-    const forrigeTyper: Array<OmstendighetType> = omstendigheter?.typer ?? []
-    const ingenValgtNaa = nyeTyper.includes(INGEN_OMSTENDIGHETER) && !forrigeTyper.includes(INGEN_OMSTENDIGHETER)
-    // "ingen" excludes all other omstendigheter
+  const setTyper = (nyeTyper: Array<HendelseType>) => {
+    const forrigeTyper: Array<HendelseType> = hendelser?.typer ?? []
+    const ingenValgtNaa = nyeTyper.includes(INGEN_HENDELSER) && !forrigeTyper.includes(INGEN_HENDELSER)
+    // "ingen" excludes all other hendelser
     if (ingenValgtNaa) {
-      dispatch(updateReplySed('omstendigheter.typer', [INGEN_OMSTENDIGHETER]))
-      dispatch(updateReplySed('omstendigheter.andreOmstendigheter', undefined))
+      dispatch(updateReplySed('hendelser.typer', [INGEN_HENDELSER]))
+      dispatch(updateReplySed('hendelser.andreHendelser', undefined))
       if (validation[`${namespace}-typer`]) {
         dispatch(resetValidation(`${namespace}-typer`))
       }
       return
     }
-    const valgteTyper = nyeTyper.filter(type => type !== INGEN_OMSTENDIGHETER)
-    // andre_omstendigheter is controlled by the separate AndreOmstendigheter component
-    const typer: Array<OmstendighetType> = harAndreOmstendigheter ? [...valgteTyper, ANDRE_OMSTENDIGHETER] : valgteTyper
-    dispatch(updateReplySed('omstendigheter.typer', typer.length > 0 ? typer : undefined))
+    const valgteTyper = nyeTyper.filter(type => type !== INGEN_HENDELSER)
+    // andre_omstendigheter is controlled by the separate AndreHendelser component
+    const typer: Array<HendelseType> = harAndreHendelser ? [...valgteTyper, ANDRE_HENDELSER] : valgteTyper
+    dispatch(updateReplySed('hendelser.typer', typer.length > 0 ? typer : undefined))
     if (validation[`${namespace}-typer`]) {
       dispatch(resetValidation(`${namespace}-typer`))
     }
@@ -105,20 +105,20 @@ const Omstendigheter: React.FC<MainFormProps> = ({
               }}
               hideLabel={false}
               setPeriode={setPeriode}
-              value={(omstendigheter as U010Sed['omstendigheter'])?.periode}
+              value={(hendelser as U010Sed['hendelser'])?.periode}
             />
           </>
         )}
         <CheckboxGroup
           id={`${namespace}-typer`}
-          legend={t('label:u010-omstendigheter')}
+          legend={t('label:hendelser')}
           error={validation[`${namespace}-typer`]?.feilmelding}
-          value={(omstendigheter?.typer ?? []).filter(type => type !== ANDRE_OMSTENDIGHETER)}
+          value={(hendelser?.typer ?? []).filter(type => type !== ANDRE_HENDELSER)}
           onChange={setTyper}
         >
-          {omstendighetTyper.map((type) => (
+          {hendelseTyper.map((type) => (
             <Checkbox key={type} value={type}>
-              {t(`el:option-u010-omstendighet-${type}`)}
+              {t(`el:option-hendelse-${type}`)}
             </Checkbox>
           ))}
         </CheckboxGroup>
@@ -127,4 +127,4 @@ const Omstendigheter: React.FC<MainFormProps> = ({
   )
 }
 
-export default Omstendigheter
+export default Hendelser

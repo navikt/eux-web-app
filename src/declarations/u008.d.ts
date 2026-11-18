@@ -1,14 +1,14 @@
 import { BaseReplySed, JaNei } from 'declarations/sed'
-import { LokaltSaksnummer, OmstendighetType, Person } from 'declarations/u'
+import { LokaltSaksnummer, HendelseType, Person } from 'declarations/u'
 
 export interface Eksportperiode {
-  maksSluttdato?: string
+  sisteMuligeSluttdato?: string
   estimertSluttdato?: string
 }
 
-export interface Omstendigheter {
-  typer?: Array<OmstendighetType>
-  andreOmstendigheter?: Array<string>
+export interface Hendelser {
+  typer?: Array<HendelseType>
+  andreHendelser?: Array<string>
 }
 
 // ===== U008 SED — Eksportdokument (U_BUC_02), svar på U007 =====
@@ -17,7 +17,7 @@ export interface U008Sed extends BaseReplySed {
   bruker: Person
   svarPaaSedId?: string
   lokaleSaksnumre?: Array<LokaltSaksnummer>
-  vedtakOmEksport?: JaNei
+  erInnvilgetEksport?: JaNei
   eksportperiode?: Eksportperiode
-  omstendigheter?: Omstendigheter
+  hendelser?: Hendelser
 }

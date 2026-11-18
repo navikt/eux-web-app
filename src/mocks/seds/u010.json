@@ -28,7 +28,7 @@
       ]
     }
   },
-  "omstendigheter": {
+  "hendelser": {
     "periode": {
       "startdato": "2024-01-01",
       "aapenPeriodeType": "åpen_sluttdato"
@@ -37,8 +37,8 @@
       "den_arbeidsledige_får_jobb_eller_blir_selvstendig_næringsdrivende",
       "andre_omstendigheter"
     ],
-    "andreOmstendigheter": [
-      "Andre omstendigheter"
+    "andreHendelser": [
+      "Andre hendelser"
     ]
   },
   "oenskerOppfoelging": "ja"

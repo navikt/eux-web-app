@@ -37,25 +37,25 @@ const Eksport: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedValidation))
   })
 
-  const setVedtakOmEksport = (value: JaNei) => {
-    dispatch(updateReplySed('vedtakOmEksport', value))
+  const setErInnvilgetEksport = (value: JaNei) => {
+    dispatch(updateReplySed('erInnvilgetEksport', value))
     // 3.2 is only filled in when there is a right to export
     if (value === 'nei') {
       dispatch(updateReplySed('eksportperiode', undefined))
-      dispatch(updateReplySed('omstendigheter', undefined))
+      dispatch(updateReplySed('hendelser', undefined))
       dispatch(resetValidation([
-        `${namespace}-maksSluttdato`,
+        `${namespace}-sisteMuligeSluttdato`,
         `${namespace}-estimertSluttdato`,
-        `${parentNamespace}-bruker-omstendigheter`,
-        'editor-andreOmstendigheter'
+        `${parentNamespace}-bruker-hendelser`,
+        'editor-andreHendelser'
       ]))
     }
-    if (validation[`${namespace}-vedtakOmEksport`]) {
-      dispatch(resetValidation(`${namespace}-vedtakOmEksport`))
+    if (validation[`${namespace}-erInnvilgetEksport`]) {
+      dispatch(resetValidation(`${namespace}-erInnvilgetEksport`))
     }
   }
 
-  const setDato = (felt: 'maksSluttdato' | 'estimertSluttdato', dato: string) => {
+  const setDato = (felt: 'sisteMuligeSluttdato' | 'estimertSluttdato', dato: string) => {
     dispatch(updateReplySed(`eksportperiode.${felt}`, dato.trim() || undefined))
     if (validation[`${namespace}-${felt}`]) {
       dispatch(resetValidation(`${namespace}-${felt}`))
@@ -67,26 +67,26 @@ const Eksport: React.FC<MainFormProps> = ({
       <VStack gap="space-16">
         <Heading size="small">{label}</Heading>
         <RadioGroup
-          value={sed.vedtakOmEksport ?? ''}
-          id={`${namespace}-vedtakOmEksport`}
-          legend={t('label:u008-vedtak-om-eksport')}
-          error={validation[`${namespace}-vedtakOmEksport`]?.feilmelding}
-          onChange={(value: string) => setVedtakOmEksport(value as JaNei)}
+          value={sed.erInnvilgetEksport ?? ''}
+          id={`${namespace}-erInnvilgetEksport`}
+          legend={t('label:u008-er-innvilget-eksport')}
+          error={validation[`${namespace}-erInnvilgetEksport`]?.feilmelding}
+          onChange={(value: string) => setErInnvilgetEksport(value as JaNei)}
         >
           <Radio value="ja">{t('label:ja')}</Radio>
           <Radio value="nei">{t('label:nei')}</Radio>
         </RadioGroup>
-        {sed.vedtakOmEksport === 'ja' && (
+        {sed.erInnvilgetEksport === 'ja' && (
           <>
             <Heading size="xsmall" level="3">{t('label:u008-eksportperiode')}</Heading>
             <DateField
-              error={validation[`${namespace}-maksSluttdato`]?.feilmelding}
+              error={validation[`${namespace}-sisteMuligeSluttdato`]?.feilmelding}
               namespace={namespace}
-              id="maksSluttdato"
-              label={t('label:u008-maks-sluttdato')}
+              id="sisteMuligeSluttdato"
+              label={t('label:u008-siste-mulige-sluttdato')}
               required
-              onChanged={(dato: string) => setDato('maksSluttdato', dato)}
-              dateValue={sed.eksportperiode?.maksSluttdato}
+              onChanged={(dato: string) => setDato('sisteMuligeSluttdato', dato)}
+              dateValue={sed.eksportperiode?.sisteMuligeSluttdato}
             />
             <DateField
               error={validation[`${namespace}-estimertSluttdato`]?.feilmelding}
